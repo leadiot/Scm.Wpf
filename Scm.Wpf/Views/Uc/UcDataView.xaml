@@ -13,57 +13,49 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Margin="5">
+        <Grid Grid.Row="0" Margin="5 0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0" Orientation="Horizontal">
                 <hc:ButtonGroup>
-                    <Button ToolTip="新增">
-                        <iconPacks:PackIconMaterial Kind="Plus" Width="16" Height="16" />
+                    <Button x:Name="BtAppend" Click="BtAppend_Click" ToolTip="新增">
+                        <iconPacks:PackIconMaterial Kind="Plus" Width="12" Height="12" />
                     </Button>
                 </hc:ButtonGroup>
                 <hc:Divider Orientation="Vertical"/>
                 <hc:ButtonGroup>
-                    <Button ToolTip="启用">
-                        <iconPacks:PackIconMaterial Kind="CheckboxOutline" Width="16" Height="16" />
+                    <Button x:Name="BtEnable" Click="BtEnable_Click" ToolTip="启用">
+                        <iconPacks:PackIconMaterial Kind="CheckboxOutline" Width="12" Height="12" />
                     </Button>
-                    <Button ToolTip="禁用">
-                        <iconPacks:PackIconMaterial Kind="CloseBoxOutline" Width="16" Height="16" />
+                    <Button x:Name="BtDisable" Click="BtDisable_Click" ToolTip="禁用">
+                        <iconPacks:PackIconMaterial Kind="CloseBoxOutline" Width="12" Height="12" />
                     </Button>
-                    <Button ToolTip="删除">
-                        <iconPacks:PackIconMaterial Kind="DeleteOutline" Width="16" Height="16" Foreground="Red" />
+                    <Button x:Name="BtDelete" Click="BtDelete_Click" ToolTip="删除">
+                        <iconPacks:PackIconMaterial Kind="DeleteOutline" Width="12" Height="12" Foreground="Red" />
                     </Button>
                 </hc:ButtonGroup>
             </StackPanel>
             <StackPanel Grid.Column="1" Orientation="Horizontal">
-                <TextBox x:Name="TbMeta" Width="140"/>
-                <Button x:Name="BtSearch" Content="搜索"></Button>
+                <hc:ElementGroup>
+                    <hc:ElementGroup.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                            </Grid>
+                        </ItemsPanelTemplate>
+                    </hc:ElementGroup.ItemsPanel>
+                    <TextBox x:Name="TbMeta" Width="120" HorizontalAlignment="Stretch" hc:InfoElement.Placeholder="请输入"/>
+                    <Button x:Name="BtSearch" Click="BtSearch_Click" Grid.Column="1" Content="搜索" HorizontalAlignment="Right" Style="{StaticResource ButtonPrimary}"/>
+                </hc:ElementGroup>
                 <hc:Divider Orientation="Vertical"/>
                 <ToggleButton x:Name="BtMore" Content="显示" Click="BtMore_Click"></ToggleButton>
             </StackPanel>
         </Grid>
         <Uc:UcPageData Grid.Row="1" Margin="5"/>
-        <Popup x:Name="PwForm"
-               Placement="Right"
-               AllowsTransparency="True"
-               PopupAnimation="Slide"
-               HorizontalOffset="-200"
-               VerticalOffset="20"
-               Margin="10"
-               Width="200">
-            <Grid Background="Red">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <hc:TextBox Grid.Row="0" Grid.Column="1" hc:InfoElement.TitleWidth="60" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="123" Text="Abc"/>
-                <hc:TextBox Grid.Row="1" Grid.Column="1" hc:InfoElement.TitleWidth="60" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="123" Text="Abc"/>
-                <hc:TextBox Grid.Row="2" Grid.Column="1" hc:InfoElement.TitleWidth="60" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="123" Text="Abc"/>
-                <hc:TextBox Grid.Row="3" Grid.Column="1" hc:InfoElement.TitleWidth="60" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="123" Text="Abc"/>
-                <hc:TextBox Grid.Row="4" Grid.Column="1" hc:InfoElement.TitleWidth="60" hc:InfoElement.TitlePlacement="Left" hc:InfoElement.Title="123" Text="Abc"/>
-            </Grid>
-        </Popup>
     </Grid>
 </UserControl>
