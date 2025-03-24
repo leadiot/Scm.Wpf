@@ -1,0 +1,111 @@
+﻿<UserControl x:Class="Com.Scm.Uc.UcPassView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             mc:Ignorable="d" 
+             d:DesignHeight="240"
+             d:DesignWidth="340">
+    <StackPanel Orientation="Vertical" Margin="0,5">
+        <hc:ElementGroup Name="EgUser" Margin="0,12">
+            <hc:ElementGroup.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ItemsPanelTemplate>
+            </hc:ElementGroup.ItemsPanel>
+            <Border Style="{StaticResource BorderRegion}" Padding="8">
+                <iconPacks:PackIconMaterial Kind="Account" Width="16" Height="16" />
+            </Border>
+            <hc:TextBox
+                x:Name="TbUser"
+                Grid.Column="1"
+                Padding="10"
+                Text="{Binding Path=User,ValidatesOnNotifyDataErrors=True}"
+                HorizontalAlignment="Stretch"
+                hc:InfoElement.ShowClearButton="True"
+                hc:InfoElement.Placeholder="手机号码"/>
+        </hc:ElementGroup>
+        <hc:ElementGroup Name="EgPass" Margin="0,12">
+            <hc:ElementGroup.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ItemsPanelTemplate>
+            </hc:ElementGroup.ItemsPanel>
+            <Border Style="{StaticResource BorderRegion}" Padding="8">
+                <iconPacks:PackIconMaterial Kind="Passport" Width="16" Height="16" />
+            </Border>
+            <hc:TextBox
+                x:Name="TbPass"
+                Grid.Column="1"
+                Padding="10"
+                Text="{Binding Path=Pass}"
+                HorizontalAlignment="Stretch"
+                hc:InfoElement.ShowClearButton="True"
+                hc:InfoElement.Placeholder="电子邮件"/>
+        </hc:ElementGroup>
+        <hc:ElementGroup Name="EgCode" Margin="0,12">
+            <hc:ElementGroup.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ItemsPanelTemplate>
+            </hc:ElementGroup.ItemsPanel>
+            <Border Style="{StaticResource BorderRegion}" Padding="8">
+                <iconPacks:PackIconMaterial Kind="Charity" Width="16" Height="16" />
+            </Border>
+            <hc:TextBox
+                x:Name="TbCode" 
+                Grid.Column="1"
+                Padding="10"
+                MaxLength="4"
+                Text="{Binding Path=Code}"
+                HorizontalAlignment="Stretch"
+                hc:InfoElement.ShowClearButton="True"
+                hc:InfoElement.Placeholder="验证码"/>
+            <Border Style="{StaticResource BorderRegion}" Padding="0" Grid.Column="2">
+                <Image
+                    x:Name="BtVcode"
+                    Width="100"
+                    Height="30"
+                    Margin="3,0"
+                    Source="{Binding VCodeUrl}"
+                    Cursor="Hand"
+                    ToolTip="点击刷新"
+                    PreviewMouseUp="BtVcode_PreviewMouseUp"/>
+            </Border>
+        </hc:ElementGroup>
+        <Grid Margin="0,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <CheckBox Grid.Column="0">24小时免密登录</CheckBox>
+            <Label Grid.Column="1" HorizontalAlignment="Right" HorizontalContentAlignment="Right" BorderThickness="0">忘记密码</Label>
+        </Grid>
+        <hc:ElementGroup>
+            <Button
+                x:Name="BtVerify"
+                HorizontalAlignment="Stretch"
+                Style="{StaticResource ButtonPrimary}"
+                Content="登录"
+                Click="BtVerify_Click"/>
+        </hc:ElementGroup>
+    </StackPanel>
+</UserControl>

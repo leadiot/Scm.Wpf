@@ -1,0 +1,97 @@
+﻿<UserControl x:Class="Com.Scm.Wpf.Views.Uc.UcGuidView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800">
+    <UserControl.Resources>
+        <!-- 菜单项样式 -->
+        <Style x:Key="MenuButtonStyle" TargetType="ListBoxItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border Background="Transparent">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="5"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- 选中指示器 -->
+                                <Border x:Name="SelectionIndicator"
+                                        Grid.Column="0" 
+                                        Background="#FF3385FF"
+                                        HorizontalAlignment="Left"
+                                        Height="24"
+                                        Visibility="Hidden"/>
+
+                                <Grid Grid.Column="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"></RowDefinition>
+                                        <RowDefinition Height="auto"></RowDefinition>
+                                    </Grid.RowDefinitions>
+
+                                    <!-- 图标 -->
+                                    <Viewbox Grid.Row="0" Width="24" Height="24" Margin="10">
+                                        <ContentControl Content="{Binding Icon}"/>
+                                    </Viewbox>
+
+                                    <!-- 文本 -->
+                                    <TextBlock
+                                        Grid.Row="1" 
+                                        Text="{Binding namec}"
+                                        HorizontalAlignment="Center"
+                                        FontSize="14"
+                                        Foreground="#666666"/>
+                                </Grid>
+
+                                <!-- 悬停效果 -->
+                                <Border x:Name="HoverOverlay"
+                                        Grid.ColumnSpan="2" 
+                                        Background="#20000000"
+                                        Opacity="0"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="HoverOverlay" Property="Opacity" Value="1"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="SelectionIndicator" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="HoverOverlay" Property="Opacity" Value="1"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Left" Width="80">
+            <StackPanel DockPanel.Dock="Top">
+
+            </StackPanel>
+            <StackPanel DockPanel.Dock="Bottom">
+                <Button
+                    x:Name="BtMenu"
+                    HorizontalAlignment="Stretch"
+                    Click="BtMenu_Click">
+                    <iconPacks:PackIconMaterial x:Name="PiMenu" Kind="ChevronDoubleLeft" Width="10" Height="10"/>
+                </Button>
+            </StackPanel>
+            <ListBox
+                    x:Name="LvMenu"
+                    ItemsSource="{Binding MenuList}"
+                    ItemContainerStyle="{StaticResource MenuButtonStyle}"
+                    SelectionChanged="LvMenu_SelectionChanged">
+            </ListBox>
+        </DockPanel>
+        <Grid Background="LightBlue">
+            <hc:SideMenu x:Name="MbMenu" BorderThickness="1" Width="160"></hc:SideMenu>
+        </Grid>
+    </DockPanel>
+</UserControl>
