@@ -44,12 +44,24 @@ namespace Com.Scm.Wpf.Views
 
         private void BtEnable_Click(object sender, RoutedEventArgs e)
         {
-
+            foreach (var dvo in _Dvo.Items)
+            {
+                if (dvo.IsChecked == true)
+                {
+                    dvo.row_status = Enums.ScmStatusEnum.Enabled;
+                }
+            }
         }
 
         private void BtDisable_Click(object sender, RoutedEventArgs e)
         {
-
+            foreach (var dvo in _Dvo.Items)
+            {
+                if (dvo.IsChecked == true)
+                {
+                    dvo.row_status = Enums.ScmStatusEnum.Disabled;
+                }
+            }
         }
 
         private void BtDelete_Click(object sender, RoutedEventArgs e)

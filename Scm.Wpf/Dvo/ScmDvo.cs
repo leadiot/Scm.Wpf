@@ -35,6 +35,15 @@ namespace Com.Scm.Wpf.Dvo
             return true;
         }
 
+        //protected virtual void SetProperty(ref object property, object value)
+        //{
+        //    if (property != value)
+        //    {
+        //        property = value;
+        //        OnPropertyChanged(property.GetType().Name);
+        //    }
+        //}
+
         public virtual Dictionary<string, string> ToDictionary()
         {
             var dict = new Dictionary<string, string>();
@@ -57,7 +66,8 @@ namespace Com.Scm.Wpf.Dvo
 
     public class ScmDataDvo : ScmDvo
     {
-        public ScmStatusEnum row_status { get; set; }
+        private ScmStatusEnum _status;
+        public ScmStatusEnum row_status { get { return _status; } set { SetProperty(ref _status, value); } }
 
         public long update_time { get; set; }
         public long update_user { get; set; }
