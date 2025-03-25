@@ -31,7 +31,7 @@ public partial class MainWindow : HandyControl.Controls.Window
 
     private void ShowView()
     {
-        var view = new UcSamplesView();
+        var view = new SearchView();
         view.Init(_Client);
         GdView.Children.Add(view);
     }

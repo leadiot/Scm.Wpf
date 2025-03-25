@@ -29,13 +29,18 @@ namespace Com.Scm.Wpf.Views.Uc
             var size = _Response.TotalItems;
         }
 
-        public void ShowData(IEnumerable dataSource, List<ColumnInfo> columns)
+        public void SetColumns(List<ColumnInfo> columns, bool autoData = true)
         {
-            if (dataSource == null)
+            if (autoData)
             {
-                return;
+                columns.Add(new ColumnInfo { Label = "数据状态", Value = "row_status" });
+                columns.Add(new ColumnInfo { Label = "更新人员", Value = "update_name" });
+                columns.Add(new ColumnInfo { Label = "更新时间", Value = "update_time" });
+                columns.Add(new ColumnInfo { Label = "创建人员", Value = "create_name" });
+                columns.Add(new ColumnInfo { Label = "创建时间", Value = "create_time" });
             }
 
+            DgGrid.AutoGenerateColumns = false;
             foreach (var column in columns)
             {
                 if (column.Type == Models.ColumnType.Text)
@@ -51,22 +56,39 @@ namespace Com.Scm.Wpf.Views.Uc
             }
         }
 
+        public void ShowData(IEnumerable dataSource)
+        {
+            DgGrid.ItemsSource = dataSource;
+        }
+
         private DataGridTextColumn CreateTextColumn(ColumnInfo info)
         {
             var column = new DataGridTextColumn();
             column.Header = info.Label;
             column.Binding = new Binding(info.Value);
+            column.IsReadOnly = true;
+
             if (info.Hidden)
             {
                 column.Visibility = Visibility.Collapsed;
             }
-            if (!string.IsNullOrEmpty(info.Value))
+
+            var uom = SizeUom.Parse(info.Width);
+            if (uom.IsFill)
             {
-                if ("*" == info.Value)
-                {
-                    column.Width = new DataGridLength();
-                }
+                column.Width = new DataGridLength(0, DataGridLengthUnitType.Star);
             }
+            if (uom.IsFixed)
+            {
+                column.Width = new DataGridLength(uom.Width, DataGridLengthUnitType.Pixel);
+            }
+
+            uom = SizeUom.Parse(info.MinWidth);
+            if (uom.IsFixed)
+            {
+                column.MinWidth = uom.Width;
+            }
+
             return column;
         }
 
@@ -79,17 +101,27 @@ namespace Com.Scm.Wpf.Views.Uc
             {
                 column.Visibility = Visibility.Collapsed;
             }
-            if (!string.IsNullOrEmpty(info.Value))
+
+            var uom = SizeUom.Parse(info.Width);
+            if (uom.IsFill)
             {
-                if ("*" == info.Value)
-                {
-                    column.Width = new DataGridLength();
-                }
+                column.Width = new DataGridLength(0, DataGridLengthUnitType.Star);
             }
+            if (uom.IsFixed)
+            {
+                column.Width = new DataGridLength(uom.Width, DataGridLengthUnitType.Pixel);
+            }
+
+            uom = SizeUom.Parse(info.MinWidth);
+            if (uom.IsFixed)
+            {
+                column.MinWidth = uom.Width;
+            }
+
             return column;
         }
 
-        public void ShowData(IEnumerable dataSource)
+        public void ShowData0(IEnumerable dataSource)
         {
             if (dataSource == null)
             {

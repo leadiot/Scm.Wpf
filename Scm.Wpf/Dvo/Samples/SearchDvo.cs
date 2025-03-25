@@ -15,6 +15,9 @@ namespace Com.Scm.Wpf.Dvo.Samples
         [ObservableProperty]
         private bool drawer;
 
+        [ObservableProperty]
+        private List<SearchResultDvo> items = new List<SearchResultDvo>();
+
         [RelayCommand]
         public void Search(object obj)
         {

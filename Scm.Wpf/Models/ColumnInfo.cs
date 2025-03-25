@@ -76,6 +76,8 @@ namespace Com.Scm.Wpf.Models
         /// </summary>
         public bool IsAuto { get; private set; }
 
+        public bool IsFixed { get; private set; }
+
         public static SizeUom Parse(string value)
         {
             if (string.IsNullOrEmpty(value))
@@ -98,7 +100,7 @@ namespace Com.Scm.Wpf.Models
             var width = match.Groups[1].Value;
             var uom = match.Groups[2].Value.Trim();
 
-            return new SizeUom { Width = double.Parse(width), Unit = uom };
+            return new SizeUom { Width = double.Parse(width), Unit = uom, IsFixed = true };
         }
     }
 

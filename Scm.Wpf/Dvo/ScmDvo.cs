@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Com.Scm.Enums;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System.Reflection;
 
 namespace Com.Scm.Wpf.Dvo
@@ -56,10 +57,14 @@ namespace Com.Scm.Wpf.Dvo
 
     public class ScmDataDvo : ScmDvo
     {
+        public ScmStatusEnum row_status { get; set; }
+
         public long update_time { get; set; }
         public long update_user { get; set; }
+        public string update_name { get; set; }
 
         public long create_time { get; set; }
         public long create_user { get; set; }
+        public string create_name { get; set; }
     }
 }
