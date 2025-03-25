@@ -1,4 +1,6 @@
-﻿using Com.Scm.Sys.Menu;
+﻿using Com.Scm.Dvo;
+using Com.Scm.Sys.Config;
+using Com.Scm.Sys.Menu;
 using Com.Scm.Utils;
 using Com.Scm.Wpf.Dto;
 using Com.Scm.Wpf.Dto.Login;
@@ -37,6 +39,9 @@ namespace Com.Scm.Wpf
         public int ErrorCode { get; private set; }
         public string ErrorMessage { get; private set; }
 
+        private static Dictionary<string, List<ResOptionDvo>> _Dic = new Dictionary<string, List<ResOptionDvo>>();
+        private static Dictionary<string, ConfigDto> _Cfg = new Dictionary<string, ConfigDto>();
+
         /// <summary>
         /// 用户登录
         /// </summary>
@@ -44,7 +49,7 @@ namespace Com.Scm.Wpf
         /// <returns></returns>
         public async Task<bool> LoginAsync(Dictionary<string, string> body)
         {
-            var url = GetUrl("/operator/login");
+            var url = GenUrl("/operator/login");
 
             var response = await HttpUtils.PostJsonObjectAsync<ScmDataResponse<LoginResult>>(url, body);
             if (response == null)
@@ -63,9 +68,14 @@ namespace Com.Scm.Wpf
             return true;
         }
 
+        /// <summary>
+        /// 获取菜单
+        /// </summary>
+        /// <param name="lang"></param>
+        /// <returns></returns>
         public async Task<bool> LoadMenuAsync(string lang = null)
         {
-            var url = GetUrl("/operator/authoritymenu");
+            var url = GenUrl("/operator/authoritymenu");
 
             var body = new Dictionary<string, string>();
             body["client"] = "20";
@@ -91,6 +101,94 @@ namespace Com.Scm.Wpf
         }
 
         /// <summary>
+        /// 获取字典
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="useCache"></param>
+        /// <returns></returns>
+        public async Task<List<ResOptionDvo>> ListDicAsync(string key, bool useCache = true)
+        {
+            if (useCache)
+            {
+                if (_Dic.ContainsKey(key))
+                {
+                    return _Dic[key];
+                }
+            }
+
+            var url = GenUrl("/scmdic/option/" + key);
+
+            var body = new Dictionary<string, string>();
+            //body["client"] = "20";
+
+            var head = new Dictionary<string, string>();
+            head["Accesstoken"] = _AccessToken;
+            head["Appkey"] = _AppKey;
+
+            var response = await HttpUtils.GetObjectAsync<ScmListResponse<ResOptionDvo>>(url, body, head);
+            if (response == null)
+            {
+                return null;
+            }
+            if (response.Code != 200)
+            {
+                ErrorMessage = response.GetMessage();
+                return null;
+            }
+
+            var dic = response.data;
+            if (useCache)
+            {
+                _Dic[key] = dic;
+            }
+            return dic;
+        }
+
+        /// <summary>
+        /// 获取配置
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="useCache"></param>
+        /// <returns></returns>
+        public async Task<ConfigDto> ListCfgAsync(string key, bool useCache = true)
+        {
+            if (useCache)
+            {
+                if (_Cfg.ContainsKey(key))
+                {
+                    return _Cfg[key];
+                }
+            }
+
+            var url = GenUrl("/scmcfg/option/" + key);
+
+            var body = new Dictionary<string, string>();
+            //body["client"] = "20";
+
+            var head = new Dictionary<string, string>();
+            head["Accesstoken"] = _AccessToken;
+            head["Appkey"] = _AppKey;
+
+            var response = await HttpUtils.GetObjectAsync<ScmDataResponse<ConfigDto>>(url, body, head);
+            if (response == null)
+            {
+                return null;
+            }
+            if (response.Code != 200)
+            {
+                ErrorMessage = response.GetMessage();
+                return null;
+            }
+
+            var dic = response.data;
+            if (useCache)
+            {
+                _Cfg[key] = dic;
+            }
+            return dic;
+        }
+
+        /// <summary>
         /// POST请求
         /// </summary>
         /// <param name="url"></param>
@@ -99,7 +197,7 @@ namespace Com.Scm.Wpf
         /// <returns></returns>
         public async Task<T> PostAsync<T>(string url, Dictionary<string, string> body = null, Dictionary<string, string> head = null)
         {
-            url = GetUrl(url);
+            url = GenUrl(url);
 
             if (head == null)
             {
@@ -130,7 +228,7 @@ namespace Com.Scm.Wpf
         /// <returns></returns>
         public async Task<T> GetAsync<T>(string url, Dictionary<string, string> body = null, Dictionary<string, string> head = null)
         {
-            url = GetUrl(url);
+            url = GenUrl(url);
 
             if (head == null)
             {
@@ -153,7 +251,7 @@ namespace Com.Scm.Wpf
             return response.data;
         }
 
-        protected string GetUrl(string url)
+        protected string GenUrl(string url)
         {
             return API_URL + url;
         }

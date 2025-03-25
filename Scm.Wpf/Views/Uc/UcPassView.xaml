@@ -30,7 +30,7 @@
                 Text="{Binding Path=User,ValidatesOnNotifyDataErrors=True}"
                 HorizontalAlignment="Stretch"
                 hc:InfoElement.ShowClearButton="True"
-                hc:InfoElement.Placeholder="手机号码"/>
+                hc:InfoElement.Placeholder="登录用户"/>
         </hc:ElementGroup>
         <hc:ElementGroup Name="EgPass" Margin="0,12">
             <hc:ElementGroup.ItemsPanel>
@@ -46,14 +46,15 @@
             <Border Style="{StaticResource BorderRegion}" Padding="8">
                 <iconPacks:PackIconMaterial Kind="Passport" Width="16" Height="16" />
             </Border>
-            <hc:TextBox
+            <hc:PasswordBox
                 x:Name="TbPass"
                 Grid.Column="1"
                 Padding="10"
-                Text="{Binding Path=Pass}"
+                Password="C-scm.cn"
+                ShowEyeButton="True"
                 HorizontalAlignment="Stretch"
                 hc:InfoElement.ShowClearButton="True"
-                hc:InfoElement.Placeholder="电子邮件"/>
+                hc:InfoElement.Placeholder="登录口令"/>
         </hc:ElementGroup>
         <hc:ElementGroup Name="EgCode" Margin="0,12">
             <hc:ElementGroup.ItemsPanel>

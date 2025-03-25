@@ -71,6 +71,8 @@ namespace Com.Scm.Uc
                 return;
             }
 
+            await client.ListDicAsync("status");
+
             _Owner.ShowMain(client);
         }
     }

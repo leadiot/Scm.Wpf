@@ -46,7 +46,7 @@
                                         Text="{Binding namec}"
                                         HorizontalAlignment="Center"
                                         FontSize="14"
-                                        Foreground="#666666"/>
+                                        Foreground="#FFFFFF"/>
                                 </Grid>
 
                                 <!-- 悬停效果 -->
@@ -71,7 +71,7 @@
         </Style>
     </UserControl.Resources>
     <DockPanel>
-        <DockPanel DockPanel.Dock="Left" Width="80">
+        <DockPanel DockPanel.Dock="Left" Width="80" Background="#222b45">
             <StackPanel DockPanel.Dock="Top">
 
             </StackPanel>
@@ -79,15 +79,20 @@
                 <Button
                     x:Name="BtMenu"
                     HorizontalAlignment="Stretch"
+                    Background="#222b45"
+                    Foreground="#FFFFFF"
+                    BorderThickness="0"
                     Click="BtMenu_Click">
                     <iconPacks:PackIconMaterial x:Name="PiMenu" Kind="ChevronDoubleLeft" Width="10" Height="10"/>
                 </Button>
             </StackPanel>
             <ListBox
-                    x:Name="LvMenu"
-                    ItemsSource="{Binding MenuList}"
-                    ItemContainerStyle="{StaticResource MenuButtonStyle}"
-                    SelectionChanged="LvMenu_SelectionChanged">
+                x:Name="LvMenu"
+                ItemsSource="{Binding MenuList}"
+                ItemContainerStyle="{StaticResource MenuButtonStyle}"
+                Background="#222b45"
+                BorderThickness="0"
+                SelectionChanged="LvMenu_SelectionChanged">
             </ListBox>
         </DockPanel>
         <Grid Background="LightBlue">
