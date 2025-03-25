@@ -24,6 +24,11 @@
         public string Icon { get; set; }
 
         /// <summary>
+        /// 
+        /// </summary>
+        public string Tips { get; set; }
+
+        /// <summary>
         /// 获取授权绝对路径
         /// </summary>
         /// <returns></returns>

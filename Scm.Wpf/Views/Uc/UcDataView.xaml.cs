@@ -37,7 +37,7 @@ namespace Com.Scm.Wpf.Views.Uc
 
         private void BtAppend_Click(object sender, RoutedEventArgs e)
         {
-
+            DrSide.IsOpen = true;
         }
 
         private void BtEnable_Click(object sender, RoutedEventArgs e)

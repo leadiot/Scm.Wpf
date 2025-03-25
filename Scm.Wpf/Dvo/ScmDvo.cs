@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.Reflection;
 
 namespace Com.Scm.Wpf.Dvo
 {
@@ -31,6 +32,25 @@ namespace Com.Scm.Wpf.Dvo
         public virtual bool IsValid()
         {
             return true;
+        }
+
+        public virtual Dictionary<string, string> ToDictionary()
+        {
+            var dict = new Dictionary<string, string>();
+
+            Type type = GetType();
+            PropertyInfo[] properties = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
+            foreach (PropertyInfo property in properties)
+            {
+                var obj = property.GetValue(this);
+                if (obj == null)
+                {
+                    continue;
+                }
+                dict[property.Name] = obj.ToString();
+            }
+
+            return dict;
         }
     }
 

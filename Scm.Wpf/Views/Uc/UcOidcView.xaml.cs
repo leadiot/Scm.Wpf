@@ -1,7 +1,6 @@
 ﻿using Com.Scm.Oidc;
 using Com.Scm.Oidc.Response;
 using Com.Scm.Response;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
@@ -40,6 +39,7 @@ namespace Com.Scm.Uc
             _Client = client;
 
             var ospList = await _Client.ListAppOspAsync();
+            var idpList = new List<OidcOspInfo>();
             foreach (var osp in ospList)
             {
                 //if (!osp.IsOAuth())
@@ -47,20 +47,11 @@ namespace Com.Scm.Uc
                 //    continue;
                 //}
 
-                var button = new Button();
-                button.Margin = new Thickness(2);
-                button.Padding = new Thickness(2);
-                button.Width = 28;
-                button.Height = 28;
-                button.Content = new Image()
-                {
-                    Source = new BitmapImage(new Uri(osp.GetIconUrl()))
-                };
-                button.ToolTip = $"使用 {osp.Name} 登录";
-                button.Tag = osp;
-                //button.Click += BtOAuth_Click;
-                //SpOAuth.Children.Add(button);
+                osp.Icon = osp.GetIconUrl();
+                osp.Tips = $"使用 {osp.Name} 登录";
+                idpList.Add(osp);
             }
+            LbOidc.ItemsSource = idpList;
         }
 
         public async void Login(OidcOspInfo ospInfo)

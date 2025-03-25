@@ -33,7 +33,7 @@
                         <iconPacks:PackIconMaterial Kind="ChevronDoubleRight" Width="12" Height="12" />
                     </Button>
                 </hc:ButtonGroup>
-                <TextBlock>
+                <TextBlock VerticalAlignment="Center">
                     共888页
                 </TextBlock>
             </StackPanel>

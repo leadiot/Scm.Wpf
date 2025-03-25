@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:Uc="clr-namespace:Com.Scm.Wpf.Views.Uc"
+    xmlns:uc="clr-namespace:Com.Scm.Wpf.Views.Uc"
     xmlns:hc="https://handyorg.github.io/handycontrol"
     mc:Ignorable="d"
     WindowStartupLocation="CenterScreen"
@@ -26,12 +26,10 @@
         </Grid>
     </hc:Window.NonClientAreaContent>
     <DockPanel Background="White">
-        <Uc:UcMenubarView x:Name="UcMenu" DockPanel.Dock="Top" />
-        <Uc:UcInfobarView x:Name="UcInfo" DockPanel.Dock="Bottom" />
-        <Uc:UcGuidView x:Name="UcGuid" DockPanel.Dock="Left" />
-        <Uc:UcSideView x:Name="UcSide" DockPanel.Dock="Right"/>
-        <Grid>
-            <Uc:UcDataView />
-        </Grid>
+        <uc:UcMenubarView x:Name="UcMenu" DockPanel.Dock="Top" />
+        <uc:UcInfobarView x:Name="UcInfo" DockPanel.Dock="Bottom" />
+        <uc:UcGuidView x:Name="UcGuid" DockPanel.Dock="Left" />
+        <uc:UcSideView x:Name="UcSide" DockPanel.Dock="Right"/>
+        <Grid x:Name="GdView"></Grid>
     </DockPanel>
 </hc:Window>

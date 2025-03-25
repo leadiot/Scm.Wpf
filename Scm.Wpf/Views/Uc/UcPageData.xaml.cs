@@ -1,4 +1,7 @@
 ﻿using Com.Scm.Wpf.Models;
+using MiniExcelLibs;
+using MiniExcelLibs.Attributes;
+using MiniExcelLibs.OpenXml;
 using System.Collections;
 using System.Reflection;
 using System.Windows;
@@ -35,12 +38,12 @@ namespace Com.Scm.Wpf.Views.Uc
 
             foreach (var column in columns)
             {
-                if (column.Type == ColumnType.Text)
+                if (column.Type == Models.ColumnType.Text)
                 {
                     DgGrid.Columns.Add(CreateTextColumn(column));
                     continue;
                 }
-                if (column.Type == ColumnType.CheckBox)
+                if (column.Type == Models.ColumnType.CheckBox)
                 {
                     DgGrid.Columns.Add(CreateCheckboxColumn(column));
                     continue;
@@ -148,6 +151,76 @@ namespace Com.Scm.Wpf.Views.Uc
                 new Binding("Value") { StringFormat = "{0:N2}" });
             template.VisualTree = factory;
             return template;
+        }
+
+        public async Task<bool> Export(IEnumerable itemSource, List<ColumnInfo> columns)
+        {
+            try
+            {
+                if (columns == null || columns.Count < 1)
+                {
+                    throw new Exception("请选择需要导出的列!");
+                }
+
+                #region 配置
+                var config = new OpenXmlConfiguration { };
+                List<DynamicExcelColumn> objs = new List<DynamicExcelColumn>();
+                int index = 0;
+                foreach (var columnParam in columns)
+                {
+                    var tmp = new DynamicExcelColumn(columnParam.Label);
+                    tmp.Index = index++;
+
+                    var uom = SizeUom.Parse(columnParam.Width);
+                    if (!uom.IsNone)
+                    {
+                        tmp.Width = uom.Width;
+                    }
+                    uom = SizeUom.Parse(columnParam.MinWidth);
+                    if (!uom.IsNone)
+                    {
+                        tmp.Width = uom.Width;
+                    }
+                    objs.Add(tmp);
+                }
+                config.DynamicColumns = objs.ToArray();
+                #endregion
+
+                #region 获取值
+                var values = new List<Dictionary<string, object>>();
+                foreach (var dto in itemSource)
+                {
+                    var dic = new Dictionary<string, object>();
+                    foreach (var columnParam in columns)
+                    {
+                        dic.Add(columnParam.Label, GetModelValue(columnParam.Value, dto));
+                    }
+                    values.Add(dic);
+                }
+                #endregion
+
+                await MiniExcel.SaveAsAsync("", null);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"动态列报表导出错误:{ex.Message}");
+            }
+        }
+
+        private string GetModelValue(string fieldName, object obj)
+        {
+            try
+            {
+                object o = obj.GetType().GetProperty(fieldName).GetValue(obj, null);
+                string Value = Convert.ToString(o);
+                if (string.IsNullOrEmpty(Value)) return "";
+                return Value;
+            }
+            catch
+            {
+                return "";
+            }
         }
     }
 }

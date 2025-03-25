@@ -13,10 +13,41 @@
                     Style="{StaticResource ButtonPrimary}"
                     Click="BtReturn_Click">返回</Button>
         </StackPanel>
-        <Border Background="#F0F0F0"
+        <Grid x:Name="GdOidc">
+            <WrapPanel></WrapPanel>
+            <ItemsControl x:Name="LbOidc">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderThickness="1"
+                                CornerRadius="3"
+                                BorderBrush="LightGray"
+                                Background="White"
+                                Margin="3"
+                                Padding="3"
+                                Width="54"
+                                Height="72"
+                                Cursor="Hand"
+                                ToolTip="{Binding Tips}">
+                            <DockPanel>
+                                <TextBlock DockPanel.Dock="Bottom" Text="{Binding Name}" HorizontalAlignment="Stretch" TextAlignment="Center"/>
+                                <Image Source="{Binding Icon}" Width="32" Height="32" HorizontalAlignment="Center"/>
+                            </DockPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+        <Border x:Name="GdMask"
+                Background="#F0F0F0"
                 Margin="10"
                 CornerRadius="5"
                 BorderThickness="1"
+                Visibility="Collapsed"
                 BorderBrush="LightGray">
             <DockPanel>
                 <TextBlock x:Name="TbNotice"

@@ -195,7 +195,81 @@ namespace Com.Scm.Wpf
         /// <param name="body"></param>
         /// <param name="head"></param>
         /// <returns></returns>
-        public async Task<T> PostAsync<T>(string url, Dictionary<string, string> body = null, Dictionary<string, string> head = null)
+        public async Task<string> PostFormStringAsync(string url, Dictionary<string, string> body = null, Dictionary<string, string> head = null)
+        {
+            url = GenUrl(url);
+
+            if (head == null)
+            {
+                head = new Dictionary<string, string>();
+            }
+            head["Accesstoken"] = _AccessToken;
+            head["Appkey"] = _AppKey;
+
+            return await HttpUtils.PostJsonStringAsync(url, body, head);
+        }
+
+        /// <summary>
+        /// POST请求
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="body"></param>
+        /// <param name="head"></param>
+        /// <returns></returns>
+        public async Task<string> PostJsonStringAsync(string url, string body = null, Dictionary<string, string> head = null)
+        {
+            url = GenUrl(url);
+
+            if (head == null)
+            {
+                head = new Dictionary<string, string>();
+            }
+            head["Accesstoken"] = _AccessToken;
+            head["Appkey"] = _AppKey;
+
+            return await HttpUtils.PostJsonStringAsync(url, null, head);
+        }
+
+        /// <summary>
+        /// POST请求
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="body"></param>
+        /// <param name="head"></param>
+        /// <returns></returns>
+        public async Task<T> PostFormObjectAsync<T>(string url, Dictionary<string, string> body = null, Dictionary<string, string> head = null)
+        {
+            url = GenUrl(url);
+
+            if (head == null)
+            {
+                head = new Dictionary<string, string>();
+            }
+            head["Accesstoken"] = _AccessToken;
+            head["Appkey"] = _AppKey;
+
+            var response = await HttpUtils.PostJsonObjectAsync<ScmDataResponse<T>>(url, body, head);
+            if (response == null)
+            {
+                return default;
+            }
+            if (response.Success)
+            {
+                ErrorMessage = response.Message;
+                return default;
+            }
+
+            return response.data;
+        }
+
+        /// <summary>
+        /// POST请求
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="body"></param>
+        /// <param name="head"></param>
+        /// <returns></returns>
+        public async Task<T> PostJsonObjectAsync<T>(string url, string body = null, Dictionary<string, string> head = null)
         {
             url = GenUrl(url);
 
@@ -226,7 +300,27 @@ namespace Com.Scm.Wpf
         /// <param name="url"></param>
         /// <param name="body"></param>
         /// <returns></returns>
-        public async Task<T> GetAsync<T>(string url, Dictionary<string, string> body = null, Dictionary<string, string> head = null)
+        public async Task<string> GetFormStringAsync(string url, Dictionary<string, string> body = null, Dictionary<string, string> head = null)
+        {
+            url = GenUrl(url);
+
+            if (head == null)
+            {
+                head = new Dictionary<string, string>();
+            }
+            head["Accesstoken"] = _AccessToken;
+            head["Appkey"] = _AppKey;
+
+            return await HttpUtils.GetStringAsync(url, body, head);
+        }
+
+        /// <summary>
+        /// GET请求
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="body"></param>
+        /// <returns></returns>
+        public async Task<T> GetFormObjectAsync<T>(string url, Dictionary<string, string> body = null, Dictionary<string, string> head = null)
         {
             url = GenUrl(url);
 

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Com.Scm.Wpf.Views.Uc.UcDataView"
+﻿<UserControl x:Class="Com.Scm.Wpf.Views.UcSamplesView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -50,17 +50,27 @@
                                 </Grid>
                             </ItemsPanelTemplate>
                         </hc:ElementGroup.ItemsPanel>
-                        <TextBox x:Name="TbMeta" Width="120" HorizontalAlignment="Stretch" hc:InfoElement.Placeholder="请输入"/>
-                        <Button x:Name="BtSearch" Click="BtSearch_Click" Grid.Column="1" Content="搜索" HorizontalAlignment="Right" Style="{StaticResource ButtonPrimary}"/>
+                        <TextBox x:Name="TbMeta" Text="{Binding Path=Key}" Width="120" HorizontalAlignment="Stretch" hc:InfoElement.Placeholder="请输入"/>
+                        <Button x:Name="BtSearch" Command="{Binding SearchCommand}" Grid.Column="1" Content="搜索" HorizontalAlignment="Right" Style="{StaticResource ButtonPrimary}"/>
                     </hc:ElementGroup>
                     <hc:Divider Orientation="Vertical"/>
-                    <ToggleButton x:Name="BtMore" Content="显示" Click="BtMore_Click"></ToggleButton>
+                    <ToggleButton x:Name="BtMore" IsChecked="{Binding Path=Drawer}" Content="显示"></ToggleButton>
                 </StackPanel>
             </Grid>
             <Uc:UcPageData Grid.Row="1" Margin="5"/>
         </Grid>
-        <hc:Drawer x:Name="DrSide" Dock="Right" ShowMask="True" ShowMode="Cover">
-            <Border Background="Red" Width="120"></Border>
+        <hc:Drawer x:Name="DrSide" Dock="Right" ShowMask="True" ShowMode="Cover" IsOpen="{Binding Drawer}">
+            <Border Background="White" Width="120">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Bottom">
+                        <Button Click="BtSearch_Click" Content="查询"></Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical">
+                        <TextBox Text="{Binding Path=Key}"/>
+                        <ComboBox SelectedValue="{Binding Path=Status}"></ComboBox>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
         </hc:Drawer>
     </hc:SimplePanel>
 </UserControl>
