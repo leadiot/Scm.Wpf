@@ -3,17 +3,17 @@ using Com.Scm.Wpf.Models;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Com.Scm.Wpf.Views
+namespace Com.Scm.Wpf.Views.Samples.Remote
 {
     /// <summary>
     /// UcSamplesView.xaml 的交互逻辑
     /// </summary>
-    public partial class SearchView : UserControl
+    public partial class MainView : UserControl
     {
         private ScmClient _Client;
-        private SearchDvo _Dvo;
+        private MainDvo _Dvo;
 
-        public SearchView()
+        public MainView()
         {
             InitializeComponent();
         }
@@ -22,17 +22,17 @@ namespace Com.Scm.Wpf.Views
         {
             _Client = client;
 
-            _Dvo = new SearchDvo();
+            _Dvo = new MainDvo();
             this.DataContext = _Dvo;
 
             var columns = new List<ColumnInfo>
             {
                 new ColumnInfo { Type=ColumnType.Text, Label = "ID", Value = "Id",Hidden=true },
-                new ColumnInfo { Type=ColumnType.CheckBox, Label = "", Value = "IsChecked" },
+                new ColumnInfo { Type=ColumnType.CheckBox, Label = "", Value = "IsChecked", Width="70" },
                 new ColumnInfo { Type=ColumnType.Text, Label = "系统编码", Value = "Codec" },
-                new ColumnInfo { Type=ColumnType.Text, Label = "系统名称", Value = "Namec", Width="*" }
+                new ColumnInfo { Type=ColumnType.Text, Label = "系统名称", Value = "Namec", Width="*", MinWidth="100" }
             };
-            PgData.SetColumns(columns);
+            PgData.Init(columns);
 
             Search();
         }
@@ -76,10 +76,8 @@ namespace Com.Scm.Wpf.Views
 
         private async void Search()
         {
+            _Dvo.FirstPage();
             var body = _Dvo.ToDictionary();
-            body["page"] = "1";
-            body["limit"] = "20";
-            //await _Client.GetFormObjectAsync<string>("/api/samplesdemo/page", body);
             var response = await _Client.GetFormObjectAsync<ScmSearchPageResponse<SearchResultDvo>>("/urposition/pages", body);
             _Dvo.Items.Clear();
             _Dvo.Items.AddRange(response.Items);
@@ -88,7 +86,6 @@ namespace Com.Scm.Wpf.Views
 
         private void BtCancel_Click(object sender, RoutedEventArgs e)
         {
-
         }
     }
 }

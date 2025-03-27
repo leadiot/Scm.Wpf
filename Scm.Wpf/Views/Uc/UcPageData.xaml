@@ -45,17 +45,20 @@
                 <Button Content="刷新" ToolTip="刷新"/>
                 <Button Content="打印" ToolTip="打印"/>
                 <Button Content="导出" ToolTip="导出" Click="BtExport_Click"/>
-                <Button Content="选项" ToolTip="选项"/>
+                <Button x:Name="BtOption" Content="选项" ToolTip="选项" Click="BtOption_Click"/>
             </StackPanel>
         </Grid>
-        <DataGrid x:Name="DgGrid"
-                  hc:DataGridAttach.ShowRowNumber="True"
-                  hc:DataGridAttach.ShowSelectAllButton="False" 
-                  Background="#FAFAFA"
-                  RowHeaderWidth="40">
-            <DataGrid.ColumnHeaderStyle>
-                <Style></Style>
-            </DataGrid.ColumnHeaderStyle>
-        </DataGrid>
+        <Grid>
+            <DataGrid x:Name="DgGrid"
+                      hc:DataGridAttach.ShowRowNumber="True"
+                      hc:DataGridAttach.ShowSelectAllButton="False" 
+                      Background="#FAFAFA"
+                      Width="auto"
+                      RowHeaderWidth="40">
+                <DataGrid.ColumnHeaderStyle>
+                    <Style></Style>
+                </DataGrid.ColumnHeaderStyle>
+            </DataGrid>
+        </Grid>
     </DockPanel>
 </UserControl>

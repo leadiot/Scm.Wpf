@@ -103,10 +103,10 @@ namespace Com.Scm.Wpf.Views.Uc
                 }
             }
 
-            var list = _MenuItems[dto.codec];
-            if (list != null)
+            _LastItems = _MenuItems[dto.codec];
+            if (_LastItems != null)
             {
-                foreach (var item in list)
+                foreach (var item in _LastItems)
                 {
                     item.Visibility = System.Windows.Visibility.Visible;
                 }

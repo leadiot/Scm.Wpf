@@ -1,6 +1,7 @@
 ﻿using Com.Scm.Utils;
 using Com.Scm.Wpf.Dvo;
 using Com.Scm.Wpf.Models;
+using HandyControl.Controls;
 using Microsoft.Win32;
 using MiniExcelLibs;
 using MiniExcelLibs.Attributes;
@@ -20,17 +21,18 @@ namespace Com.Scm.Wpf.Views.Uc
     /// </summary>
     public partial class UcPageData : UserControl
     {
-        private IEnumerable _Items;
         private List<ColumnInfo> _Columns;
-        private int _PageIndex;
+        private ScmSearchPageDvo _Dvo;
 
         public UcPageData()
         {
             InitializeComponent();
         }
 
-        private void GenPageInfo()
+        public void Search(ScmSearchPageDvo dvo)
         {
+            this.DataContext = _Dvo;
+
             //var total = _Response.TotalPages;
             //var size = _Response.TotalItems;
         }
@@ -40,8 +42,11 @@ namespace Com.Scm.Wpf.Views.Uc
         /// </summary>
         /// <param name="columns"></param>
         /// <param name="autoData"></param>
-        public void SetColumns(List<ColumnInfo> columns, bool autoData = true)
+        public void Init(ScmSearchPageDvo dvo, List<ColumnInfo> columns, bool autoData = true)
         {
+            _Dvo = dvo;
+            this.DataContext = _Dvo;
+
             _Columns = columns;
             if (columns == null)
             {
@@ -100,6 +105,10 @@ namespace Com.Scm.Wpf.Views.Uc
             }
 
             var uom = SizeUom.Parse(info.Width);
+            if (uom.IsNone)
+            {
+                column.Width = new DataGridLength(uom.Width, DataGridLengthUnitType.Pixel);
+            }
             if (uom.IsFill)
             {
                 column.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
@@ -244,7 +253,7 @@ namespace Com.Scm.Wpf.Views.Uc
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="dataSource"></param>
-        public void ShowData<T>(IEnumerable<T> dataSource) where T : ScmGridDvo
+        public void ShowData<T>(IEnumerable<T> dataSource) where T : ScmSearchResultDvo
         {
             DgGrid.ItemsSource = dataSource;
         }
@@ -268,7 +277,7 @@ namespace Com.Scm.Wpf.Views.Uc
         {
             foreach (var item in DgGrid.ItemsSource)
             {
-                var dvo = item as ScmGridDvo;
+                var dvo = item as ScmSearchResultDvo;
                 if (dvo == null) return;
                 dvo.IsChecked = isChecked;
             }
@@ -602,6 +611,17 @@ namespace Com.Scm.Wpf.Views.Uc
         private void BtExport_Click(object sender, RoutedEventArgs e)
         {
             Export();
+        }
+
+        private void BtOption_Click(object sender, RoutedEventArgs e)
+        {
+            var view = new UcGridColumnsView();
+
+            var window = new PopupWindow();
+            window.PopupElement = view;
+            window.Width = 240;
+            window.Height = 480;
+            window.Show(BtOption, false);
         }
     }
 }

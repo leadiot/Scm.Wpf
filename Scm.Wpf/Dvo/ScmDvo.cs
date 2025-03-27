@@ -79,7 +79,27 @@ namespace Com.Scm.Wpf.Dvo
         public string create_name { get; set; }
     }
 
-    public class ScmGridDvo : ScmDvo
+    public class ScmSearchPageDvo : ScmDvo
+    {
+        private int _Page;
+        /// <summary>
+        /// 页索引
+        /// </summary>
+        public int Page { get { return _Page; } set { SetProperty(ref _Page, value); } }
+
+        private int _Limit;
+        /// <summary>
+        /// 页面大小
+        /// </summary>
+        public int Limit { get { return _Limit; } set { SetProperty(ref _Limit, value); } }
+
+        public void FirstPage()
+        {
+            Page = 1;
+        }
+    }
+
+    public class ScmSearchResultDvo : ScmDvo
     {
         private bool isChecked;
         public bool IsChecked { get { return isChecked; } set { SetProperty(ref isChecked, value); } }

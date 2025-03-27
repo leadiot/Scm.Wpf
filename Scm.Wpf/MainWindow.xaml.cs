@@ -1,4 +1,4 @@
-﻿using Com.Scm.Wpf.Views;
+﻿using Com.Scm.Wpf.Views.Samples.Remote;
 
 namespace Com.Scm.Wpf;
 
@@ -31,7 +31,7 @@ public partial class MainWindow : HandyControl.Controls.Window
 
     private void ShowView()
     {
-        var view = new SearchView();
+        var view = new MainView();
         view.Init(_Client);
         GdView.Children.Add(view);
     }

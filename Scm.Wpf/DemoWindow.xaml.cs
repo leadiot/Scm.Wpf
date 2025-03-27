@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Media;
 
-namespace Com.Scm.Wpf.Views
+namespace Com.Scm.Wpf
 {
     /// <summary>
     /// DemoWindow.xaml 的交互逻辑

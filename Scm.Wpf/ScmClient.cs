@@ -25,7 +25,7 @@ namespace Com.Scm.Wpf
         /// <summary>
         /// 应用代码
         /// </summary>
-        private string _AppKey;
+        private string _AppKey = "";
 
         /// <summary>
         /// 当前用户

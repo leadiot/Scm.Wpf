@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace Com.Scm.Wpf.Dvo.Samples
 {
-    public partial class SearchDvo : ScmDvo
+    public partial class MainDvo : ScmSearchPageDvo
     {
         [ObservableProperty]
         private string key;
@@ -21,7 +21,15 @@ namespace Com.Scm.Wpf.Dvo.Samples
         [RelayCommand]
         public void Search(object obj)
         {
-
         }
+    }
+
+    public partial class SearchResultDvo : ScmSearchResultDvo
+    {
+        [ObservableProperty]
+        private string codec;
+
+        [ObservableProperty]
+        private string namec;
     }
 }
