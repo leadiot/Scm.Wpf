@@ -35,6 +35,11 @@ namespace Com.Scm.Wpf.Views.Uc
             //var size = _Response.TotalItems;
         }
 
+        /// <summary>
+        /// 列属性设置
+        /// </summary>
+        /// <param name="columns"></param>
+        /// <param name="autoData"></param>
         public void SetColumns(List<ColumnInfo> columns, bool autoData = true)
         {
             _Columns = columns;
@@ -79,11 +84,12 @@ namespace Com.Scm.Wpf.Views.Uc
             }
         }
 
-        public void ShowData<T>(IEnumerable<T> dataSource) where T : ScmGridDvo
-        {
-            DgGrid.ItemsSource = dataSource;
-        }
-
+        #region 列配置
+        /// <summary>
+        /// 列通用属性配置
+        /// </summary>
+        /// <param name="column"></param>
+        /// <param name="info"></param>
         private void AdjustColumnInfo(DataGridColumn column, ColumnInfo info)
         {
             column.Header = info.Label;
@@ -114,6 +120,11 @@ namespace Com.Scm.Wpf.Views.Uc
             }
         }
 
+        /// <summary>
+        /// 创建文本框列
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
         private DataGridTextColumn CreateTextColumn(ColumnInfo info)
         {
             var column = new DataGridTextColumn();
@@ -141,13 +152,18 @@ namespace Com.Scm.Wpf.Views.Uc
             return column;
         }
 
+        /// <summary>
+        /// 创建复选框列
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
         private DataGridCheckBoxColumn CreateCheckboxColumn(ColumnInfo info)
         {
             var column = new DataGridCheckBoxColumn();
             AdjustColumnInfo(column, info);
             var checkbox = new CheckBox();
             //checkbox.Content = "全选";
-            checkbox.Click += Checkbox_Click;
+            checkbox.Click += CheckAll_Click;
             column.Header = checkbox;
             column.Binding = new Binding(info.Value);
             column.CanUserSort = false;
@@ -155,11 +171,11 @@ namespace Com.Scm.Wpf.Views.Uc
             return column;
         }
 
-        private void Checkbox_Click(object sender, RoutedEventArgs e)
-        {
-            var checkbox = (CheckBox)sender;
-            SetChecked(checkbox.IsChecked.Value);
-        }
+        /// <summary>
+        /// 创建状态列
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
         private DataGridTemplateColumn CreateStatusColumn(ColumnInfo info)
         {
             var column = new DataGridTemplateColumn();
@@ -175,7 +191,11 @@ namespace Com.Scm.Wpf.Views.Uc
             return column;
         }
 
-
+        /// <summary>
+        /// 创建模板列
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
         private DataGridTemplateColumn CreateTemplateColumn(ColumnInfo info)
         {
             var column = new DataGridTemplateColumn();
@@ -190,6 +210,11 @@ namespace Com.Scm.Wpf.Views.Uc
             return column;
         }
 
+        /// <summary>
+        /// 创建日期列
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
         private static DataTemplate CreateDateTimeCellTemplate(ColumnInfo info)
         {
             DataTemplate template = new DataTemplate();
@@ -199,6 +224,11 @@ namespace Com.Scm.Wpf.Views.Uc
             return template;
         }
 
+        /// <summary>
+        /// 创建数值列
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
         private static DataTemplate CreateNumberCellTemplate(ColumnInfo info)
         {
             DataTemplate template = new DataTemplate();
@@ -207,7 +237,199 @@ namespace Com.Scm.Wpf.Views.Uc
             template.VisualTree = factory;
             return template;
         }
+        #endregion
 
+        /// <summary>
+        /// 数据展示
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="dataSource"></param>
+        public void ShowData<T>(IEnumerable<T> dataSource) where T : ScmGridDvo
+        {
+            DgGrid.ItemsSource = dataSource;
+        }
+
+        /// <summary>
+        /// 选中所有事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CheckAll_Click(object sender, RoutedEventArgs e)
+        {
+            var checkbox = (CheckBox)sender;
+            SetChecked(checkbox.IsChecked.Value);
+        }
+
+        /// <summary>
+        /// 设置选中状态
+        /// </summary>
+        /// <param name="isChecked"></param>
+        private void SetChecked(bool isChecked)
+        {
+            foreach (var item in DgGrid.ItemsSource)
+            {
+                var dvo = item as ScmGridDvo;
+                if (dvo == null) return;
+                dvo.IsChecked = isChecked;
+            }
+        }
+
+        #region 数据导出
+        /// <summary>
+        /// 执行导出
+        /// </summary>
+        private async void Export()
+        {
+            var dialog = new SaveFileDialog();
+            //dialog.CheckFileExists = true;
+            dialog.Filter = "CSV (*.csv)|*.csv|SQL (*.sql)|*.sql|JSON (*.json)|*.json|Excel 文件(*.xlsx)|*.xlsx|Excel 97-2003 文件(*.xls)|*.xls";
+            var result = dialog.ShowDialog();
+            if (!result.Value)
+            {
+                return;
+            }
+
+            var fileName = dialog.FileName;
+            if (File.Exists(fileName))
+            {
+                try
+                {
+                    File.Delete(fileName);
+                }
+                catch (Exception exp)
+                {
+                    // 文件删除异常
+                    return;
+                }
+            }
+
+            if (fileName.EndsWith(".json"))
+            {
+                await ExportJson(DgGrid.ItemsSource, _Columns, fileName);
+                return;
+            }
+            if (fileName.EndsWith(".csv"))
+            {
+                await ExportCsv(DgGrid.ItemsSource, _Columns, fileName);
+                return;
+            }
+            if (fileName.EndsWith(".sql"))
+            {
+                await ExportSql(DgGrid.ItemsSource, _Columns, fileName);
+                return;
+            }
+            await ExportXls(DgGrid.ItemsSource, _Columns, fileName);
+        }
+
+        /// <summary>
+        /// 导出CSV
+        /// </summary>
+        /// <param name="itemSource"></param>
+        /// <param name="columns"></param>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task<bool> ExportCsv(IEnumerable itemSource, List<ColumnInfo> columns, string file)
+        {
+            try
+            {
+                if (columns == null || columns.Count < 1)
+                {
+                    throw new Exception("请选择需要导出的列!");
+                }
+
+                #region 配置
+                var config = new OpenXmlConfiguration { };
+                List<DynamicExcelColumn> objs = new List<DynamicExcelColumn>();
+                foreach (var columnParam in columns)
+                {
+                    var col = new DynamicExcelColumn(columnParam.Label);
+                    objs.Add(col);
+                }
+                config.DynamicColumns = objs.ToArray();
+                #endregion
+
+                var items = GetValues(itemSource, columns);
+
+                await MiniExcel.SaveAsAsync(file, items);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"动态列报表导出错误:{ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 导出JSON
+        /// </summary>
+        /// <param name="itemSource"></param>
+        /// <param name="columns"></param>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        public async Task<bool> ExportJson(IEnumerable itemSource, List<ColumnInfo> columns, string file)
+        {
+            var items = GetValues(itemSource, columns);
+
+            var json = items.ToJsonString();
+
+            await File.WriteAllTextAsync(file, json);
+
+            return true;
+        }
+
+        /// <summary>
+        /// 导出SQL
+        /// </summary>
+        /// <param name="itemSource"></param>
+        /// <param name="columns"></param>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        public async Task<bool> ExportSql(IEnumerable itemSource, List<ColumnInfo> columns, string file)
+        {
+            var items = GetValues(itemSource, columns);
+
+            // INSERT INTO table_name (column1, column2, column3) VALUES ('', '', '');
+            var builder = new StringBuilder();
+            builder.Append("INSERT INTO table_name (");
+            foreach (var column in columns)
+            {
+                builder.Append(column.Value).Append(',');
+            }
+            builder.Remove(builder.Length - 1, 1);
+            builder.Append(") VALUES (");
+
+            var insert = builder.ToString();
+            builder.Clear();
+
+            foreach (var item in items)
+            {
+                builder.Append(insert);
+
+                foreach (var column in columns)
+                {
+                    var val = item[column.Label];
+                    builder.Append(val).Append(',');
+                }
+
+                builder.Remove(builder.Length - 1, 1);
+                builder.AppendLine(");");
+            }
+
+            await File.WriteAllTextAsync(file, builder.ToString());
+
+            return true;
+        }
+
+        /// <summary>
+        /// 导出XLS
+        /// </summary>
+        /// <param name="itemSource"></param>
+        /// <param name="columns"></param>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<bool> ExportXls(IEnumerable itemSource, List<ColumnInfo> columns, string file)
         {
             try
@@ -253,7 +475,15 @@ namespace Com.Scm.Wpf.Views.Uc
             }
         }
 
-        public async Task<bool> ExportCsv(IEnumerable itemSource, List<ColumnInfo> columns, string file)
+        /// <summary>
+        /// 导出Txt
+        /// </summary>
+        /// <param name="itemSource"></param>
+        /// <param name="columns"></param>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task<bool> ExportTxt(IEnumerable itemSource, List<ColumnInfo> columns, string file)
         {
             try
             {
@@ -265,10 +495,23 @@ namespace Com.Scm.Wpf.Views.Uc
                 #region 配置
                 var config = new OpenXmlConfiguration { };
                 List<DynamicExcelColumn> objs = new List<DynamicExcelColumn>();
+                int index = 0;
                 foreach (var columnParam in columns)
                 {
-                    var col = new DynamicExcelColumn(columnParam.Label);
-                    objs.Add(col);
+                    var tmp = new DynamicExcelColumn(columnParam.Label);
+                    tmp.Index = index++;
+
+                    var uom = SizeUom.Parse(columnParam.Width);
+                    if (!uom.IsNone)
+                    {
+                        tmp.Width = uom.Width;
+                    }
+                    uom = SizeUom.Parse(columnParam.MinWidth);
+                    if (!uom.IsNone)
+                    {
+                        tmp.Width = uom.Width;
+                    }
+                    objs.Add(tmp);
                 }
                 config.DynamicColumns = objs.ToArray();
                 #endregion
@@ -285,48 +528,12 @@ namespace Com.Scm.Wpf.Views.Uc
             }
         }
 
-        public async Task<bool> ExportJson(IEnumerable itemSource, List<ColumnInfo> columns, string file)
-        {
-            var items = GetValue(itemSource, columns);
-
-            var json = items.ToJsonString();
-
-            await File.WriteAllTextAsync(file, json);
-
-            return true;
-        }
-
-        public async Task<bool> ExportSql(IEnumerable itemSource, List<ColumnInfo> columns, string file)
-        {
-            var items = GetValue(itemSource, columns);
-
-            // INSERT INTO table_name (column1, column2, column3) VALUES ('', '', '');
-            var insert = "INSERT INTO table_name (BussinessCode, BussinessName, ParentBussinessCode) VALUES ('', '', '');";
-            var builder = new StringBuilder();
-            foreach (var column in columns)
-            {
-                builder.Append(',').Append(column.Value);
-            }
-            if (builder.Length > 0)
-            {
-                insert += builder.ToString(1, builder.Length - 1);
-            }
-            insert += ") VALUES ";
-
-            var text = "";
-
-            foreach (var item in itemSource)
-            {
-                builder.Clear();
-
-                text += builder.ToString();
-            }
-
-            await File.WriteAllTextAsync(file, text);
-
-            return true;
-        }
-
+        /// <summary>
+        /// 转换为导出列
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="columns"></param>
+        /// <returns></returns>
         private List<Dictionary<string, object>> GetValues(IEnumerable source, List<ColumnInfo> columns)
         {
             var data = new List<Dictionary<string, object>>();
@@ -337,6 +544,12 @@ namespace Com.Scm.Wpf.Views.Uc
             return data;
         }
 
+        /// <summary>
+        /// 获取可导出列
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="columns"></param>
+        /// <returns></returns>
         private Dictionary<string, object> GetValue(object obj, List<ColumnInfo> columns)
         {
             var dic = new Dictionary<string, object>();
@@ -379,63 +592,16 @@ namespace Com.Scm.Wpf.Views.Uc
             }
             return dic;
         }
+        #endregion
 
-        private void SetChecked(bool isChecked)
-        {
-            foreach (var item in DgGrid.ItemsSource)
-            {
-                var dvo = item as ScmGridDvo;
-                if (dvo == null) return;
-                dvo.IsChecked = isChecked;
-            }
-        }
-
-        private async void DoExport()
-        {
-            var dialog = new SaveFileDialog();
-            //dialog.CheckFileExists = true;
-            dialog.Filter = "CSV (*.csv)|*.csv|Excel 文件(*.xlsx)|*.xlsx|Excel 97-2003 文件(*.xls)|*.xls";
-            var result = dialog.ShowDialog();
-            if (!result.Value)
-            {
-                return;
-            }
-
-            var fileName = dialog.FileName;
-            if (File.Exists(fileName))
-            {
-                try
-                {
-                    File.Delete(fileName);
-                }
-                catch (Exception exp)
-                {
-                    // 文件删除异常
-                    return;
-                }
-            }
-
-            if (fileName.EndsWith(".json"))
-            {
-                await ExportJson(DgGrid.ItemsSource, _Columns, fileName);
-                return;
-            }
-            if (fileName.EndsWith(".csv"))
-            {
-                await ExportCsv(DgGrid.ItemsSource, _Columns, fileName);
-                return;
-            }
-            if (fileName.EndsWith(".sql"))
-            {
-                await ExportSql(DgGrid.ItemsSource, _Columns, fileName);
-                return;
-            }
-            await ExportXls(DgGrid.ItemsSource, _Columns, fileName);
-        }
-
+        /// <summary>
+        /// 数据导出事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BtExport_Click(object sender, RoutedEventArgs e)
         {
-            DoExport();
+            Export();
         }
     }
 }
