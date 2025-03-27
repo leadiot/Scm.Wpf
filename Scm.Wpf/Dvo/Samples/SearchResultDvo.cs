@@ -2,15 +2,12 @@
 
 namespace Com.Scm.Wpf.Dvo.Samples
 {
-    public partial class SearchResultDvo : ScmDataDvo
+    public partial class SearchResultDvo : ScmGridDvo
     {
         [ObservableProperty]
         private string codec;
 
         [ObservableProperty]
         private string namec;
-
-        [ObservableProperty]
-        private bool isChecked;
     }
 }

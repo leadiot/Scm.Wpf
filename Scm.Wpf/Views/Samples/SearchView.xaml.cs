@@ -30,7 +30,7 @@ namespace Com.Scm.Wpf.Views
                 new ColumnInfo { Type=ColumnType.Text, Label = "ID", Value = "Id",Hidden=true },
                 new ColumnInfo { Type=ColumnType.CheckBox, Label = "", Value = "IsChecked" },
                 new ColumnInfo { Type=ColumnType.Text, Label = "系统编码", Value = "Codec" },
-                new ColumnInfo { Type=ColumnType.Text, Label = "系统名称", Value = "Namec" }
+                new ColumnInfo { Type=ColumnType.Text, Label = "系统名称", Value = "Namec", Width="*" }
             };
             PgData.SetColumns(columns);
 

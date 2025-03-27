@@ -1,11 +1,16 @@
-﻿using Com.Scm.Wpf.Models;
+﻿using Com.Scm.Utils;
+using Com.Scm.Wpf.Dvo;
+using Com.Scm.Wpf.Models;
+using Microsoft.Win32;
 using MiniExcelLibs;
 using MiniExcelLibs.Attributes;
 using MiniExcelLibs.OpenXml;
 using System.Collections;
-using System.Reflection;
+using System.IO;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 
 namespace Com.Scm.Wpf.Views.Uc
@@ -15,7 +20,8 @@ namespace Com.Scm.Wpf.Views.Uc
     /// </summary>
     public partial class UcPageData : UserControl
     {
-        private ScmSearchPageResponse<string> _Response;
+        private IEnumerable _Items;
+        private List<ColumnInfo> _Columns;
         private int _PageIndex;
 
         public UcPageData()
@@ -25,19 +31,26 @@ namespace Com.Scm.Wpf.Views.Uc
 
         private void GenPageInfo()
         {
-            var total = _Response.TotalPages;
-            var size = _Response.TotalItems;
+            //var total = _Response.TotalPages;
+            //var size = _Response.TotalItems;
         }
 
         public void SetColumns(List<ColumnInfo> columns, bool autoData = true)
         {
+            _Columns = columns;
+            if (columns == null)
+            {
+                DgGrid.AutoGenerateColumns = true;
+                return;
+            }
+
             if (autoData)
             {
-                columns.Add(new ColumnInfo { Label = "数据状态", Value = "row_status" });
-                columns.Add(new ColumnInfo { Label = "更新人员", Value = "update_name" });
-                columns.Add(new ColumnInfo { Label = "更新时间", Value = "update_time" });
-                columns.Add(new ColumnInfo { Label = "创建人员", Value = "create_name" });
-                columns.Add(new ColumnInfo { Label = "创建时间", Value = "create_time" });
+                columns.Add(new ColumnInfo { Type = Models.ColumnType.Status, Label = "数据状态", Value = "IsEnabled" });
+                columns.Add(new ColumnInfo { Type = Models.ColumnType.Text, Label = "更新人员", Value = "update_name" });
+                columns.Add(new ColumnInfo { Type = Models.ColumnType.Text, Label = "更新时间", Value = "UpdateTime", Format = ColumnFormat.DateTime });
+                columns.Add(new ColumnInfo { Type = Models.ColumnType.Text, Label = "创建人员", Value = "create_name" });
+                columns.Add(new ColumnInfo { Type = Models.ColumnType.Text, Label = "创建时间", Value = "CreateTime", Format = ColumnFormat.DateTime });
             }
 
             DgGrid.AutoGenerateColumns = false;
@@ -53,20 +66,27 @@ namespace Com.Scm.Wpf.Views.Uc
                     DgGrid.Columns.Add(CreateCheckboxColumn(column));
                     continue;
                 }
+                if (column.Type == Models.ColumnType.Template)
+                {
+                    DgGrid.Columns.Add(CreateTemplateColumn(column));
+                    continue;
+                }
+                if (column.Type == Models.ColumnType.Status)
+                {
+                    DgGrid.Columns.Add(CreateStatusColumn(column));
+                    continue;
+                }
             }
         }
 
-        public void ShowData(IEnumerable dataSource)
+        public void ShowData<T>(IEnumerable<T> dataSource) where T : ScmGridDvo
         {
             DgGrid.ItemsSource = dataSource;
         }
 
-        private DataGridTextColumn CreateTextColumn(ColumnInfo info)
+        private void AdjustColumnInfo(DataGridColumn column, ColumnInfo info)
         {
-            var column = new DataGridTextColumn();
             column.Header = info.Label;
-            column.Binding = new Binding(info.Value);
-            column.IsReadOnly = true;
 
             if (info.Hidden)
             {
@@ -76,7 +96,11 @@ namespace Com.Scm.Wpf.Views.Uc
             var uom = SizeUom.Parse(info.Width);
             if (uom.IsFill)
             {
-                column.Width = new DataGridLength(0, DataGridLengthUnitType.Star);
+                column.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
+            }
+            if (uom.IsAuto)
+            {
+                column.Width = new DataGridLength(1, DataGridLengthUnitType.Auto);
             }
             if (uom.IsFixed)
             {
@@ -88,6 +112,31 @@ namespace Com.Scm.Wpf.Views.Uc
             {
                 column.MinWidth = uom.Width;
             }
+        }
+
+        private DataGridTextColumn CreateTextColumn(ColumnInfo info)
+        {
+            var column = new DataGridTextColumn();
+            AdjustColumnInfo(column, info);
+            column.Binding = new Binding(info.Value);
+            column.IsReadOnly = info.ReadOnly;
+
+            Style styleRight = new Style(typeof(TextBlock));
+            var align = HorizontalAlignment.Left;
+            if (info.Align == ColumnAlign.Center)
+            {
+                align = HorizontalAlignment.Center;
+            }
+            else if (info.Align == ColumnAlign.Right)
+            {
+                align = HorizontalAlignment.Right;
+            }
+            else if (info.Align == ColumnAlign.Stretch)
+            {
+                align = HorizontalAlignment.Stretch;
+            }
+            styleRight.Setters.Add(new Setter(TextBlock.HorizontalAlignmentProperty, align));
+            column.ElementStyle = styleRight;
 
             return column;
         }
@@ -95,97 +144,71 @@ namespace Com.Scm.Wpf.Views.Uc
         private DataGridCheckBoxColumn CreateCheckboxColumn(ColumnInfo info)
         {
             var column = new DataGridCheckBoxColumn();
-            column.Header = info.Label;
+            AdjustColumnInfo(column, info);
+            var checkbox = new CheckBox();
+            //checkbox.Content = "全选";
+            checkbox.Click += Checkbox_Click;
+            column.Header = checkbox;
             column.Binding = new Binding(info.Value);
-            if (info.Hidden)
-            {
-                column.Visibility = Visibility.Collapsed;
-            }
-
-            var uom = SizeUom.Parse(info.Width);
-            if (uom.IsFill)
-            {
-                column.Width = new DataGridLength(0, DataGridLengthUnitType.Star);
-            }
-            if (uom.IsFixed)
-            {
-                column.Width = new DataGridLength(uom.Width, DataGridLengthUnitType.Pixel);
-            }
-
-            uom = SizeUom.Parse(info.MinWidth);
-            if (uom.IsFixed)
-            {
-                column.MinWidth = uom.Width;
-            }
+            column.CanUserSort = false;
 
             return column;
         }
 
-        public void ShowData0(IEnumerable dataSource)
+        private void Checkbox_Click(object sender, RoutedEventArgs e)
         {
-            if (dataSource == null)
-            {
-                return;
-            }
+            var checkbox = (CheckBox)sender;
+            SetChecked(checkbox.IsChecked.Value);
+        }
+        private DataGridTemplateColumn CreateStatusColumn(ColumnInfo info)
+        {
+            var column = new DataGridTemplateColumn();
+            AdjustColumnInfo(column, info);
 
-            // 获取数据源类型
-            Type itemType = dataSource.GetType();
+            DataTemplate template = new DataTemplate();
+            FrameworkElementFactory factory = new FrameworkElementFactory(typeof(ToggleButton));
+            factory.SetValue(ToggleButton.StyleProperty, FindResource("ToggleButtonSwitch"));
+            factory.SetBinding(ToggleButton.IsCheckedProperty, new Binding("IsEnabled"));
+            template.VisualTree = factory;
 
-            // 清除现有列
-            DgGrid.Columns.Clear();
-
-            // 遍历所有公共属性
-            foreach (PropertyInfo prop in itemType.GetProperties(BindingFlags.Public | BindingFlags.Instance))
-            {
-                // 创建列对象
-                DataGridTextColumn column = new DataGridTextColumn();
-
-                // 设置列属性
-                column.Header = prop.Name;
-                column.Binding = new Binding(prop.Name);
-                column.Width = new DataGridLength(100); // 默认宽度
-
-                // 自动检测数据类型并设置格式
-                //Type propertyType = prop.PropertyType;
-                //if (typeof(DateTime).IsAssignableFrom(prop.PropertyType))
-                //{
-                //    column.CellTemplate = CreateDateTimeCellTemplate();
-                //}
-                //else if (typeof(double).IsAssignableFrom(prop.PropertyType) ||
-                //         typeof(int).IsAssignableFrom(prop.PropertyType))
-                //{
-                //    column.CellTemplate = CreateNumberCellTemplate();
-                //}
-
-                // 添加到DataGrid
-                DgGrid.Columns.Add(column);
-            }
-
-            // 设置数据源
-            DgGrid.ItemsSource = dataSource;
+            column.CellTemplate = template;
+            return column;
         }
 
-        private static DataTemplate CreateDateTimeCellTemplate()
+
+        private DataGridTemplateColumn CreateTemplateColumn(ColumnInfo info)
+        {
+            var column = new DataGridTemplateColumn();
+            if (info.Format == ColumnFormat.Number)
+            {
+                column.CellTemplate = CreateNumberCellTemplate(info);
+            }
+            else if (info.Format == ColumnFormat.DateTime)
+            {
+                column.CellTemplate = CreateDateTimeCellTemplate(info);
+            }
+            return column;
+        }
+
+        private static DataTemplate CreateDateTimeCellTemplate(ColumnInfo info)
         {
             DataTemplate template = new DataTemplate();
             FrameworkElementFactory factory = new FrameworkElementFactory(typeof(TextBlock));
-            factory.SetBinding(TextBlock.TextProperty,
-                new Binding("Value") { StringFormat = "{0:yyyy-MM-dd HH:mm:ss}" });
+            factory.SetBinding(TextBlock.TextProperty, new Binding(info.Value) { StringFormat = "{0:yyyy-MM-dd HH:mm:ss}" });
             template.VisualTree = factory;
             return template;
         }
 
-        private static DataTemplate CreateNumberCellTemplate()
+        private static DataTemplate CreateNumberCellTemplate(ColumnInfo info)
         {
             DataTemplate template = new DataTemplate();
             FrameworkElementFactory factory = new FrameworkElementFactory(typeof(TextBlock));
-            factory.SetBinding(TextBlock.TextProperty,
-                new Binding("Value") { StringFormat = "{0:N2}" });
+            factory.SetBinding(TextBlock.TextProperty, new Binding(info.Value) { StringFormat = "{0:N2}" });
             template.VisualTree = factory;
             return template;
         }
 
-        public async Task<bool> Export(IEnumerable itemSource, List<ColumnInfo> columns)
+        public async Task<bool> ExportXls(IEnumerable itemSource, List<ColumnInfo> columns, string file)
         {
             try
             {
@@ -218,20 +241,10 @@ namespace Com.Scm.Wpf.Views.Uc
                 config.DynamicColumns = objs.ToArray();
                 #endregion
 
-                #region 获取值
-                var values = new List<Dictionary<string, object>>();
-                foreach (var dto in itemSource)
-                {
-                    var dic = new Dictionary<string, object>();
-                    foreach (var columnParam in columns)
-                    {
-                        dic.Add(columnParam.Label, GetModelValue(columnParam.Value, dto));
-                    }
-                    values.Add(dic);
-                }
-                #endregion
+                var items = GetValues(itemSource, columns);
 
-                await MiniExcel.SaveAsAsync("", null);
+                await MiniExcel.SaveAsAsync(file, items);
+
                 return true;
             }
             catch (Exception ex)
@@ -240,19 +253,189 @@ namespace Com.Scm.Wpf.Views.Uc
             }
         }
 
-        private string GetModelValue(string fieldName, object obj)
+        public async Task<bool> ExportCsv(IEnumerable itemSource, List<ColumnInfo> columns, string file)
         {
             try
             {
-                object o = obj.GetType().GetProperty(fieldName).GetValue(obj, null);
-                string Value = Convert.ToString(o);
-                if (string.IsNullOrEmpty(Value)) return "";
-                return Value;
+                if (columns == null || columns.Count < 1)
+                {
+                    throw new Exception("请选择需要导出的列!");
+                }
+
+                #region 配置
+                var config = new OpenXmlConfiguration { };
+                List<DynamicExcelColumn> objs = new List<DynamicExcelColumn>();
+                foreach (var columnParam in columns)
+                {
+                    var col = new DynamicExcelColumn(columnParam.Label);
+                    objs.Add(col);
+                }
+                config.DynamicColumns = objs.ToArray();
+                #endregion
+
+                var items = GetValues(itemSource, columns);
+
+                await MiniExcel.SaveAsAsync(file, items);
+
+                return true;
             }
-            catch
+            catch (Exception ex)
             {
-                return "";
+                throw new Exception($"动态列报表导出错误:{ex.Message}");
             }
+        }
+
+        public async Task<bool> ExportJson(IEnumerable itemSource, List<ColumnInfo> columns, string file)
+        {
+            var items = GetValue(itemSource, columns);
+
+            var json = items.ToJsonString();
+
+            await File.WriteAllTextAsync(file, json);
+
+            return true;
+        }
+
+        public async Task<bool> ExportSql(IEnumerable itemSource, List<ColumnInfo> columns, string file)
+        {
+            var items = GetValue(itemSource, columns);
+
+            // INSERT INTO table_name (column1, column2, column3) VALUES ('', '', '');
+            var insert = "INSERT INTO table_name (BussinessCode, BussinessName, ParentBussinessCode) VALUES ('', '', '');";
+            var builder = new StringBuilder();
+            foreach (var column in columns)
+            {
+                builder.Append(',').Append(column.Value);
+            }
+            if (builder.Length > 0)
+            {
+                insert += builder.ToString(1, builder.Length - 1);
+            }
+            insert += ") VALUES ";
+
+            var text = "";
+
+            foreach (var item in itemSource)
+            {
+                builder.Clear();
+
+                text += builder.ToString();
+            }
+
+            await File.WriteAllTextAsync(file, text);
+
+            return true;
+        }
+
+        private List<Dictionary<string, object>> GetValues(IEnumerable source, List<ColumnInfo> columns)
+        {
+            var data = new List<Dictionary<string, object>>();
+            foreach (var item in source)
+            {
+                data.Add(GetValue(item, columns));
+            }
+            return data;
+        }
+
+        private Dictionary<string, object> GetValue(object obj, List<ColumnInfo> columns)
+        {
+            var dic = new Dictionary<string, object>();
+            try
+            {
+                var type = obj.GetType();
+                foreach (var column in columns)
+                {
+                    if (!column.Export)
+                    {
+                        continue;
+                    }
+
+                    var prop = type.GetProperty(column.Value);
+                    if (prop == null)
+                    {
+                        continue;
+                    }
+
+                    //var propType = prop.DeclaringType;
+                    var tmp = prop.GetValue(obj, null);
+                    if (tmp is long)
+                    {
+                        dic[column.Label] = tmp.ToString();
+                        continue;
+                    }
+                    if (tmp is DateTime)
+                    {
+                        var time = (DateTime)tmp;
+                        dic[column.Label] = TimeUtils.FormatDataTime(time);
+                        continue;
+                    }
+
+                    dic[column.Label] = tmp;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            return dic;
+        }
+
+        private void SetChecked(bool isChecked)
+        {
+            foreach (var item in DgGrid.ItemsSource)
+            {
+                var dvo = item as ScmGridDvo;
+                if (dvo == null) return;
+                dvo.IsChecked = isChecked;
+            }
+        }
+
+        private async void DoExport()
+        {
+            var dialog = new SaveFileDialog();
+            //dialog.CheckFileExists = true;
+            dialog.Filter = "CSV (*.csv)|*.csv|Excel 文件(*.xlsx)|*.xlsx|Excel 97-2003 文件(*.xls)|*.xls";
+            var result = dialog.ShowDialog();
+            if (!result.Value)
+            {
+                return;
+            }
+
+            var fileName = dialog.FileName;
+            if (File.Exists(fileName))
+            {
+                try
+                {
+                    File.Delete(fileName);
+                }
+                catch (Exception exp)
+                {
+                    // 文件删除异常
+                    return;
+                }
+            }
+
+            if (fileName.EndsWith(".json"))
+            {
+                await ExportJson(DgGrid.ItemsSource, _Columns, fileName);
+                return;
+            }
+            if (fileName.EndsWith(".csv"))
+            {
+                await ExportCsv(DgGrid.ItemsSource, _Columns, fileName);
+                return;
+            }
+            if (fileName.EndsWith(".sql"))
+            {
+                await ExportSql(DgGrid.ItemsSource, _Columns, fileName);
+                return;
+            }
+            await ExportXls(DgGrid.ItemsSource, _Columns, fileName);
+        }
+
+        private void BtExport_Click(object sender, RoutedEventArgs e)
+        {
+            DoExport();
         }
     }
 }

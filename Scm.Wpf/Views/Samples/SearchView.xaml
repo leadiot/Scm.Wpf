@@ -21,7 +21,7 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0" Orientation="Horizontal">
                     <hc:ButtonGroup>
-                        <Button x:Name="BtAppend" Click="BtAppend_Click" ToolTip="新增">
+                        <Button x:Name="BtAppend" Click="BtAppend_Click" ToolTip="新增" Style="{StaticResource ButtonPrimary}">
                             <iconPacks:PackIconMaterial Kind="Plus" Width="12" Height="12" />
                         </Button>
                     </hc:ButtonGroup>

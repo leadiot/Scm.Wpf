@@ -42,19 +42,29 @@ namespace Com.Scm.Wpf.Models
         /// <summary>
         /// 格式化
         /// </summary>
-        public string Format { get; set; }
+        public ColumnFormat Format { get; set; }
 
         /// <summary>
         /// 是否隐藏
         /// </summary>
         public bool Hidden { get; set; }
+
+        /// <summary>
+        /// 是否导出
+        /// </summary>
+        public bool Export { get; set; } = true;
+
+        /// <summary>
+        /// 是否只读
+        /// </summary>
+        public bool ReadOnly { get; set; } = true;
     }
     public class SizeUom
     {
         /// <summary>
         /// 数值
         /// </summary>
-        public double Width { get; set; }
+        public double Width { get; set; } = 100;
 
         /// <summary>
         /// 单位
@@ -76,6 +86,9 @@ namespace Com.Scm.Wpf.Models
         /// </summary>
         public bool IsAuto { get; private set; }
 
+        /// <summary>
+        /// 指定
+        /// </summary>
         public bool IsFixed { get; private set; }
 
         public static SizeUom Parse(string value)
@@ -109,7 +122,15 @@ namespace Com.Scm.Wpf.Models
         Text,
         CheckBox,
         ComboBox,
-        Template
+        Template,
+        Status
+    }
+
+    public enum ColumnFormat
+    {
+        None,
+        Number,
+        DateTime
     }
 
     public enum ColumnAlign
@@ -117,6 +138,7 @@ namespace Com.Scm.Wpf.Models
         None,
         Left,
         Center,
-        Right
+        Right,
+        Stretch
     }
 }
