@@ -2,7 +2,7 @@
 using Com.Scm.Wpf.Dvo;
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace Com.Scm.Wpf.Views.Samples.Remote
+namespace Com.Scm.Wpf.Views.Samples.Native
 {
     public partial class SearchParamsDvo : ScmSearchPageDvo
     {

@@ -1,28 +1,154 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Com.Scm.Wpf.Models;
+using SqlSugar;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Com.Scm.Wpf.Views.Samples.Native
 {
     /// <summary>
     /// MainView.xaml 的交互逻辑
     /// </summary>
-    public partial class MainView : UserControl
+    public partial class MainView : UserControl, ISearchView
     {
+        private SqlSugarClient _Client;
+        private SearchParamsDvo _Dvo;
+        private ScmSearchPageResponse<SearchResultDataDvo> _Response;
+
         public MainView()
         {
             InitializeComponent();
         }
+
+        public void Init(SqlSugarClient client)
+        {
+            _Client = client;
+
+            _Dvo = new SearchParamsDvo();
+            this.DataContext = _Dvo;
+
+            var columns = new List<ColumnInfo>
+            {
+                new ColumnInfo { Type=ColumnType.Text, Label = "ID", Value = "Id",Hidden=true },
+                new ColumnInfo { Type=ColumnType.CheckBox, Label = "", Value = "IsChecked", Width="70" },
+                new ColumnInfo { Type=ColumnType.Text, Label = "系统编码", Value = "Codec" },
+                new ColumnInfo { Type=ColumnType.Text, Label = "系统名称", Value = "Namec", Width="*", MinWidth="100" }
+            };
+            PgData.Init(this, columns);
+
+            FirstPageAsync();
+        }
+
+        private void BtAppend_Click(object sender, RoutedEventArgs e)
+        {
+            DrSide.IsOpen = true;
+        }
+
+        private void BtEnable_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var dvo in _Response.Items)
+            {
+                if (dvo.IsChecked == true)
+                {
+                    dvo.row_status = Enums.ScmStatusEnum.Enabled;
+                }
+            }
+        }
+
+        private void BtDisable_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var dvo in _Response.Items)
+            {
+                if (dvo.IsChecked == true)
+                {
+                    dvo.row_status = Enums.ScmStatusEnum.Disabled;
+                }
+            }
+        }
+
+        private void BtDelete_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtSearch_Click(object sender, RoutedEventArgs e)
+        {
+            FirstPageAsync();
+        }
+
+        private void BtCancel_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        #region 接口实现
+        public void FirstPageAsync()
+        {
+            _Dvo.Page = 1;
+
+            ReloadPageAsync();
+        }
+
+        public void PrevPageAsync()
+        {
+            var page = _Dvo.Page;
+            page -= 1;
+            if (page < 1)
+            {
+                page = 1;
+            }
+            _Dvo.Page = page;
+
+            ReloadPageAsync();
+        }
+
+        public void NextPageAsync()
+        {
+            var page = _Dvo.Page;
+            page += 1;
+            if (page > _Response.TotalPages)
+            {
+                page = (int)_Response.TotalPages;
+            }
+            _Dvo.Page = page;
+
+            ReloadPageAsync();
+        }
+
+        public void EndPageAsync()
+        {
+            _Dvo.Page = (int)_Response.TotalPages;
+
+            ReloadPageAsync();
+        }
+
+        public void FixedPageAsync(int page)
+        {
+            if (page > _Response.TotalPages)
+            {
+                page = (int)_Response.TotalPages;
+            }
+
+            if (page < 1)
+            {
+                page = 1;
+            }
+            _Dvo.Page = page;
+
+            ReloadPageAsync();
+        }
+
+        public async void ReloadPageAsync()
+        {
+            var body = _Dvo.ToDictionary();
+            var result = await _Client.Queryable<string>()
+                .Where(a => a != null)
+                .ToListAsync();
+            //if (!_Response.Success)
+            //{
+            //    return;
+            //}
+
+            PgData.ShowData(_Response);
+        }
+        #endregion
     }
 }

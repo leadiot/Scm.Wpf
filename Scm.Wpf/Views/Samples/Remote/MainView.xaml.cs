@@ -1,5 +1,4 @@
-﻿using Com.Scm.Wpf.Dvo.Samples;
-using Com.Scm.Wpf.Models;
+﻿using Com.Scm.Wpf.Models;
 using System.Windows;
 using System.Windows.Controls;
 
