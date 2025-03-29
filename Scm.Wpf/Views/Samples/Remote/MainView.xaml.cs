@@ -11,7 +11,7 @@ namespace Com.Scm.Wpf.Views.Samples.Remote
     public partial class MainView : UserControl
     {
         private ScmClient _Client;
-        private MainDvo _Dvo;
+        private SearchParamsDvo _Dvo;
 
         public MainView()
         {
@@ -22,7 +22,7 @@ namespace Com.Scm.Wpf.Views.Samples.Remote
         {
             _Client = client;
 
-            _Dvo = new MainDvo();
+            _Dvo = new SearchParamsDvo();
             this.DataContext = _Dvo;
 
             var columns = new List<ColumnInfo>
@@ -32,7 +32,7 @@ namespace Com.Scm.Wpf.Views.Samples.Remote
                 new ColumnInfo { Type=ColumnType.Text, Label = "系统编码", Value = "Codec" },
                 new ColumnInfo { Type=ColumnType.Text, Label = "系统名称", Value = "Namec", Width="*", MinWidth="100" }
             };
-            PgData.Init(columns);
+            //PgData.Init(columns);
 
             Search();
         }
@@ -78,9 +78,9 @@ namespace Com.Scm.Wpf.Views.Samples.Remote
         {
             _Dvo.FirstPage();
             var body = _Dvo.ToDictionary();
-            var response = await _Client.GetFormObjectAsync<ScmSearchPageResponse<SearchResultDvo>>("/urposition/pages", body);
-            _Dvo.Items.Clear();
-            _Dvo.Items.AddRange(response.Items);
+            var response = await _Client.GetFormObjectAsync<ScmSearchPageResponse<SearchResultDataDvo>>("/urposition/pages", body);
+            //_Dvo.Items.Clear();
+            //_Dvo.Items.AddRange(response.Items);
             PgData.ShowData(response.Items);
         }
 

@@ -7,4 +7,37 @@
 		<Nullable>disable</Nullable>
 	</PropertyGroup>
 
+	<ItemGroup>
+		<PackageReference Include="PaddleOCRSharp" Version="4.5.0.1" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Serilog.Sinks.Async" Version="2.1.0" />
+		<PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+		<PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+		<PackageReference Include="SqlSugarCore" Version="5.1.4.182" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="Scm.Common">
+			<HintPath>..\Libs\netstandard2.0\Scm.Common.dll</HintPath>
+		</Reference>
+		<Reference Include="Scm.Common.Dto">
+			<HintPath>..\Libs\netstandard2.0\Scm.Common.Dto.dll</HintPath>
+		</Reference>
+		<Reference Include="Scm.Common.Http">
+			<HintPath>..\Libs\netstandard2.0\Scm.Common.Http.dll</HintPath>
+		</Reference>
+		<Reference Include="Scm.Common.Log">
+			<HintPath>..\Libs\netstandard2.0\Scm.Common.Log.dll</HintPath>
+		</Reference>
+		<Reference Include="Scm.Common.Text">
+			<HintPath>..\Libs\netstandard2.0\Scm.Common.Text.dll</HintPath>
+		</Reference>
+		<Reference Include="Scm.Common.Time">
+			<HintPath>..\Libs\netstandard2.0\Scm.Common.Time.dll</HintPath>
+		</Reference>
+		<Reference Include="Scm.Dto">
+			<HintPath>..\Libs\net8.0\Scm.Dto.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
 </Project>

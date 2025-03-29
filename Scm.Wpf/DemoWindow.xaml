@@ -7,5 +7,25 @@
            mc:Ignorable="d"
            Title="DemoWindow" Height="450" Width="800">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <DataGrid ItemsSource="{Binding Path=Items}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="耳标" Binding="{Binding Path=Tag}"/>
+                <DataGridTextColumn Header="找到" Binding="{Binding Path=Find}"/>
+                <DataGridTextColumn Header="匹配" Binding="{Binding Path=Match}"/>
+                <DataGridTextColumn Header="打印" Binding="{Binding Path=Ocr}"/>
+                <DataGridTextColumn Header="标1" Binding="{Binding Path=OcrPre}"/>
+                <DataGridTextColumn Header="标2" Binding="{Binding Path=OcrEnd}"/>
+                <DataGridTextColumn Header="图片" Binding="{Binding Path=File}"/>
+                <DataGridTextColumn Header="提示" Binding="{Binding Path=Message}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Button x:Name="BtDemo" Click="BtDemo_Click">Demo</Button>
+            <Label Content="{Binding Path=Message}" HorizontalAlignment="Stretch"/>
+        </StackPanel>
     </Grid>
 </hc:Window>

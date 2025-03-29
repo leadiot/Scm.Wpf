@@ -1,63 +1,37 @@
-﻿using System.Text.RegularExpressions;
+﻿using Com.Scm.Http;
+using Com.Scm.Utils;
+using PaddleOCRSharp;
 
 internal class Program
 {
     private static void Main(string[] args)
     {
-        var uom = SizeUom.Parse("12");
-        Console.WriteLine("Hello, World!");
+        Ocr();
     }
 
-    public class SizeUom
+    public static async void Ocr()
     {
-        /// <summary>
-        /// 数值
-        /// </summary>
-        public double Width { get; set; }
+        var url = "http://1.94.139.166/prod-api/business/MarkingRecord/list?pageNum=1&pageSize=10&deptId=254";
 
-        /// <summary>
-        /// 单位
-        /// </summary>
-        public string Unit { get; set; }
+        var request = new ScmHttpRequest();
+        request.Url = url;
+        var client = new ScmHttpClient(url);
+        client.AddHeadParam("authorization", "Bearer eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjFlMGZkMjg0LWZhNjItNGVmNi04OThkLWJhNmJhNWJjNWU1NyJ9.VsD-3JS3tCCowrLdu55bc12uxY7xV9jC30ikazAOGSoDKNmNJ_5Dn1l98qhBTd1Hx46SiEaavetKX7Ge2Aodrg");
+        var result = await client.GetTextAsync(request);
 
-        /// <summary>
-        /// 未指定
-        /// </summary>
-        public bool IsNone { get; private set; }
+        string file = @"D:\20250326103001_20250326103025A742.jpg";
 
-        /// <summary>
-        /// 填充
-        /// </summary>
-        public bool IsFill { get; private set; }
-
-        /// <summary>
-        /// 自动
-        /// </summary>
-        public bool IsAuto { get; private set; }
-
-        public static SizeUom Parse(string value)
+        OCRModelConfig config = null;
+        OCRParameter oCRParameter = new OCRParameter();
+        OCRResult ocrResult = new OCRResult();
+        //建议程序全局初始化一次即可，不必每次识别都初始化，容易报错。
+        PaddleOCREngine engine = new PaddleOCREngine(config, oCRParameter);
         {
-            if (string.IsNullOrEmpty(value))
-            {
-                return new SizeUom { IsNone = true };
-            }
-
-            value = value.Trim();
-            if (value == "*")
-            {
-                return new SizeUom { IsFill = true };
-            }
-
-            var match = Regex.Match(value, @"(\d+)([^\d]*)");
-            if (!match.Success)
-            {
-                return new SizeUom { IsNone = true };
-            }
-
-            var width = match.Groups[1].Value;
-            var uom = match.Groups[2].Value.Trim();
-
-            return new SizeUom { Width = double.Parse(width), Unit = uom };
+            ocrResult = engine.DetectText(file);
+        }
+        if (ocrResult != null)
+        {
+            Console.WriteLine(ocrResult.Text, "识别结果");
         }
     }
 }

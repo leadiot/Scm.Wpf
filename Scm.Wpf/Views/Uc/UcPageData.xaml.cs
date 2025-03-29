@@ -253,7 +253,7 @@ namespace Com.Scm.Wpf.Views.Uc
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="dataSource"></param>
-        public void ShowData<T>(IEnumerable<T> dataSource) where T : ScmSearchResultDvo
+        public void ShowData<T>(IEnumerable<T> dataSource) where T : ScmSearchResultDataDvo
         {
             DgGrid.ItemsSource = dataSource;
         }
@@ -277,7 +277,7 @@ namespace Com.Scm.Wpf.Views.Uc
         {
             foreach (var item in DgGrid.ItemsSource)
             {
-                var dvo = item as ScmSearchResultDvo;
+                var dvo = item as ScmSearchResultDataDvo;
                 if (dvo == null) return;
                 dvo.IsChecked = isChecked;
             }
