@@ -2,7 +2,6 @@
 using Com.Scm.Wpf.Config;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CsvHelper;
-using PaddleOCRSharp;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
@@ -39,8 +38,6 @@ namespace Com.Scm.Wpf
         }
 
         private string AnmengDir = @"D:\Anmeng";
-        private string AnmengSuccessDir = @"";
-        private string AnmengFailureDir = @"";
         private HttpClient _HttpClient;
         private CsvWriter _Writer;
 
@@ -63,10 +60,6 @@ namespace Com.Scm.Wpf
             {
                 ["authorization"] = appConfig.token
             };
-
-            OCRModelConfig config = null;
-            OCRParameter oCRParameter = new OCRParameter();
-            _Engine = new PaddleOCREngine(config, oCRParameter);
 
             _HttpClient = new HttpClient();
 
@@ -96,6 +89,16 @@ namespace Com.Scm.Wpf
             stream.Dispose();
 
             _Dvo.Message = "耳标识别完成！";
+        }
+        private async void getToken()
+        {
+            var url = @"https://aip.baidubce.com/oauth/2.0/token";
+            var body = new Dictionary<string, string>();
+            body["grant_type"] = "client_credentials";
+            body["client_id"] = "onW30VyPk69VFHjlqo9TgIZ1";
+            body["client_secret"] = "55XovWjWC1emakGBHXR18Ejo4V33kzvZ";
+            var result = await HttpUtils.PostFormStringAsync(url, body);
+            _OAuth = result.AsJsonObject<BaiduOAuth>();
         }
 
         private async Task<bool> OcrPage(Dictionary<string, string> body, Dictionary<string, string> head, int page)
@@ -156,7 +159,7 @@ namespace Com.Scm.Wpf
                         continue;
                     }
 
-                    var find = OcrImage(file, name, dvo);
+                    var find = await OcrBaidu(file, name, dvo);
                     if (!find)
                     {
                         File.Move(file, Path.Combine(noneDir, name));
@@ -252,14 +255,19 @@ namespace Com.Scm.Wpf
             }
         }
 
-        private PaddleOCREngine _Engine;
+        private BaiduOAuth _OAuth;
 
-        private bool OcrImage(string file, string name, AbItem item)
+        private async Task<bool> OcrBaidu(string file, string name, AbItem item)
         {
             LogUtils.Debug("文件：" + name);
-            _Dvo.Message = "正在识别文件：" + name;
-            var result = _Engine.DetectText(file);
-            if (result == null || result.TextBlocks == null)
+            //var url = @"https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic?access_token=" + _OAuth.access_token;
+            var url = @"https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic?access_token=" + _OAuth.access_token;
+            var body = new Dictionary<string, string>();
+            body["url"] = file;
+            var head = new Dictionary<string, string>();
+            head["Content-Type"] = "application/x-www-form-urlencoded";
+            var result = await HttpUtils.PostFormObjectAsync<BaiduOcrBase>(url, body, head);
+            if (result == null || result.words_result == null)
             {
                 return false;
             }
@@ -270,9 +278,9 @@ namespace Com.Scm.Wpf
             var pre = "";
             var end = "";
             var all = "";
-            foreach (var block in result.TextBlocks)
+            foreach (var block in result.words_result)
             {
-                var text = block.Text.Trim();
+                var text = block.words.Trim();
                 if (string.IsNullOrEmpty(text))
                 {
                     continue;
@@ -280,19 +288,19 @@ namespace Com.Scm.Wpf
 
                 if (preRegex.IsMatch(text))
                 {
-                    pre = block.Text;
+                    pre = text;
                     continue;
                 }
                 if (endRegex.IsMatch(text))
                 {
                     endFind = true;
-                    end = block.Text;
+                    end = text;
                     continue;
                 }
                 var match = Regex.Match(text, @"(AB\d{11})");
                 if (match.Success)
                 {
-                    all = match.Groups[1].Value;
+                    all = match.Groups[1].Value.Trim();
                     continue;
                 }
             }
@@ -380,5 +388,34 @@ namespace Com.Scm.Wpf
         public string token { get; set; }
 
         public string output { get; set; }
+    }
+
+    public class BaiduOAuth
+    {
+        public string refresh_token { get; set; }
+        public string session_key { get; set; }
+        public string access_token { get; set; }
+        public string scope { get; set; }
+        public string session_secret { get; set; }
+        public long expires_in { get; set; }
+    }
+
+    public class BaiduOcrBase
+    {
+        public int direction { get; set; }
+        public string log_id { get; set; }
+        public int words_result_num { get; set; }
+
+        public List<BaiduOcrWord> words_result { get; set; }
+    }
+
+    public class BaiduOcrWord
+    {
+        public string words { get; set; }
+        public object probability { get; set; }
+        public object paragraphs_result { get; set; }
+        public object words_result_idx { get; set; }
+        public object paragraphs_result_num { get; set; }
+        public int language { get; set; }
     }
 }

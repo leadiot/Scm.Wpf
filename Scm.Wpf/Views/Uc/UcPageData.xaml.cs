@@ -1,6 +1,7 @@
 ﻿using Com.Scm.Utils;
 using Com.Scm.Wpf.Dvo;
 using Com.Scm.Wpf.Models;
+using CommunityToolkit.Mvvm.ComponentModel;
 using HandyControl.Controls;
 using Microsoft.Win32;
 using MiniExcelLibs;
@@ -21,20 +22,13 @@ namespace Com.Scm.Wpf.Views.Uc
     /// </summary>
     public partial class UcPageData : UserControl
     {
+        private ISearchView _Owner;
+        private ScmPageDataDvo _Dvo;
         private List<ColumnInfo> _Columns;
-        private ScmSearchPageDvo _Dvo;
 
         public UcPageData()
         {
             InitializeComponent();
-        }
-
-        public void Search(ScmSearchPageDvo dvo)
-        {
-            this.DataContext = _Dvo;
-
-            //var total = _Response.TotalPages;
-            //var size = _Response.TotalItems;
         }
 
         /// <summary>
@@ -42,9 +36,11 @@ namespace Com.Scm.Wpf.Views.Uc
         /// </summary>
         /// <param name="columns"></param>
         /// <param name="autoData"></param>
-        public void Init(ScmSearchPageDvo dvo, List<ColumnInfo> columns, bool autoData = true)
+        public void Init(ISearchView owner, List<ColumnInfo> columns, bool autoData = true)
         {
-            _Dvo = dvo;
+            _Owner = owner;
+
+            _Dvo = new ScmPageDataDvo();
             this.DataContext = _Dvo;
 
             _Columns = columns;
@@ -252,10 +248,14 @@ namespace Com.Scm.Wpf.Views.Uc
         /// 数据展示
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="dataSource"></param>
-        public void ShowData<T>(IEnumerable<T> dataSource) where T : ScmSearchResultDataDvo
+        /// <param name="response"></param>
+        public void ShowData<T>(ScmSearchPageResponse<T> response) where T : ScmSearchResultDataDvo
         {
-            DgGrid.ItemsSource = dataSource;
+            _Dvo.PageIndex = 1;
+            _Dvo.TotalPages = (int)response.TotalPages;
+            _Dvo.TotalItems = (int)response.TotalItems;
+
+            DgGrid.ItemsSource = response.Items;
         }
 
         /// <summary>
@@ -281,6 +281,16 @@ namespace Com.Scm.Wpf.Views.Uc
                 if (dvo == null) return;
                 dvo.IsChecked = isChecked;
             }
+        }
+
+        /// <summary>
+        /// 数据导出事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtExport_Click(object sender, RoutedEventArgs e)
+        {
+            Export();
         }
 
         #region 数据导出
@@ -603,16 +613,6 @@ namespace Com.Scm.Wpf.Views.Uc
         }
         #endregion
 
-        /// <summary>
-        /// 数据导出事件
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void BtExport_Click(object sender, RoutedEventArgs e)
-        {
-            Export();
-        }
-
         private void BtOption_Click(object sender, RoutedEventArgs e)
         {
             var view = new UcGridColumnsView();
@@ -623,5 +623,81 @@ namespace Com.Scm.Wpf.Views.Uc
             window.Height = 480;
             window.Show(BtOption, false);
         }
+
+        #region 翻页事件
+        /// <summary>
+        /// 首页
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtFirst_Click(object sender, RoutedEventArgs e)
+        {
+            _Owner.FirstPageAsync();
+        }
+
+        /// <summary>
+        /// 上一页
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtPrev_Click(object sender, RoutedEventArgs e)
+        {
+            _Owner.PrevPageAsync();
+        }
+
+        /// <summary>
+        /// 下一页
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtNext_Click(object sender, RoutedEventArgs e)
+        {
+            _Owner.NextPageAsync();
+        }
+
+        /// <summary>
+        /// 尾页
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtEnd_Click(object sender, RoutedEventArgs e)
+        {
+            _Owner.EndPageAsync();
+        }
+
+        /// <summary>
+        /// 指定页
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TbPage_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key != System.Windows.Input.Key.Enter)
+            {
+                return;
+            }
+
+            e.Handled = true;
+            _Owner.FixedPageAsync(_Dvo.PageIndex);
+        }
+        #endregion
+    }
+
+    public partial class ScmPageDataDvo : ScmDvo
+    {
+        [ObservableProperty]
+        private int pageIndex;
+
+        [ObservableProperty]
+        private int pageItems;
+
+        [ObservableProperty]
+        private int view;
+
+        [ObservableProperty]
+        private int totalPages;
+
+        [ObservableProperty]
+        private int totalItems;
     }
 }

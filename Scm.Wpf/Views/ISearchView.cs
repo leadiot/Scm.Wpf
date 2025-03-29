@@ -8,11 +8,6 @@
         void FirstPageAsync();
 
         /// <summary>
-        /// 尾页
-        /// </summary>
-        void LastPageAsync();
-
-        /// <summary>
         /// 前一页
         /// </summary>
         void PrevPageAsync();
@@ -21,6 +16,17 @@
         /// 后一页
         /// </summary>
         void NextPageAsync();
+
+        /// <summary>
+        /// 尾页
+        /// </summary>
+        void EndPageAsync();
+
+        /// <summary>
+        /// 指定页
+        /// </summary>
+        /// <param name="page"></param>
+        void FixedPageAsync(int page);
 
         /// <summary>
         /// 刷新

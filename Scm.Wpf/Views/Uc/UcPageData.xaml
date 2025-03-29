@@ -10,37 +10,31 @@
     <DockPanel>
         <Grid DockPanel.Dock="Bottom" Margin="5 5 5 0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <StackPanel Orientation="Horizontal" Grid.Column="0">
-                <hc:ButtonGroup>
-                    <Button x:Name="RbTop">
+                <Label BorderThickness="0" Content="{Binding TotalItems}"/>
+                <hc:ElementGroup>
+                    <Button x:Name="BtFirst" Click="BtFirst_Click">
                         <iconPacks:PackIconMaterial Kind="ChevronDoubleLeft" Width="12" Height="12" />
                     </Button>
-                    <Button x:Name="RbPrev">
+                    <Button x:Name="BtPrev" Click="BtPrev_Click">
                         <iconPacks:PackIconMaterial Kind="ChevronLeft" Width="12" Height="12" />
                     </Button>
-                    <RadioButton x:Name="RbPage1" Content="1" IsChecked="True"/>
-                    <RadioButton x:Name="RbPage2" Content="2"/>
-                    <RadioButton x:Name="RbPage3" Content="3"/>
-                    <RadioButton x:Name="RbPage4" Content="4"/>
-                    <RadioButton x:Name="RbPage5" Content="..."/>
-                    <Button x:Name="BtNext">
+                    <TextBox x:Name="TbPage" TextAlignment="Center" Text="{Binding PageIndex}" PreviewKeyDown="TbPage_PreviewKeyDown"/>
+                    <Button x:Name="BtNext" Click="BtNext_Click">
                         <iconPacks:PackIconMaterial Kind="ChevronRight" Width="12" Height="12" />
                     </Button>
-                    <Button x:Name="BtEnd">
+                    <Button x:Name="BtEnd" Click="BtEnd_Click">
                         <iconPacks:PackIconMaterial Kind="ChevronDoubleRight" Width="12" Height="12" />
                     </Button>
-                </hc:ButtonGroup>
-                <TextBlock VerticalAlignment="Center">
-                    共888页
-                </TextBlock>
+                </hc:ElementGroup>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Grid.Column="1">
+            <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right">
                 <hc:ButtonGroup>
-                    <Button Content="列表" ToolTip="列表"/>
-                    <Button Content="单页" ToolTip="单页"/>
+                    <RadioButton Content="列表" ToolTip="列表" IsChecked="True"/>
+                    <RadioButton Content="单页" ToolTip="单页"/>
                 </hc:ButtonGroup>
                 <Button Content="刷新" ToolTip="刷新"/>
                 <Button Content="打印" ToolTip="打印"/>

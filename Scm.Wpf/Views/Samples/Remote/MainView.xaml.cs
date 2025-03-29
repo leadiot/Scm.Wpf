@@ -8,10 +8,11 @@ namespace Com.Scm.Wpf.Views.Samples.Remote
     /// <summary>
     /// UcSamplesView.xaml 的交互逻辑
     /// </summary>
-    public partial class MainView : UserControl
+    public partial class MainView : UserControl, ISearchView
     {
         private ScmClient _Client;
         private SearchParamsDvo _Dvo;
+        private ScmSearchPageResponse<SearchResultDataDvo> _Response;
 
         public MainView()
         {
@@ -32,9 +33,9 @@ namespace Com.Scm.Wpf.Views.Samples.Remote
                 new ColumnInfo { Type=ColumnType.Text, Label = "系统编码", Value = "Codec" },
                 new ColumnInfo { Type=ColumnType.Text, Label = "系统名称", Value = "Namec", Width="*", MinWidth="100" }
             };
-            //PgData.Init(columns);
+            PgData.Init(this, columns);
 
-            Search();
+            FirstPageAsync();
         }
 
         private void BtAppend_Click(object sender, RoutedEventArgs e)
@@ -44,7 +45,7 @@ namespace Com.Scm.Wpf.Views.Samples.Remote
 
         private void BtEnable_Click(object sender, RoutedEventArgs e)
         {
-            foreach (var dvo in _Dvo.Items)
+            foreach (var dvo in _Response.Items)
             {
                 if (dvo.IsChecked == true)
                 {
@@ -55,7 +56,7 @@ namespace Com.Scm.Wpf.Views.Samples.Remote
 
         private void BtDisable_Click(object sender, RoutedEventArgs e)
         {
-            foreach (var dvo in _Dvo.Items)
+            foreach (var dvo in _Response.Items)
             {
                 if (dvo.IsChecked == true)
                 {
@@ -71,21 +72,81 @@ namespace Com.Scm.Wpf.Views.Samples.Remote
 
         private void BtSearch_Click(object sender, RoutedEventArgs e)
         {
-            Search();
-        }
-
-        private async void Search()
-        {
-            _Dvo.FirstPage();
-            var body = _Dvo.ToDictionary();
-            var response = await _Client.GetFormObjectAsync<ScmSearchPageResponse<SearchResultDataDvo>>("/urposition/pages", body);
-            //_Dvo.Items.Clear();
-            //_Dvo.Items.AddRange(response.Items);
-            PgData.ShowData(response.Items);
+            FirstPageAsync();
         }
 
         private void BtCancel_Click(object sender, RoutedEventArgs e)
         {
         }
+
+        #region 接口实现
+        public void FirstPageAsync()
+        {
+            _Dvo.Page = 1;
+
+            ReloadPageAsync();
+        }
+
+        public void PrevPageAsync()
+        {
+            var page = _Dvo.Page;
+            page -= 1;
+            if (page < 1)
+            {
+                page = 1;
+            }
+            _Dvo.Page = page;
+
+            ReloadPageAsync();
+        }
+
+        public void NextPageAsync()
+        {
+            var page = _Dvo.Page;
+            page += 1;
+            if (page > _Response.TotalPages)
+            {
+                page = (int)_Response.TotalPages;
+            }
+            _Dvo.Page = page;
+
+            ReloadPageAsync();
+        }
+
+        public void EndPageAsync()
+        {
+            _Dvo.Page = (int)_Response.TotalPages;
+
+            ReloadPageAsync();
+        }
+
+        public void FixedPageAsync(int page)
+        {
+            if (page > _Response.TotalPages)
+            {
+                page = (int)_Response.TotalPages;
+            }
+
+            if (page < 1)
+            {
+                page = 1;
+            }
+            _Dvo.Page = page;
+
+            ReloadPageAsync();
+        }
+
+        public async void ReloadPageAsync()
+        {
+            var body = _Dvo.ToDictionary();
+            _Response = await _Client.GetFormObjectAsync<ScmSearchPageResponse<SearchResultDataDvo>>("/urposition/pages", body);
+            //if (!_Response.Success)
+            //{
+            //    return;
+            //}
+
+            PgData.ShowData(_Response);
+        }
+        #endregion
     }
 }

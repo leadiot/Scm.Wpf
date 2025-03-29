@@ -21,7 +21,6 @@
 		<PackageReference Include="HandyControl" Version="3.5.1" />
 		<PackageReference Include="MahApps.Metro.IconPacks.Material" Version="5.1.0" />
 		<PackageReference Include="MiniExcel" Version="1.39.0" />
-		<PackageReference Include="PaddleOCRSharp" Version="4.5.0.1" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="Serilog.Sinks.Async" Version="2.1.0" />
 		<PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />

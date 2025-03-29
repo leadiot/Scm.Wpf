@@ -50,7 +50,7 @@ namespace Com.Scm.Wpf.Dvo
             var dict = new Dictionary<string, string>();
 
             Type type = GetType();
-            PropertyInfo[] properties = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
+            var properties = type.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public);
             foreach (PropertyInfo property in properties)
             {
                 var obj = property.GetValue(this);
@@ -96,6 +96,11 @@ namespace Com.Scm.Wpf.Dvo
         public void FirstPage()
         {
             Page = 1;
+        }
+
+        public virtual string GetPageUrl()
+        {
+            return "";
         }
     }
 
