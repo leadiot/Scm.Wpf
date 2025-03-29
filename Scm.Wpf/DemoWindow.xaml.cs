@@ -149,7 +149,7 @@ namespace Com.Scm.Wpf
                     var name = image.Substring(idx + 1);
                     var file = Path.Combine(dir, name);
                     var url = "http://1.94.139.166/prod-api" + image;
-                    var result = await LoadImage(url, file);
+                    var result = await DownloadAsync(url, file);
                     if (!result)
                     {
                         LogUtils.Info("图片下载失败：" + image);
@@ -189,29 +189,39 @@ namespace Com.Scm.Wpf
             return true;
         }
 
-        public async Task<bool> LoadImage(string url, string file)
+        /// <summary>
+        /// 文件下载
+        /// </summary>
+        /// <param name="url">下载地址</param>
+        /// <param name="file">保存文件</param>
+        /// <param name="append">是否支持续传</param>
+        /// <returns></returns>
+        public async Task<bool> DownloadAsync(string url, string file, bool append = false)
         {
             try
             {
-                // 检查目标文件是否存在，获取已下载的字节数
                 long existingLength = 0;
-                if (File.Exists(file))
-                {
-                    existingLength = new FileInfo(file).Length;
-                }
 
                 // 设置 Range 请求头（断点续传）
-                _HttpClient.DefaultRequestHeaders.Range =
-                    new System.Net.Http.Headers.RangeHeaderValue(existingLength, null);
+                if (append)
+                {
+                    // 检查目标文件是否存在，获取已下载的字节数
+                    if (File.Exists(file))
+                    {
+                        existingLength = new FileInfo(file).Length;
+                    }
+
+                    _HttpClient.DefaultRequestHeaders.Range = new System.Net.Http.Headers.RangeHeaderValue(existingLength, null);
+                }
 
                 // 发送 GET 请求
-                HttpResponseMessage response = await _HttpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
+                var response = await _HttpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
 
                 // 确保响应成功
                 response.EnsureSuccessStatusCode();
 
                 // 获取总文件长度（从 Content-Length 头）
-                long totalBytes = response.Content.Headers.ContentLength ?? 0;
+                var totalBytes = response.Content.Headers.ContentLength ?? 0;
 
                 // 如果服务器不支持断点续传，重新开始下载
                 if (existingLength > 0 && totalBytes <= existingLength)
@@ -221,11 +231,8 @@ namespace Com.Scm.Wpf
                 }
 
                 // 以流式方式写入文件（避免内存溢出）
-                using (FileStream fileStream = new FileStream(
-                    file,
-                    FileMode.Append, // 断点续传用追加模式
-                    FileAccess.Write,
-                    FileShare.None))
+                var mode = append ? FileMode.Append : FileMode.Create;
+                using (FileStream fileStream = new FileStream(file, mode, FileAccess.Write, FileShare.None))
                 {
                     await response.Content.CopyToAsync(fileStream);
                 }
