@@ -14,15 +14,15 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <StackPanel Orientation="Horizontal" Grid.Column="0">
-                <Label BorderThickness="0" Content="{Binding TotalItems}"/>
-                <hc:ElementGroup>
+                <Label BorderThickness="0" Content="{Binding Path=PagesInfo, Mode=OneWay}"/>
+                <hc:ElementGroup Margin="5 0 0 0">
                     <Button x:Name="BtFirst" Click="BtFirst_Click">
                         <iconPacks:PackIconMaterial Kind="ChevronDoubleLeft" Width="12" Height="12" />
                     </Button>
                     <Button x:Name="BtPrev" Click="BtPrev_Click">
                         <iconPacks:PackIconMaterial Kind="ChevronLeft" Width="12" Height="12" />
                     </Button>
-                    <TextBox x:Name="TbPage" TextAlignment="Center" Text="{Binding PageIndex}" PreviewKeyDown="TbPage_PreviewKeyDown"/>
+                    <TextBox x:Name="TbPage" TextAlignment="Center" Text="{Binding Path=PageIndex}" PreviewKeyDown="TbPage_PreviewKeyDown"/>
                     <Button x:Name="BtNext" Click="BtNext_Click">
                         <iconPacks:PackIconMaterial Kind="ChevronRight" Width="12" Height="12" />
                     </Button>
@@ -30,6 +30,11 @@
                         <iconPacks:PackIconMaterial Kind="ChevronDoubleRight" Width="12" Height="12" />
                     </Button>
                 </hc:ElementGroup>
+                <ComboBox x:Name="CbItems"
+                          SelectedValue="{Binding Path=PageItems}"
+                          Margin="5 0 0 0"
+                          MinWidth="64"
+                          SelectionChanged="CbCount_SelectionChanged"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right">
                 <hc:ButtonGroup>

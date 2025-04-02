@@ -24,6 +24,13 @@ namespace Com.Scm.Wpf.Config
             }
 
             _Settings = JObject.Parse(text);
+
+            EnvConfig = GetSection<EnvConfig>("Env");
+            if (EnvConfig == null)
+            {
+                EnvConfig = new EnvConfig();
+            }
+
             return true;
         }
 
@@ -37,5 +44,7 @@ namespace Com.Scm.Wpf.Config
 
             return obj.ToObject<T>();
         }
+
+        public static EnvConfig EnvConfig { get; private set; }
     }
 }

@@ -1,6 +1,9 @@
 ﻿using Com.Scm.Oidc;
-using Com.Scm.Wpf;
+using Com.Scm.Utils;
+using Com.Scm.Wpf.Config;
+using Com.Scm.Wpf.Dto.Login;
 using Com.Scm.Wpf.Dvo.Login;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Com.Scm.Uc
@@ -58,22 +61,20 @@ namespace Com.Scm.Uc
                 return;
             }
 
-            var client = new ScmClient();
-            var result = await client.LoginAsync(body);
-            if (!result)
+            var url = AppSettings.EnvConfig.GetUrl("/operator/login");
+
+            var response = await HttpUtils.PostJsonObjectAsync<ScmDataResponse<LoginResult>>(url, body);
+            if (response == null)
             {
                 return;
             }
-
-            result = await client.LoadMenuAsync();
-            if (!result)
+            if (response.Code != 200)
             {
+                MessageBox.Show(response.GetMessage());
                 return;
             }
 
-            await client.ListDicAsync("status");
-
-            _Owner.ShowMain(client);
+            _Owner.Load(response.data);
         }
     }
 }

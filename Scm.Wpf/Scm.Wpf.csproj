@@ -12,6 +12,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="ScmClient.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Content Include="oidc.ico" />
 	</ItemGroup>
 

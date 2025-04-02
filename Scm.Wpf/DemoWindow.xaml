@@ -11,16 +11,16 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <DataGrid ItemsSource="{Binding Path=Items}" AutoGenerateColumns="False">
+        <DataGrid ItemsSource="{Binding Path=Items}" AutoGenerateColumns="False" HorizontalScrollBarVisibility="Visible">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="耳标" Binding="{Binding Path=Tag}"/>
-                <DataGridTextColumn Header="找到" Binding="{Binding Path=Find}"/>
-                <DataGridTextColumn Header="匹配" Binding="{Binding Path=Match}"/>
-                <DataGridTextColumn Header="打印" Binding="{Binding Path=Ocr}"/>
-                <DataGridTextColumn Header="标1" Binding="{Binding Path=OcrPre}"/>
-                <DataGridTextColumn Header="标2" Binding="{Binding Path=OcrEnd}"/>
-                <DataGridTextColumn Header="图片" Binding="{Binding Path=File}"/>
-                <DataGridTextColumn Header="提示" Binding="{Binding Path=Message}"/>
+                <DataGridTextColumn Header="耳标" Binding="{Binding Path=Tag}" Width="100"/>
+                <DataGridTextColumn Header="找到" Binding="{Binding Path=Find}" Width="100"/>
+                <DataGridTextColumn Header="匹配" Binding="{Binding Path=Match}" Width="100"/>
+                <DataGridTextColumn Header="打印" Binding="{Binding Path=Ocr}" Width="100"/>
+                <DataGridTextColumn Header="标1" Binding="{Binding Path=OcrPre}" Width="100"/>
+                <DataGridTextColumn Header="标2" Binding="{Binding Path=OcrEnd}" Width="100"/>
+                <DataGridTextColumn Header="图片" Binding="{Binding Path=File}" Width="100"/>
+                <DataGridTextColumn Header="提示" Binding="{Binding Path=Message}" Width="100"/>
             </DataGrid.Columns>
         </DataGrid>
         <StackPanel Grid.Row="1" Orientation="Horizontal">

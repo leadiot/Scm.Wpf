@@ -7,9 +7,9 @@ namespace Com.Scm.Wpf.Views.Samples.Remote
     /// <summary>
     /// UcSamplesView.xaml 的交互逻辑
     /// </summary>
-    public partial class MainView : UserControl, ISearchView
+    public partial class MainView : UserControl, ScmView, ISearchView
     {
-        private ScmClient _Client;
+        private ScmWindow _Owner;
         private SearchParamsDvo _Dvo;
         private ScmSearchPageResponse<SearchResultDataDvo> _Response;
 
@@ -18,9 +18,9 @@ namespace Com.Scm.Wpf.Views.Samples.Remote
             InitializeComponent();
         }
 
-        public void Init(ScmClient client)
+        public void Init(ScmWindow owner)
         {
-            _Client = client;
+            _Owner = owner;
 
             _Dvo = new SearchParamsDvo();
             this.DataContext = _Dvo;
@@ -35,6 +35,11 @@ namespace Com.Scm.Wpf.Views.Samples.Remote
             PgData.Init(this, columns);
 
             FirstPageAsync();
+        }
+
+        public UserControl GetView()
+        {
+            return this;
         }
 
         private void BtAppend_Click(object sender, RoutedEventArgs e)
@@ -138,7 +143,7 @@ namespace Com.Scm.Wpf.Views.Samples.Remote
         public async void ReloadPageAsync()
         {
             var body = _Dvo.ToDictionary();
-            _Response = await _Client.GetFormObjectAsync<ScmSearchPageResponse<SearchResultDataDvo>>("/urposition/pages", body);
+            _Response = await _Owner.GetFormObjectAsync<ScmSearchPageResponse<SearchResultDataDvo>>("/urposition/pages", body);
             //if (!_Response.Success)
             //{
             //    return;

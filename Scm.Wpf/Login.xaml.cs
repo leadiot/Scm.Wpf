@@ -2,6 +2,9 @@
 using Com.Scm.Oidc.Response;
 using Com.Scm.Utils;
 using Com.Scm.Wpf;
+using Com.Scm.Wpf.Config;
+using Com.Scm.Wpf.Dto;
+using Com.Scm.Wpf.Dto.Login;
 using System.Diagnostics;
 using System.Windows;
 
@@ -25,6 +28,8 @@ namespace Com.Scm
         public async void Init()
         {
             LogUtils.Setup();
+
+            AppSettings.Load();
 
             _Config = new OidcConfig();
             // 使用测试应用
@@ -70,9 +75,9 @@ namespace Com.Scm
             //UcOAuth.Login(ospInfo);
         }
 
-        public void ShowMain(ScmClient client)
+        public void ShowMain(LoginResult result, List<WpfMenuDto> menus)
         {
-            new MainWindow().Init(client);
+            new MainWindow().Init(result, menus);
             Close();
         }
 
@@ -103,6 +108,43 @@ namespace Com.Scm
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        public async void Load(LoginResult result)
+        {
+            await LoadMenuAsync(result);
+        }
+
+        /// <summary>
+        /// 获取菜单
+        /// </summary>
+        /// <param name="lang"></param>
+        /// <returns></returns>
+        public async Task<bool> LoadMenuAsync(LoginResult result, string lang = null)
+        {
+            var url = AppSettings.EnvConfig.GetUrl("/operator/authoritymenu");
+
+            var body = new Dictionary<string, string>();
+            body["client"] = "20";
+            body["lang"] = lang ?? "zh-cn";
+
+            var head = new Dictionary<string, string>();
+            head["Accesstoken"] = result.AccessToken;
+            head["Appkey"] = "";
+
+            var response = await HttpUtils.GetObjectAsync<ScmListResponse<WpfMenuDto>>(url, body, head);
+            if (response == null)
+            {
+                return false;
+            }
+            if (response.Code != 200)
+            {
+                MessageBox.Show(response.GetMessage());
+                return false;
+            }
+
+            ShowMain(result, response.data);
+            return true;
         }
     }
 }

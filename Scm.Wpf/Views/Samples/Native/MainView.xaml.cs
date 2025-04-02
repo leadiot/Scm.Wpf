@@ -8,9 +8,10 @@ namespace Com.Scm.Wpf.Views.Samples.Native
     /// <summary>
     /// MainView.xaml 的交互逻辑
     /// </summary>
-    public partial class MainView : UserControl, ISearchView
+    public partial class MainView : UserControl, ScmView, ISearchView
     {
-        private SqlSugarClient _Client;
+        private ScmWindow _Owner;
+        private ISqlSugarClient _Client;
         private SearchParamsDvo _Dvo;
         private ScmSearchPageResponse<SearchResultDataDvo> _Response;
 
@@ -19,9 +20,9 @@ namespace Com.Scm.Wpf.Views.Samples.Native
             InitializeComponent();
         }
 
-        public void Init(SqlSugarClient client)
+        public void Init(ScmWindow owner)
         {
-            _Client = client;
+            _Owner = owner;
 
             _Dvo = new SearchParamsDvo();
             this.DataContext = _Dvo;
@@ -36,6 +37,11 @@ namespace Com.Scm.Wpf.Views.Samples.Native
             PgData.Init(this, columns);
 
             FirstPageAsync();
+        }
+
+        public UserControl GetView()
+        {
+            return this;
         }
 
         private void BtAppend_Click(object sender, RoutedEventArgs e)

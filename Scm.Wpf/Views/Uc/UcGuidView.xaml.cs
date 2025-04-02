@@ -1,5 +1,6 @@
 ﻿using Com.Scm.Sys.Menu;
 using Com.Scm.Utils;
+using Com.Scm.Wpf.Dto;
 using HandyControl.Controls;
 using MahApps.Metro.IconPacks;
 using System.Collections.ObjectModel;
@@ -12,6 +13,7 @@ namespace Com.Scm.Wpf.Views.Uc
     /// </summary>
     public partial class UcGuidView : UserControl
     {
+        private ScmWindow _Owner;
         private ObservableCollection<MenuDto> MenuList = new ObservableCollection<MenuDto>();
         private Dictionary<string, List<SideMenuItem>> _MenuItems = new Dictionary<string, List<SideMenuItem>>();
         private List<SideMenuItem> _LastItems;
@@ -23,55 +25,95 @@ namespace Com.Scm.Wpf.Views.Uc
             this.DataContext = this;
         }
 
-        public void Init(ScmClient client)
+        public void Init(ScmWindow owner, List<WpfMenuDto> menuList)
         {
-            var dtoList = client.Menu;
-            foreach (var rootDto in dtoList.Where(a => a.pid == 0).OrderBy(a => a.od))
+            _Owner = owner;
+
+            foreach (var rootDto in menuList.Where(a => a.pid == 0).OrderBy(a => a.od))
             {
                 MenuList.Add(rootDto);
 
-                var itemList = dtoList.Where(a => a.pid == rootDto.id).OrderBy(a => a.od).ToList();
+                var itemList = menuList.Where(a => a.pid == rootDto.id).OrderBy(a => a.od).ToList();
                 if (itemList.Count < 1)
                 {
                     continue;
                 }
 
-                var items = new List<MenuDto>();
+                //var items = new List<WpfMenuDto>();
                 var menus = new List<SideMenuItem>();
                 foreach (var itemDto in itemList)
                 {
-                    items.Add(itemDto);
+                    //items.Add(itemDto);
 
                     var menu = new SideMenuItem();
                     menu.Header = itemDto.namec;
                     menu.Icon = GetIcon(itemDto.icon);
+                    menu.Tag = itemDto;
                     MbMenu.Items.Add(menu);
                     menus.Add(menu);
 
-                    GenMenu(menu, itemDto, dtoList);
+                    var qty = GenMenu(menu, itemDto, menuList);
+                    if (qty == 0)
+                    {
+                        menu.Selected += Menu_Selected;
+                    }
                 }
-                rootDto.children = items;
+                //rootDto.children = items;
                 _MenuItems[rootDto.codec] = menus;
             }
 
             LvMenu.ItemsSource = MenuList;
         }
 
-        private void GenMenu(SideMenuItem menu, MenuDto parent, List<MenuDto> list)
+        private int GenMenu(SideMenuItem parentMenu, WpfMenuDto parentDto, List<WpfMenuDto> list)
         {
-            var subList = list.Where(a => a.pid == parent.id).OrderBy(a => a.od).ToList();
+            var subList = list.Where(a => a.pid == parentDto.id).OrderBy(a => a.od).ToList();
             if (subList.Count < 1)
+            {
+                return 0;
+            }
+
+            var items = new List<WpfMenuDto>();
+            foreach (var itemDto in subList)
+            {
+                items.Add(itemDto);
+
+                var menu = new SideMenuItem();
+                menu.Header = itemDto.namec;
+                menu.Icon = GetIcon(itemDto.icon);
+                menu.Tag = itemDto;
+                parentMenu.Items.Add(menu);
+
+                var qty = GenMenu(menu, itemDto, list);
+                if (qty == 0)
+                {
+                    menu.Selected += Menu_Selected;
+                }
+            }
+            return items.Count;
+        }
+
+        private void Menu_Selected(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var item = sender as SideMenuItem;
+            if (item == null)
             {
                 return;
             }
 
-            var items = new List<MenuDto>();
-            foreach (var dto in subList)
+            var dto = item.Tag as WpfMenuDto;
+            if (dto == null)
             {
-                items.Add(dto);
-
-                GenMenu(menu, dto, list);
+                return;
             }
+
+            var action = dto.Action;
+            if (action == null)
+            {
+                return;
+            }
+
+            action.Execute(dto);
         }
 
         private PackIconMaterial GetIcon(string icon)

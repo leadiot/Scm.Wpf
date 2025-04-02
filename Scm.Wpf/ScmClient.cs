@@ -1,6 +1,5 @@
 ﻿using Com.Scm.Dvo;
 using Com.Scm.Sys.Config;
-using Com.Scm.Sys.Menu;
 using Com.Scm.Utils;
 using Com.Scm.Wpf.Dto;
 using Com.Scm.Wpf.Dto.Login;
@@ -34,7 +33,7 @@ namespace Com.Scm.Wpf
         /// <summary>
         /// 用户菜单
         /// </summary>
-        public List<MenuDto> Menu { get; private set; }
+        public List<WpfMenuDto> Menu { get; private set; }
 
         public int ErrorCode { get; private set; }
         public string ErrorMessage { get; private set; }
@@ -85,7 +84,7 @@ namespace Com.Scm.Wpf
             head["Accesstoken"] = _AccessToken;
             head["Appkey"] = _AppKey;
 
-            var response = await HttpUtils.GetObjectAsync<ScmListResponse<MenuDto>>(url, body, head);
+            var response = await HttpUtils.GetObjectAsync<ScmListResponse<WpfMenuDto>>(url, body, head);
             if (response == null)
             {
                 return false;

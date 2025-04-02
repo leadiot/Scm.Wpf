@@ -25,6 +25,7 @@ namespace Com.Scm.Wpf.Views.Uc
         private ISearchView _Owner;
         private ScmPageDataDvo _Dvo;
         private List<ColumnInfo> _Columns;
+        private List<int> _PageItems = new List<int> { 10, 20, 30, 50, 100, 200, 300, 500 };
 
         public UcPageData()
         {
@@ -39,6 +40,8 @@ namespace Com.Scm.Wpf.Views.Uc
         public void Init(ISearchView owner, List<ColumnInfo> columns, bool autoData = true)
         {
             _Owner = owner;
+
+            CbItems.ItemsSource = _PageItems;
 
             _Dvo = new ScmPageDataDvo();
             this.DataContext = _Dvo;
@@ -301,9 +304,9 @@ namespace Com.Scm.Wpf.Views.Uc
         {
             var dialog = new SaveFileDialog();
             //dialog.CheckFileExists = true;
-            dialog.Filter = "CSV (*.csv)|*.csv|SQL (*.sql)|*.sql|JSON (*.json)|*.json|Excel 文件(*.xlsx)|*.xlsx|Excel 97-2003 文件(*.xls)|*.xls";
-            var result = dialog.ShowDialog();
-            if (!result.Value)
+            dialog.Filter = "Excel 文件(*.xlsx)|*.xlsx|Excel 97-2003 文件(*.xls)|*.xls|CSV (*.csv)|*.csv|SQL (*.sql)|*.sql|JSON (*.json)|*.json";
+            var result = dialog.ShowDialog().Value;
+            if (!result)
             {
                 return;
             }
@@ -317,27 +320,34 @@ namespace Com.Scm.Wpf.Views.Uc
                 }
                 catch (Exception exp)
                 {
+                    Growl.Error(exp.Message);
                     // 文件删除异常
                     return;
                 }
             }
 
+            result = false;
             if (fileName.EndsWith(".json"))
             {
-                await ExportJson(DgGrid.ItemsSource, _Columns, fileName);
-                return;
+                result = await ExportJson(DgGrid.ItemsSource, _Columns, fileName);
             }
-            if (fileName.EndsWith(".csv"))
+            else if (fileName.EndsWith(".csv"))
             {
-                await ExportCsv(DgGrid.ItemsSource, _Columns, fileName);
-                return;
+                result = await ExportCsv(DgGrid.ItemsSource, _Columns, fileName);
             }
-            if (fileName.EndsWith(".sql"))
+            else if (fileName.EndsWith(".sql"))
             {
-                await ExportSql(DgGrid.ItemsSource, _Columns, fileName);
-                return;
+                result = await ExportSql(DgGrid.ItemsSource, _Columns, fileName);
             }
-            await ExportXls(DgGrid.ItemsSource, _Columns, fileName);
+            else
+            {
+                result = await ExportXls(DgGrid.ItemsSource, _Columns, fileName);
+            }
+
+            if (result)
+            {
+                Growl.Success("数据导出成功！");
+            }
         }
 
         /// <summary>
@@ -681,6 +691,16 @@ namespace Com.Scm.Wpf.Views.Uc
             _Owner.FixedPageAsync(_Dvo.PageIndex);
         }
         #endregion
+
+        /// <summary>
+        /// 页数量调整
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CbCount_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 
     public partial class ScmPageDataDvo : ScmDvo
@@ -689,7 +709,7 @@ namespace Com.Scm.Wpf.Views.Uc
         private int pageIndex;
 
         [ObservableProperty]
-        private int pageItems;
+        private int pageItems = 20;
 
         [ObservableProperty]
         private int view;
@@ -699,5 +719,10 @@ namespace Com.Scm.Wpf.Views.Uc
 
         [ObservableProperty]
         private int totalItems;
+
+        public string PagesInfo
+        {
+            get { return $"共 {TotalPages} 页"; }
+        }
     }
 }
