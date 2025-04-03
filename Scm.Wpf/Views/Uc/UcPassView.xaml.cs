@@ -61,7 +61,7 @@ namespace Com.Scm.Uc
                 return;
             }
 
-            var url = AppSettings.EnvConfig.GetUrl("/operator/login");
+            var url = AppSettings.EnvConfig.GetApiUrl("/operator/login");
 
             var response = await HttpUtils.PostJsonObjectAsync<ScmDataResponse<LoginResult>>(url, body.ToJsonString());
             if (response == null)

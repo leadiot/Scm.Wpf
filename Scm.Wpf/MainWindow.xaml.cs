@@ -1,11 +1,12 @@
 ﻿using Com.Scm.Dvo;
 using Com.Scm.Sys.Config;
-using Com.Scm.Sys.Menu;
 using Com.Scm.Utils;
 using Com.Scm.Wpf.Actions;
+using Com.Scm.Wpf.Config;
 using Com.Scm.Wpf.Dto;
 using Com.Scm.Wpf.Dto.Login;
 using Com.Scm.Wpf.Views.Home;
+using HandyControl.Controls;
 using System.Reflection;
 
 namespace Com.Scm.Wpf;
@@ -19,15 +20,6 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     private HomeView _HomeView;
 
     /// <summary>
-    /// 服务地址
-    /// </summary>
-    public const string SERVER_URL = "http://api.c-scm.net";
-    /// <summary>
-    /// 接口地址
-    /// </summary>
-    public const string API_URL = SERVER_URL + "/api";
-
-    /// <summary>
     /// 访问凭据
     /// </summary>
     private string _AccessToken;
@@ -39,13 +31,19 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     /// <summary>
     /// 当前用户
     /// </summary>
-    public ScmUserInfo User { get; private set; }
+    public ScmUserInfo UserInfo { get; private set; }
     /// <summary>
     /// 用户菜单
     /// </summary>
-    public List<MenuDto> Menu { get; private set; }
+    public List<WpfMenuDto> MenuList { get; private set; }
 
+    /// <summary>
+    /// 数据字典
+    /// </summary>
     private static Dictionary<string, List<ResOptionDvo>> _Dic = new Dictionary<string, List<ResOptionDvo>>();
+    /// <summary>
+    /// 系统配置
+    /// </summary>
     private static Dictionary<string, ConfigDto> _Cfg = new Dictionary<string, ConfigDto>();
 
     public MainWindow()
@@ -53,9 +51,16 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
         InitializeComponent();
     }
 
+    /// <summary>
+    /// 初始化
+    /// </summary>
+    /// <param name="result"></param>
+    /// <param name="menus"></param>
     public void Init(LoginResult result, List<WpfMenuDto> menus)
     {
-        //this.DataContext = new MenuDvo();
+        UserInfo = result.UserInfo;
+        MenuList = menus;
+
         foreach (var menu in menus)
         {
             menu.Action = GetAction(menu);
@@ -71,6 +76,11 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
         ShowHomeView();
     }
 
+    /// <summary>
+    /// 事件实例化
+    /// </summary>
+    /// <param name="dto"></param>
+    /// <returns></returns>
     public AAction GetAction(WpfMenuDto dto)
     {
         var className = dto.uri;
@@ -138,6 +148,18 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
         }
     }
 
+    private Dictionary<string, string> GetHeader(Dictionary<string, string> head)
+    {
+        if (head == null)
+        {
+            head = new Dictionary<string, string>();
+        }
+
+        head["Accesstoken"] = _AccessToken;
+        head["Appkey"] = _AppKey;
+        return head;
+    }
+
     /// <summary>
     /// 获取字典
     /// </summary>
@@ -159,9 +181,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
         var body = new Dictionary<string, string>();
         //body["client"] = "20";
 
-        var head = new Dictionary<string, string>();
-        head["Accesstoken"] = _AccessToken;
-        head["Appkey"] = _AppKey;
+        var head = GetHeader(null);
 
         var response = await HttpUtils.GetObjectAsync<ScmListResponse<ResOptionDvo>>(url, body, head);
         if (response == null)
@@ -203,9 +223,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
         var body = new Dictionary<string, string>();
         //body["client"] = "20";
 
-        var head = new Dictionary<string, string>();
-        head["Accesstoken"] = _AccessToken;
-        head["Appkey"] = _AppKey;
+        var head = GetHeader(null);
 
         var response = await HttpUtils.GetObjectAsync<ScmDataResponse<ConfigDto>>(url, body, head);
         if (response == null)
@@ -227,46 +245,44 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     }
 
     /// <summary>
-    /// POST请求
+    /// GET请求
     /// </summary>
     /// <param name="url"></param>
     /// <param name="body"></param>
-    /// <param name="head"></param>
     /// <returns></returns>
-    public async Task<string> PostFormStringAsync(string url, Dictionary<string, string> body = null, Dictionary<string, string> head = null)
+    public async Task<T> GetObjectAsync<T>(string url, Dictionary<string, string> body = null, Dictionary<string, string> head = null)
     {
         url = GenUrl(url);
 
-        if (head == null)
-        {
-            head = new Dictionary<string, string>();
-        }
-        head["Accesstoken"] = _AccessToken;
-        head["Appkey"] = _AppKey;
+        head = GetHeader(head);
 
-        string json = body != null ? body.ToJsonString() : null;
-        return await HttpUtils.PostJsonStringAsync(url, json, head);
+        var response = await HttpUtils.GetObjectAsync<ScmDataResponse<T>>(url, body, head);
+        if (response == null)
+        {
+            return default;
+        }
+        if (response.Success)
+        {
+            ShowAlert(response.Message);
+            return default;
+        }
+
+        return response.data;
     }
 
     /// <summary>
-    /// POST请求
+    /// GET请求
     /// </summary>
     /// <param name="url"></param>
     /// <param name="body"></param>
-    /// <param name="head"></param>
     /// <returns></returns>
-    public async Task<string> PostJsonStringAsync(string url, string body = null, Dictionary<string, string> head = null)
+    public async Task<string> GetStringAsync(string url, Dictionary<string, string> body = null, Dictionary<string, string> head = null)
     {
         url = GenUrl(url);
 
-        if (head == null)
-        {
-            head = new Dictionary<string, string>();
-        }
-        head["Accesstoken"] = _AccessToken;
-        head["Appkey"] = _AppKey;
+        head = GetHeader(head);
 
-        return await HttpUtils.PostJsonStringAsync(url, null, head);
+        return await HttpUtils.GetStringAsync(url, body, head);
     }
 
     /// <summary>
@@ -280,15 +296,9 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     {
         url = GenUrl(url);
 
-        if (head == null)
-        {
-            head = new Dictionary<string, string>();
-        }
-        head["Accesstoken"] = _AccessToken;
-        head["Appkey"] = _AppKey;
+        head = GetHeader(head);
 
-        var json = body != null ? body.ToJsonString() : null;
-        var response = await HttpUtils.PostJsonObjectAsync<ScmDataResponse<T>>(url, json, head);
+        var response = await HttpUtils.PostFormObjectAsync<ScmDataResponse<T>>(url, body, head);
         if (response == null)
         {
             return default;
@@ -309,16 +319,28 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     /// <param name="body"></param>
     /// <param name="head"></param>
     /// <returns></returns>
+    public async Task<string> PostFormStringAsync(string url, Dictionary<string, string> body = null, Dictionary<string, string> head = null)
+    {
+        url = GenUrl(url);
+
+        head = GetHeader(head);
+
+        string json = body != null ? body.ToJsonString() : null;
+        return await HttpUtils.PostJsonStringAsync(url, json, head);
+    }
+
+    /// <summary>
+    /// POST请求
+    /// </summary>
+    /// <param name="url"></param>
+    /// <param name="body"></param>
+    /// <param name="head"></param>
+    /// <returns></returns>
     public async Task<T> PostJsonObjectAsync<T>(string url, string body = null, Dictionary<string, string> head = null)
     {
         url = GenUrl(url);
 
-        if (head == null)
-        {
-            head = new Dictionary<string, string>();
-        }
-        head["Accesstoken"] = _AccessToken;
-        head["Appkey"] = _AppKey;
+        head = GetHeader(head);
 
         var response = await HttpUtils.PostJsonObjectAsync<ScmDataResponse<T>>(url, body, head);
         if (response == null)
@@ -335,58 +357,25 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     }
 
     /// <summary>
-    /// GET请求
+    /// POST请求
     /// </summary>
     /// <param name="url"></param>
     /// <param name="body"></param>
+    /// <param name="head"></param>
     /// <returns></returns>
-    public async Task<string> GetFormStringAsync(string url, Dictionary<string, string> body = null, Dictionary<string, string> head = null)
+    public async Task<string> PostJsonStringAsync(string url, string body = null, Dictionary<string, string> head = null)
     {
         url = GenUrl(url);
 
-        if (head == null)
-        {
-            head = new Dictionary<string, string>();
-        }
-        head["Accesstoken"] = _AccessToken;
-        head["Appkey"] = _AppKey;
+        head = GetHeader(head);
 
-        return await HttpUtils.GetStringAsync(url, body, head);
+        return await HttpUtils.PostJsonStringAsync(url, null, head);
     }
-
-    /// <summary>
-    /// GET请求
-    /// </summary>
-    /// <param name="url"></param>
-    /// <param name="body"></param>
-    /// <returns></returns>
-    public async Task<T> GetFormObjectAsync<T>(string url, Dictionary<string, string> body = null, Dictionary<string, string> head = null)
-    {
-        url = GenUrl(url);
-
-        if (head == null)
-        {
-            head = new Dictionary<string, string>();
-        }
-        head["Accesstoken"] = _AccessToken;
-        head["Appkey"] = _AppKey;
-
-        var response = await HttpUtils.GetObjectAsync<ScmDataResponse<T>>(url, body, head);
-        if (response == null)
-        {
-            return default;
-        }
-        if (response.Success)
-        {
-            ShowAlert(response.Message);
-            return default;
-        }
-
-        return response.data;
-    }
-
     #endregion
 
+    /// <summary>
+    /// 显示首页
+    /// </summary>
     private void ShowHomeView()
     {
         GdView.Children.Clear();
@@ -401,12 +390,17 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
 
     protected string GenUrl(string url)
     {
-        return API_URL + url;
+        return AppSettings.EnvConfig.GetApiUrl(url);
     }
 
+    /// <summary>
+    /// 显示提示（标签，不需要交互）
+    /// </summary>
+    /// <param name="message"></param>
     public void ShowInfo(string message)
     {
-
+        LogUtils.Info("ShowInfo:" + message);
+        UcInfo.ShowInfo(message);
     }
 
     /// <summary>
@@ -414,7 +408,8 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     /// </summary>
     public void ShowToast(string message)
     {
-
+        LogUtils.Info("ShowToast:" + message);
+        Growl.Info(message);
     }
 
     /// <summary>
@@ -422,6 +417,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     /// </summary>
     public void ShowAlert(string message)
     {
-
+        LogUtils.Info("ShowAlert:" + message);
+        MessageBox.Show(message);
     }
 }

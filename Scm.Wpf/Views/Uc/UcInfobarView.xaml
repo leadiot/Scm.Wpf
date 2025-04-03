@@ -13,8 +13,8 @@
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
-        <TextBlock x:Name="LcInfo" Grid.Column="0" HorizontalAlignment="Stretch"/>
+        <TextBlock x:Name="LcInfo" Grid.Column="0" Text="{Binding Path=Info}" HorizontalAlignment="Stretch"/>
         <hc:Divider Grid.Column="1" Orientation="Vertical"/>
-        <TextBlock x:Name="LcTime" Grid.Column="2" Padding="5"/>
+        <TextBlock x:Name="LcTime" Grid.Column="2" Text="{Binding Path=Time}" Padding="5"/>
     </Grid>
 </UserControl>

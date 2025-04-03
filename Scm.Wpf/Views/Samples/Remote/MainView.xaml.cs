@@ -143,7 +143,7 @@ namespace Com.Scm.Wpf.Views.Samples.Remote
         public async void ReloadPageAsync()
         {
             var body = _Dvo.ToDictionary();
-            _Response = await _Owner.GetFormObjectAsync<ScmSearchPageResponse<SearchResultDataDvo>>("/urposition/pages", body);
+            _Response = await _Owner.GetObjectAsync<ScmSearchPageResponse<SearchResultDataDvo>>("/urposition/pages", body);
             //if (!_Response.Success)
             //{
             //    return;
