@@ -25,6 +25,7 @@ namespace Com.Scm.Wpf.Views.Uc
                 var menu = new MenuItem();
                 menu.Header = itemDto.namec;
                 menu.Icon = GetIcon(itemDto.icon);
+                menu.Tag = itemDto;
                 MbMenu.Items.Add(menu);
 
                 GenMenu(menu, itemDto, menuList);
@@ -50,7 +51,7 @@ namespace Com.Scm.Wpf.Views.Uc
                 menu.Tag = itemDto;
                 parent.Items.Add(menu);
 
-                var qty = GenMenu(parent, itemDto, list);
+                var qty = GenMenu(menu, itemDto, list);
                 if (qty == 0)
                 {
                     menu.Click += Menu_Click;
@@ -93,7 +94,9 @@ namespace Com.Scm.Wpf.Views.Uc
                     return new PackIconMaterial { Kind = kind };
                 }
             }
-            return new PackIconMaterial { Kind = PackIconMaterialKind.Menu };
+
+            return null;
+            //return new PackIconMaterial { Kind = PackIconMaterialKind.None };
         }
     }
 }

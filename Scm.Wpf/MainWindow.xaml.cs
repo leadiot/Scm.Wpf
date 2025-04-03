@@ -62,7 +62,8 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
         }
 
         UcMenu.Init(this, menus);
-        UcGuid.Init(this, menus);
+        //UcGuid.Init(this, menus);
+        UcGuid.Visibility = System.Windows.Visibility.Collapsed;
         UcInfo.Init();
 
         Show();
@@ -243,6 +244,8 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
         head["Accesstoken"] = _AccessToken;
         head["Appkey"] = _AppKey;
 
+        //string json = body != null ? body.ToJsonString() : null;
+        //return await HttpUtils.PostJsonStringAsync(url, json, head);
         return await HttpUtils.PostJsonStringAsync(url, body, head);
     }
 
@@ -285,7 +288,8 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
         head["Accesstoken"] = _AccessToken;
         head["Appkey"] = _AppKey;
 
-        var response = await HttpUtils.PostJsonObjectAsync<ScmDataResponse<T>>(url, body, head);
+        var json = body != null ? body.ToJsonString() : null;
+        var response = await HttpUtils.PostJsonObjectAsync<ScmDataResponse<T>>(url, json, head);
         if (response == null)
         {
             return default;

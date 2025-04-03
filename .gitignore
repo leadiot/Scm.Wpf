@@ -26,3 +26,4 @@ PublishProfiles/
 /net/Scm.Api/dev/
 /net/Scm.Api/quartz/settings/logs/
 /net/Scm.Api/Properties/PublishProfiles/FolderProfile.pubxml.user
+/Scm.Common.Http
