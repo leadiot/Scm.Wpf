@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Com.Scm.Wpf.Views.Tasks
 {
-    public partial class TaskDvo : ScmDvo
+    public partial class MainDvo : ScmDvo
     {
         public ObservableCollection<ATask> TaskList = new ObservableCollection<ATask>();
 

@@ -244,9 +244,8 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
         head["Accesstoken"] = _AccessToken;
         head["Appkey"] = _AppKey;
 
-        //string json = body != null ? body.ToJsonString() : null;
-        //return await HttpUtils.PostJsonStringAsync(url, json, head);
-        return await HttpUtils.PostJsonStringAsync(url, body, head);
+        string json = body != null ? body.ToJsonString() : null;
+        return await HttpUtils.PostJsonStringAsync(url, json, head);
     }
 
     /// <summary>

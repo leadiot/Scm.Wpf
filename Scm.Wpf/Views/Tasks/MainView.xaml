@@ -10,7 +10,13 @@
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <ListBox Grid.Column="0" Width="140" ItemsSource="{Binding Path=TaskList}" SelectedItem="{Binding Path=Task}"></ListBox>
+        <ListBox Grid.Column="0" Width="140" ItemsSource="{Binding Path=TaskList}" SelectedItem="{Binding Path=Task}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Path=Name}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
         <DockPanel Grid.Column="1">
             <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Right">
                 <Button x:Name="BtRun" Content="运行" Click="BtRun_Click"/>

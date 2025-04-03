@@ -9,7 +9,7 @@ namespace Com.Scm.Wpf.Views.Tasks
     public partial class MainView : UserControl, ScmView
     {
         private ScmWindow _Owner;
-        private TaskDvo _Dvo;
+        private MainDvo _Dvo;
 
         public MainView()
         {
@@ -20,7 +20,7 @@ namespace Com.Scm.Wpf.Views.Tasks
         {
             _Owner = owner;
 
-            _Dvo = new TaskDvo();
+            _Dvo = new MainDvo();
             this.DataContext = _Dvo;
         }
 
