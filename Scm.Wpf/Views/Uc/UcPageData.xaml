@@ -54,9 +54,6 @@
                       Background="#FAFAFA"
                       Width="auto"
                       RowHeaderWidth="40">
-                <DataGrid.ColumnHeaderStyle>
-                    <Style></Style>
-                </DataGrid.ColumnHeaderStyle>
             </DataGrid>
         </Grid>
     </DockPanel>

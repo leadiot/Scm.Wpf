@@ -59,6 +59,8 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     public void Init(LoginResult result, List<WpfMenuDto> menus)
     {
         UserInfo = result.UserInfo;
+        _AccessToken = result.AccessToken;
+        _AppKey = "";
         MenuList = menus;
 
         foreach (var menu in menus)
@@ -261,7 +263,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
         {
             return default;
         }
-        if (response.Success)
+        if (!response.Success)
         {
             ShowAlert(response.Message);
             return default;
@@ -303,7 +305,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
         {
             return default;
         }
-        if (response.Success)
+        if (!response.Success)
         {
             ShowAlert(response.Message);
             return default;
@@ -347,7 +349,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
         {
             return default;
         }
-        if (response.Success)
+        if (!response.Success)
         {
             ShowAlert(response.Message);
             return default;

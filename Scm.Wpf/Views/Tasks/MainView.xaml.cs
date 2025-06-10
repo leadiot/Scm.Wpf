@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Com.Scm.Wpf.Views.Tasks.CdPost;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Com.Scm.Wpf.Views.Tasks
@@ -31,11 +32,12 @@ namespace Com.Scm.Wpf.Views.Tasks
 
         private void BtRun_Click(object sender, RoutedEventArgs e)
         {
-            var task = _Dvo.Task;
-            if (task == null)
-            {
-                return;
-            }
+            //var task = _Dvo.Task;
+            //if (task == null)
+            //{
+            //    return;
+            //}
+            var task = new CdPostTask();
 
             System.Threading.Tasks.Task.Run((Action)task.Run);
         }
