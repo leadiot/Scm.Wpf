@@ -1,4 +1,4 @@
-﻿using Com.Scm.Dvo;
+﻿using Com.Scm.Wpf.Dvo;
 
 namespace Com.Scm.Wpf.Views.Samples.Remote
 {

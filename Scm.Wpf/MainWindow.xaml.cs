@@ -1,10 +1,11 @@
-﻿using Com.Scm.Dvo;
+﻿using Com.Scm.Api;
 using Com.Scm.Sys.Config;
 using Com.Scm.Utils;
 using Com.Scm.Wpf.Actions;
 using Com.Scm.Wpf.Config;
 using Com.Scm.Wpf.Dto;
 using Com.Scm.Wpf.Dto.Login;
+using Com.Scm.Wpf.Dvo;
 using Com.Scm.Wpf.Views.Home;
 using HandyControl.Controls;
 using System.Reflection;
@@ -185,7 +186,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
 
         var head = GetHeader(null);
 
-        var response = await HttpUtils.GetObjectAsync<ScmListResponse<ResOptionDvo>>(url, body, head);
+        var response = await HttpUtils.GetObjectAsync<ScmApiListResponse<ResOptionDvo>>(url, body, head);
         if (response == null)
         {
             return null;
@@ -196,7 +197,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
             return null;
         }
 
-        var dic = response.data;
+        var dic = response.Data;
         if (useCache)
         {
             _Dic[key] = dic;
@@ -227,7 +228,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
 
         var head = GetHeader(null);
 
-        var response = await HttpUtils.GetObjectAsync<ScmDataResponse<ConfigDto>>(url, body, head);
+        var response = await HttpUtils.GetObjectAsync<ScmApiDataResponse<ConfigDto>>(url, body, head);
         if (response == null)
         {
             return null;
@@ -238,7 +239,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
             return null;
         }
 
-        var dic = response.data;
+        var dic = response.Data;
         if (useCache)
         {
             _Cfg[key] = dic;
@@ -258,7 +259,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
 
         head = GetHeader(head);
 
-        var response = await HttpUtils.GetObjectAsync<ScmDataResponse<T>>(url, body, head);
+        var response = await HttpUtils.GetObjectAsync<ScmApiDataResponse<T>>(url, body, head);
         if (response == null)
         {
             return default;
@@ -269,7 +270,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
             return default;
         }
 
-        return response.data;
+        return response.Data;
     }
 
     /// <summary>
@@ -300,7 +301,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
 
         head = GetHeader(head);
 
-        var response = await HttpUtils.PostFormObjectAsync<ScmDataResponse<T>>(url, body, head);
+        var response = await HttpUtils.PostFormObjectAsync<ScmApiDataResponse<T>>(url, body, head);
         if (response == null)
         {
             return default;
@@ -311,7 +312,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
             return default;
         }
 
-        return response.data;
+        return response.Data;
     }
 
     /// <summary>
@@ -344,7 +345,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
 
         head = GetHeader(head);
 
-        var response = await HttpUtils.PostJsonObjectAsync<ScmDataResponse<T>>(url, body, head);
+        var response = await HttpUtils.PostJsonObjectAsync<ScmApiDataResponse<T>>(url, body, head);
         if (response == null)
         {
             return default;
@@ -355,7 +356,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
             return default;
         }
 
-        return response.data;
+        return response.Data;
     }
 
     /// <summary>

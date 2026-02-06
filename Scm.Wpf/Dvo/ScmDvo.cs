@@ -67,8 +67,8 @@ namespace Com.Scm.Wpf.Dvo
 
     public class ScmDataDvo : ScmDvo
     {
-        private ScmStatusEnum _status;
-        public ScmStatusEnum row_status { get { return _status; } set { SetProperty(ref _status, value); } }
+        private ScmRowStatusEnum _status;
+        public ScmRowStatusEnum row_status { get { return _status; } set { SetProperty(ref _status, value); } }
 
         public long update_time { get; set; }
         public long update_user { get; set; }
@@ -121,8 +121,8 @@ namespace Com.Scm.Wpf.Dvo
         private bool isChecked;
         public bool IsChecked { get { return isChecked; } set { SetProperty(ref isChecked, value); } }
 
-        private ScmStatusEnum _status;
-        public ScmStatusEnum row_status { get { return _status; } set { SetProperty(ref _status, value); } }
+        private ScmRowStatusEnum _status;
+        public ScmRowStatusEnum row_status { get { return _status; } set { SetProperty(ref _status, value); } }
 
         private long _update_time;
         public long update_time { get { return _update_time; } set { _update_time = value; } }
@@ -138,11 +138,11 @@ namespace Com.Scm.Wpf.Dvo
         {
             get
             {
-                return _status == ScmStatusEnum.Enabled;
+                return _status == ScmRowStatusEnum.Enabled;
             }
             set
             {
-                SetProperty(ref _status, value ? ScmStatusEnum.Enabled : ScmStatusEnum.Disabled);
+                SetProperty(ref _status, value ? ScmRowStatusEnum.Enabled : ScmRowStatusEnum.Disabled);
             }
         }
 

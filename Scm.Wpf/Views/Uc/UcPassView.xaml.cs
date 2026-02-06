@@ -1,4 +1,5 @@
-﻿using Com.Scm.Oidc;
+﻿using Com.Scm.Api;
+using Com.Scm.Oidc;
 using Com.Scm.Utils;
 using Com.Scm.Wpf.Config;
 using Com.Scm.Wpf.Dto.Login;
@@ -55,15 +56,17 @@ namespace Com.Scm.Uc
 
         private async void DoLoginAsync()
         {
+            _Dvo.Pass = TbPass.Password;
+
             var body = _Dvo.GetLogin();
             if (body == null)
             {
                 return;
             }
 
-            var url = AppSettings.EnvConfig.GetApiUrl("/operator/login");
+            var url = AppSettings.EnvConfig.GetApiUrl("/operator/SignIn");
 
-            var response = await HttpUtils.PostJsonObjectAsync<ScmDataResponse<LoginResult>>(url, body.ToJsonString());
+            var response = await HttpUtils.PostJsonObjectAsync<ScmApiDataResponse<LoginResult>>(url, body.ToJsonString());
             if (response == null)
             {
                 return;
@@ -74,7 +77,13 @@ namespace Com.Scm.Uc
                 return;
             }
 
-            _Owner.Load(response.data);
+            var data = response.Data;
+            if (!data.IsSuccess())
+            {
+                MessageBox.Show(data.GetMessage());
+                return;
+            }
+            _Owner.Load(data);
         }
     }
 }

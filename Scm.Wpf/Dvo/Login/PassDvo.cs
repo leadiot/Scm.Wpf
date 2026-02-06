@@ -10,8 +10,16 @@ namespace Com.Scm.Wpf.Dvo.Login
     {
         public string Key { get; set; }
 
+        /// <summary>
+        /// 登录类型
+        /// </summary>
+        private ScmLoginTypeEnum type = ScmLoginTypeEnum.AllUnit;
+
+        /// <summary>
+        /// 登录模式
+        /// </summary>
         [ObservableProperty]
-        private LoginTypeEnum type = LoginTypeEnum.ByPass;
+        private ScmLoginModeEnum mode = ScmLoginModeEnum.Pwd;
 
         [Required(ErrorMessage = "登录用户不能为空！")]
         [ObservableProperty]
@@ -60,13 +68,23 @@ namespace Com.Scm.Wpf.Dvo.Login
                 return null;
             }
 
+            var user = this.User + "@dev";
+            var unit = "";
+            var tmp = user.Split('@');
+            if (tmp.Length > 1)
+            {
+                user = tmp[0];
+                unit = tmp[1];
+            }
             var time = TimeUtils.GetUnixTime();
-            var pass = TextUtils.Sha(this.Pass);
+            var pass = SecUtils.Sha256(this.Pass);
 
             var body = new Dictionary<string, string>();
-            body["type"] = ((int)Type).ToString();
-            body["user"] = this.User;
-            body["pass"] = TextUtils.Sha(pass + '@' + time);
+            body["type"] = ((int)type).ToString();
+            body["mode"] = ((int)Mode).ToString();
+            body["user"] = user;
+            body["unit"] = unit;
+            body["pass"] = SecUtils.Sha256(pass + '@' + time);
             body["time"] = time.ToString();
             body["key"] = this.Key;
             body["code"] = this.Code;

@@ -50,7 +50,7 @@
                 x:Name="TbPass"
                 Grid.Column="1"
                 Padding="10"
-                Password="C-scm.cn"
+                Password=""
                 ShowEyeButton="True"
                 HorizontalAlignment="Stretch"
                 hc:InfoElement.ShowClearButton="True"

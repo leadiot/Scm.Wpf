@@ -48,7 +48,7 @@ namespace Com.Scm.Uc
                 //}
 
                 osp.Icon = osp.GetIconUrl();
-                osp.Tips = $"使用 {osp.Name} 登录";
+                //osp.Tips = $"使用 {osp.Name} 登录";
                 idpList.Add(osp);
             }
             LbOidc.ItemsSource = idpList;

@@ -55,7 +55,7 @@ namespace Com.Scm.Wpf.Views.Samples.Native
             {
                 if (dvo.IsChecked == true)
                 {
-                    dvo.row_status = Enums.ScmStatusEnum.Enabled;
+                    dvo.row_status = Enums.ScmRowStatusEnum.Enabled;
                 }
             }
         }
@@ -66,7 +66,7 @@ namespace Com.Scm.Wpf.Views.Samples.Native
             {
                 if (dvo.IsChecked == true)
                 {
-                    dvo.row_status = Enums.ScmStatusEnum.Disabled;
+                    dvo.row_status = Enums.ScmRowStatusEnum.Disabled;
                 }
             }
         }

@@ -10,7 +10,7 @@ namespace Com.Scm.Wpf.Views.Samples.Native
         private string key;
 
         [ObservableProperty]
-        private ScmStatusEnum status;
+        private ScmRowStatusEnum status;
 
         [ObservableProperty]
         private bool drawer;

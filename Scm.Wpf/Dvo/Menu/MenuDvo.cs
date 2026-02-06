@@ -6,7 +6,7 @@ namespace Com.Scm.Wpf.Dvo.Menu
     {
         public ScmClientTypeEnum client { get; set; }
 
-        public MenuTypesEnum types { get; set; }
+        public ScmMenuTypesEnum types { get; set; }
 
         public string lang { get; set; }
 

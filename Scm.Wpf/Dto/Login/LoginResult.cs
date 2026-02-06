@@ -1,9 +1,11 @@
-﻿namespace Com.Scm.Wpf.Dto.Login
+﻿using Com.Scm.Api;
+
+namespace Com.Scm.Wpf.Dto.Login
 {
     /// <summary>
     /// 
     /// </summary>
-    public class LoginResult : ScmResponse
+    public class LoginResult : ScmApiResponse
     {
         /// <summary>
         /// 

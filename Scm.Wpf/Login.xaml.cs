@@ -1,4 +1,5 @@
-﻿using Com.Scm.Oidc;
+﻿using Com.Scm.Api;
+using Com.Scm.Oidc;
 using Com.Scm.Oidc.Response;
 using Com.Scm.Utils;
 using Com.Scm.Wpf;
@@ -129,10 +130,10 @@ namespace Com.Scm
             body["lang"] = lang ?? "zh-cn";
 
             var head = new Dictionary<string, string>();
-            head["Accesstoken"] = result.AccessToken;
+            head["ApiToken"] = result.AccessToken;
             head["Appkey"] = "";
 
-            var response = await HttpUtils.GetObjectAsync<ScmListResponse<WpfMenuDto>>(url, body, head);
+            var response = await HttpUtils.GetObjectAsync<ScmApiListResponse<WpfMenuDto>>(url, body, head);
             if (response == null)
             {
                 return false;
@@ -143,7 +144,7 @@ namespace Com.Scm
                 return false;
             }
 
-            ShowMain(result, response.data);
+            ShowMain(result, response.Data);
             return true;
         }
     }
