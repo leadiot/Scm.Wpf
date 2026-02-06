@@ -1,0 +1,42 @@
+﻿<hc:Window
+    x:Class="Com.Scm.Views.MessageWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:hc="https://handyorg.github.io/handycontrol"
+    mc:Ignorable="d"
+    Title="提示"
+    ShowInTaskbar="False"
+    ResizeMode="NoResize"
+    Icon="/Resources/logo.ico"
+    WindowStartupLocation="CenterScreen"
+    MinHeight="160"
+    SizeToContent="Height"
+    Width="320" KeyUp="Window_KeyUp">
+    <Border>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Margin="24 16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0">
+                    <iconPacks:PackIconMaterial Name="IpIcon" Kind="Information" Margin="6" Width="24" Height="24" VerticalAlignment="Center" />
+                </Border>
+                <Border Grid.Column="1">
+                    <TextBlock x:Name="TbInfo" TextWrapping="Wrap" FontSize="14" VerticalAlignment="Center">这是消息提示！</TextBlock>
+                </Border>
+            </Grid>
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 16 16">
+                <Button x:Name="BtCancel" Click="BtCancel_Click">取消</Button>
+                <Button x:Name="BtAccept" Click="BtAccept_Click" Margin="12 0 0 0" Style="{StaticResource ButtonPrimary}">确认</Button>
+            </StackPanel>
+        </Grid>
+    </Border>
+</hc:Window>

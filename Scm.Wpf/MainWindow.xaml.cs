@@ -1,8 +1,8 @@
 ﻿using Com.Scm.Api;
+using Com.Scm.Config;
 using Com.Scm.Sys.Config;
 using Com.Scm.Utils;
 using Com.Scm.Wpf.Actions;
-using Com.Scm.Wpf.Config;
 using Com.Scm.Wpf.Dto;
 using Com.Scm.Wpf.Dto.Login;
 using Com.Scm.Wpf.Dvo;
@@ -47,9 +47,21 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     /// </summary>
     private static Dictionary<string, ConfigDto> _Cfg = new Dictionary<string, ConfigDto>();
 
+    private MainViewModel _Dvo;
+
     public MainWindow()
     {
         InitializeComponent();
+    }
+
+    private void LoadTestMenu(List<WpfMenuDto> menuList)
+    {
+        menuList.Add(new WpfMenuDto { id = 1, codec = "1", namec = "test", uri = "" });
+    }
+
+    public async Task Init(AppSettings appSettings, ScmTerminal scmTerminal)
+    {
+
     }
 
     /// <summary>
@@ -63,6 +75,11 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
         _AccessToken = result.AccessToken;
         _AppKey = "";
         MenuList = menus;
+        LoadTestMenu(menus);
+
+        _Dvo = new MainViewModel();
+        _Dvo.Init();
+        this.DataContext = _Dvo;
 
         foreach (var menu in menus)
         {
@@ -72,7 +89,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
         UcMenu.Init(this, menus);
         //UcGuid.Init(this, menus);
         UcGuid.Visibility = System.Windows.Visibility.Collapsed;
-        UcInfo.Init();
+        UcTray.Init();
 
         Show();
 
@@ -403,7 +420,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     public void ShowInfo(string message)
     {
         LogUtils.Info("ShowInfo:" + message);
-        UcInfo.ShowInfo(message);
+        UcTray.ShowInfo(message);
     }
 
     /// <summary>
@@ -422,5 +439,15 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     {
         LogUtils.Info("ShowAlert:" + message);
         MessageBox.Show(message);
+    }
+
+    private void Border_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+
+    }
+
+    private void Button_Click_1(object sender, System.Windows.RoutedEventArgs e)
+    {
+
     }
 }

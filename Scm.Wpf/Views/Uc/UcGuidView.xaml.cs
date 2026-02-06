@@ -5,6 +5,7 @@ using HandyControl.Controls;
 using MahApps.Metro.IconPacks;
 using System.Collections.ObjectModel;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 
 namespace Com.Scm.Wpf.Views.Uc
 {
@@ -166,6 +167,14 @@ namespace Com.Scm.Wpf.Views.Uc
 
             MbMenu.Visibility = System.Windows.Visibility.Visible;
             PiMenu.Kind = PackIconMaterialKind.ChevronDoubleLeft;
+        }
+
+        private void Button_Click_1(object sender, System.Windows.RoutedEventArgs e)
+        {
+            Button btn = (Button)sender;
+            Grid gridtemp = (Grid)btn.Template.FindName("gridtemp", btn);
+            Popup menuPop = (Popup)gridtemp.FindName("menuPop");
+            menuPop.IsOpen = true;
         }
     }
 }

@@ -1,7 +1,10 @@
-﻿using Newtonsoft.Json.Linq;
-using System.IO;
+﻿using Com.Scm.Enums;
+using Com.Scm.Oidc;
+using Com.Scm.Uid.Config;
+using Com.Scm.Utils;
+using Newtonsoft.Json.Linq;
 
-namespace Com.Scm.Wpf.Config
+namespace Com.Scm.Config
 {
     public class AppSettings
     {
@@ -10,13 +13,13 @@ namespace Com.Scm.Wpf.Config
         public static bool Load()
         {
             var file = "appsettings.json";
-            if (!File.Exists(file))
+            if (!FileUtils.ExistsDoc(file))
             {
                 _Settings = JObject.Parse("{}");
                 return false;
             }
 
-            var text = File.ReadAllText(file);
+            var text = FileUtils.ReadText(file);
             if (string.IsNullOrEmpty(text))
             {
                 _Settings = JObject.Parse("{}");
@@ -46,5 +49,87 @@ namespace Com.Scm.Wpf.Config
         }
 
         public static EnvConfig EnvConfig { get; private set; }
+
+        /// <summary>
+        /// 是否自动启动
+        /// </summary>
+        public bool AutoStartup { get; set; } = true;
+
+        /// <summary>
+        /// 启动后主窗口状态
+        /// </summary>
+        public ScmWindowState WindowState { get; set; }
+
+        /// <summary>
+        /// 环境配置
+        /// </summary>
+        public EnvConfig Env { get; set; }
+
+        /// <summary>
+        /// 主键配置
+        /// </summary>
+        public UidConfig Uid { get; set; }
+
+        /// <summary>
+        /// 数据库配置
+        /// </summary>
+        public SqlConfig Sql { get; set; }
+
+        /// <summary>
+        /// OIDC配置
+        /// </summary>
+        public OidcConfig Oidc { get; set; }
+
+        public static AppSettings Instance { get; private set; }
+
+        public void LoadDefault()
+        {
+            if (Env == null)
+            {
+                Env = new EnvConfig();
+                Env.LoadDefault();
+            }
+
+            if (Uid == null)
+            {
+                Uid = new UidConfig();
+                Uid.Type = UidType.SnowFlake;
+            }
+
+            if (Sql == null)
+            {
+                Sql = new SqlConfig();
+                Sql.Type = "Sqlite";
+                Sql.Text = "Data Source=./data/scm.db";
+            }
+
+            if (Oidc == null)
+            {
+                Oidc = new OidcConfig();
+                Oidc.UseTest();
+            }
+        }
+
+        public static bool Load2()
+        {
+            var file = "appsettings.json";
+            if (Com.Scm.Utils.FileUtils.ExistsDoc(file))
+            {
+                var json = Com.Scm.Utils.FileUtils.ReadText(file);
+                Instance = json.AsJsonObject<AppSettings>();
+                return true;
+            }
+
+            Instance = new AppSettings();
+            Instance.LoadDefault();
+            return true;
+        }
+
+        public void Save()
+        {
+            var file = "appsettings.json";
+            var json = this.ToJsonString();
+            Com.Scm.Utils.FileUtils.WriteText(file, json);
+        }
     }
 }

@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="Com.Scm.Wpf.Views.Uc.UcStatistics"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Border  CornerRadius="5" Background="White" Margin="10" Padding="12">
+        <Border.Effect>
+            <DropShadowEffect Color="#F2F2F2" ShadowDepth="10" BlurRadius="10" Opacity="0.4" Direction="270"/>
+        </Border.Effect>
+        <DockPanel>
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                <TextBlock x:Name="TbTitle">123123</TextBlock>
+            </StackPanel>
+            <TextBlock x:Name="TbValue" TextAlignment="Center" VerticalAlignment="Center" FontSize="32" FontWeight="Bold">123123</TextBlock>
+        </DockPanel>
+    </Border>
+</UserControl>

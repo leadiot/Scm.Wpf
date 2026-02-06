@@ -1,20 +1,70 @@
 ﻿<UserControl x:Class="Com.Scm.Wpf.Views.Uc.UcInfobarView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              mc:Ignorable="d" 
-             Height="24"
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="White">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-        </Grid.ColumnDefinitions>
-        <TextBlock x:Name="LcInfo" Grid.Column="0" Text="{Binding Path=Info}" HorizontalAlignment="Stretch"/>
-        <hc:Divider Grid.Column="1" Orientation="Vertical"/>
-        <TextBlock x:Name="LcTime" Grid.Column="2" Text="{Binding Path=Time}" Padding="5"/>
-    </Grid>
+             d:DesignHeight="80" d:DesignWidth="400">
+    <Border BorderThickness="0 0 0 1" BorderBrush="Black" Padding="12 6">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                <ToggleButton IsChecked="True" Command="{Binding ExpandMenuCmd}" Style="{StaticResource ToggleButtonCustom}" hc:StatusSwitchElement.HideUncheckedElement="True">
+                    <hc:StatusSwitchElement.CheckedElement>
+                        <iconPacks:PackIconMaterial Kind="FormatIndentDecrease"/>
+                    </hc:StatusSwitchElement.CheckedElement>
+                    <iconPacks:PackIconMaterial Kind="FormatIndentIncrease"/>
+                </ToggleButton>
+                <Button   
+                Margin="12 0 0 0"
+                Command="{Binding changeContentCmd}"
+                CommandParameter="home">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="Transparent" Name="back">
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <iconPacks:PackIconMaterial Kind="Monitor"/>
+                                                <TextBlock FontSize="15" Text="首页" Foreground="#5a5e66" Margin="5 0 0 0" HorizontalAlignment="Right" VerticalAlignment="Center" ></TextBlock>
+                                            </StackPanel>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="back" Property="Background" Value="#f8f9fb"></Setter>
+                                                <Setter TargetName="back" Property="Opacity" Value="0.5"></Setter>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Image Source="/Assets/Images/avatar.png" Width="40" Height="40" Stretch="Fill">
+                    <Image.Clip>
+                        <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
+                    </Image.Clip>
+                </Image>
+
+                <Button Foreground="#5a5e66"  Click="MinWin_click" Style="{StaticResource ControlBtnStyle}" Visibility="Collapsed">
+                    <iconPacks:PackIconMaterial Kind="WindowMinimize"/>
+                </Button>
+                <Button Foreground="#5a5e66"  Click="MaxWin_click" Style="{StaticResource ControlBtnStyle}" Visibility="Collapsed">
+                    <iconPacks:PackIconMaterial Kind="WindowMaximize"/>
+                </Button>
+                <Button Foreground="#5a5e66"  Click="CloseWin_click"  Style="{StaticResource ControlBtnStyle}" Visibility="Collapsed">
+                    <iconPacks:PackIconMaterial Kind="WindowClose"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Border>
 </UserControl>

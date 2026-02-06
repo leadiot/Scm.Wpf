@@ -1,9 +1,9 @@
 ﻿using Com.Scm.Api;
+using Com.Scm.Config;
 using Com.Scm.Oidc;
 using Com.Scm.Oidc.Response;
 using Com.Scm.Utils;
 using Com.Scm.Wpf;
-using Com.Scm.Wpf.Config;
 using Com.Scm.Wpf.Dto;
 using Com.Scm.Wpf.Dto.Login;
 using System.Diagnostics;

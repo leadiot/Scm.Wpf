@@ -41,7 +41,7 @@ namespace Com.Scm.Wpf.Views.Uc
         {
             _Owner = owner;
 
-            CbItems.ItemsSource = _PageItems;
+            //CbItems.ItemsSource = _PageItems;
 
             _Dvo = new ScmPageDataDvo();
             this.DataContext = _Dvo;

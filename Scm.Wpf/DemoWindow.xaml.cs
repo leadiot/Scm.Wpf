@@ -1,5 +1,5 @@
-﻿using Com.Scm.Utils;
-using Com.Scm.Wpf.Config;
+﻿using Com.Scm.Config;
+using Com.Scm.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CsvHelper;
 using System.Collections.ObjectModel;

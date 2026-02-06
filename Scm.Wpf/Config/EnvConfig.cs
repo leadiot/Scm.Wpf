@@ -1,44 +1,23 @@
-﻿namespace Com.Scm.Wpf.Config
+﻿namespace Com.Scm.Config
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class EnvConfig
     {
-        public string BaseUrl { get; set; } = "http://api.c-scm.net";
+        public string UpgradeFilePath { get; set; }
 
-        public string ApiPath { get; set; } = "/api";
+        public string UpgradeJsonName { get; set; }
 
-        public void Init()
+        public void LoadDefault()
         {
-            if (string.IsNullOrEmpty(BaseUrl))
-            {
-                BaseUrl = "http://api.c-scm.net";
-            }
-            BaseUrl = BaseUrl.Trim().TrimEnd('/');
-
-            if (string.IsNullOrEmpty(ApiPath))
-            {
-                ApiPath = "/api";
-            }
-            ApiPath = ApiPath.Trim().TrimEnd('/');
+            UpgradeFilePath = "Upgrade/Scm.Upgrade.exe";
+            UpgradeJsonName = "Upgrade/Scm.Upgrade.json";
         }
 
-        public string GetApiUrl(string url)
+        public string GetApiUrl(string path)
         {
-            if (string.IsNullOrWhiteSpace(url))
-            {
-                return null;
-            }
-
-            if (url.IndexOf("//") > -1)
-            {
-                return url;
-            }
-
-            if (url[0] != '/')
-            {
-                url = '/' + url;
-            }
-
-            return BaseUrl + ApiPath + url;
+            return "";
         }
     }
 }

@@ -13,14 +13,17 @@ namespace Com.Scm.Wpf.Models
         /// <summary>
         /// 模块名称
         /// </summary>
+        [ObservableProperty]
         private string name;
         /// <summary>
         /// 权限值
         /// </summary>
+        [ObservableProperty]
         private int auth;
         /// <summary>
         /// 模块命名空间
         /// </summary>
+        [ObservableProperty]
         private string typeName;
     }
     /// <summary>

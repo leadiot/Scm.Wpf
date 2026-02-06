@@ -1,0 +1,105 @@
+﻿<hc:Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:hc="https://handyorg.github.io/handycontrol"
+    x:Class="Com.Scm.Views.BindWindow"
+    mc:Ignorable="d"
+    WindowStartupLocation="CenterScreen"
+    Width="280"
+    Height="470"
+    Icon="/Resources/logo.ico"
+    ResizeMode="NoResize"
+    Title="终端绑定">
+    <DockPanel>
+        <Grid Background="Black" DockPanel.Dock="Top">
+            <Image Source="/Resources/bind.png"></Image>
+        </Grid>
+        <StackPanel DockPanel.Dock="Bottom" Margin="12" Orientation="Horizontal" HorizontalAlignment="Center">
+            <TextBlock Text="{Binding Version}"></TextBlock>
+        </StackPanel>
+        <StackPanel>
+            <StackPanel Orientation="Vertical" Margin="24 12">
+                <hc:ElementGroup Name="EgUrl" Margin="0 12">
+                    <hc:ElementGroup.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                            </Grid>
+                        </ItemsPanelTemplate>
+                    </hc:ElementGroup.ItemsPanel>
+                    <Border Style="{StaticResource BorderRegion}" Padding="8">
+                        <iconPacks:PackIconMaterial Kind="Web" Width="16" Height="16" />
+                    </Border>
+                    <hc:TextBox
+                        x:Name="TbHost"
+                        Grid.Column="1"
+                        Padding="10"
+                        Text="{Binding Path=Host,ValidatesOnNotifyDataErrors=True}"
+                        HorizontalAlignment="Stretch"
+                        hc:InfoElement.ShowClearButton="True"
+                        hc:InfoElement.Placeholder="远端路径"/>
+                </hc:ElementGroup>
+                <hc:ElementGroup Name="EgCode" Margin="0 12">
+                    <hc:ElementGroup.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                            </Grid>
+                        </ItemsPanelTemplate>
+                    </hc:ElementGroup.ItemsPanel>
+                    <Border Style="{StaticResource BorderRegion}" Padding="8">
+                        <iconPacks:PackIconMaterial Kind="Account" Width="16" Height="16" />
+                    </Border>
+                    <hc:TextBox
+                        x:Name="TbCode"
+                        Grid.Column="1"
+                        Padding="10"
+                        Text="{Binding Path=Code,ValidatesOnNotifyDataErrors=True}"
+                        HorizontalAlignment="Stretch"
+                        hc:InfoElement.ShowClearButton="True"
+                        hc:InfoElement.Placeholder="终端代码"/>
+                </hc:ElementGroup>
+                <hc:ElementGroup Name="EgPass" Margin="0 12">
+                    <hc:ElementGroup.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                            </Grid>
+                        </ItemsPanelTemplate>
+                    </hc:ElementGroup.ItemsPanel>
+                    <Border Style="{StaticResource BorderRegion}" Padding="8">
+                        <iconPacks:PackIconMaterial Kind="Key" Width="16" Height="16" />
+                    </Border>
+                    <hc:TextBox
+                        x:Name="TbPass"
+                        Grid.Column="1"
+                        Padding="10"
+                        Text="{Binding Path=Pass}"
+                        HorizontalAlignment="Stretch"
+                        hc:InfoElement.ShowClearButton="True"
+                        hc:InfoElement.Placeholder="终端授权"/>
+                </hc:ElementGroup>
+                <hc:ElementGroup Margin="0,12">
+                    <Button
+                        x:Name="BtVerify"
+                        HorizontalAlignment="Stretch"
+                        Style="{StaticResource ButtonPrimary}"
+                        Content="登录"
+                        Click="BtVerify_Click"/>
+                </hc:ElementGroup>
+            </StackPanel>
+        </StackPanel>
+    </DockPanel>
+</hc:Window>

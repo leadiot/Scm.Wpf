@@ -14,28 +14,17 @@ using System.Windows.Shapes;
 namespace Com.Scm.Wpf.Views.Uc
 {
     /// <summary>
-    /// UcInfobarView.xaml 的交互逻辑
+    /// UcStatistics.xaml 的交互逻辑
     /// </summary>
-    public partial class UcInfobarView : UserControl
+    public partial class UcStatistics : UserControl
     {
-        public UcInfobarView()
+        public UcStatistics()
         {
             InitializeComponent();
         }
 
-        private void MinWin_click(object sender, RoutedEventArgs e)
-        {
+        public string Title { get; set; }
 
-        }
-
-        private void MaxWin_click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void CloseWin_click(object sender, RoutedEventArgs e)
-        {
-
-        }
+        public string Value { get; set; }
     }
 }

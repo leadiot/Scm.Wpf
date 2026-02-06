@@ -16,6 +16,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Assets\Images\avatar.png" />
+	  <None Remove="Assets\Images\bg.png" />
+	  <None Remove="Resources\logo.ico" />
+	  <None Remove="Resources\logo.png" />
+	  <None Remove="Resources\splash.png" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Content Include="oidc.ico" />
 	</ItemGroup>
 
@@ -31,6 +39,7 @@
 		<PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
 		<PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
 		<PackageReference Include="SqlSugarCore" Version="5.1.4.211" />
+		<PackageReference Include="System.Management" Version="10.0.2" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -40,9 +49,12 @@
 		<Reference Include="Scm.Common.Dto">
 			<HintPath>..\Libs\netstandard2.0\Scm.Common.Dto.dll</HintPath>
 		</Reference>
-		<Reference Include="Scm.Common.Http">
-			<HintPath>..\Libs\netstandard2.0\Scm.Common.Http.dll</HintPath>
+		<Reference Include="Scm.Common.File">
+			<HintPath>..\Libs\netstandard2.0\Scm.Common.File.dll</HintPath>
 		</Reference>
+    <Reference Include="Scm.Common.Http">
+      <HintPath>..\Libs\netstandard2.0\Scm.Common.Http.dll</HintPath>
+    </Reference>
 		<Reference Include="Scm.Common.Log">
 			<HintPath>..\Libs\netstandard2.0\Scm.Common.Log.dll</HintPath>
 		</Reference>
@@ -58,6 +70,17 @@
 		<Reference Include="Scm.Oidc.Client">
 		  <HintPath>..\Libs\net10.0\Scm.Oidc.Client.dll</HintPath>
 		</Reference>
+		<Reference Include="Scm.Uid">
+		  <HintPath>..\Libs\net10.0\Scm.Uid.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Resource Include="Assets\Images\avatar.png" />
+	  <Resource Include="Assets\Images\bg.png" />
+	  <Resource Include="Resources\logo.ico" />
+	  <Resource Include="Resources\logo.png" />
+	  <Resource Include="Resources\splash.png" />
 	</ItemGroup>
 
 	<ItemGroup>

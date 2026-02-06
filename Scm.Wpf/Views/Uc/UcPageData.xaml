@@ -1,6 +1,5 @@
 ﻿<UserControl x:Class="Com.Scm.Wpf.Views.Uc.UcPageData"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -13,29 +12,13 @@
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <StackPanel Orientation="Horizontal" Grid.Column="0">
-                <Label BorderThickness="0" Content="{Binding Path=PagesInfo, Mode=OneWay}"/>
-                <hc:ElementGroup Margin="5 0 0 0">
-                    <Button x:Name="BtFirst" Click="BtFirst_Click">
-                        <iconPacks:PackIconMaterial Kind="ChevronDoubleLeft" Width="12" Height="12" />
-                    </Button>
-                    <Button x:Name="BtPrev" Click="BtPrev_Click">
-                        <iconPacks:PackIconMaterial Kind="ChevronLeft" Width="12" Height="12" />
-                    </Button>
-                    <TextBox x:Name="TbPage" TextAlignment="Center" Text="{Binding Path=PageIndex}" PreviewKeyDown="TbPage_PreviewKeyDown"/>
-                    <Button x:Name="BtNext" Click="BtNext_Click">
-                        <iconPacks:PackIconMaterial Kind="ChevronRight" Width="12" Height="12" />
-                    </Button>
-                    <Button x:Name="BtEnd" Click="BtEnd_Click">
-                        <iconPacks:PackIconMaterial Kind="ChevronDoubleRight" Width="12" Height="12" />
-                    </Button>
-                </hc:ElementGroup>
-                <ComboBox x:Name="CbItems"
-                          SelectedValue="{Binding Path=PageItems}"
-                          Margin="5 0 0 0"
-                          MinWidth="64"
-                          SelectionChanged="CbCount_SelectionChanged"/>
-            </StackPanel>
+            <hc:Pagination MaxPageCount="10" PageIndex="1" IsJumpEnabled="True" Margin="0">
+                <hc:Interaction.Triggers>
+                    <hc:EventTrigger EventName="PageUpdated">
+                        <hc:EventToCommand  PassEventArgsToCommand="True" />
+                    </hc:EventTrigger>
+                </hc:Interaction.Triggers>
+            </hc:Pagination>
             <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right">
                 <hc:ButtonGroup>
                     <RadioButton Content="列表" ToolTip="列表" IsChecked="True"/>
