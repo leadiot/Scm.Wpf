@@ -70,9 +70,9 @@
             </Setter>
         </Style>
     </UserControl.Resources>
-    <Border Background="#243A56" x:Name="menu" Panel.ZIndex="999" CornerRadius="10" HorizontalAlignment="Left" Width="200" >
+    <Border Background="#243A56" x:Name="menu" Panel.ZIndex="999" HorizontalAlignment="Left" Width="200" Style="{StaticResource BorderCornor}" >
         <Border.Effect>
-            <DropShadowEffect Color="#243A56" ShadowDepth="0" BlurRadius="10" Opacity="0.8" Direction="0"/>
+            <DropShadowEffect Color="#243A56" ShadowDepth="0" BlurRadius="5" Opacity="0.5" Direction="0"/>
         </Border.Effect>
         <Grid>
             <Grid.RowDefinitions>
@@ -90,7 +90,7 @@
                 HorizontalAlignment="Center"
                 Height="52"/>
             <StackPanel Grid.Row="1" Margin="0 0 0 0">
-                <hc:SideMenu Name="MbMenu" BorderThickness="1" Margin="1">
+                <hc:SideMenu Name="MbMenu" BorderThickness="1" Margin="1" Background="Transparent">
                 </hc:SideMenu>
             </StackPanel>
         </Grid>

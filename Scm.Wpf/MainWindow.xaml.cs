@@ -1,13 +1,15 @@
 ﻿using Com.Scm.Api;
 using Com.Scm.Config;
+using Com.Scm.Controls;
 using Com.Scm.Sys.Config;
 using Com.Scm.Sys.Menu;
 using Com.Scm.Utils;
+using Com.Scm.Views;
 using Com.Scm.Wpf.Actions;
 using Com.Scm.Wpf.Dto;
 using Com.Scm.Wpf.Dto.Login;
 using Com.Scm.Wpf.Dvo;
-using HandyControl.Controls;
+using Com.Scm.Wpf.Utils;
 using System.Reflection;
 
 namespace Com.Scm.Wpf;
@@ -49,7 +51,6 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
 
     public async Task Init(AppSettings appSettings, ScmTerminal scmTerminal)
     {
-
     }
 
     /// <summary>
@@ -64,140 +65,87 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
         _AppKey = "";
 
         _Dvo = new MainWindowDvo();
-        _Dvo.Init(menus);
+        _Dvo.Init(this, menus);
         this.DataContext = _Dvo;
 
         UcMenu.Init(this, menus);
         UcGuid.Init(this, menus);
-        //UcGuid.Visibility = System.Windows.Visibility.Collapsed;
-        UcTray.Init();
+        UcTray.Init(this);
+        UcInfo.Init(this);
 
         Show();
 
         _Dvo.ShowHomeView();
     }
 
+    #region ScmWindow 接口实现
     /// <summary>
-    /// 事件实例化
+    /// 显示提示（标签，不需要交互）
     /// </summary>
-    /// <param name="dto"></param>
-    /// <returns></returns>
-    public AAction GetAction(MenuDto dto)
+    /// <param name="message"></param>
+    public void ShowNotice(string message)
     {
-        var className = dto.uri;
-        if (string.IsNullOrEmpty(className))
-        {
-            return null;
-        }
-
-        var action = Assembly.GetEntryAssembly().CreateInstance(className) as AAction;
-        if (action != null)
-        {
-            action.Owner = this;
-        }
-        return action;
+        LogUtils.Info("ShowInfo:" + message);
+        UcTray.ShowInfo(message);
     }
 
-    #region ScmWindow 接口实现
+    /// <summary>
+    /// 显示提示（弹窗，但不是需要交互）
+    /// </summary>
+    public void ShowToast(string message, ToastType type = ToastType.Info)
+    {
+        LogUtils.Info("ShowToast:" + message);
+        //Growl.Info(message);
+        ToastManager.ShowToast(GdToast, message, type);
+    }
+
+    /// <summary>
+    /// 显示提示（弹窗，中止当前操作）
+    /// </summary>
+    public void ShowAlert(string message)
+    {
+        LogUtils.Info("ShowAlert:" + message);
+        MessageWindow.ShowDialog(this, message);
+    }
+
+    public void HideGuid()
+    {
+        AnimationHelper.CreateWidthChangedAnimation(this.UcGuid, 200, 60, new TimeSpan(0, 0, 0, 0, 300));
+    }
+
+    public void ShowGuid()
+    {
+        AnimationHelper.CreateWidthChangedAnimation(this.UcGuid, 60, 200, new TimeSpan(0, 0, 0, 0, 300));
+    }
+
+    public void HideMenu()
+    {
+        AnimationHelper.CreateWidthChangedAnimation(this.UcGuid, 200, 60, new TimeSpan(0, 0, 0, 0, 300));
+    }
+
+    public void ShowMenu()
+    {
+        AnimationHelper.CreateWidthChangedAnimation(this.UcGuid, 60, 200, new TimeSpan(0, 0, 0, 0, 300));
+    }
+
+    public void HideTray()
+    {
+        AnimationHelper.CreateWidthChangedAnimation(this.UcGuid, 200, 60, new TimeSpan(0, 0, 0, 0, 300));
+    }
+
+    public void ShowTray()
+    {
+        AnimationHelper.CreateWidthChangedAnimation(this.UcGuid, 60, 200, new TimeSpan(0, 0, 0, 0, 300));
+    }
+
+    public void ShowHome()
+    {
+        _Dvo.ShowHomeView();
+    }
+
     public void ShowView(string codec, string namec, string viewClass, bool useCache = true)
     {
         _Dvo.ShowView(codec, namec, viewClass);
-    }
-
-    private Dictionary<string, string> GetHeader(Dictionary<string, string> head)
-    {
-        if (head == null)
-        {
-            head = new Dictionary<string, string>();
-        }
-
-        head["Accesstoken"] = _AccessToken;
-        head["Appkey"] = _AppKey;
-        return head;
-    }
-
-    /// <summary>
-    /// 获取字典
-    /// </summary>
-    /// <param name="key"></param>
-    /// <param name="useCache"></param>
-    /// <returns></returns>
-    public async Task<List<ResOptionDvo>> ListDicAsync(string key, bool useCache = true)
-    {
-        if (useCache)
-        {
-            if (_Dic.ContainsKey(key))
-            {
-                return _Dic[key];
-            }
-        }
-
-        var url = GenUrl("/scmdic/option/" + key);
-
-        var body = new Dictionary<string, string>();
-        //body["client"] = "20";
-
-        var head = GetHeader(null);
-
-        var response = await HttpUtils.GetObjectAsync<ScmApiListResponse<ResOptionDvo>>(url, body, head);
-        if (response == null)
-        {
-            return null;
-        }
-        if (response.Code != 200)
-        {
-            ShowAlert(response.Message);
-            return null;
-        }
-
-        var dic = response.Data;
-        if (useCache)
-        {
-            _Dic[key] = dic;
-        }
-        return dic;
-    }
-
-    /// <summary>
-    /// 获取配置
-    /// </summary>
-    /// <param name="key"></param>
-    /// <param name="useCache"></param>
-    /// <returns></returns>
-    public async Task<ConfigDto> ListCfgAsync(string key, bool useCache = true)
-    {
-        if (useCache)
-        {
-            if (_Cfg.ContainsKey(key))
-            {
-                return _Cfg[key];
-            }
-        }
-
-        var url = GenUrl("/scmcfg/option/" + key);
-
-        var body = new Dictionary<string, string>();
-        //body["client"] = "20";
-
-        var head = GetHeader(null);
-
-        var response = await HttpUtils.GetObjectAsync<ScmApiDataResponse<ConfigDto>>(url, body, head);
-        if (response == null)
-        {
-            return null;
-        }
-        if (response.Code != 200)
-        {
-            ShowAlert(response.Message);
-            return null;
-        }
-
-        var dic = response.Data;
-        if (useCache)
-        {
-            _Cfg[key] = dic;
-        }
-        return dic;
     }
 
     /// <summary>
@@ -329,46 +277,134 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     }
     #endregion
 
+    #region 事件处理
+    private void Border_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+
+    }
+    #endregion
+
+    #region 私有方法
+    /// <summary>
+    /// 获取配置
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="useCache"></param>
+    /// <returns></returns>
+    public async Task<ConfigDto> ListCfgAsync(string key, bool useCache = true)
+    {
+        if (useCache)
+        {
+            if (_Cfg.ContainsKey(key))
+            {
+                return _Cfg[key];
+            }
+        }
+
+        var url = GenUrl("/scmcfg/option/" + key);
+
+        var body = new Dictionary<string, string>();
+        //body["client"] = "20";
+
+        var head = GetHeader(null);
+
+        var response = await HttpUtils.GetObjectAsync<ScmApiDataResponse<ConfigDto>>(url, body, head);
+        if (response == null)
+        {
+            return null;
+        }
+        if (response.Code != 200)
+        {
+            ShowAlert(response.Message);
+            return null;
+        }
+
+        var dic = response.Data;
+        if (useCache)
+        {
+            _Cfg[key] = dic;
+        }
+        return dic;
+    }
+
+    /// <summary>
+    /// 获取字典
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="useCache"></param>
+    /// <returns></returns>
+    public async Task<List<ResOptionDvo>> ListDicAsync(string key, bool useCache = true)
+    {
+        if (useCache)
+        {
+            if (_Dic.ContainsKey(key))
+            {
+                return _Dic[key];
+            }
+        }
+
+        var url = GenUrl("/scmdic/option/" + key);
+
+        var body = new Dictionary<string, string>();
+        //body["client"] = "20";
+
+        var head = GetHeader(null);
+
+        var response = await HttpUtils.GetObjectAsync<ScmApiListResponse<ResOptionDvo>>(url, body, head);
+        if (response == null)
+        {
+            return null;
+        }
+        if (response.Code != 200)
+        {
+            ShowAlert(response.Message);
+            return null;
+        }
+
+        var dic = response.Data;
+        if (useCache)
+        {
+            _Dic[key] = dic;
+        }
+        return dic;
+    }
+
     protected string GenUrl(string url)
     {
         return AppSettings.Instance.EnvConfig.GetApiUrl(url);
     }
 
-    /// <summary>
-    /// 显示提示（标签，不需要交互）
-    /// </summary>
-    /// <param name="message"></param>
-    public void ShowInfo(string message)
+    private Dictionary<string, string> GetHeader(Dictionary<string, string> head)
     {
-        LogUtils.Info("ShowInfo:" + message);
-        UcTray.ShowInfo(message);
+        if (head == null)
+        {
+            head = new Dictionary<string, string>();
+        }
+
+        head["ApiToken"] = _AccessToken;
+        head["Appkey"] = _AppKey;
+        return head;
     }
 
     /// <summary>
-    /// 显示提示（弹窗，但不是需要交互）
+    /// 事件实例化
     /// </summary>
-    public void ShowToast(string message)
+    /// <param name="dto"></param>
+    /// <returns></returns>
+    public AAction GetAction(MenuDto dto)
     {
-        LogUtils.Info("ShowToast:" + message);
-        Growl.Info(message);
+        var className = dto.uri;
+        if (string.IsNullOrEmpty(className))
+        {
+            return null;
+        }
+
+        var action = Assembly.GetEntryAssembly().CreateInstance(className) as AAction;
+        if (action != null)
+        {
+            action.Owner = this;
+        }
+        return action;
     }
-
-    /// <summary>
-    /// 显示提示（弹窗，中止当前操作）
-    /// </summary>
-    public void ShowAlert(string message)
-    {
-        LogUtils.Info("ShowAlert:" + message);
-        MessageBox.Show(message);
-    }
-
-    private void Border_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-    {
-
-    }
-
-    private void Button_Click_1(object sender, System.Windows.RoutedEventArgs e)
-    {
-
-    }
+    #endregion
 }

@@ -14,16 +14,21 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0" Orientation="Horizontal">
-                <ToggleButton IsChecked="True" Command="{Binding ExpandMenuCmd}" Style="{StaticResource ToggleButtonCustom}" hc:StatusSwitchElement.HideUncheckedElement="True">
+                <ToggleButton
+                    x:Name="TbGuid"
+                    IsChecked="True"
+                    Click="ToggleMenu_Click"
+                    Style="{StaticResource ToggleButtonCustom}"
+                    hc:StatusSwitchElement.HideUncheckedElement="True">
                     <hc:StatusSwitchElement.CheckedElement>
                         <iconPacks:PackIconMaterial Kind="FormatIndentDecrease"/>
                     </hc:StatusSwitchElement.CheckedElement>
                     <iconPacks:PackIconMaterial Kind="FormatIndentIncrease"/>
                 </ToggleButton>
-                <Button   
-                Margin="12 0 0 0"
-                Command="{Binding changeContentCmd}"
-                CommandParameter="home">
+                <Button
+                    x:Name="BtHome"
+                    Margin="12 0 0 0"
+                    Click="BtHome_Click">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Template">

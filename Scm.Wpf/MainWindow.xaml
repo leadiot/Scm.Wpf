@@ -9,9 +9,9 @@
     xmlns:hc="https://handyorg.github.io/handycontrol"
     mc:Ignorable="d"
     WindowStartupLocation="CenterScreen"
-    Title="MainWindow"
-    Height="600"
-    Width="800">
+    Icon="/Resources/logo.ico"
+    Title="Scm.Net"
+    Height="600" Width="800">
     <hc:Window.NonClientAreaContent >
         <Grid>
             <Grid.ColumnDefinitions>
@@ -25,18 +25,16 @@
             </Grid>
         </Grid>
     </hc:Window.NonClientAreaContent>
-    <Border Margin="5"  CornerRadius="10" MouseLeftButtonDown="Border_MouseLeftButtonDown" Background="White">
-        <Border.Effect>
-            <DropShadowEffect Color="Gray" ShadowDepth="0" BlurRadius="5" Opacity="0.5" Direction="0"/>
-        </Border.Effect>
-        <DockPanel>
-            <uc:UcMenubarView x:Name="UcMenu" DockPanel.Dock="Top" Visibility="Collapsed" />
-            <uc:UcTraybarView x:Name="UcTray" DockPanel.Dock="Bottom" />
-            <uc:UcGuidView x:Name="UcGuid" DockPanel.Dock="Left" />
-            <uc:UcSideView x:Name="UcSide" DockPanel.Dock="Right"/>
+    <Border MouseLeftButtonDown="Border_MouseLeftButtonDown" Background="White">
+        <Grid>
             <DockPanel>
-                <uc:UcInfobarView x:Name="UcInfo" DockPanel.Dock="Top"/>
-                <hc:TabControl 
+                <uc:UcMenubarView x:Name="UcMenu" DockPanel.Dock="Top" Visibility="Collapsed" />
+                <uc:UcTraybarView x:Name="UcTray" DockPanel.Dock="Bottom" />
+                <uc:UcGuidView x:Name="UcGuid" DockPanel.Dock="Left" />
+                <uc:UcSideView x:Name="UcSide" DockPanel.Dock="Right"/>
+                <DockPanel>
+                    <uc:UcInfobarView x:Name="UcInfo" DockPanel.Dock="Top"/>
+                    <hc:TabControl 
                     Name="TcView"
                     Margin="0"
                     TabItemWidth="100"
@@ -51,18 +49,22 @@
                     SelectedIndex="{Binding TabIndex}"
                     ItemsSource="{Binding TabModels}"
                     Style="{DynamicResource MyTabControlStyle}">
-                    <TabControl.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Header}"/>
-                        </DataTemplate>
-                    </TabControl.ItemTemplate>
-                    <TabControl.ContentTemplate>
-                        <DataTemplate>
-                            <ContentControl Grid.Row="1" Grid.Column="1"  Content="{Binding Content}" Background="White" Margin="0 12 0 0"/>
-                        </DataTemplate>
-                    </TabControl.ContentTemplate>
-                </hc:TabControl>
+                        <TabControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Header}"/>
+                            </DataTemplate>
+                        </TabControl.ItemTemplate>
+                        <TabControl.ContentTemplate>
+                            <DataTemplate>
+                                <Border Background="White">
+                                    <ContentControl Grid.Row="1" Grid.Column="1"  Content="{Binding Content}" Margin="4"/>
+                                </Border>
+                            </DataTemplate>
+                        </TabControl.ContentTemplate>
+                    </hc:TabControl>
+                </DockPanel>
             </DockPanel>
-        </DockPanel>
+            <Grid x:Name="GdToast"></Grid>
+        </Grid>
     </Border>
 </hc:Window>

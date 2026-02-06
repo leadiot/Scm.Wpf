@@ -4,6 +4,26 @@
     xmlns:local="clr-namespace:Com.Scm.Wpf.Controls.Attach"
     xmlns:hc="https://handyorg.github.io/handycontrol">
 
+    <Style TargetType="Border" x:Key="BorderCornor">
+        <Setter Property="CornerRadius" Value="10"/>
+    </Style>
+
+    <Style TargetType="Border" x:Key="PrimaryBorder">
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="LightGray"/>
+    </Style>
+
+    <Style TargetType="Border" x:Key="PrimaryBorderWithEffect">
+        <Setter Property="CornerRadius" Value="10"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="LightGray"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect Color="Gray" ShadowDepth="0" BlurRadius="5" Opacity="0.5" Direction="0"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style TargetType="Button" x:Key="ControlBtnStyle">
         <Setter Property="Width" Value="40"/>
         <Setter Property="Height" Value="40"/>

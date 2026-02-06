@@ -1,14 +1,9 @@
-﻿namespace Com.Scm.Wpf
+﻿using Com.Scm.Controls;
+
+namespace Com.Scm.Wpf
 {
     public interface ScmWindow
     {
-        /// <summary>
-        /// 显示视图
-        /// </summary>
-        /// <param name="viewClass"></param>
-        /// <param name="useCache"></param>
-        void ShowView(string codec, string namec, string viewClass, bool useCache = true);
-
         /// <summary>
         /// GET请求，返回对象
         /// </summary>
@@ -65,5 +60,32 @@
         /// <param name="head"></param>
         /// <returns></returns>
         Task<string> PostJsonStringAsync(string url, string json = null, Dictionary<string, string> head = null);
+
+        void HideGuid();
+
+        void ShowGuid();
+
+        void HideMenu();
+
+        void ShowMenu();
+
+        void HideTray();
+
+        void ShowTray();
+
+        void ShowNotice(string message);
+
+        void ShowToast(string message, ToastType type = ToastType.Info);
+
+        void ShowAlert(string message);
+
+        void ShowHome();
+
+        /// <summary>
+        /// 显示视图
+        /// </summary>
+        /// <param name="viewClass"></param>
+        /// <param name="useCache"></param>
+        void ShowView(string codec, string namec, string viewClass, bool useCache = true);
     }
 }

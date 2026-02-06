@@ -23,8 +23,9 @@ namespace Com.Scm.Wpf.Dvo
 
         private HomeView _HomeView;
 
-        public void Init(List<MenuDto> menuList)
+        public void Init(MainWindow window, List<MenuDto> menuList)
         {
+            _Window = window;
             InitTestMenu(menuList);
 
             foreach (var itemDto in menuList)
@@ -44,17 +45,26 @@ namespace Com.Scm.Wpf.Dvo
 
             var item = new MenuDto();
             item.id = 10;
+            item.codec = "demo";
+            item.namec = "工具演示";
+            item.pid = menu.id;
+            item.uri = "Com.Scm.Wpf.Actions.ViewAction";
+            item.view = "Com.Scm.Wpf.Views.Demo.DemoView";
+            menuList.Add(item);
+
+            item = new MenuDto();
+            item.id = 11;
             item.codec = "demo-native";
-            item.namec = "本地演示";
+            item.namec = "本地数据";
             item.pid = menu.id;
             item.uri = "Com.Scm.Wpf.Actions.ViewAction";
             item.view = "Com.Scm.Wpf.Views.Samples.Native.MainView";
             menuList.Add(item);
 
             item = new MenuDto();
-            item.id = 11;
+            item.id = 12;
             item.codec = "demo-remote";
-            item.namec = "远程演示";
+            item.namec = "远程数据";
             item.pid = menu.id;
             item.uri = "Com.Scm.Wpf.Actions.ViewAction";
             item.view = "Com.Scm.Wpf.Views.Samples.Remote.MainView";

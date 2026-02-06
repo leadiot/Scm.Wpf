@@ -19,7 +19,7 @@ namespace Com.Scm.Wpf.Views.Uc
             InitializeComponent();
         }
 
-        public void Init()
+        public void Init(ScmWindow window)
         {
             _Dvo = new InfobarDvo();
             this.DataContext = _Dvo;

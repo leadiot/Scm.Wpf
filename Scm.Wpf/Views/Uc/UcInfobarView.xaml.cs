@@ -1,15 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Com.Scm.Wpf.Views.Uc
 {
@@ -18,9 +8,28 @@ namespace Com.Scm.Wpf.Views.Uc
     /// </summary>
     public partial class UcInfobarView : UserControl
     {
+        private ScmWindow _ScmWindow;
+
         public UcInfobarView()
         {
             InitializeComponent();
+        }
+
+        public void Init(ScmWindow window)
+        {
+            _ScmWindow = window;
+        }
+
+        private void ToggleMenu_Click(object sender, RoutedEventArgs e)
+        {
+            if (TbGuid.IsChecked == true)
+            {
+                _ScmWindow.ShowGuid();
+            }
+            else
+            {
+                _ScmWindow.HideGuid();
+            }
         }
 
         private void MinWin_click(object sender, RoutedEventArgs e)
@@ -36,6 +45,11 @@ namespace Com.Scm.Wpf.Views.Uc
         private void CloseWin_click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void BtHome_Click(object sender, RoutedEventArgs e)
+        {
+            _ScmWindow.ShowHome();
         }
     }
 }

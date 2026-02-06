@@ -7,14 +7,22 @@
              mc:Ignorable="d" 
              Height="24"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="White">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-        </Grid.ColumnDefinitions>
-        <TextBlock x:Name="LcInfo" Grid.Column="0" Text="{Binding Path=Info}" HorizontalAlignment="Stretch"/>
-        <hc:Divider Grid.Column="1" Orientation="Vertical"/>
-        <TextBlock x:Name="LcTime" Grid.Column="2" Text="{Binding Path=Time}" Padding="5"/>
-    </Grid>
+    <Border>
+        <Border.Background>
+            <LinearGradientBrush EndPoint="0,1" MappingMode="RelativeToBoundingBox" StartPoint="0,0">
+                <GradientStop Color="#FFFFFF"/>
+                <GradientStop Color="#EEEEEE"/>
+            </LinearGradientBrush>
+        </Border.Background>
+        <Grid Margin="5 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="LcInfo" Grid.Column="0" Text="{Binding Path=Info}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+            <hc:Divider Grid.Column="1" Orientation="Vertical"/>
+            <TextBlock x:Name="LcTime" Grid.Column="2" Text="{Binding Path=Time}" Padding="5"/>
+        </Grid>
+    </Border>
 </UserControl>
