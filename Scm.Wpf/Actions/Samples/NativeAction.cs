@@ -1,10 +1,10 @@
-﻿using Com.Scm.Sys.Menu;
+﻿using Com.Scm.Wpf.Dvo.Menu;
 
 namespace Com.Scm.Wpf.Actions.Samples
 {
     public class NativeAction : AAction
     {
-        public override void Execute(MenuDto dto)
+        public override void Execute(MenuDvo dvo)
         {
             if (Owner == null)
             {

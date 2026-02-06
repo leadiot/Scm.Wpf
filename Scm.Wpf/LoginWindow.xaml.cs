@@ -2,9 +2,9 @@
 using Com.Scm.Config;
 using Com.Scm.Oidc;
 using Com.Scm.Oidc.Response;
+using Com.Scm.Sys.Menu;
 using Com.Scm.Utils;
 using Com.Scm.Wpf;
-using Com.Scm.Wpf.Dto;
 using Com.Scm.Wpf.Dto.Login;
 using System.Diagnostics;
 using System.Windows;
@@ -74,7 +74,7 @@ namespace Com.Scm
             //UcOAuth.Login(ospInfo);
         }
 
-        public void ShowMain(LoginResult result, List<WpfMenuDto> menus)
+        public void ShowMain(LoginResult result, List<MenuDto> menus)
         {
             new MainWindow().Init(result, menus);
             Close();
@@ -131,7 +131,7 @@ namespace Com.Scm
             head["ApiToken"] = result.AccessToken;
             head["Appkey"] = "";
 
-            var response = await HttpUtils.GetObjectAsync<ScmApiListResponse<WpfMenuDto>>(url, body, head);
+            var response = await HttpUtils.GetObjectAsync<ScmApiListResponse<MenuDto>>(url, body, head);
             if (response == null)
             {
                 return false;

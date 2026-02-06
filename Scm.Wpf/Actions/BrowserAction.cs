@@ -1,11 +1,11 @@
-﻿using Com.Scm.Sys.Menu;
-using Com.Scm.Utils;
+﻿using Com.Scm.Utils;
+using Com.Scm.Wpf.Dvo.Menu;
 
 namespace Com.Scm.Wpf.Actions
 {
     public class BrowserAction : AAction
     {
-        public override void Execute(MenuDto dto)
+        public override void Execute(MenuDvo dvo)
         {
             LogUtils.Debug("BrowserAction-Execute");
 

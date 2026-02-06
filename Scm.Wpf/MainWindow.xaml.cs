@@ -34,10 +34,6 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     /// 当前用户
     /// </summary>
     public ScmUserInfo UserInfo { get; private set; }
-    /// <summary>
-    /// 用户菜单
-    /// </summary>
-    public List<MenuDto> MenuList { get; private set; }
 
     /// <summary>
     /// 数据字典
@@ -53,11 +49,6 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     public MainWindow()
     {
         InitializeComponent();
-    }
-
-    private void LoadTestMenu()
-    {
-        MenuList.Add(new MenuDto { id = 1, codec = "1", namec = "test", uri = "" });
     }
 
     public async Task Init(AppSettings appSettings, ScmTerminal scmTerminal)
@@ -76,11 +67,8 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
         _AccessToken = result.AccessToken;
         _AppKey = "";
 
-        MenuList = menus;
-        LoadTestMenu();
-
         _Dvo = new MainViewModel();
-        _Dvo.Init();
+        _Dvo.Init(menus);
         this.DataContext = _Dvo;
 
         UcMenu.Init(this, menus);

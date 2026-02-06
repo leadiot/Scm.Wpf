@@ -1,11 +1,11 @@
-﻿using Com.Scm.Sys.Menu;
-using Com.Scm.Utils;
+﻿using Com.Scm.Utils;
+using Com.Scm.Wpf.Dvo.Menu;
 
 namespace Com.Scm.Wpf.Actions
 {
     public class ViewAction : AAction
     {
-        public override void Execute(MenuDto dto)
+        public override void Execute(MenuDvo dvo)
         {
             LogUtils.Debug("ViewAction-Execute");
 
@@ -22,7 +22,7 @@ namespace Com.Scm.Wpf.Actions
             //}
 
             //var view = GetParam(paramList, "view");
-            var view = dto.view;
+            var view = dvo.View;
             if (string.IsNullOrEmpty(view))
             {
                 LogUtils.Info("ViewAction-Execute: view param is null");
@@ -31,7 +31,7 @@ namespace Com.Scm.Wpf.Actions
 
             //var cache = GetParam(paramList, "cache");
             //var useCache = "true".Equals(cache, StringComparison.OrdinalIgnoreCase);
-            var useCache = dto.keepAlive;
+            var useCache = dvo.KeepAlive;
 
             Owner.ShowView(view, useCache);
         }

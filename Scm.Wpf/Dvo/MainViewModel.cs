@@ -1,5 +1,5 @@
 ﻿using Com.Scm.Sys.Menu;
-using Com.Scm.Wpf.Dto;
+using Com.Scm.Wpf.Dvo.Menu;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
 
@@ -8,11 +8,17 @@ namespace Com.Scm.Wpf.Dvo
     public partial class MainViewModel : ScmDvo
     {
         [ObservableProperty]
-        private ObservableCollection<MenuDto> menuList;
+        private ObservableCollection<MenuDvo> menuList = new ObservableCollection<MenuDvo>();
 
-        public void Init()
+        public void Init(List<MenuDto> menuList)
         {
-            var menuList = InitTestMenu();
+            InitTestMenu(menuList);
+
+            foreach (var itemDto in menuList)
+            {
+                var itemDvo = MenuDvo.FromDto(itemDto);
+                this.MenuList.Add(itemDvo);
+            }
         }
 
         private void NavChanged(object o)
@@ -38,23 +44,20 @@ namespace Com.Scm.Wpf.Dvo
             }
         }
 
-        private List<MenuDto> InitTestMenu()
+        private void InitTestMenu(List<MenuDto> menuList)
         {
-            var list = new List<MenuDto>();
-            var menu = new WpfMenuDto();
+            var menu = new MenuDto();
             menu.id = 1;
             menu.codec = "root";
             menu.namec = "Home";
+            menuList.Add(menu);
 
-            var item = new WpfMenuDto();
+            var item = new MenuDto();
             item.id = 10;
             item.codec = "userInfo";
             item.namec = "用户信息";
             item.pid = menu.id;
-            menu.Add(item);
-            list.Add(menu);
-
-            return list;
+            menuList.Add(item);
         }
     }
 }
