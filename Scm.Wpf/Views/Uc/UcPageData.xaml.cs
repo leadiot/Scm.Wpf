@@ -282,7 +282,7 @@ namespace Com.Scm.Wpf.Views.Uc
             {
                 var dvo = item as ScmSearchResultDataDvo;
                 if (dvo == null) return;
-                dvo.IsChecked = isChecked;
+                dvo.Checked = isChecked;
             }
         }
 

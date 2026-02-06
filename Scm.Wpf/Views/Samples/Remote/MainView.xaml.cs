@@ -51,7 +51,7 @@ namespace Com.Scm.Wpf.Views.Samples.Remote
         {
             foreach (var dvo in _Response.Items)
             {
-                if (dvo.IsChecked == true)
+                if (dvo.Checked == true)
                 {
                     dvo.row_status = Enums.ScmRowStatusEnum.Enabled;
                 }
@@ -62,7 +62,7 @@ namespace Com.Scm.Wpf.Views.Samples.Remote
         {
             foreach (var dvo in _Response.Items)
             {
-                if (dvo.IsChecked == true)
+                if (dvo.Checked == true)
                 {
                     dvo.row_status = Enums.ScmRowStatusEnum.Disabled;
                 }

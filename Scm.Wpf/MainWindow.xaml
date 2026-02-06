@@ -57,7 +57,7 @@
                         <TabControl.ContentTemplate>
                             <DataTemplate>
                                 <Border Background="White">
-                                    <ContentControl Grid.Row="1" Grid.Column="1"  Content="{Binding Content}" Margin="4"/>
+                                    <ContentControl Grid.Row="1" Grid.Column="1"  Content="{Binding Content}" Margin="4 6"/>
                                 </Border>
                             </DataTemplate>
                         </TabControl.ContentTemplate>

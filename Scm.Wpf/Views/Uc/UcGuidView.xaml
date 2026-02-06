@@ -76,19 +76,18 @@
         </Border.Effect>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="52"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <TextBlock
+                Grid.Row="0"
                 Text="Scm.Net"
-                FontWeight="Bold" 
                 FontSize="32"
-                Foreground="#3DD0FB" 
-                TextAlignment="Center"
+                FontWeight="Bold"
+                Foreground="#3DD0FB"
                 VerticalAlignment="Center"
-                HorizontalAlignment="Center"
-                Height="52"/>
+                HorizontalAlignment="Center"/>
             <StackPanel Grid.Row="1" Margin="0 0 0 0">
                 <hc:SideMenu Name="MbMenu" BorderThickness="1" Margin="1" Background="Transparent">
                 </hc:SideMenu>

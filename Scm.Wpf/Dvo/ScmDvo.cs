@@ -118,14 +118,14 @@ namespace Com.Scm.Wpf.Dvo
 
     public class ScmSearchResultDataDvo : ScmDvo
     {
-        private bool isChecked;
-        public bool IsChecked { get { return isChecked; } set { SetProperty(ref isChecked, value); } }
+        private bool _checked;
+        public bool Checked { get { return _checked; } set { SetProperty(ref _checked, value); } }
 
         private ScmRowStatusEnum _status;
         public ScmRowStatusEnum row_status { get { return _status; } set { SetProperty(ref _status, value); } }
 
         private long _update_time;
-        public long update_time { get { return _update_time; } set { _update_time = value; } }
+        public long update_time { get { return _update_time; } set { SetProperty(ref _update_time, value); } }
         public long update_user { get; set; }
         public string update_name { get; set; }
 

@@ -3,7 +3,7 @@ using Com.Scm.Enums;
 using SqlSugar;
 using System.ComponentModel.DataAnnotations;
 
-namespace Com.Scm.Wpf.Dao
+namespace Com.Scm.Wpf.Dao.Samples
 {
     [SugarTable("scm_demo_native")]
     public class ScmDemoNativeDao : ScmDao

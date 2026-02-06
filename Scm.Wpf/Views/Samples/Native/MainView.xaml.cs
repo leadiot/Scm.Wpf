@@ -1,5 +1,5 @@
 ﻿using Com.Scm.Utils;
-using Com.Scm.Wpf.Dao;
+using Com.Scm.Wpf.Dao.Samples;
 using Com.Scm.Wpf.Models;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,7 +13,7 @@ namespace Com.Scm.Wpf.Views.Samples.Native
     {
         private ScmWindow _Owner;
         private SearchParamsDvo _Dvo;
-        private ScmSearchPageResponse<SearchResultDataDvo> _Response;
+        private ScmSearchPageResponse<ListDvo> _Response;
 
         public MainView()
         {
@@ -53,7 +53,7 @@ namespace Com.Scm.Wpf.Views.Samples.Native
         {
             foreach (var dvo in _Response.Items)
             {
-                if (dvo.IsChecked == true)
+                if (dvo.Checked == true)
                 {
                     dvo.row_status = Enums.ScmRowStatusEnum.Enabled;
                 }
@@ -64,7 +64,7 @@ namespace Com.Scm.Wpf.Views.Samples.Native
         {
             foreach (var dvo in _Response.Items)
             {
-                if (dvo.IsChecked == true)
+                if (dvo.Checked == true)
                 {
                     dvo.row_status = Enums.ScmRowStatusEnum.Disabled;
                 }
@@ -149,13 +149,13 @@ namespace Com.Scm.Wpf.Views.Samples.Native
             var body = _Dvo.ToDictionary();
             var result = await client.Queryable<ScmDemoNativeDao>()
                 //.Where(a => a != null)
-                .ToListAsync();
-            //if (!_Response.Success)
-            //{
-            //    return;
-            //}
+                .Select<ListDvo>()
+                .ToPageListAsync(0, 10);
+            _Response = new ScmSearchPageResponse<ListDvo>();
+            _Response.Items = result;
+            _Response.SetSuccess();
 
-            //PgData.ShowData(_Response);
+            PgData.ShowData(_Response);
         }
         #endregion
     }
