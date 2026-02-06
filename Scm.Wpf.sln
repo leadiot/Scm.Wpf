@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.13.35913.81
+# Visual Studio Version 18
+VisualStudioVersion = 18.2.11415.280 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scm.Wpf", "Scm.Wpf\Scm.Wpf.csproj", "{CEEA73C0-C93F-C56F-E0E6-73EF737766D4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{2A59732C-F8B7-4294-ACDE-86CAEB067982}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scm.Client.Dao", "Scm.Client.Dao\Scm.Client.Dao.csproj", "{98E7D567-69FA-4603-9529-588D2B1248F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{2A59732C-F8B7-4294-ACDE-86CAEB067982}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A59732C-F8B7-4294-ACDE-86CAEB067982}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A59732C-F8B7-4294-ACDE-86CAEB067982}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98E7D567-69FA-4603-9529-588D2B1248F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98E7D567-69FA-4603-9529-588D2B1248F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98E7D567-69FA-4603-9529-588D2B1248F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98E7D567-69FA-4603-9529-588D2B1248F2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -38,7 +38,7 @@
                 <uc:UcInfobarView x:Name="UcInfo" DockPanel.Dock="Top"/>
                 <hc:TabControl 
                     Name="TcView"
-                    Margin="0 0 0 7"
+                    Margin="0"
                     TabItemWidth="100"
                     IsAnimationEnabled="True" 
                     BorderBrush="{x:Null}"
@@ -58,7 +58,7 @@
                     </TabControl.ItemTemplate>
                     <TabControl.ContentTemplate>
                         <DataTemplate>
-                            <ContentControl Grid.Row="1" Grid.Column="1"  Content="{Binding Content}" Background="White"/>
+                            <ContentControl Grid.Row="1" Grid.Column="1"  Content="{Binding Content}" Background="White" Margin="0 12 0 0"/>
                         </DataTemplate>
                     </TabControl.ContentTemplate>
                 </hc:TabControl>

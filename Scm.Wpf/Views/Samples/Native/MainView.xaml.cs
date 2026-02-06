@@ -1,4 +1,5 @@
 ﻿using Com.Scm.Utils;
+using Com.Scm.Wpf.Dao;
 using Com.Scm.Wpf.Models;
 using System.Windows;
 using System.Windows.Controls;
@@ -146,15 +147,15 @@ namespace Com.Scm.Wpf.Views.Samples.Native
             var client = SqlHelper.GetSqlClient();
 
             var body = _Dvo.ToDictionary();
-            var result = await client.Queryable<string>()
-                .Where(a => a != null)
+            var result = await client.Queryable<ScmDemoNativeDao>()
+                //.Where(a => a != null)
                 .ToListAsync();
             //if (!_Response.Success)
             //{
             //    return;
             //}
 
-            PgData.ShowData(_Response);
+            //PgData.ShowData(_Response);
         }
         #endregion
     }

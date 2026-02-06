@@ -38,6 +38,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\Scm.Client.Dao\Scm.Client.Dao.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Reference Include="Scm.Common">
 			<HintPath>..\Libs\netstandard2.0\Scm.Common.dll</HintPath>
 		</Reference>

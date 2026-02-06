@@ -50,8 +50,7 @@ namespace Com.Scm.Dao
                 verDao.create_time = TimeUtils.GetUnixTime();
             }
 
-            //InitTable(Assembly.GetExecutingAssembly());
-            InitTable();
+            InitTable(Assembly.GetExecutingAssembly());
 
             InitDml(verDao);
 
@@ -288,12 +287,6 @@ namespace Com.Scm.Dao
                 }
             }
 
-            return true;
-        }
-
-        protected bool InitTable()
-        {
-            _SqlClient.CodeFirst.InitTables(typeof(ScmVerDao));
             return true;
         }
 
