@@ -49,37 +49,47 @@ public partial class App : Application
             uidConfig.Type = UidType.SnowFlake;
             UidUtils.InitConfig(uidConfig);
 
-            var scmTerminal = new ScmTerminal();
-            if (!scmTerminal.LoadToken())
-            {
-                ShowBindWindow(splashWindow, AppSettings.Instance, scmTerminal);
-                return;
-            }
-
-            // 已过期
-            if (scmTerminal.IsExpired())
-            {
-                ShowBindWindow(splashWindow, AppSettings.Instance, scmTerminal);
-                return;
-            }
-
-            // 临近过期
-            if (scmTerminal.IsExpires())
-            {
-                var result = await scmTerminal.RefreshTokenAsync();
-                if (!result)
-                {
-                    ShowBindWindow(splashWindow, AppSettings.Instance, scmTerminal);
-                    return;
-                }
-            }
-
-            ShowMainWindow(splashWindow, AppSettings.Instance, scmTerminal);
+            await CheckSignIn(splashWindow);
         }
         catch (Exception ex)
         {
             splashWindow.ShowError(ex);
         }
+    }
+
+    private async Task CheckSignIn(SplashWindow splashWindow)
+    {
+        ShowLoginWindow(splashWindow, AppSettings.Instance);
+    }
+
+    private async Task CheckBind(SplashWindow splashWindow)
+    {
+        var scmTerminal = new ScmTerminal();
+        if (!scmTerminal.LoadToken())
+        {
+            ShowBindWindow(splashWindow, AppSettings.Instance, scmTerminal);
+            return;
+        }
+
+        // 已过期
+        if (scmTerminal.IsExpired())
+        {
+            ShowBindWindow(splashWindow, AppSettings.Instance, scmTerminal);
+            return;
+        }
+
+        // 临近过期
+        if (scmTerminal.IsExpires())
+        {
+            var result = await scmTerminal.RefreshTokenAsync();
+            if (!result)
+            {
+                ShowBindWindow(splashWindow, AppSettings.Instance, scmTerminal);
+                return;
+            }
+        }
+
+        ShowMainWindow(splashWindow, AppSettings.Instance, scmTerminal);
     }
 
     /// <summary>
@@ -106,6 +116,14 @@ public partial class App : Application
     {
         SqlHelper.Close();
         base.OnExit(e);
+    }
+
+    private void ShowLoginWindow(SplashWindow splashWindow, AppSettings appSettings)
+    {
+        var window = new LoginWindow();
+        window.Show();
+        splashWindow.Close();
+        window.Init(appSettings);
     }
 
     private void ShowBindWindow(SplashWindow splashWindow, AppSettings appSettings, ScmTerminal scmTerminal)

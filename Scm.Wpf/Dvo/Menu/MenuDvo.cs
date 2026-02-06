@@ -1,44 +1,69 @@
 ﻿using Com.Scm.Enums;
+using Com.Scm.Sys.Menu;
+using Com.Scm.Wpf.Actions;
+using CommunityToolkit.Mvvm.ComponentModel;
+using System.Windows;
 
 namespace Com.Scm.Wpf.Dvo.Menu
 {
-    public class MenuDvo : ScmDvo
+    public partial class MenuDvo : ScmDvo
     {
-        public ScmClientTypeEnum client { get; set; }
+        [ObservableProperty]
+        private ScmClientTypeEnum client;
 
-        public ScmMenuTypesEnum types { get; set; }
+        [ObservableProperty]
+        private ScmMenuTypesEnum types;
 
-        public string lang { get; set; }
+        [ObservableProperty]
+        private string lang;
 
-        public string codec { get; set; }
+        [ObservableProperty]
+        private string codec;
 
-        public string namec { get; set; }
+        [ObservableProperty]
+        private string namec;
 
-        public long pid { get; set; }
+        [ObservableProperty]
+        private long pid;
 
-        public string uri { get; set; }
+        [ObservableProperty]
+        private string uri;
 
-        public string view { get; set; }
+        [ObservableProperty]
+        private string view;
 
-        public string icon { get; set; }
+        [ObservableProperty]
+        private string icon;
 
-        public string active { get; set; }
+        [ObservableProperty]
+        private string active;
 
-        public string color { get; set; }
+        [ObservableProperty]
+        private string color;
 
-        public int layer { get; set; } = 1;
+        [ObservableProperty]
+        private int layer = 1;
 
-        public int od { get; set; } = 1;
+        [ObservableProperty]
+        private int od = 1;
 
-        public bool visible { get; set; }
+        [ObservableProperty]
+        private bool visible;
 
-        public bool enabled { get; set; }
+        [ObservableProperty]
+        private bool enabled;
 
-        public bool fullpage { get; set; }
+        [ObservableProperty]
+        private bool fullpage;
 
-        public bool keepAlive { get; set; }
+        [ObservableProperty]
+        private bool keepAlive;
 
-        public List<MenuDvo> children { get; set; }
+        public List<MenuDvo> children;
+
+        public AAction Action { get; set; }
+
+        public FrameworkElement Element { get; set; }
 
         public void Add(MenuDvo dto)
         {
@@ -48,6 +73,17 @@ namespace Com.Scm.Wpf.Dvo.Menu
             }
 
             children.Add(dto);
+        }
+
+        public static MenuDvo FromDto(MenuDto dto)
+        {
+            var dvo = new MenuDvo();
+            dvo.Id = dto.id;
+            dvo.Client = dto.client;
+            dvo.Types = dto.types;
+            dvo.Codec = dto.codec;
+            dvo.Namec = dto.namec;
+            return dvo;
         }
     }
 }

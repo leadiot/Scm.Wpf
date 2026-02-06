@@ -17,7 +17,7 @@
 
         public string GetApiUrl(string path)
         {
-            return "";
+            return "http://api.c-scm.net/api" + path;
         }
     }
 }

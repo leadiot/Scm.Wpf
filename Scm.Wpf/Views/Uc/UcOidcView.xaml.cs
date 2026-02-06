@@ -14,7 +14,7 @@ namespace Com.Scm.Uc
         /// <summary>
         /// 父窗体
         /// </summary>
-        private Login _Owner;
+        private LoginWindow _Owner;
         /// <summary>
         /// OIDC客户端
         /// </summary>
@@ -33,7 +33,7 @@ namespace Com.Scm.Uc
             InitializeComponent();
         }
 
-        public async Task Init(Login owner, OidcClient client)
+        public async Task Init(LoginWindow owner, OidcClient client)
         {
             _Owner = owner;
             _Client = client;

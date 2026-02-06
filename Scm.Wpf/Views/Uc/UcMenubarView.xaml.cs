@@ -1,4 +1,5 @@
-﻿using Com.Scm.Wpf.Dto;
+﻿using Com.Scm.Sys.Menu;
+using Com.Scm.Wpf.Dvo.Menu;
 using MahApps.Metro.IconPacks;
 using System.Windows.Controls;
 
@@ -9,49 +10,48 @@ namespace Com.Scm.Wpf.Views.Uc
     /// </summary>
     public partial class UcMenubarView : UserControl
     {
-        private List<WpfMenuDto> _MenuList = new List<WpfMenuDto>();
-
         public UcMenubarView()
         {
             InitializeComponent();
         }
 
-        public void Init(ScmWindow owner, List<WpfMenuDto> menuList)
+        public void Init(ScmWindow owner, List<MenuDto> menuList)
         {
             foreach (var itemDto in menuList.Where(a => a.pid == 0).OrderBy(a => a.od))
             {
-                _MenuList.Add(itemDto);
+                var itemDvo = MenuDvo.FromDto(itemDto);
 
                 var menu = new MenuItem();
                 menu.Header = itemDto.namec;
                 menu.Icon = GetIcon(itemDto.icon);
-                menu.Tag = itemDto;
+                menu.Tag = itemDvo;
                 MbMenu.Items.Add(menu);
 
-                GenMenu(menu, itemDto, menuList);
+                GenMenu(menu, itemDvo, menuList);
             }
         }
 
-        private int GenMenu(MenuItem parent, WpfMenuDto dto, List<WpfMenuDto> list)
+        private int GenMenu(MenuItem parent, MenuDvo dvo, List<MenuDto> list)
         {
-            var subList = list.Where(a => a.pid == dto.id).OrderBy(a => a.od).ToList();
+            var subList = list.Where(a => a.pid == dvo.Id).OrderBy(a => a.od).ToList();
             if (subList.Count < 1)
             {
                 return 0;
             }
 
-            var items = new List<WpfMenuDto>();
+            var items = new List<MenuDvo>();
             foreach (var itemDto in subList)
             {
-                items.Add(itemDto);
+                var itemDvo = MenuDvo.FromDto(itemDto);
+                items.Add(itemDvo);
 
                 var menu = new MenuItem();
                 menu.Header = itemDto.namec;
                 menu.Icon = GetIcon(itemDto.icon);
-                menu.Tag = itemDto;
+                menu.Tag = itemDvo;
                 parent.Items.Add(menu);
 
-                var qty = GenMenu(menu, itemDto, list);
+                var qty = GenMenu(menu, itemDvo, list);
                 if (qty == 0)
                 {
                     menu.Click += Menu_Click;
@@ -69,7 +69,7 @@ namespace Com.Scm.Wpf.Views.Uc
                 return;
             }
 
-            var dto = menu.Tag as WpfMenuDto;
+            var dto = menu.Tag as MenuDvo;
             if (dto == null)
             {
                 return;

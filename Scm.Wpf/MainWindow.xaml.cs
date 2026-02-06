@@ -1,6 +1,7 @@
 ﻿using Com.Scm.Api;
 using Com.Scm.Config;
 using Com.Scm.Sys.Config;
+using Com.Scm.Sys.Menu;
 using Com.Scm.Utils;
 using Com.Scm.Wpf.Actions;
 using Com.Scm.Wpf.Dto;
@@ -36,7 +37,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     /// <summary>
     /// 用户菜单
     /// </summary>
-    public List<WpfMenuDto> MenuList { get; private set; }
+    public List<MenuDto> MenuList { get; private set; }
 
     /// <summary>
     /// 数据字典
@@ -54,9 +55,9 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
         InitializeComponent();
     }
 
-    private void LoadTestMenu(List<WpfMenuDto> menuList)
+    private void LoadTestMenu()
     {
-        menuList.Add(new WpfMenuDto { id = 1, codec = "1", namec = "test", uri = "" });
+        MenuList.Add(new MenuDto { id = 1, codec = "1", namec = "test", uri = "" });
     }
 
     public async Task Init(AppSettings appSettings, ScmTerminal scmTerminal)
@@ -69,26 +70,22 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     /// </summary>
     /// <param name="result"></param>
     /// <param name="menus"></param>
-    public void Init(LoginResult result, List<WpfMenuDto> menus)
+    public void Init(LoginResult result, List<MenuDto> menus)
     {
         UserInfo = result.UserInfo;
         _AccessToken = result.AccessToken;
         _AppKey = "";
+
         MenuList = menus;
-        LoadTestMenu(menus);
+        LoadTestMenu();
 
         _Dvo = new MainViewModel();
         _Dvo.Init();
         this.DataContext = _Dvo;
 
-        foreach (var menu in menus)
-        {
-            menu.Action = GetAction(menu);
-        }
-
         UcMenu.Init(this, menus);
-        //UcGuid.Init(this, menus);
-        UcGuid.Visibility = System.Windows.Visibility.Collapsed;
+        UcGuid.Init(this, menus);
+        //UcGuid.Visibility = System.Windows.Visibility.Collapsed;
         UcTray.Init();
 
         Show();
@@ -101,7 +98,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     /// </summary>
     /// <param name="dto"></param>
     /// <returns></returns>
-    public AAction GetAction(WpfMenuDto dto)
+    public AAction GetAction(MenuDto dto)
     {
         var className = dto.uri;
         if (string.IsNullOrEmpty(className))

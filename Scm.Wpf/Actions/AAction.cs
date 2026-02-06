@@ -1,11 +1,10 @@
-﻿using Com.Scm.Sys.Menu;
-using Com.Scm.Wpf.Dto;
+﻿using Com.Scm.Wpf.Dvo.Menu;
 
 namespace Com.Scm.Wpf.Actions
 {
     public abstract class AAction
     {
-        public abstract void Execute(MenuDto dto);
+        public abstract void Execute(MenuDvo dto);
 
         public ScmWindow Owner { get; set; }
 

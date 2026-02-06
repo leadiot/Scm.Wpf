@@ -14,19 +14,17 @@ namespace Com.Scm
     /// <summary>
     /// Login.xaml 的交互逻辑
     /// </summary>
-    public partial class Login : HandyControl.Controls.Window
+    public partial class LoginWindow : HandyControl.Controls.Window
     {
         private OidcConfig _Config;
         private OidcClient _Client;
 
-        public Login()
+        public LoginWindow()
         {
             InitializeComponent();
-
-            Init();
         }
 
-        public async void Init()
+        public async void Init(AppSettings appSettings)
         {
             LogUtils.Setup();
 

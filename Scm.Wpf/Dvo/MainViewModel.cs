@@ -1,57 +1,18 @@
-﻿using Com.Scm.Wpf.Models;
+﻿using Com.Scm.Sys.Menu;
+using Com.Scm.Wpf.Dto;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
-using System.Reflection;
-using System.Windows;
 
 namespace Com.Scm.Wpf.Dvo
 {
     public partial class MainViewModel : ScmDvo
     {
         [ObservableProperty]
-        private ObservableCollection<ModuleGroup> moduleGroups;
-
-        [ObservableProperty]
-        private ObservableCollection<TabModel> tabModels;
-
-        [ObservableProperty]
-        private int tabIndex;
-
-        [ObservableProperty]
-        private ObservableCollection<Modules> modules;
-
-        [ObservableProperty]
-        private FrameworkElement mainContent;
-
-        public RelayCommand<object> changeContentCmd { get; set; }
-        public RelayCommand ExpandMenuCmd { get; set; }
+        private ObservableCollection<MenuDto> menuList;
 
         public void Init()
         {
-            ModuleGroups = new ObservableCollection<ModuleGroup>();
-            TabModels = new ObservableCollection<TabModel>();
-            Modules = new ObservableCollection<Modules>();
-            Modules modulesModel = new Modules
-            {
-                Code = "\ue600",
-                Name = "用户管理",
-                TypeName = "system.user.User"
-            };
-            Modules.Add(modulesModel);
-            TabIndex = 0;
-
-            changeContentCmd = new RelayCommand<object>(NavChanged);
-            ExpandMenuCmd = new RelayCommand(() => {
-                for (int i = 0; i < ModuleGroups.Count; i++)
-                {
-                    var item = ModuleGroups[i];
-                    item.ContractionTemplate = !item.ContractionTemplate;
-                }
-                //Messenger.Default.Send("", "ExpandMenu");
-            });
-            getMenu();
-            NavChanged("home");
+            var menuList = InitTestMenu();
         }
 
         private void NavChanged(object o)
@@ -60,7 +21,7 @@ namespace Com.Scm.Wpf.Dvo
             string tabName;
             if (o.ToString() == "home")
             {
-                typeName = "home";
+                typeName = "Com.Scm.Wpf.Views.Home.HomeView";
                 tabName = "首页";
             }
             else
@@ -70,41 +31,30 @@ namespace Com.Scm.Wpf.Dvo
                 tabName = values[1].ToString();
             }
 
-            Type type = Type.GetType("ZrClient.View." + typeName);
-            ConstructorInfo constructor = type.GetConstructor(Type.EmptyTypes);
-            bool needAdd = true;
-            for (int i = 0; i < TabModels.Count; i++)
+            Type type = Type.GetType(typeName);
+            if (type == null)
             {
-                if (TabModels[i].Code == o.ToString())
-                {
-                    TabIndex = i;
-                    needAdd = false;
-                    break;
-                }
+                return;
             }
-            if (needAdd)
-            {
-                TabModel tabs = new TabModel();
-                tabs.Header = tabName;
-                tabs.Code = o.ToString();
-                tabs.Content = (FrameworkElement)constructor.Invoke(null);
-                TabModels.Add(tabs);
-                TabIndex = TabModels.Count - 1;
-            }
-            this.MainContent = (FrameworkElement)constructor.Invoke(null);
         }
 
-        private void getMenu()
+        private List<MenuDto> InitTestMenu()
         {
-            MenuApi mApi = new MenuApi();
-            Task.Run(new Action(async () => {
-                var menu = await mApi.getGroup();
-                ModuleGroups.Clear();
-                foreach (var item in menu)
-                {
-                    ModuleGroups.Add(item);
-                }
-            }));
+            var list = new List<MenuDto>();
+            var menu = new WpfMenuDto();
+            menu.id = 1;
+            menu.codec = "root";
+            menu.namec = "Home";
+
+            var item = new WpfMenuDto();
+            item.id = 10;
+            item.codec = "userInfo";
+            item.namec = "用户信息";
+            item.pid = menu.id;
+            menu.Add(item);
+            list.Add(menu);
+
+            return list;
         }
     }
 }

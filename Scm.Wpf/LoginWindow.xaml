@@ -5,7 +5,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:Uc="clr-namespace:Com.Scm.Uc"
     xmlns:hc="https://handyorg.github.io/handycontrol"
-    x:Class="Com.Scm.Login"
+    x:Class="Com.Scm.LoginWindow"
     mc:Ignorable="d"
     ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen"

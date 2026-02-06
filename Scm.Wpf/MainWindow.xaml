@@ -30,7 +30,7 @@
             <DropShadowEffect Color="Gray" ShadowDepth="0" BlurRadius="5" Opacity="0.5" Direction="0"/>
         </Border.Effect>
         <DockPanel>
-            <uc:UcMenubarView x:Name="UcMenu" DockPanel.Dock="Top" />
+            <uc:UcMenubarView x:Name="UcMenu" DockPanel.Dock="Top" Visibility="Collapsed" />
             <uc:UcTraybarView x:Name="UcTray" DockPanel.Dock="Bottom" />
             <uc:UcGuidView x:Name="UcGuid" DockPanel.Dock="Left" />
             <uc:UcSideView x:Name="UcSide" DockPanel.Dock="Right"/>
