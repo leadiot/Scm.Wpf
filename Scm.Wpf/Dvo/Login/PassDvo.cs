@@ -40,7 +40,7 @@ namespace Com.Scm.Wpf.Dvo.Login
         public PassDvo()
         {
             Key = TextUtils.GuidString();
-            vCodeUrl = $"{IEnv.API_URL}/captcha/cha/{Key}";
+            vCodeUrl = $"{ScmClientEnv.API_URL}/captcha/cha/{Key}";
         }
 
         [RelayCommand]
@@ -52,7 +52,7 @@ namespace Com.Scm.Wpf.Dvo.Login
         public void ChangeVCode()
         {
             Key = TextUtils.GuidString();
-            VCodeUrl = $"{IEnv.API_URL}/captcha/cha/{Key}?timestamp={TimeUtils.GetUnixTime()}";
+            VCodeUrl = $"{ScmClientEnv.API_URL}/captcha/cha/{Key}?timestamp={TimeUtils.GetUnixTime()}";
         }
 
         public Dictionary<string, string> GetLogin()

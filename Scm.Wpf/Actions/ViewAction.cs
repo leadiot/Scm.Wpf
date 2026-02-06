@@ -33,7 +33,7 @@ namespace Com.Scm.Wpf.Actions
             //var useCache = "true".Equals(cache, StringComparison.OrdinalIgnoreCase);
             var useCache = dvo.KeepAlive;
 
-            Owner.ShowView(view, useCache);
+            Owner.ShowView(dvo.Codec, dvo.Namec, view, useCache);
         }
     }
 }

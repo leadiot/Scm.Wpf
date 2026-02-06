@@ -8,9 +8,19 @@ namespace Com.Scm.Config
 {
     public class AppSettings
     {
-        private static JObject _Settings = null;
+        private JObject _Settings = null;
 
         public static bool Load()
+        {
+            Instance = new AppSettings();
+            if (!Instance.LoadConfig())
+            {
+                Instance.LoadDefault();
+            }
+            return true;
+        }
+
+        private bool LoadConfig()
         {
             var file = "appsettings.json";
             if (!FileUtils.ExistsDoc(file))
@@ -37,7 +47,35 @@ namespace Com.Scm.Config
             return true;
         }
 
-        public static T GetSection<T>(string section)
+        public void LoadDefault()
+        {
+            if (Env == null)
+            {
+                Env = new EnvConfig();
+                Env.LoadDefault();
+            }
+
+            if (Uid == null)
+            {
+                Uid = new UidConfig();
+                Uid.Type = UidType.SnowFlake;
+            }
+
+            if (Sql == null)
+            {
+                Sql = new SqlConfig();
+                Sql.Type = "Sqlite";
+                Sql.Text = "Data Source=./data/scm.db";
+            }
+
+            if (Oidc == null)
+            {
+                Oidc = new OidcConfig();
+                Oidc.UseTest();
+            }
+        }
+
+        public T GetSection<T>(string section)
         {
             var obj = _Settings[section];
             if (obj == null)
@@ -48,7 +86,7 @@ namespace Com.Scm.Config
             return obj.ToObject<T>();
         }
 
-        public static EnvConfig EnvConfig { get; private set; }
+        public EnvConfig EnvConfig { get; private set; }
 
         /// <summary>
         /// 是否自动启动
@@ -81,49 +119,6 @@ namespace Com.Scm.Config
         public OidcConfig Oidc { get; set; }
 
         public static AppSettings Instance { get; private set; }
-
-        public void LoadDefault()
-        {
-            if (Env == null)
-            {
-                Env = new EnvConfig();
-                Env.LoadDefault();
-            }
-
-            if (Uid == null)
-            {
-                Uid = new UidConfig();
-                Uid.Type = UidType.SnowFlake;
-            }
-
-            if (Sql == null)
-            {
-                Sql = new SqlConfig();
-                Sql.Type = "Sqlite";
-                Sql.Text = "Data Source=./data/scm.db";
-            }
-
-            if (Oidc == null)
-            {
-                Oidc = new OidcConfig();
-                Oidc.UseTest();
-            }
-        }
-
-        public static bool Load2()
-        {
-            var file = "appsettings.json";
-            if (Com.Scm.Utils.FileUtils.ExistsDoc(file))
-            {
-                var json = Com.Scm.Utils.FileUtils.ReadText(file);
-                Instance = json.AsJsonObject<AppSettings>();
-                return true;
-            }
-
-            Instance = new AppSettings();
-            Instance.LoadDefault();
-            return true;
-        }
 
         public void Save()
         {

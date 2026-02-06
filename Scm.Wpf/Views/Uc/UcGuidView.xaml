@@ -84,7 +84,6 @@
                 Text="Scm.Net"
                 FontWeight="Bold" 
                 FontSize="32"
-                Background="Red"
                 Foreground="#3DD0FB" 
                 TextAlignment="Center"
                 VerticalAlignment="Center"

@@ -61,8 +61,24 @@ namespace Com.Scm.Wpf.Dvo.Menu
 
         public List<MenuDvo> children;
 
+        /// <summary>
+        /// 是否已加载
+        /// </summary>
+        public bool Loaded { get; set; }
+
+        /// <summary>
+        /// 菜单事件
+        /// </summary>
         public AAction Action { get; set; }
 
+        /// <summary>
+        /// 事件参数
+        /// </summary>
+        public string Args { get; set; }
+
+        /// <summary>
+        /// 界面组件
+        /// </summary>
         public FrameworkElement Element { get; set; }
 
         public void Add(MenuDvo dto)
@@ -83,6 +99,14 @@ namespace Com.Scm.Wpf.Dvo.Menu
             dvo.Types = dto.types;
             dvo.Codec = dto.codec;
             dvo.Namec = dto.namec;
+            dvo.Pid = dto.pid;
+            dvo.Uri = dto.uri;
+            dvo.View = dto.view;
+            dvo.Icon = dto.icon;
+            dvo.Color = dto.color;
+            dvo.Visible = dto.visible;
+            dvo.Enabled = dto.enabled;
+            dvo.KeepAlive = dto.keepAlive;
             return dvo;
         }
     }

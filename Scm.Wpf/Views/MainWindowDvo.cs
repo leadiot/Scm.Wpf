@@ -1,0 +1,133 @@
+﻿using Com.Scm.Sys.Menu;
+using Com.Scm.Utils;
+using Com.Scm.Wpf.Dvo.Menu;
+using Com.Scm.Wpf.Models;
+using Com.Scm.Wpf.Views.Home;
+using CommunityToolkit.Mvvm.ComponentModel;
+using System.Collections.ObjectModel;
+using System.Reflection;
+using System.Windows.Controls;
+
+namespace Com.Scm.Wpf.Dvo
+{
+    public partial class MainWindowDvo : ScmDvo
+    {
+        private MainWindow _Window;
+
+        [ObservableProperty]
+        private ObservableCollection<MenuDvo> menuList = new ObservableCollection<MenuDvo>();
+        [ObservableProperty]
+        private ObservableCollection<TabModel> tabModels = new ObservableCollection<TabModel>();
+        [ObservableProperty]
+        private int tabIndex;
+
+        private HomeView _HomeView;
+
+        public void Init(List<MenuDto> menuList)
+        {
+            InitTestMenu(menuList);
+
+            foreach (var itemDto in menuList)
+            {
+                var itemDvo = MenuDvo.FromDto(itemDto);
+                this.MenuList.Add(itemDvo);
+            }
+        }
+
+        private void InitTestMenu(List<MenuDto> menuList)
+        {
+            var menu = new MenuDto();
+            menu.id = 1;
+            menu.codec = "root";
+            menu.namec = "Home";
+            menuList.Add(menu);
+
+            var item = new MenuDto();
+            item.id = 10;
+            item.codec = "demo-native";
+            item.namec = "本地演示";
+            item.pid = menu.id;
+            item.uri = "Com.Scm.Wpf.Actions.ViewAction";
+            item.view = "Com.Scm.Wpf.Views.Samples.Native.MainView";
+            menuList.Add(item);
+
+            item = new MenuDto();
+            item.id = 11;
+            item.codec = "demo-remote";
+            item.namec = "远程演示";
+            item.pid = menu.id;
+            item.uri = "Com.Scm.Wpf.Actions.ViewAction";
+            item.view = "Com.Scm.Wpf.Views.Samples.Remote.MainView";
+            menuList.Add(item);
+        }
+
+        public void ShowView(string codec, string namec, string viewClass, bool useCache = false)
+        {
+            for (int i = 0; i < TabModels.Count; i++)
+            {
+                if (TabModels[i].Code == codec)
+                {
+                    TabIndex = i;
+                    return;
+                }
+            }
+
+            LogUtils.Info($"MainWindow-ShowView:viewClass[{viewClass}],useCache:[{useCache}]");
+            if (string.IsNullOrWhiteSpace(viewClass))
+            {
+                return;
+            }
+
+            var view = Assembly.GetEntryAssembly().CreateInstance(viewClass) as ScmView;
+            if (view == null)
+            {
+                LogUtils.Error("MainWindow-ShowView:创建视图失败-" + viewClass);
+                return;
+            }
+
+            view.Init(_Window);
+
+            TabModel tabs = new TabModel();
+            tabs.Code = codec;
+            tabs.Header = namec;
+            tabs.Content = view.GetView();
+
+            TabModels.Add(tabs);
+            TabIndex = TabModels.Count - 1;
+        }
+
+
+        public void ShowView(string codec, string namec, UserControl control)
+        {
+            for (int i = 0; i < TabModels.Count; i++)
+            {
+                if (TabModels[i].Code == codec)
+                {
+                    TabIndex = i;
+                    return;
+                }
+            }
+
+            TabModel tabs = new TabModel();
+            tabs.Code = codec;
+            tabs.Header = namec;
+            tabs.Content = control;
+
+            TabModels.Add(tabs);
+            TabIndex = TabModels.Count - 1;
+        }
+
+        /// <summary>
+        /// 显示首页
+        /// </summary>
+        public void ShowHomeView()
+        {
+            if (_HomeView == null)
+            {
+                _HomeView = new HomeView();
+                _HomeView.Init(_Window);
+            }
+            ShowView("home", "首页", _HomeView);
+        }
+    }
+}

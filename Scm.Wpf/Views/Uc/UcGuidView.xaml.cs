@@ -1,11 +1,11 @@
 ﻿using Com.Scm.Sys.Menu;
 using Com.Scm.Utils;
+using Com.Scm.Wpf.Actions;
 using Com.Scm.Wpf.Dvo.Menu;
 using HandyControl.Controls;
 using MahApps.Metro.IconPacks;
 using System.Collections.ObjectModel;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 
 namespace Com.Scm.Wpf.Views.Uc
 {
@@ -41,12 +41,12 @@ namespace Com.Scm.Wpf.Views.Uc
             }
         }
 
-        private int GenMenu(SideMenuItem parentMenu, MenuDvo parentDto, List<MenuDto> list)
+        private void GenMenu(SideMenuItem parentMenu, MenuDvo parentDto, List<MenuDto> list)
         {
             var subList = list.Where(a => a.pid == parentDto.Id).OrderBy(a => a.od).ToList();
             if (subList.Count < 1)
             {
-                return 0;
+                return;
             }
 
             var items = new List<MenuDvo>();
@@ -61,13 +61,12 @@ namespace Com.Scm.Wpf.Views.Uc
                 menu.Tag = itemDvo;
                 parentMenu.Items.Add(menu);
 
-                var qty = GenMenu(menu, itemDvo, list);
-                if (qty == 0)
+                GenMenu(menu, itemDvo, list);
+                if (menu.Items.Count < 1)
                 {
                     menu.Selected += Menu_Selected;
                 }
             }
-            return items.Count;
         }
 
         private void Menu_Selected(object sender, System.Windows.RoutedEventArgs e)
@@ -87,7 +86,31 @@ namespace Com.Scm.Wpf.Views.Uc
             var action = dvo.Action;
             if (action == null)
             {
-                return;
+                if (dvo.Loaded)
+                {
+                    return;
+                }
+
+                dvo.Loaded = true;
+                if (string.IsNullOrEmpty(dvo.Uri))
+                {
+                    return;
+                }
+
+                Type type = Type.GetType(dvo.Uri);
+                if (type == null)
+                {
+                    return;
+                }
+                var obj = Activator.CreateInstance(type);
+                if (!(obj is AAction))
+                {
+                    return;
+                }
+
+                action = (AAction)obj;
+                action.Owner = _Owner;
+                dvo.Action = action;
             }
 
             action.Execute(dvo);
@@ -143,14 +166,6 @@ namespace Com.Scm.Wpf.Views.Uc
 
             //MbMenu.Visibility = System.Windows.Visibility.Visible;
             //PiMenu.Kind = PackIconMaterialKind.ChevronDoubleLeft;
-        }
-
-        private void Button_Click_1(object sender, System.Windows.RoutedEventArgs e)
-        {
-            Button btn = (Button)sender;
-            Grid gridtemp = (Grid)btn.Template.FindName("gridtemp", btn);
-            Popup menuPop = (Popup)gridtemp.FindName("menuPop");
-            menuPop.IsOpen = true;
         }
     }
 }

@@ -121,7 +121,7 @@ namespace Com.Scm
         /// <returns></returns>
         public async Task<bool> LoadMenuAsync(LoginResult result, string lang = null)
         {
-            var url = AppSettings.EnvConfig.GetApiUrl("/operator/authoritymenu");
+            var url = AppSettings.Instance.EnvConfig.GetApiUrl("/operator/authoritymenu");
 
             var body = new Dictionary<string, string>();
             body["client"] = "20";

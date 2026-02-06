@@ -9,9 +9,9 @@
     mc:Ignorable="d"
     ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen"
+    Icon="/Resources/logo.ico"
     Title="C-SCM用户登录"
-    Height="380"
-    Width="600">
+    Height="380" Width="600">
     <hc:Card BorderThickness="1"
              Effect="{StaticResource EffectShadow2}"
              Margin="8">

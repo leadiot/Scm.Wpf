@@ -1,5 +1,5 @@
-﻿using Com.Scm.Wpf.Models;
-using SqlSugar;
+﻿using Com.Scm.Utils;
+using Com.Scm.Wpf.Models;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -11,7 +11,6 @@ namespace Com.Scm.Wpf.Views.Samples.Native
     public partial class MainView : UserControl, ScmView, ISearchView
     {
         private ScmWindow _Owner;
-        private ISqlSugarClient _Client;
         private SearchParamsDvo _Dvo;
         private ScmSearchPageResponse<SearchResultDataDvo> _Response;
 
@@ -144,8 +143,10 @@ namespace Com.Scm.Wpf.Views.Samples.Native
 
         public async void ReloadPageAsync()
         {
+            var client = SqlHelper.GetSqlClient();
+
             var body = _Dvo.ToDictionary();
-            var result = await _Client.Queryable<string>()
+            var result = await client.Queryable<string>()
                 .Where(a => a != null)
                 .ToListAsync();
             //if (!_Response.Success)

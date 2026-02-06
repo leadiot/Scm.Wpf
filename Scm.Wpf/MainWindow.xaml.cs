@@ -7,7 +7,6 @@ using Com.Scm.Wpf.Actions;
 using Com.Scm.Wpf.Dto;
 using Com.Scm.Wpf.Dto.Login;
 using Com.Scm.Wpf.Dvo;
-using Com.Scm.Wpf.Views.Home;
 using HandyControl.Controls;
 using System.Reflection;
 
@@ -18,9 +17,6 @@ namespace Com.Scm.Wpf;
 /// </summary>
 public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
 {
-    private Dictionary<string, ScmView> _Views = new Dictionary<string, ScmView>();
-    private HomeView _HomeView;
-
     /// <summary>
     /// 访问凭据
     /// </summary>
@@ -44,7 +40,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     /// </summary>
     private static Dictionary<string, ConfigDto> _Cfg = new Dictionary<string, ConfigDto>();
 
-    private MainViewModel _Dvo;
+    private MainWindowDvo _Dvo;
 
     public MainWindow()
     {
@@ -67,7 +63,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
         _AccessToken = result.AccessToken;
         _AppKey = "";
 
-        _Dvo = new MainViewModel();
+        _Dvo = new MainWindowDvo();
         _Dvo.Init(menus);
         this.DataContext = _Dvo;
 
@@ -78,7 +74,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
 
         Show();
 
-        ShowHomeView();
+        _Dvo.ShowHomeView();
     }
 
     /// <summary>
@@ -103,54 +99,9 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     }
 
     #region ScmWindow 接口实现
-    public void ShowView(string viewClass, bool useCache = true)
+    public void ShowView(string codec, string namec, string viewClass, bool useCache = true)
     {
-        LogUtils.Info($"MainWindow-ShowView:viewClass[{viewClass}],useCache:[{useCache}]");
-        if (string.IsNullOrWhiteSpace(viewClass))
-        {
-            return;
-        }
-
-        if (useCache)
-        {
-            if (_Views.ContainsKey(viewClass))
-            {
-                ShowView(_Views[viewClass]);
-                return;
-            }
-        }
-
-        var view = Assembly.GetEntryAssembly().CreateInstance(viewClass) as ScmView;
-        if (view == null)
-        {
-            LogUtils.Error("MainWindow-ShowView:创建视图失败-" + viewClass);
-            return;
-        }
-
-        view.Init(this);
-        //var view = Activator.CreateInstance(viewClass) as ScmView;
-        ShowView(view);
-
-        if (useCache)
-        {
-            _Views[viewClass] = view;
-        }
-    }
-
-    private void ShowView(ScmView view)
-    {
-        GdView.Children.Clear();
-
-        if (view == null)
-        {
-            return;
-        }
-
-        var control = view.GetView();
-        if (control != null)
-        {
-            GdView.Children.Add(control);
-        }
+        _Dvo.ShowView(codec, namec, viewClass);
     }
 
     private Dictionary<string, string> GetHeader(Dictionary<string, string> head)
@@ -378,24 +329,9 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     }
     #endregion
 
-    /// <summary>
-    /// 显示首页
-    /// </summary>
-    private void ShowHomeView()
-    {
-        GdView.Children.Clear();
-
-        if (_HomeView == null)
-        {
-            _HomeView = new HomeView();
-            _HomeView.Init(this);
-        }
-        GdView.Children.Add(_HomeView);
-    }
-
     protected string GenUrl(string url)
     {
-        return AppSettings.EnvConfig.GetApiUrl(url);
+        return AppSettings.Instance.EnvConfig.GetApiUrl(url);
     }
 
     /// <summary>

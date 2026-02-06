@@ -36,8 +36,8 @@
             <uc:UcSideView x:Name="UcSide" DockPanel.Dock="Right"/>
             <DockPanel>
                 <uc:UcInfobarView x:Name="UcInfo" DockPanel.Dock="Top"/>
-                <Grid x:Name="GdView"></Grid>
                 <hc:TabControl 
+                    Name="TcView"
                     Margin="0 0 0 7"
                     TabItemWidth="100"
                     IsAnimationEnabled="True" 

@@ -32,7 +32,7 @@ namespace Com.Scm.Wpf
                 MessageBox.Show("配置文件加载失败！");
                 return;
             }
-            var config = AppSettings.GetSection<AbConfig>("Demo");
+            var config = AppSettings.Instance.GetSection<AbConfig>("Demo");
 
             Ocr(config);
         }

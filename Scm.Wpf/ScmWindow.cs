@@ -7,7 +7,7 @@
         /// </summary>
         /// <param name="viewClass"></param>
         /// <param name="useCache"></param>
-        void ShowView(string viewClass, bool useCache = true);
+        void ShowView(string codec, string namec, string viewClass, bool useCache = true);
 
         /// <summary>
         /// GET请求，返回对象

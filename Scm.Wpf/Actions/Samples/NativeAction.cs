@@ -11,7 +11,7 @@ namespace Com.Scm.Wpf.Actions.Samples
                 return;
             }
 
-            Owner.ShowView("Com.Scm.Wpf.Views.Samples.Native.MainView");
+            Owner.ShowView("", "", "Com.Scm.Wpf.Views.Samples.Native.MainView");
         }
     }
 }

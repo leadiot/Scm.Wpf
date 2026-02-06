@@ -4,6 +4,8 @@ namespace Com.Scm
 {
     public class ScmClientEnv
     {
+        public const string API_URL = "http://api.c-scm.net/api";
+
         /// <summary>
         /// 主版本
         /// </summary>
