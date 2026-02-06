@@ -8,24 +8,17 @@
 		<UseWPF>true</UseWPF>
 		<RootNamespace>Com.Scm.Wpf</RootNamespace>
 		<StartupObject>Com.Scm.Wpf.App</StartupObject>
-		<ApplicationIcon>oidc.ico</ApplicationIcon>
+		<ApplicationIcon>Resources\logo.ico</ApplicationIcon>
 	</PropertyGroup>
 
-	<ItemGroup>
-	  <Compile Remove="ScmClient.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Remove="Assets\Images\avatar.png" />
-	  <None Remove="Assets\Images\bg.png" />
-	  <None Remove="Resources\logo.ico" />
-	  <None Remove="Resources\logo.png" />
-	  <None Remove="Resources\splash.png" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Content Include="oidc.ico" />
-	</ItemGroup>
+  <ItemGroup>
+    <Content Include="appsettings.json"/>
+    <Resource Include="Assets\Images\avatar.png" />
+    <Resource Include="Assets\Images\bg.png" />
+    <Resource Include="Resources\logo.ico" />
+    <Resource Include="Resources\logo.png" />
+    <Resource Include="Resources\splash.png" />
+  </ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
@@ -70,20 +63,6 @@
 		<Reference Include="Scm.Uid">
 		  <HintPath>..\Libs\net10.0\Scm.Uid.dll</HintPath>
 		</Reference>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Resource Include="Assets\Images\avatar.png" />
-	  <Resource Include="Assets\Images\bg.png" />
-	  <Resource Include="Resources\logo.ico" />
-	  <Resource Include="Resources\logo.png" />
-	  <Resource Include="Resources\splash.png" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Update="appsettings.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
 	</ItemGroup>
 
 </Project>
