@@ -149,7 +149,7 @@ namespace Com.Scm.Wpf.Dvo
 
         protected void ClearErrors()
         {
-            var keys = _errors.Keys;
+            var keys = _errors.Keys.ToArray();
             _errors.Clear();
             foreach (var key in keys)
             {

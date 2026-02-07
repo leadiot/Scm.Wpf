@@ -1,6 +1,7 @@
-﻿using SqlSugar;
+﻿using Com.Scm.Utils;
+using SqlSugar;
 
-namespace Com.Scm.Utils
+namespace Com.Scm.Wpf.Helper
 {
     public class SqlHelper
     {

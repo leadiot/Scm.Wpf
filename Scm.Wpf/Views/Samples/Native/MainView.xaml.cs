@@ -1,5 +1,5 @@
-﻿using Com.Scm.Utils;
-using Com.Scm.Wpf.Dao.Samples;
+﻿using Com.Scm.Wpf.Dao.Samples;
+using Com.Scm.Wpf.Helper;
 using Com.Scm.Wpf.Models;
 using System.Windows;
 using System.Windows.Controls;

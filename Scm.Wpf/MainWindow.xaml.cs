@@ -9,7 +9,7 @@ using Com.Scm.Wpf.Actions;
 using Com.Scm.Wpf.Dto;
 using Com.Scm.Wpf.Dto.Login;
 using Com.Scm.Wpf.Dvo;
-using Com.Scm.Wpf.Utils;
+using Com.Scm.Wpf.Helper;
 using System.Reflection;
 
 namespace Com.Scm.Wpf;

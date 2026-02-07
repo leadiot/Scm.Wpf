@@ -3,6 +3,7 @@ using Com.Scm.Dao;
 using Com.Scm.Uid.Config;
 using Com.Scm.Utils;
 using Com.Scm.Views;
+using Com.Scm.Wpf.Helper;
 using System.Windows;
 
 namespace Com.Scm.Wpf;
