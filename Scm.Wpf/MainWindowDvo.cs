@@ -3,23 +3,21 @@ using Com.Scm.Utils;
 using Com.Scm.Wpf.Dvo.Menu;
 using Com.Scm.Wpf.Models;
 using Com.Scm.Wpf.Views.Home;
-using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Windows.Controls;
 
 namespace Com.Scm.Wpf.Dvo
 {
-    public partial class MainWindowDvo : ScmDvo
+    public class MainWindowDvo : ScmDvo
     {
         private MainWindow _Window;
 
-        [ObservableProperty]
-        private ObservableCollection<MenuDvo> menuList = new ObservableCollection<MenuDvo>();
-        [ObservableProperty]
-        private ObservableCollection<TabModel> tabModels = new ObservableCollection<TabModel>();
-        [ObservableProperty]
+        public ObservableCollection<MenuDvo> MenuList { get; set; } = new ObservableCollection<MenuDvo>();
+        public ObservableCollection<TabModel> TabModels { get; set; } = new ObservableCollection<TabModel>();
+
         private int tabIndex;
+        public int TabIndex { get { return tabIndex; } set { SetProperty(ref tabIndex, value); } }
 
         private HomeView _HomeView;
 

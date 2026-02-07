@@ -1,63 +1,62 @@
 ﻿using Com.Scm.Enums;
 using Com.Scm.Sys.Menu;
 using Com.Scm.Wpf.Actions;
-using CommunityToolkit.Mvvm.ComponentModel;
 using System.Windows;
 
 namespace Com.Scm.Wpf.Dvo.Menu
 {
-    public partial class MenuDvo : ScmDvo
+    public class MenuDvo : ScmDvo
     {
-        [ObservableProperty]
         private ScmClientTypeEnum client;
+        public ScmClientTypeEnum Client { get { return client; } set { SetProperty(ref client, value); } }
 
-        [ObservableProperty]
         private ScmMenuTypesEnum types;
+        public ScmMenuTypesEnum Types { get { return types; } set { SetProperty(ref types, value); } }
 
-        [ObservableProperty]
         private string lang;
+        public string Lang { get { return lang; } set { SetProperty(ref lang, value); } }
 
-        [ObservableProperty]
         private string codec;
+        public string Codec { get { return codec; } set { SetProperty(ref codec, value); } }
 
-        [ObservableProperty]
         private string namec;
+        public string Namec { get { return namec; } set { SetProperty(ref namec, value); } }
 
-        [ObservableProperty]
         private long pid;
+        public long Pid { get { return pid; } set { SetProperty(ref pid, value); } }
 
-        [ObservableProperty]
         private string uri;
+        public string Uri { get { return uri; } set { SetProperty(ref uri, value); } }
 
-        [ObservableProperty]
         private string view;
+        public string View { get { return view; } set { SetProperty(ref view, value); } }
 
-        [ObservableProperty]
         private string icon;
+        public string Icon { get { return icon; } set { SetProperty(ref icon, value); } }
 
-        [ObservableProperty]
         private string active;
+        public string Active { get { return active; } set { SetProperty(ref active, value); } }
 
-        [ObservableProperty]
         private string color;
+        public string Color { get { return color; } set { SetProperty(ref color, value); } }
 
-        [ObservableProperty]
         private int layer = 1;
+        public int Layer { get { return layer; } set { SetProperty(ref layer, value); } }
 
-        [ObservableProperty]
         private int od = 1;
+        public int Od { get { return od; } set { SetProperty(ref od, value); } }
 
-        [ObservableProperty]
         private bool visible;
+        public bool Visible { get { return visible; } set { SetProperty(ref visible, value); } }
 
-        [ObservableProperty]
         private bool enabled;
+        public bool Enabled { get { return enabled; } set { SetProperty(ref enabled, value); } }
 
-        [ObservableProperty]
         private bool fullpage;
+        public bool Fullpage { get { return fullpage; } set { SetProperty(ref fullpage, value); } }
 
-        [ObservableProperty]
         private bool keepAlive;
+        public bool KeepAlive { get { return keepAlive; } set { SetProperty(ref keepAlive, value); } }
 
         public List<MenuDvo> children;
 

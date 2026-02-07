@@ -1,7 +1,6 @@
 ﻿using Com.Scm.Utils;
 using Com.Scm.Wpf.Dvo;
 using Com.Scm.Wpf.Models;
-using CommunityToolkit.Mvvm.ComponentModel;
 using HandyControl.Controls;
 using Microsoft.Win32;
 using MiniExcelLibs;
@@ -701,24 +700,78 @@ namespace Com.Scm.Wpf.Views.Uc
         {
 
         }
+
+        public void ShowInfo(FrameworkElement element)
+        {
+            TbTitle.Text = "详情";
+
+            GdPanel.Children.Clear();
+            GdPanel.Children.Add(element);
+
+            BtAccept.Visibility = Visibility.Collapsed;
+            BtSearch.Visibility = Visibility.Collapsed;
+
+            DrSide.IsOpen = true;
+        }
+
+        public void ShowEdit(FrameworkElement element)
+        {
+            TbTitle.Text = "编辑";
+
+            GdPanel.Children.Clear();
+            GdPanel.Children.Add(element);
+
+            BtAccept.Visibility = Visibility.Visible;
+            BtSearch.Visibility = Visibility.Collapsed;
+
+            DrSide.IsOpen = true;
+        }
+
+        public void ShowSearch(FrameworkElement element)
+        {
+            TbTitle.Text = "查询";
+
+            GdPanel.Children.Clear();
+            GdPanel.Children.Add(element);
+
+            BtAccept.Visibility = Visibility.Collapsed;
+            BtSearch.Visibility = Visibility.Visible;
+
+            DrSide.IsOpen = true;
+        }
+
+        private void BtAccept_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtSearch_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtCancel_Click(object sender, RoutedEventArgs e)
+        {
+            DrSide.IsOpen = false;
+        }
     }
 
     public partial class ScmPageDataDvo : ScmDvo
     {
-        [ObservableProperty]
         private int pageIndex;
+        public int PageIndex { get { return pageIndex; } set { SetProperty(ref pageIndex, value); } }
 
-        [ObservableProperty]
         private int pageItems = 20;
+        public int PageItems { get { return pageItems; } set { SetProperty(ref pageItems, value); } }
 
-        [ObservableProperty]
         private int view;
+        public int View { get { return view; } set { SetProperty(ref view, value); } }
 
-        [ObservableProperty]
         private int totalPages;
+        public int TotalPages { get { return totalPages; } set { SetProperty(ref totalPages, value); } }
 
-        [ObservableProperty]
         private int totalItems;
+        public int TotalItems { get { return totalItems; } set { SetProperty(ref totalItems, value); } }
 
         public string PagesInfo
         {

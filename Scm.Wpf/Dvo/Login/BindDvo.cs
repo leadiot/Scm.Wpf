@@ -1,6 +1,5 @@
 ﻿using Com.Scm.Utils;
 using Com.Scm.Wpf.Dvo;
-using CommunityToolkit.Mvvm.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Dvo.Login
@@ -8,21 +7,21 @@ namespace Com.Scm.Dvo.Login
     public partial class BindDvo : ScmDvo
     {
         [Required(ErrorMessage = "远端路径不能为空！")]
-        [ObservableProperty]
         private string host = "";
+        public string Host { get { return host; } set { SetProperty(ref host, value); } }
 
         [Required(ErrorMessage = "终端代码不能为空！")]
         [Length(12, 12, ErrorMessage = "终端代码长度应为12个字符")]
-        [ObservableProperty]
         private string code = "";
+        public string Code { get { return code; } set { SetProperty(ref code, value); } }
 
         [Required(ErrorMessage = "终端授权不能为空！")]
         [Length(16, 16, ErrorMessage = "终端授权长度应为16个字符")]
-        [ObservableProperty]
         private string pass = "";
+        public string Pass { get { return pass; } set { SetProperty(ref pass, value); } }
 
-        [ObservableProperty]
         private string version = "1.0";
+        public string Version { get { return version; } set { SetProperty(ref version, value); } }
 
         public BindDvo()
         {
@@ -31,16 +30,6 @@ namespace Com.Scm.Dvo.Login
 
         public Dictionary<string, string> GetBind()
         {
-            ValidateAllProperties();
-            if (HasErrors)
-            {
-                return null;
-            }
-
-            if (!IsValid())
-            {
-                return null;
-            }
 
             var macList = OsHelper.GetValidMacAddresses();
 

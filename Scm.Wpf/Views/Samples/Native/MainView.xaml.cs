@@ -15,6 +15,10 @@ namespace Com.Scm.Wpf.Views.Samples.Native
         private SearchParamsDvo _Dvo;
         private ScmSearchPageResponse<ListDvo> _Response;
 
+        private EditView _EditView;
+        private InfoView _InfoView;
+        private SearchView _SearchView;
+
         public MainView()
         {
             InitializeComponent();
@@ -46,7 +50,16 @@ namespace Com.Scm.Wpf.Views.Samples.Native
 
         private void BtAppend_Click(object sender, RoutedEventArgs e)
         {
-            DrSide.IsOpen = true;
+            if (_EditView == null)
+            {
+                _EditView = new EditView();
+            }
+
+            var dvo = new EditDvo();
+            dvo.codec = "123";
+            _EditView.Init(dvo);
+
+            PgData.ShowEdit(_EditView);
         }
 
         private void BtEnable_Click(object sender, RoutedEventArgs e)
@@ -81,8 +94,14 @@ namespace Com.Scm.Wpf.Views.Samples.Native
             FirstPageAsync();
         }
 
-        private void BtCancel_Click(object sender, RoutedEventArgs e)
+        private void BtMore_Click(object sender, RoutedEventArgs e)
         {
+            if (_SearchView == null)
+            {
+                _SearchView = new SearchView();
+            }
+
+            PgData.ShowSearch(_SearchView);
         }
 
         #region 接口实现

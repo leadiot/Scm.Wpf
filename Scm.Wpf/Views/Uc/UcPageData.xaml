@@ -38,6 +38,23 @@
                       Width="auto"
                       RowHeaderWidth="40">
             </DataGrid>
+            <hc:Drawer x:Name="DrSide" Dock="Right" ShowMask="True" ShowMode="Cover">
+                <Border Background="White" Width="240" Padding="12">
+                    <DockPanel>
+                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                            <TextBlock x:Name="TbTitle" Style="{StaticResource TextBlockSubTitleBold}" Text="编辑"></TextBlock>
+                        </StackPanel>
+                        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Left">
+                            <Button x:Name="BtAccept" Click="BtAccept_Click" Style="{StaticResource ButtonPrimary}" Content="确认" Margin="0 0 12 0"></Button>
+                            <Button x:Name="BtSearch" Click="BtSearch_Click" Style="{StaticResource ButtonPrimary}" Content="查询" Margin="0 0 12 0"></Button>
+                            <Button x:Name="BtCancel" Click="BtCancel_Click" Style="{StaticResource ButtonDefault}" Content="取消"></Button>
+                        </StackPanel>
+                        <Border BorderBrush="LightGray" BorderThickness="0 1" Margin="0 6">
+                            <Grid x:Name="GdPanel" Margin="0 6"></Grid>
+                        </Border>
+                    </DockPanel>
+                </Border>
+            </hc:Drawer>
         </Grid>
     </DockPanel>
 </UserControl>

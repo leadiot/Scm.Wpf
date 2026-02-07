@@ -1,32 +1,29 @@
 ﻿using Com.Scm.Enums;
 using Com.Scm.Wpf.Dvo;
-using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Com.Scm.Wpf.Views.Samples.Remote
 {
-    public partial class SearchParamsDvo : ScmSearchPageDvo
+    public class SearchParamsDvo : ScmSearchPageDvo
     {
-        [ObservableProperty]
         private string key;
+        public string Key { get { return key; } set { SetProperty(ref key, value); } }
 
-        [ObservableProperty]
         private ScmRowStatusEnum status;
+        public ScmRowStatusEnum Status { get { return status; } set { SetProperty(ref status, value); } }
 
-        [ObservableProperty]
         private bool drawer;
+        public bool Drawer { get { return drawer; } set { SetProperty(ref drawer, value); } }
     }
 
-    public partial class SearchResult1Dvo : ScmSearchResultDvo<SearchResultDataDvo>
+    public class SearchResult1Dvo : ScmSearchResultDvo<SearchResultDataDvo>
     {
 
     }
 
-    public partial class SearchResultDataDvo : ScmSearchResultDataDvo
+    public class SearchResultDataDvo : ScmSearchResultDataDvo
     {
-        [ObservableProperty]
         private string codec;
 
-        [ObservableProperty]
         private string namec;
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Com.Scm.Utils;
 using Com.Scm.Wpf.Dvo;
-using CommunityToolkit.Mvvm.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Threading;
 
@@ -44,10 +43,10 @@ namespace Com.Scm.Wpf.Views.Uc
 
     public partial class InfobarDvo : ScmDvo
     {
-        [ObservableProperty]
         private string info;
+        public string Info { get { return info; } set { SetProperty(ref info, value); } }
 
-        [ObservableProperty]
         private string time;
+        public string Time { get { return time; } set { SetProperty(ref time, value); } }
     }
 }

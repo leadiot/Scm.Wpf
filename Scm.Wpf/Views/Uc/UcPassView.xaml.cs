@@ -2,9 +2,9 @@
 using Com.Scm.Config;
 using Com.Scm.Oidc;
 using Com.Scm.Utils;
+using Com.Scm.Views;
 using Com.Scm.Wpf.Dto.Login;
 using Com.Scm.Wpf.Dvo.Login;
-using System.Windows;
 using System.Windows.Controls;
 
 namespace Com.Scm.Uc
@@ -73,14 +73,14 @@ namespace Com.Scm.Uc
             }
             if (response.Code != 200)
             {
-                MessageBox.Show(response.GetMessage());
+                MessageWindow.ShowDialog(_Owner, response.GetMessage());
                 return;
             }
 
             var data = response.Data;
             if (!data.IsSuccess())
             {
-                MessageBox.Show(data.GetMessage());
+                MessageWindow.ShowDialog(_Owner, data.GetMessage());
                 return;
             }
             _Owner.Load(data);

@@ -54,27 +54,10 @@
                         <Button x:Name="BtSearch" Click="BtSearch_Click" Grid.Column="1" Content="搜索" HorizontalAlignment="Right" Style="{StaticResource ButtonPrimary}"/>
                     </hc:ElementGroup>
                     <hc:Divider Orientation="Vertical"/>
-                    <ToggleButton x:Name="BtMore" IsChecked="{Binding Path=Drawer}" Content="显示"></ToggleButton>
+                    <ToggleButton x:Name="BtMore" Content="显示" Click="BtMore_Click"></ToggleButton>
                 </StackPanel>
             </Grid>
             <Uc:UcPageData x:Name="PgData" Grid.Row="1" Margin="5"/>
         </Grid>
-        <hc:Drawer x:Name="DrSide" Dock="Right" ShowMask="True" ShowMode="Cover" IsOpen="{Binding Drawer}">
-            <Border Background="White" Width="240" Padding="12">
-                <DockPanel>
-                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-                        <TextBlock Text="编辑"></TextBlock>
-                    </StackPanel>
-                    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Left">
-                        <Button Click="BtSearch_Click" Style="{StaticResource ButtonPrimary}" Content="查询"></Button>
-                        <Button Click="BtCancel_Click" Style="{StaticResource ButtonDefault}" Content="取消"></Button>
-                    </StackPanel>
-                    <StackPanel Orientation="Vertical">
-                        <hc:TextBox hc:InfoElement.ShowClearButton="True" hc:InfoElement.Title="查询内容" Margin="0,32,0,0" Text="{Binding Path=Key}"/>
-                        <hc:ComboBox hc:InfoElement.Title="数据状态"  SelectedValue="{Binding Path=Status}"></hc:ComboBox>
-                    </StackPanel>
-                </DockPanel>
-            </Border>
-        </hc:Drawer>
     </hc:SimplePanel>
 </UserControl>

@@ -1,48 +1,47 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-
-namespace Com.Scm.Wpf.Dvo
+﻿namespace Com.Scm.Wpf.Dvo
 {
     public partial class ScmOptionDvo<T> : ScmDvo
     {
         /// <summary>
         /// 选项标签
         /// </summary>
-        [ObservableProperty]
         private string label;
+        public string Label { get { return label; } set { SetProperty(ref label, value); } }
+
         /// <summary>
         /// 选项的值
         /// </summary>
-        [ObservableProperty]
         private T value;
+        public T Value { get { return value; } set { SetProperty(ref value, value); } }
         /// <summary>
         /// 是否禁用
         /// </summary>
-        [ObservableProperty]
         private bool disabled;
+        public bool Disabled { get { return disabled; } set { SetProperty(ref disabled, value); } }
     }
 
     /// <summary>
     /// 
     /// </summary>
-    public partial class TextOptionDvo : ScmOptionDvo<string>
+    public class TextOptionDvo : ScmOptionDvo<string>
     {
     }
 
     /// <summary>
     /// 应用资源
     /// </summary>
-    public partial class ResOptionDvo : ScmOptionDvo<long>
+    public class ResOptionDvo : ScmOptionDvo<long>
     {
         /// <summary>
         /// 类别
         /// </summary>
-        [ObservableProperty]
         private int cat;
+        public int Cat { get { return cat; } set { SetProperty(ref cat, value); } }
         /// <summary>
         /// 上级ID
         /// </summary>
-        [ObservableProperty]
         private long parentId;
+        public long ParentId { get { return parentId; } set { SetProperty(ref parentId, value); } }
     }
 
     /// <summary>
@@ -53,12 +52,12 @@ namespace Com.Scm.Wpf.Dvo
         /// <summary>
         /// 类别
         /// </summary>
-        [ObservableProperty]
         private int cat;
+        public int Cat { get { return cat; } set { SetProperty(ref cat, value); } }
         /// <summary>
         /// 键
         /// </summary>
-        [ObservableProperty]
         private string codec;
+        public string Codec { get { return codec; } set { SetProperty(ref codec, value); } }
     }
 }

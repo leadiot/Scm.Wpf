@@ -1,5 +1,4 @@
 ﻿using Com.Scm.Wpf.Dvo;
-using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Text;
 
@@ -7,12 +6,12 @@ namespace Com.Scm.Wpf.Views.Tasks
 {
     public partial class MainDvo : ScmDvo
     {
-        public ObservableCollection<ATask> TaskList = new ObservableCollection<ATask>();
+        public ObservableCollection<ATask> TaskList { get; set; } = new ObservableCollection<ATask>();
 
-        [ObservableProperty]
         private ATask task;
+        public ATask Task { get { return task; } set { SetProperty(ref task, value); } }
 
-        [ObservableProperty]
         private StringBuilder logs = new StringBuilder();
+        public StringBuilder Logs { get { return logs; } set { SetProperty(ref logs, value); } }
     }
 }

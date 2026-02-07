@@ -1,8 +1,7 @@
 ﻿using Com.Scm.Enums;
 using Com.Scm.Utils;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace Com.Scm.Wpf.Dvo.Login
 {
@@ -18,23 +17,25 @@ namespace Com.Scm.Wpf.Dvo.Login
         /// <summary>
         /// 登录模式
         /// </summary>
-        [ObservableProperty]
         private ScmLoginModeEnum mode = ScmLoginModeEnum.Pwd;
+        public ScmLoginModeEnum Mode { get { return mode; } set { SetProperty(ref mode, value); } }
 
         [Required(ErrorMessage = "登录用户不能为空！")]
-        [ObservableProperty]
+        [Length(2, 32, ErrorMessage = "登录用户长度应为2至32个字符")]
+        public string User { get { return user; } set { SetProperty(ref user, value); } }
         private string user = "admin@dev";
 
         [Required(ErrorMessage = "登录口令不能为空！")]
-        [ObservableProperty]
-        private string pass = "C-scm.cn";
+        [Length(6, 32, ErrorMessage = "登录口令长度应为6至32个字符")]
+        public string Pass { get { return pass; } set { SetProperty(ref pass, value); } }
+        private string pass;
 
         [Required(ErrorMessage = "验证码不能为空！")]
         [Length(4, 4, ErrorMessage = "验证码长度应为4个字符")]
-        [ObservableProperty]
+        public string Code { get { return code; } set { SetProperty(ref code, value); } }
         private string code;
 
-        [ObservableProperty]
+        public string VCodeUrl { get { return vCodeUrl; } set { SetProperty(ref vCodeUrl, value); } }
         private string vCodeUrl;
 
         public PassDvo()
@@ -43,16 +44,26 @@ namespace Com.Scm.Wpf.Dvo.Login
             vCodeUrl = $"{ScmClientEnv.API_URL}/captcha/cha/{Key}";
         }
 
-        [RelayCommand]
-        public void ChangeVCode2(object obj)
-        {
-
-        }
-
         public void ChangeVCode()
         {
             Key = TextUtils.GuidString();
             VCodeUrl = $"{ScmClientEnv.API_URL}/captcha/cha/{Key}?timestamp={TimeUtils.GetUnixTime()}";
+        }
+
+        public override bool IsValid()
+        {
+            if (!base.IsValid())
+            {
+                return false;
+            }
+
+            if (!Regex.IsMatch(User, @"^\w+@\w+$"))
+            {
+                AddError(nameof(User), "登录用户格式应为：user@unit");
+                return false;
+            }
+
+            return true;
         }
 
         public Dictionary<string, string> GetLogin()
