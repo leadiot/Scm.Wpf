@@ -56,7 +56,7 @@ namespace Com.Scm.Wpf.Dvo
         public event PropertyChangingEventHandler PropertyChanging;
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanging([CallerMemberName] string? propertyName = null)
+        protected void OnPropertyChanging([CallerMemberName] string propertyName = null)
         {
             PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
         }

@@ -6,11 +6,11 @@ namespace Com.Scm.Oidc.Wpf
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class UserInfo : HandyControl.Controls.Window
+    public partial class UserInfoWindow : HandyControl.Controls.Window
     {
         private OidcUserInfo _User;
 
-        public UserInfo()
+        public UserInfoWindow()
         {
             InitializeComponent();
         }
