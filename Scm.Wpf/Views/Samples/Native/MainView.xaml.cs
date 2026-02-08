@@ -16,8 +16,12 @@ namespace Com.Scm.Wpf.Views.Samples.Native
         private ScmSearchPageResponse<ListDvo> _Response;
 
         private EditView _EditView;
+        private EditDvo _EditDvo;
         private InfoView _InfoView;
+        private ViewDvo _ViewDvo;
+
         private SearchView _SearchView;
+        private SearchParamsDvo _SearchParamsDvo;
 
         public MainView()
         {
@@ -31,12 +35,12 @@ namespace Com.Scm.Wpf.Views.Samples.Native
             _Dvo = new SearchParamsDvo();
             this.DataContext = _Dvo;
 
-            var columns = new List<ColumnInfo>
+            var columns = new List<ScmColumnInfo>
             {
-                new ColumnInfo { Type=ColumnType.Text, Label = "ID", Value = "Id",Hidden=true },
-                new ColumnInfo { Type=ColumnType.CheckBox, Label = "", Value = "IsChecked", Width="70" },
-                new ColumnInfo { Type=ColumnType.Text, Label = "系统编码", Value = "Codec" },
-                new ColumnInfo { Type=ColumnType.Text, Label = "系统名称", Value = "Namec", Width="*", MinWidth="100" }
+                new ScmColumnInfo { Type=ScmColumnType.Text, Label = "ID", Value = "Id",Hidden=true },
+                new ScmColumnInfo { Type=ScmColumnType.CheckBox, Label = "", Value = "IsChecked", Width="70" },
+                new ScmColumnInfo { Type=ScmColumnType.Text, Label = "系统编码", Value = "Codec" },
+                new ScmColumnInfo { Type=ScmColumnType.Text, Label = "系统名称", Value = "Namec", Width="*", MinWidth="100" }
             };
             PgData.Init(this, columns);
 
@@ -46,62 +50,6 @@ namespace Com.Scm.Wpf.Views.Samples.Native
         public UserControl GetView()
         {
             return this;
-        }
-
-        private void BtAppend_Click(object sender, RoutedEventArgs e)
-        {
-            if (_EditView == null)
-            {
-                _EditView = new EditView();
-            }
-
-            var dvo = new EditDvo();
-            dvo.codec = "123";
-            _EditView.Init(dvo);
-
-            PgData.ShowEdit(_EditView);
-        }
-
-        private void BtEnable_Click(object sender, RoutedEventArgs e)
-        {
-            foreach (var dvo in _Response.Items)
-            {
-                if (dvo.Checked == true)
-                {
-                    dvo.row_status = Enums.ScmRowStatusEnum.Enabled;
-                }
-            }
-        }
-
-        private void BtDisable_Click(object sender, RoutedEventArgs e)
-        {
-            foreach (var dvo in _Response.Items)
-            {
-                if (dvo.Checked == true)
-                {
-                    dvo.row_status = Enums.ScmRowStatusEnum.Disabled;
-                }
-            }
-        }
-
-        private void BtDelete_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void BtSearch_Click(object sender, RoutedEventArgs e)
-        {
-            FirstPageAsync();
-        }
-
-        private void BtMore_Click(object sender, RoutedEventArgs e)
-        {
-            if (_SearchView == null)
-            {
-                _SearchView = new SearchView();
-            }
-
-            PgData.ShowSearch(_SearchView);
         }
 
         #region 接口实现
@@ -175,6 +123,83 @@ namespace Com.Scm.Wpf.Views.Samples.Native
             _Response.SetSuccess();
 
             PgData.ShowData(_Response);
+        }
+        #endregion
+
+        #region 事件处理
+        private void BtAppend_Click(object sender, RoutedEventArgs e)
+        {
+            if (_EditView == null)
+            {
+                _EditView = new EditView();
+            }
+
+            _EditDvo = new EditDvo();
+            _EditView.Init(_EditDvo);
+
+            PgData.ShowEdit(_EditView, SaveData);
+        }
+
+        private bool SaveData()
+        {
+            _EditDvo.ValidateAllProperties();
+            if (_EditDvo.HasErrors)
+            {
+                return false;
+            }
+
+            if (!_EditDvo.IsValid())
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private void BtEnable_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var dvo in _Response.Items)
+            {
+                if (dvo.Checked == true)
+                {
+                    dvo.row_status = Enums.ScmRowStatusEnum.Enabled;
+                }
+            }
+        }
+
+        private void BtDisable_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var dvo in _Response.Items)
+            {
+                if (dvo.Checked == true)
+                {
+                    dvo.row_status = Enums.ScmRowStatusEnum.Disabled;
+                }
+            }
+        }
+
+        private void BtDelete_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void BtSearch_Click(object sender, RoutedEventArgs e)
+        {
+            FirstPageAsync();
+        }
+
+        private void BtMore_Click(object sender, RoutedEventArgs e)
+        {
+            if (_SearchView == null)
+            {
+                _SearchView = new SearchView();
+            }
+
+            PgData.ShowSearch(_SearchView, SearchData);
+        }
+
+        private bool SearchData()
+        {
+            return true;
         }
         #endregion
     }

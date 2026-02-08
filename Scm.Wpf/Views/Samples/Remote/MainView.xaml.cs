@@ -25,12 +25,12 @@ namespace Com.Scm.Wpf.Views.Samples.Remote
             _Dvo = new SearchParamsDvo();
             this.DataContext = _Dvo;
 
-            var columns = new List<ColumnInfo>
+            var columns = new List<ScmColumnInfo>
             {
-                new ColumnInfo { Type=ColumnType.Text, Label = "ID", Value = "Id",Hidden=true },
-                new ColumnInfo { Type=ColumnType.CheckBox, Label = "", Value = "IsChecked", Width="70" },
-                new ColumnInfo { Type=ColumnType.Text, Label = "系统编码", Value = "Codec" },
-                new ColumnInfo { Type=ColumnType.Text, Label = "系统名称", Value = "Namec", Width="*", MinWidth="100" }
+                new ScmColumnInfo { Type=ScmColumnType.Text, Label = "ID", Value = "Id",Hidden=true },
+                new ScmColumnInfo { Type=ScmColumnType.CheckBox, Label = "", Value = "IsChecked", Width="70" },
+                new ScmColumnInfo { Type=ScmColumnType.Text, Label = "系统编码", Value = "Codec" },
+                new ScmColumnInfo { Type=ScmColumnType.Text, Label = "系统名称", Value = "Namec", Width="*", MinWidth="100" }
             };
             PgData.Init(this, columns);
 

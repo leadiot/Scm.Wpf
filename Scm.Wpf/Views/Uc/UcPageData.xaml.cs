@@ -21,9 +21,9 @@ namespace Com.Scm.Wpf.Views.Uc
     /// </summary>
     public partial class UcPageData : UserControl
     {
-        private ISearchView _Owner;
+        private Views.ISearchView _Owner;
         private ScmPageDataDvo _Dvo;
-        private List<ColumnInfo> _Columns;
+        private List<ScmColumnInfo> _Columns;
         private List<int> _PageItems = new List<int> { 10, 20, 30, 50, 100, 200, 300, 500 };
 
         public UcPageData()
@@ -36,7 +36,7 @@ namespace Com.Scm.Wpf.Views.Uc
         /// </summary>
         /// <param name="columns"></param>
         /// <param name="autoData"></param>
-        public void Init(ISearchView owner, List<ColumnInfo> columns, bool autoData = true)
+        public void Init(Views.ISearchView owner, List<ScmColumnInfo> columns, bool autoData = true)
         {
             _Owner = owner;
 
@@ -54,32 +54,32 @@ namespace Com.Scm.Wpf.Views.Uc
 
             if (autoData)
             {
-                columns.Add(new ColumnInfo { Type = Models.ColumnType.Status, Label = "数据状态", Value = "IsEnabled" });
-                columns.Add(new ColumnInfo { Type = Models.ColumnType.Text, Label = "更新人员", Value = "update_name" });
-                columns.Add(new ColumnInfo { Type = Models.ColumnType.Text, Label = "更新时间", Value = "UpdateTime", Format = ColumnFormat.DateTime });
-                columns.Add(new ColumnInfo { Type = Models.ColumnType.Text, Label = "创建人员", Value = "create_name" });
-                columns.Add(new ColumnInfo { Type = Models.ColumnType.Text, Label = "创建时间", Value = "CreateTime", Format = ColumnFormat.DateTime });
+                columns.Add(new ScmColumnInfo { Type = Models.ScmColumnType.Status, Label = "数据状态", Value = "IsEnabled" });
+                columns.Add(new ScmColumnInfo { Type = Models.ScmColumnType.Text, Label = "更新人员", Value = "update_name" });
+                columns.Add(new ScmColumnInfo { Type = Models.ScmColumnType.Text, Label = "更新时间", Value = "UpdateTime", Format = ScmColumnFormat.DateTime });
+                columns.Add(new ScmColumnInfo { Type = Models.ScmColumnType.Text, Label = "创建人员", Value = "create_name" });
+                columns.Add(new ScmColumnInfo { Type = Models.ScmColumnType.Text, Label = "创建时间", Value = "CreateTime", Format = ScmColumnFormat.DateTime });
             }
 
             DgGrid.AutoGenerateColumns = false;
             foreach (var column in columns)
             {
-                if (column.Type == Models.ColumnType.Text)
+                if (column.Type == Models.ScmColumnType.Text)
                 {
                     DgGrid.Columns.Add(CreateTextColumn(column));
                     continue;
                 }
-                if (column.Type == Models.ColumnType.CheckBox)
+                if (column.Type == Models.ScmColumnType.CheckBox)
                 {
                     DgGrid.Columns.Add(CreateCheckboxColumn(column));
                     continue;
                 }
-                if (column.Type == Models.ColumnType.Template)
+                if (column.Type == Models.ScmColumnType.Template)
                 {
                     DgGrid.Columns.Add(CreateTemplateColumn(column));
                     continue;
                 }
-                if (column.Type == Models.ColumnType.Status)
+                if (column.Type == Models.ScmColumnType.Status)
                 {
                     DgGrid.Columns.Add(CreateStatusColumn(column));
                     continue;
@@ -93,7 +93,7 @@ namespace Com.Scm.Wpf.Views.Uc
         /// </summary>
         /// <param name="column"></param>
         /// <param name="info"></param>
-        private void AdjustColumnInfo(DataGridColumn column, ColumnInfo info)
+        private void AdjustColumnInfo(DataGridColumn column, ScmColumnInfo info)
         {
             column.Header = info.Label;
 
@@ -102,7 +102,7 @@ namespace Com.Scm.Wpf.Views.Uc
                 column.Visibility = Visibility.Collapsed;
             }
 
-            var uom = SizeUom.Parse(info.Width);
+            var uom = ScmColumnSize.Parse(info.Width);
             if (uom.IsNone)
             {
                 column.Width = new DataGridLength(uom.Width, DataGridLengthUnitType.Pixel);
@@ -120,7 +120,7 @@ namespace Com.Scm.Wpf.Views.Uc
                 column.Width = new DataGridLength(uom.Width, DataGridLengthUnitType.Pixel);
             }
 
-            uom = SizeUom.Parse(info.MinWidth);
+            uom = ScmColumnSize.Parse(info.MinWidth);
             if (uom.IsFixed)
             {
                 column.MinWidth = uom.Width;
@@ -132,7 +132,7 @@ namespace Com.Scm.Wpf.Views.Uc
         /// </summary>
         /// <param name="info"></param>
         /// <returns></returns>
-        private DataGridTextColumn CreateTextColumn(ColumnInfo info)
+        private DataGridTextColumn CreateTextColumn(ScmColumnInfo info)
         {
             var column = new DataGridTextColumn();
             AdjustColumnInfo(column, info);
@@ -141,15 +141,15 @@ namespace Com.Scm.Wpf.Views.Uc
 
             Style styleRight = new Style(typeof(TextBlock));
             var align = HorizontalAlignment.Left;
-            if (info.Align == ColumnAlign.Center)
+            if (info.Align == ScmColumnAlign.Center)
             {
                 align = HorizontalAlignment.Center;
             }
-            else if (info.Align == ColumnAlign.Right)
+            else if (info.Align == ScmColumnAlign.Right)
             {
                 align = HorizontalAlignment.Right;
             }
-            else if (info.Align == ColumnAlign.Stretch)
+            else if (info.Align == ScmColumnAlign.Stretch)
             {
                 align = HorizontalAlignment.Stretch;
             }
@@ -164,7 +164,7 @@ namespace Com.Scm.Wpf.Views.Uc
         /// </summary>
         /// <param name="info"></param>
         /// <returns></returns>
-        private DataGridCheckBoxColumn CreateCheckboxColumn(ColumnInfo info)
+        private DataGridCheckBoxColumn CreateCheckboxColumn(ScmColumnInfo info)
         {
             var column = new DataGridCheckBoxColumn();
             AdjustColumnInfo(column, info);
@@ -183,7 +183,7 @@ namespace Com.Scm.Wpf.Views.Uc
         /// </summary>
         /// <param name="info"></param>
         /// <returns></returns>
-        private DataGridTemplateColumn CreateStatusColumn(ColumnInfo info)
+        private DataGridTemplateColumn CreateStatusColumn(ScmColumnInfo info)
         {
             var column = new DataGridTemplateColumn();
             AdjustColumnInfo(column, info);
@@ -203,14 +203,14 @@ namespace Com.Scm.Wpf.Views.Uc
         /// </summary>
         /// <param name="info"></param>
         /// <returns></returns>
-        private DataGridTemplateColumn CreateTemplateColumn(ColumnInfo info)
+        private DataGridTemplateColumn CreateTemplateColumn(ScmColumnInfo info)
         {
             var column = new DataGridTemplateColumn();
-            if (info.Format == ColumnFormat.Number)
+            if (info.Format == ScmColumnFormat.Number)
             {
                 column.CellTemplate = CreateNumberCellTemplate(info);
             }
-            else if (info.Format == ColumnFormat.DateTime)
+            else if (info.Format == ScmColumnFormat.DateTime)
             {
                 column.CellTemplate = CreateDateTimeCellTemplate(info);
             }
@@ -222,7 +222,7 @@ namespace Com.Scm.Wpf.Views.Uc
         /// </summary>
         /// <param name="info"></param>
         /// <returns></returns>
-        private static DataTemplate CreateDateTimeCellTemplate(ColumnInfo info)
+        private static DataTemplate CreateDateTimeCellTemplate(ScmColumnInfo info)
         {
             DataTemplate template = new DataTemplate();
             FrameworkElementFactory factory = new FrameworkElementFactory(typeof(TextBlock));
@@ -236,7 +236,7 @@ namespace Com.Scm.Wpf.Views.Uc
         /// </summary>
         /// <param name="info"></param>
         /// <returns></returns>
-        private static DataTemplate CreateNumberCellTemplate(ColumnInfo info)
+        private static DataTemplate CreateNumberCellTemplate(ScmColumnInfo info)
         {
             DataTemplate template = new DataTemplate();
             FrameworkElementFactory factory = new FrameworkElementFactory(typeof(TextBlock));
@@ -357,7 +357,7 @@ namespace Com.Scm.Wpf.Views.Uc
         /// <param name="file"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<bool> ExportCsv(IEnumerable itemSource, List<ColumnInfo> columns, string file)
+        public async Task<bool> ExportCsv(IEnumerable itemSource, List<ScmColumnInfo> columns, string file)
         {
             try
             {
@@ -396,7 +396,7 @@ namespace Com.Scm.Wpf.Views.Uc
         /// <param name="columns"></param>
         /// <param name="file"></param>
         /// <returns></returns>
-        public async Task<bool> ExportJson(IEnumerable itemSource, List<ColumnInfo> columns, string file)
+        public async Task<bool> ExportJson(IEnumerable itemSource, List<ScmColumnInfo> columns, string file)
         {
             var items = GetValues(itemSource, columns);
 
@@ -414,7 +414,7 @@ namespace Com.Scm.Wpf.Views.Uc
         /// <param name="columns"></param>
         /// <param name="file"></param>
         /// <returns></returns>
-        public async Task<bool> ExportSql(IEnumerable itemSource, List<ColumnInfo> columns, string file)
+        public async Task<bool> ExportSql(IEnumerable itemSource, List<ScmColumnInfo> columns, string file)
         {
             var items = GetValues(itemSource, columns);
 
@@ -458,7 +458,7 @@ namespace Com.Scm.Wpf.Views.Uc
         /// <param name="file"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<bool> ExportXls(IEnumerable itemSource, List<ColumnInfo> columns, string file)
+        public async Task<bool> ExportXls(IEnumerable itemSource, List<ScmColumnInfo> columns, string file)
         {
             try
             {
@@ -476,12 +476,12 @@ namespace Com.Scm.Wpf.Views.Uc
                     var tmp = new DynamicExcelColumn(columnParam.Label);
                     tmp.Index = index++;
 
-                    var uom = SizeUom.Parse(columnParam.Width);
+                    var uom = ScmColumnSize.Parse(columnParam.Width);
                     if (!uom.IsNone)
                     {
                         tmp.Width = uom.Width;
                     }
-                    uom = SizeUom.Parse(columnParam.MinWidth);
+                    uom = ScmColumnSize.Parse(columnParam.MinWidth);
                     if (!uom.IsNone)
                     {
                         tmp.Width = uom.Width;
@@ -511,7 +511,7 @@ namespace Com.Scm.Wpf.Views.Uc
         /// <param name="file"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<bool> ExportTxt(IEnumerable itemSource, List<ColumnInfo> columns, string file)
+        public async Task<bool> ExportTxt(IEnumerable itemSource, List<ScmColumnInfo> columns, string file)
         {
             try
             {
@@ -529,12 +529,12 @@ namespace Com.Scm.Wpf.Views.Uc
                     var tmp = new DynamicExcelColumn(columnParam.Label);
                     tmp.Index = index++;
 
-                    var uom = SizeUom.Parse(columnParam.Width);
+                    var uom = ScmColumnSize.Parse(columnParam.Width);
                     if (!uom.IsNone)
                     {
                         tmp.Width = uom.Width;
                     }
-                    uom = SizeUom.Parse(columnParam.MinWidth);
+                    uom = ScmColumnSize.Parse(columnParam.MinWidth);
                     if (!uom.IsNone)
                     {
                         tmp.Width = uom.Width;
@@ -562,7 +562,7 @@ namespace Com.Scm.Wpf.Views.Uc
         /// <param name="source"></param>
         /// <param name="columns"></param>
         /// <returns></returns>
-        private List<Dictionary<string, object>> GetValues(IEnumerable source, List<ColumnInfo> columns)
+        private List<Dictionary<string, object>> GetValues(IEnumerable source, List<ScmColumnInfo> columns)
         {
             var data = new List<Dictionary<string, object>>();
             foreach (var item in source)
@@ -578,7 +578,7 @@ namespace Com.Scm.Wpf.Views.Uc
         /// <param name="obj"></param>
         /// <param name="columns"></param>
         /// <returns></returns>
-        private Dictionary<string, object> GetValue(object obj, List<ColumnInfo> columns)
+        private Dictionary<string, object> GetValue(object obj, List<ScmColumnInfo> columns)
         {
             var dic = new Dictionary<string, object>();
             try
@@ -714,12 +714,16 @@ namespace Com.Scm.Wpf.Views.Uc
             DrSide.IsOpen = true;
         }
 
-        public void ShowEdit(FrameworkElement element)
+        private SaveDelegate _SaveDelegate;
+
+        public void ShowEdit(FrameworkElement view, SaveDelegate saveDelegate)
         {
             TbTitle.Text = "编辑";
 
+            _SaveDelegate = saveDelegate;
+
             GdPanel.Children.Clear();
-            GdPanel.Children.Add(element);
+            GdPanel.Children.Add(view);
 
             BtAccept.Visibility = Visibility.Visible;
             BtSearch.Visibility = Visibility.Collapsed;
@@ -727,12 +731,16 @@ namespace Com.Scm.Wpf.Views.Uc
             DrSide.IsOpen = true;
         }
 
-        public void ShowSearch(FrameworkElement element)
+        private SearchDelegate _SearchDelegate;
+
+        public void ShowSearch(FrameworkElement view, SearchDelegate searchDelegate)
         {
             TbTitle.Text = "查询";
 
+            _SearchDelegate = searchDelegate;
+
             GdPanel.Children.Clear();
-            GdPanel.Children.Add(element);
+            GdPanel.Children.Add(view);
 
             BtAccept.Visibility = Visibility.Collapsed;
             BtSearch.Visibility = Visibility.Visible;
@@ -742,12 +750,32 @@ namespace Com.Scm.Wpf.Views.Uc
 
         private void BtAccept_Click(object sender, RoutedEventArgs e)
         {
+            if (_SaveDelegate == null)
+            {
+                return;
+            }
 
+            if (!_SaveDelegate())
+            {
+                return;
+            }
+
+            DrSide.IsOpen = false;
         }
 
         private void BtSearch_Click(object sender, RoutedEventArgs e)
         {
+            if (_SearchDelegate == null)
+            {
+                return;
+            }
 
+            if (!_SearchDelegate())
+            {
+                return;
+            }
+
+            DrSide.IsOpen = false;
         }
 
         private void BtCancel_Click(object sender, RoutedEventArgs e)
@@ -755,6 +783,10 @@ namespace Com.Scm.Wpf.Views.Uc
             DrSide.IsOpen = false;
         }
     }
+
+    public delegate bool SaveDelegate();
+
+    public delegate bool SearchDelegate();
 
     public partial class ScmPageDataDvo : ScmDvo
     {

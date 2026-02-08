@@ -2,12 +2,12 @@
 
 namespace Com.Scm.Wpf.Models
 {
-    public class ColumnInfo
+    public class ScmColumnInfo
     {
         /// <summary>
         /// 列类型
         /// </summary>
-        public ColumnType Type { get; set; }
+        public ScmColumnType Type { get; set; }
 
         /// <summary>
         /// 列标题
@@ -37,12 +37,12 @@ namespace Com.Scm.Wpf.Models
         /// <summary>
         /// 对齐方式
         /// </summary>
-        public ColumnAlign Align { get; set; }
+        public ScmColumnAlign Align { get; set; }
 
         /// <summary>
         /// 格式化
         /// </summary>
-        public ColumnFormat Format { get; set; }
+        public ScmColumnFormat Format { get; set; }
 
         /// <summary>
         /// 是否隐藏
@@ -59,7 +59,8 @@ namespace Com.Scm.Wpf.Models
         /// </summary>
         public bool ReadOnly { get; set; } = true;
     }
-    public class SizeUom
+
+    public class ScmColumnSize
     {
         /// <summary>
         /// 数值
@@ -91,33 +92,33 @@ namespace Com.Scm.Wpf.Models
         /// </summary>
         public bool IsFixed { get; private set; }
 
-        public static SizeUom Parse(string value)
+        public static ScmColumnSize Parse(string value)
         {
             if (string.IsNullOrEmpty(value))
             {
-                return new SizeUom { IsNone = true };
+                return new ScmColumnSize { IsNone = true };
             }
 
             value = value.Trim();
             if (value == "*")
             {
-                return new SizeUom { IsFill = true };
+                return new ScmColumnSize { IsFill = true };
             }
 
             var match = Regex.Match(value, @"(\d+)([^\d]*)");
             if (!match.Success)
             {
-                return new SizeUom { IsNone = true };
+                return new ScmColumnSize { IsNone = true };
             }
 
             var width = match.Groups[1].Value;
             var uom = match.Groups[2].Value.Trim();
 
-            return new SizeUom { Width = double.Parse(width), Unit = uom, IsFixed = true };
+            return new ScmColumnSize { Width = double.Parse(width), Unit = uom, IsFixed = true };
         }
     }
 
-    public enum ColumnType
+    public enum ScmColumnType
     {
         Text,
         CheckBox,
@@ -126,14 +127,14 @@ namespace Com.Scm.Wpf.Models
         Status
     }
 
-    public enum ColumnFormat
+    public enum ScmColumnFormat
     {
         None,
         Number,
         DateTime
     }
 
-    public enum ColumnAlign
+    public enum ScmColumnAlign
     {
         None,
         Left,

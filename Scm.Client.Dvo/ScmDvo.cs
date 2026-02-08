@@ -136,7 +136,7 @@ namespace Com.Scm.Wpf.Dvo
         }
 
         // 清除单个属性的错误信息
-        protected void ClearError(string propertyName)
+        public void ClearError(string propertyName)
         {
             if (_errors.ContainsKey(propertyName))
             {
@@ -147,7 +147,7 @@ namespace Com.Scm.Wpf.Dvo
             }
         }
 
-        protected void ClearErrors()
+        public void ClearErrors()
         {
             var keys = _errors.Keys.ToArray();
             _errors.Clear();
@@ -166,7 +166,7 @@ namespace Com.Scm.Wpf.Dvo
         /// <param name="value"></param>
         /// <param name="validateFunc"></param>
         /// <returns></returns>
-        protected bool ValidateProperty<T>(string propertyName, T value, Func<T, List<string>> validateFunc)
+        public bool ValidateProperty<T>(string propertyName, T value, Func<T, List<string>> validateFunc)
         {
             // 先清除旧错误
             ClearError(propertyName);
@@ -185,7 +185,7 @@ namespace Com.Scm.Wpf.Dvo
             return true; // 校验通过
         }
 
-        protected virtual void ValidateAllProperties()
+        public virtual void ValidateAllProperties()
         {
             ClearErrors();
 

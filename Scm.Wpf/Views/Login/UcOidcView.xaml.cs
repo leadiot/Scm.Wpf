@@ -4,7 +4,7 @@ using Com.Scm.Response;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
-namespace Com.Scm.Uc
+namespace Com.Scm.Wpf.Views.Login
 {
     /// <summary>
     /// 三方授权登录

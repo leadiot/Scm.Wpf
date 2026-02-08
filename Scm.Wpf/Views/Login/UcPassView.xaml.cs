@@ -7,7 +7,7 @@ using Com.Scm.Wpf.Dto.Login;
 using Com.Scm.Wpf.Dvo.Login;
 using System.Windows.Controls;
 
-namespace Com.Scm.Uc
+namespace Com.Scm.Wpf.Views.Login
 {
     /// <summary>
     /// 验证码登录
