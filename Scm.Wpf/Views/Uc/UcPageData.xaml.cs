@@ -251,7 +251,7 @@ namespace Com.Scm.Wpf.Views.Uc
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="response"></param>
-        public void ShowData<T>(ScmSearchPageResponse<T> response) where T : ScmSearchResultDataDvo
+        public void ShowData<T>(ScmSearchPageResponse<T> response) where T : ScmSearchResultItemDvo
         {
             _Dvo.PageIndex = 1;
             _Dvo.TotalPages = (int)response.TotalPages;
@@ -279,7 +279,7 @@ namespace Com.Scm.Wpf.Views.Uc
         {
             foreach (var item in DgGrid.ItemsSource)
             {
-                var dvo = item as ScmSearchResultDataDvo;
+                var dvo = item as ScmSearchResultItemDvo;
                 if (dvo == null) return;
                 dvo.Checked = isChecked;
             }

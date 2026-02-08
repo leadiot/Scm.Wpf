@@ -2,7 +2,11 @@
 
 namespace Com.Scm.Wpf.Views.Samples.Native
 {
-    public class ListDvo : ScmSearchResultDataDvo
+    public class SearchResultDvo : ScmSearchResultDvo<SearchResultItemDvo>
+    {
+    }
+
+    public class SearchResultItemDvo : ScmSearchResultItemDvo
     {
         private string _codec;
         public string codec { get { return _codec; } set { SetProperty(ref _codec, value); } }

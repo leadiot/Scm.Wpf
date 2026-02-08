@@ -221,6 +221,7 @@ namespace Com.Scm.Wpf.Dvo
         #endregion
     }
 
+    #region MVVM
     //public partial class ScmDvo : ObservableValidator
     //{
     //    [ObservableProperty]
@@ -258,6 +259,7 @@ namespace Com.Scm.Wpf.Dvo
     //        return true;
     //    }
     //}
+    #endregion
 
     public class ScmDataDvo : ScmDvo
     {
@@ -276,7 +278,10 @@ namespace Com.Scm.Wpf.Dvo
         public string create_name { get; set; }
     }
 
-    public class ScmSearchPageDvo : ScmDvo
+    /// <summary>
+    /// 查询参数
+    /// </summary>
+    public class ScmSearchParamsDvo : ScmDvo
     {
         private int _Page;
         /// <summary>
@@ -313,7 +318,7 @@ namespace Com.Scm.Wpf.Dvo
         public int Total { get { return _Total; } set { SetProperty(ref _Total, value); } }
     }
 
-    public class ScmSearchResultDataDvo : ScmDvo
+    public class ScmSearchResultItemDvo : ScmDvo
     {
         private bool _checked;
         public bool Checked { get { return _checked; } set { SetProperty(ref _checked, value); } }

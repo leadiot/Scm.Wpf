@@ -3,7 +3,7 @@ using Com.Scm.Wpf.Dvo;
 
 namespace Com.Scm.Wpf.Views.Samples.Remote
 {
-    public class SearchParamsDvo : ScmSearchPageDvo
+    public class SearchParamsDvo : ScmSearchParamsDvo
     {
         private string key;
         public string Key { get { return key; } set { SetProperty(ref key, value); } }
@@ -20,7 +20,7 @@ namespace Com.Scm.Wpf.Views.Samples.Remote
 
     }
 
-    public class SearchResultDataDvo : ScmSearchResultDataDvo
+    public class SearchResultDataDvo : ScmSearchResultItemDvo
     {
         private string codec;
 

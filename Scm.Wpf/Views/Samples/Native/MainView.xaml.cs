@@ -13,14 +13,14 @@ namespace Com.Scm.Wpf.Views.Samples.Native
     {
         private ScmWindow _Owner;
         private SearchParamsDvo _Dvo;
-        private ScmSearchPageResponse<ListDvo> _Response;
+        private ScmSearchPageResponse<SearchResultDvo> _Response;
 
-        private EditView _EditView;
+        private EditControl _EditView;
         private EditDvo _EditDvo;
-        private InfoView _InfoView;
+        private ViewControl _InfoView;
         private ViewDvo _ViewDvo;
 
-        private SearchView _SearchView;
+        private SearchControl _SearchView;
         private SearchParamsDvo _SearchParamsDvo;
 
         public MainView()
@@ -116,9 +116,9 @@ namespace Com.Scm.Wpf.Views.Samples.Native
             var body = _Dvo.ToDictionary();
             var result = await client.Queryable<ScmDemoNativeDao>()
                 //.Where(a => a != null)
-                .Select<ListDvo>()
+                .Select<SearchResultDvo>()
                 .ToPageListAsync(0, 10);
-            _Response = new ScmSearchPageResponse<ListDvo>();
+            _Response = new ScmSearchPageResponse<SearchResultDvo>();
             _Response.Items = result;
             _Response.SetSuccess();
 
@@ -131,7 +131,7 @@ namespace Com.Scm.Wpf.Views.Samples.Native
         {
             if (_EditView == null)
             {
-                _EditView = new EditView();
+                _EditView = new EditControl();
             }
 
             _EditDvo = new EditDvo();
@@ -191,7 +191,7 @@ namespace Com.Scm.Wpf.Views.Samples.Native
         {
             if (_SearchView == null)
             {
-                _SearchView = new SearchView();
+                _SearchView = new SearchControl();
             }
 
             PgData.ShowSearch(_SearchView, SearchData);

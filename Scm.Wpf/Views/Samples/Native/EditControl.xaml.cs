@@ -5,11 +5,11 @@ namespace Com.Scm.Wpf.Views.Samples.Native
     /// <summary>
     /// EditView.xaml 的交互逻辑
     /// </summary>
-    public partial class EditView : UserControl
+    public partial class EditControl : UserControl
     {
         private EditDvo _Dvo;
 
-        public EditView()
+        public EditControl()
         {
             InitializeComponent();
         }
