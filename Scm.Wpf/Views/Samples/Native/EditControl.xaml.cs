@@ -7,14 +7,14 @@ namespace Com.Scm.Wpf.Views.Samples.Native
     /// </summary>
     public partial class EditControl : UserControl
     {
-        private EditDvo _Dvo;
+        private EditControlDvo _Dvo;
 
         public EditControl()
         {
             InitializeComponent();
         }
 
-        public void Init(EditDvo dvo)
+        public void Init(EditControlDvo dvo)
         {
             _Dvo = dvo;
             this.DataContext = dvo;

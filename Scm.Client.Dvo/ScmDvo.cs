@@ -1,4 +1,5 @@
-﻿using Com.Scm.Enums;
+﻿using Com.Scm.Attributes;
+using Com.Scm.Enums;
 using Com.Scm.Utils;
 using System.Collections;
 using System.ComponentModel;
@@ -219,6 +220,125 @@ namespace Com.Scm.Wpf.Dvo
             }
         }
         #endregion
+
+        /// <summary>
+        /// 浅复制到指定对象
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="src"></param>
+        /// <returns></returns>
+        public static T FromDto<T>(object src) where T : class, new()
+        {
+            var dst = default(T);
+            if (dst == null)
+            {
+                return dst;
+            }
+
+            var srcType = src.GetType();
+            var srcName = srcType.FullName;
+            if (srcName == "System.String"
+                || srcName == "System.Int32"
+                || srcName == "System.Int64"
+                || srcName == "System.Double"
+                || srcName == "System.Single"
+                || srcName == "System.Char"
+                || srcName == "System.DateTime")
+            {
+                return dst;
+            }
+
+            var dstType = dst.GetType();
+            var dstProps = dstType.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.DeclaredOnly);
+            if (dstProps == null)
+            {
+                return dst;
+            }
+
+            foreach (var dstProp in dstProps)
+            {
+                var srcPropName = dstProp.Name;
+                object srcPropValue = null;
+                var attr = dstProp.GetCustomAttribute<ScmMappingAttribute>();
+                if (attr != null)
+                {
+                    srcPropName = attr.Name ?? dstProp.Name;
+                    srcPropValue = attr.Value;
+                }
+
+                var srcProp = srcType.GetProperty(srcPropName);
+                if (srcProp == null)
+                {
+                    continue;
+                }
+
+                dstProp.SetValue(dst, srcProp.GetValue(src) ?? srcPropValue);
+            }
+
+            return dst;
+        }
+
+        public T ToDto<T>()
+        {
+            var dst = default(T);
+            return ToDto(this, dst);
+        }
+
+        /// <summary>
+        /// 浅复制
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="src"></param>
+        /// <param name="dst"></param>
+        public static T ToDto<T>(object src, T dst)
+        {
+            if (dst == null)
+            {
+                return dst;
+            }
+
+            var srcType = src.GetType();
+            var srcName = srcType.FullName;
+            if (srcName == "System.String"
+                || srcName == "System.Int32"
+                || srcName == "System.Int64"
+                || srcName == "System.Double"
+                || srcName == "System.Single"
+                || srcName == "System.Char"
+                || srcName == "System.DateTime")
+            {
+                return dst;
+            }
+
+            var dstType = dst.GetType();
+            var dstProps = dstType.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.DeclaredOnly);
+            if (dstProps == null)
+            {
+                return dst;
+            }
+
+            foreach (var dstProp in dstProps)
+            {
+                var srcPropName = dstProp.Name;
+                object srcPropValue = null;
+                var attr = dstProp.GetCustomAttribute<ScmMappingAttribute>();
+                if (attr != null)
+                {
+                    srcPropName = attr.Name ?? dstProp.Name;
+                    srcPropValue = attr.Value;
+                }
+
+                var srcProp = srcType.GetProperty(srcPropName);
+                if (srcProp == null)
+                {
+                    continue;
+                }
+
+                dstProp.SetValue(dst, srcProp.GetValue(src) ?? srcPropValue);
+            }
+
+            return dst;
+        }
     }
 
     #region MVVM

@@ -2,7 +2,7 @@
 
 namespace Com.Scm.Wpf.Views.Samples.Native
 {
-    public class ViewDvo : ScmDvo
+    public class MainViewDvo : ScmDvo
     {
     }
 }

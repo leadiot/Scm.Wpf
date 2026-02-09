@@ -14,16 +14,4 @@ namespace Com.Scm.Wpf.Views.Samples.Remote
         private bool drawer;
         public bool Drawer { get { return drawer; } set { SetProperty(ref drawer, value); } }
     }
-
-    public class SearchResult1Dvo : ScmSearchResultDvo<SearchResultDataDvo>
-    {
-
-    }
-
-    public class SearchResultDataDvo : ScmSearchResultItemDvo
-    {
-        private string codec;
-
-        private string namec;
-    }
 }

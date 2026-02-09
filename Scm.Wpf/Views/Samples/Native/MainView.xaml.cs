@@ -12,16 +12,17 @@ namespace Com.Scm.Wpf.Views.Samples.Native
     public partial class MainView : UserControl, ScmView, ISearchView
     {
         private ScmWindow _Owner;
-        private SearchParamsDvo _Dvo;
-        private ScmSearchPageResponse<SearchResultDvo> _Response;
-
-        private EditControl _EditView;
-        private EditDvo _EditDvo;
-        private ViewControl _InfoView;
-        private ViewDvo _ViewDvo;
+        private MainViewDvo _Dvo;
+        private ScmSearchPageResponse<SearchResultItemDvo> _Response;
 
         private SearchControl _SearchView;
         private SearchParamsDvo _SearchParamsDvo;
+
+        private EditControl _EditControl;
+        private EditControlDvo _EditDvo;
+
+        private ViewControl _ViewControl;
+        private ViewControlDvo _ViewDvo;
 
         public MainView()
         {
@@ -32,9 +33,6 @@ namespace Com.Scm.Wpf.Views.Samples.Native
         {
             _Owner = owner;
 
-            _Dvo = new SearchParamsDvo();
-            this.DataContext = _Dvo;
-
             var columns = new List<ScmColumnInfo>
             {
                 new ScmColumnInfo { Type=ScmColumnType.Text, Label = "ID", Value = "Id",Hidden=true },
@@ -43,6 +41,9 @@ namespace Com.Scm.Wpf.Views.Samples.Native
                 new ScmColumnInfo { Type=ScmColumnType.Text, Label = "系统名称", Value = "Namec", Width="*", MinWidth="100" }
             };
             PgData.Init(this, columns);
+
+            _Dvo = new MainViewDvo();
+            this.DataContext = _Dvo;
 
             FirstPageAsync();
         }
@@ -55,40 +56,40 @@ namespace Com.Scm.Wpf.Views.Samples.Native
         #region 接口实现
         public void FirstPageAsync()
         {
-            _Dvo.Page = 1;
+            _SearchParamsDvo.Page = 1;
 
             ReloadPageAsync();
         }
 
         public void PrevPageAsync()
         {
-            var page = _Dvo.Page;
+            var page = _SearchParamsDvo.Page;
             page -= 1;
             if (page < 1)
             {
                 page = 1;
             }
-            _Dvo.Page = page;
+            _SearchParamsDvo.Page = page;
 
             ReloadPageAsync();
         }
 
         public void NextPageAsync()
         {
-            var page = _Dvo.Page;
+            var page = _SearchParamsDvo.Page;
             page += 1;
             if (page > _Response.TotalPages)
             {
                 page = (int)_Response.TotalPages;
             }
-            _Dvo.Page = page;
+            _SearchParamsDvo.Page = page;
 
             ReloadPageAsync();
         }
 
         public void EndPageAsync()
         {
-            _Dvo.Page = (int)_Response.TotalPages;
+            _SearchParamsDvo.Page = (int)_Response.TotalPages;
 
             ReloadPageAsync();
         }
@@ -104,7 +105,7 @@ namespace Com.Scm.Wpf.Views.Samples.Native
             {
                 page = 1;
             }
-            _Dvo.Page = page;
+            _SearchParamsDvo.Page = page;
 
             ReloadPageAsync();
         }
@@ -116,9 +117,9 @@ namespace Com.Scm.Wpf.Views.Samples.Native
             var body = _Dvo.ToDictionary();
             var result = await client.Queryable<ScmDemoNativeDao>()
                 //.Where(a => a != null)
-                .Select<SearchResultDvo>()
+                .Select<SearchResultItemDvo>()
                 .ToPageListAsync(0, 10);
-            _Response = new ScmSearchPageResponse<SearchResultDvo>();
+            _Response = new ScmSearchPageResponse<SearchResultItemDvo>();
             _Response.Items = result;
             _Response.SetSuccess();
 
@@ -129,15 +130,15 @@ namespace Com.Scm.Wpf.Views.Samples.Native
         #region 事件处理
         private void BtAppend_Click(object sender, RoutedEventArgs e)
         {
-            if (_EditView == null)
+            if (_EditControl == null)
             {
-                _EditView = new EditControl();
+                _EditControl = new EditControl();
             }
 
-            _EditDvo = new EditDvo();
-            _EditView.Init(_EditDvo);
+            _EditDvo = new EditControlDvo();
+            _EditControl.Init(_EditDvo);
 
-            PgData.ShowEdit(_EditView, SaveData);
+            PgData.ShowEdit(_EditControl, SaveData);
         }
 
         private bool SaveData()
