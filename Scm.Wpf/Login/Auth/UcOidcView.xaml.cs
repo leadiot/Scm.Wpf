@@ -4,7 +4,7 @@ using Com.Scm.Response;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
-namespace Com.Scm.Login.User
+namespace Com.Scm.Login.Auth
 {
     /// <summary>
     /// 三方授权登录
@@ -14,7 +14,7 @@ namespace Com.Scm.Login.User
         /// <summary>
         /// 父窗体
         /// </summary>
-        private UserWindow _Owner;
+        private AuthWindow _Owner;
         /// <summary>
         /// OIDC客户端
         /// </summary>
@@ -33,7 +33,7 @@ namespace Com.Scm.Login.User
             InitializeComponent();
         }
 
-        public async Task Init(UserWindow owner, OidcClient client)
+        public async Task Init(AuthWindow owner, OidcClient client)
         {
             _Owner = owner;
             _Client = client;

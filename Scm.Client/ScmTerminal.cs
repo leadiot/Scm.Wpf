@@ -1,56 +1,24 @@
 ﻿using Com.Scm.Api;
-using Com.Scm.Dto;
-using Com.Scm.Enums;
+using Com.Scm.Dto.Bind;
 using Com.Scm.Http.Config;
 using Com.Scm.Utils;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 
 namespace Com.Scm
 {
-    public class ScmTerminal
+    public class ScmTerminal : ScmClient
     {
-        /// <summary>
-        /// 服务地址
-        /// </summary>
-        public const string SERVER_HOST = "api.c-scm.net";
-
         /// <summary>
         /// 默认授权令牌名称
         /// </summary>
         public const string KEY_TOKEN_NAME = "AppToken";
-
-        /// <summary>
-        /// 服务器是否为连通状态
-        /// </summary>
-        public static bool IsConnecting { get; private set; } = true;
-
-        /// <summary>
-        /// 主机地址
-        /// </summary>
-        private string _Host;
-
-        /// <summary>
-        /// 服务器地址
-        /// </summary>
-        public string ServerUrl { get; private set; }
-
-        /// <summary>
-        /// 授权令牌名称
-        /// </summary>
-        public string TokenName { get; set; } = KEY_TOKEN_NAME;
-
-        /// <summary>
-        /// 异常代码
-        /// </summary>
-        public int ErrorCode { get; private set; }
-        /// <summary>
-        /// 异常信息
-        /// </summary>
-        public string ErrorMessage { get; private set; }
 
         /// <summary>
         /// HTTP请求对象
@@ -60,7 +28,7 @@ namespace Com.Scm
         /// <summary>
         /// 服务端授权信息
         /// </summary>
-        private ScmTerminalInfo _Token { get; set; }
+        private ScmBindInfo _Token { get; set; }
 
         /// <summary>
         /// 绑定信息保存文件
@@ -69,6 +37,8 @@ namespace Com.Scm
 
         public ScmTerminal()
         {
+            TokenName = KEY_TOKEN_NAME;
+            RemoteUrl = "";
         }
 
         public long GetTerminalId()
@@ -81,22 +51,16 @@ namespace Com.Scm
             return _Token.terminal_codes;
         }
 
-        public void Init(string host)
-        {
-            _Host = host ?? SERVER_HOST;
-            ServerUrl = "http://" + _Host;
-        }
-
         public bool LoadToken(string file = null)
         {
-            _Token = new ScmTerminalInfo();
+            _Token = new ScmBindInfo();
 
             if (string.IsNullOrEmpty(file))
             {
                 file = INFO_FILE;
             }
 
-            file = Path.Combine(ScmClientEnv.DataDir, file);
+            file = Path.Combine(DataDir, file);
 
             if (!File.Exists(file))
             {
@@ -108,8 +72,8 @@ namespace Com.Scm
                 return false;
             }
 
-            _Token = json.AsJsonObject<ScmTerminalInfo>();
-            Init(_Token.host);
+            _Token = json.AsJsonObject<ScmBindInfo>();
+            SetHost(_Token.host);
             return true;
         }
 
@@ -120,7 +84,7 @@ namespace Com.Scm
                 file = INFO_FILE;
             }
 
-            file = Path.Combine(ScmClientEnv.DataDir, file);
+            file = Path.Combine(DataDir, file);
             _Token.host = _Host;
             var json = _Token.ToJsonString();
             return await FileUtils.WriteTextAsync(file, json);
@@ -168,7 +132,7 @@ namespace Com.Scm
                 }
 
                 var data = response.Data;
-                _Token = data.Adapt<ScmTerminalInfo>();
+                _Token = data.Adapt<ScmBindInfo>();
                 _Token.CalcExpireTime(data.expires_in);
                 await SaveTokenAsync();
 
@@ -312,6 +276,15 @@ namespace Com.Scm
                 throw;
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="url"></param>
+        /// <param name="json"></param>
+        /// <param name="head"></param>
+        /// <returns></returns>
         public T PostJsonObject<T>(string url, string json, Dictionary<string, string> head = null)
         {
             url = GetApiUrl(url);
@@ -574,16 +547,6 @@ namespace Com.Scm
             }
         }
 
-        /// <summary>
-        /// 获取完整路径
-        /// </summary>
-        /// <param name="url"></param>
-        /// <returns></returns>
-        public string GetApiUrl(string url)
-        {
-            return ServerUrl + "/Api" + url;
-        }
-
         private string GetBasicToken()
         {
             var time = TimeUtils.GetUnixTime(true);
@@ -659,42 +622,6 @@ namespace Com.Scm
                 Timeout = TimeSpan.FromMinutes(timeout),
                 DefaultRequestHeaders = { { "User-Agent", "Super-Uploader/1.0" } }
             };
-        }
-
-        /// <summary>
-        /// 获取应用信息
-        /// </summary>
-        /// <param name="code"></param>
-        /// <returns></returns>
-        public ScmAppInfo GetAppInfo(string code)
-        {
-            var url = $"http://{SERVER_HOST}/api/ScmInfo/App?code={code}";
-
-            var response = HttpUtils.GetObject<ScmApiDataResponse<ScmAppInfo>>(url);
-            if (response != null && response.Success)
-            {
-                return response.Data;
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// 获取版本信息
-        /// </summary>
-        /// <param name="code"></param>
-        /// <returns></returns>
-        public ScmVerInfo GetVerInfo(string code)
-        {
-            var url = $"http://{SERVER_HOST}/api/ScmInfo/Ver?code={code}&client={ScmClientTypeEnum.Windows}";
-
-            var response = HttpUtils.GetObject<ScmApiDataResponse<ScmVerInfo>>(url);
-            if (response != null && response.Success)
-            {
-                return response.Data;
-            }
-
-            return null;
         }
     }
 }

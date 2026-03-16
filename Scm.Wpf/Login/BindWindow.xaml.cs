@@ -43,7 +43,7 @@ namespace Com.Scm.Login
                 return;
             }
 
-            _ScmTerminal.Init(_Dvo.Host);
+            _ScmTerminal.SetHost(_Dvo.Host);
             var result = await _ScmTerminal.BindAsync(body);
             if (!result)
             {

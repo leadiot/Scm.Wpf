@@ -1,11 +1,12 @@
 ﻿using Com.Scm.Api;
+using Com.Scm.Dto.Auth;
 
 namespace Com.Scm.Wpf.Dto.Login
 {
     /// <summary>
     /// 
     /// </summary>
-    public class LoginResult : ScmApiResponse
+    public class AuthResult : ScmApiResponse
     {
         /// <summary>
         /// 
@@ -15,7 +16,7 @@ namespace Com.Scm.Wpf.Dto.Login
         /// <summary>
         /// 
         /// </summary>
-        public ScmUserInfo UserInfo { get; set; }
+        public ScmAuthInfo UserInfo { get; set; }
 
         /// <summary>
         /// 

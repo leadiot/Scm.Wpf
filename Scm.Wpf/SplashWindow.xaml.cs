@@ -150,7 +150,7 @@ namespace Com.Scm
         /// <param name="appSettings"></param>
         private void ShowUserWindow(AppSettings appSettings)
         {
-            var window = new UserWindow();
+            var window = new AuthWindow();
             window.Show();
             Close();
 
@@ -185,6 +185,7 @@ namespace Com.Scm
         private async void CheckBind()
         {
             var scmTerminal = new ScmTerminal();
+            scmTerminal.DataDir = ScmClientEnv.DataDir;
             if (!scmTerminal.LoadToken())
             {
                 ShowBindWindow(AppSettings.Instance, scmTerminal);

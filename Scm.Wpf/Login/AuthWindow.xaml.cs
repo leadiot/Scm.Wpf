@@ -14,12 +14,12 @@ namespace Com.Scm.Login
     /// <summary>
     /// 用户登录窗口的交互逻辑
     /// </summary>
-    public partial class UserWindow : HandyControl.Controls.Window
+    public partial class AuthWindow : HandyControl.Controls.Window
     {
         private OidcConfig _Config;
         private OidcClient _Client;
 
-        public UserWindow()
+        public AuthWindow()
         {
             InitializeComponent();
         }
@@ -74,7 +74,7 @@ namespace Com.Scm.Login
             //UcOAuth.Login(ospInfo);
         }
 
-        public void ShowMain(LoginResult result, List<MenuDto> menus)
+        public void ShowMain(AuthResult result, List<MenuDto> menus)
         {
             new MainWindow().Init(result, menus);
             Close();
@@ -109,7 +109,7 @@ namespace Com.Scm.Login
             }
         }
 
-        public async void Load(LoginResult result)
+        public async void Load(AuthResult result)
         {
             await LoadMenuAsync(result);
         }
@@ -119,7 +119,7 @@ namespace Com.Scm.Login
         /// </summary>
         /// <param name="lang"></param>
         /// <returns></returns>
-        public async Task<bool> LoadMenuAsync(LoginResult result, string lang = null)
+        public async Task<bool> LoadMenuAsync(AuthResult result, string lang = null)
         {
             var url = AppSettings.Instance.Env.GetApiUrl("/operator/authoritymenu");
 

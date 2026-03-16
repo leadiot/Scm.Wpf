@@ -1,10 +1,10 @@
 ﻿using Com.Scm.Api;
-using Com.Scm.Dto;
-using Com.Scm.Dto.Login;
+using Com.Scm.Dto.Auth;
 using Com.Scm.Enums;
 using Com.Scm.Http.Config;
 using Com.Scm.Sys.Menu;
 using Com.Scm.Utils;
+using Com.Scm.Wpf.Dto.Login;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,20 +16,8 @@ using System.Threading.Tasks;
 
 namespace Com.Scm
 {
-    public class ScmPassword
+    public class ScmPassword : ScmClient
     {
-#if DEBUG
-        /// <summary>
-        /// 服务地址
-        /// </summary>
-        public const string SERVER_URL = "https://localhost:5000";
-#else
-        /// <summary>
-        /// 服务地址
-        /// </summary>
-        public const string SERVER_URL = "https://api.c-scm.net";
-#endif
-
         /// <summary>
         /// 默认授权令牌名称
         /// </summary>
@@ -38,30 +26,7 @@ namespace Com.Scm
         /// <summary>
         /// 当前用户
         /// </summary>
-        public ScmUserInfo User { get; private set; }
-        /// <summary>
-        /// 用户菜单
-        /// </summary>
-        public List<MenuDto> Menu { get; private set; }
-
-        /// <summary>
-        /// 服务器地址
-        /// </summary>
-        public string ServerUrl { get; private set; } = SERVER_URL;
-
-        /// <summary>
-        /// 授权令牌名称
-        /// </summary>
-        public string TokenName { get; set; } = KEY_TOKEN_NAME;
-
-        /// <summary>
-        /// 异常代码
-        /// </summary>
-        public int ErrorCode { get; private set; }
-        /// <summary>
-        /// 异常信息
-        /// </summary>
-        public string ErrorMessage { get; private set; }
+        public ScmAuthInfo User { get; private set; }
 
         /// <summary>
         /// HTTP请求对象
@@ -85,6 +50,12 @@ namespace Com.Scm
         /// </summary>
         private long _ExpiredTime;
 
+        public ScmPassword()
+        {
+            TokenName = KEY_TOKEN_NAME;
+            RemoteUrl = "";
+        }
+
         /// <summary>
         /// 用户登录
         /// </summary>
@@ -95,7 +66,7 @@ namespace Com.Scm
             var url = GetApiUrl("/operator/SignIn");
 
             var json = body?.ToJsonString();
-            var response = await HttpUtils.PostJsonObjectAsync<ScmApiDataResponse<LoginResult>>(url, json);
+            var response = await HttpUtils.PostJsonObjectAsync<ScmApiDataResponse<AuthResult>>(url, json);
             if (response == null)
             {
                 return false;
@@ -141,7 +112,7 @@ namespace Com.Scm
 
             var body = new Dictionary<string, string>();
             var json = body?.ToJsonString();
-            var response = await HttpUtils.PostJsonObjectAsync<ScmApiDataResponse<LoginResult>>(url, json);
+            var response = await HttpUtils.PostJsonObjectAsync<ScmApiDataResponse<AuthResult>>(url, json);
             if (response == null)
             {
                 return false;
@@ -325,16 +296,6 @@ namespace Com.Scm
             }
 
             return response.Data;
-        }
-
-        /// <summary>
-        /// 获取完整路径
-        /// </summary>
-        /// <param name="url"></param>
-        /// <returns></returns>
-        protected string GetApiUrl(string url)
-        {
-            return SERVER_URL + "/Api" + url;
         }
 
         protected Dictionary<string, string> BuildHeader(Dictionary<string, string> headers)

@@ -1,8 +1,9 @@
 ﻿using Com.Scm.Utils;
+using System;
 
-namespace Com.Scm.Dto
+namespace Com.Scm.Dto.Bind
 {
-    public class ScmTerminalInfo
+    public class ScmBindInfo
     {
         public long id { get; set; }
 
