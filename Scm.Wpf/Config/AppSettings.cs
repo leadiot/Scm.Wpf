@@ -38,10 +38,10 @@ namespace Com.Scm.Config
 
             _Settings = JObject.Parse(text);
 
-            EnvConfig = GetSection<EnvConfig>("Env");
-            if (EnvConfig == null)
+            Env= GetSection<EnvConfig>("Env");
+            if (Env == null)
             {
-                EnvConfig = new EnvConfig();
+                Env = new EnvConfig();
             }
 
             return true;
@@ -85,8 +85,6 @@ namespace Com.Scm.Config
 
             return obj.ToObject<T>();
         }
-
-        public EnvConfig EnvConfig { get; private set; }
 
         /// <summary>
         /// 是否自动启动

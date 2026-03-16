@@ -2,7 +2,7 @@
 using Com.Scm.Dvo.Login;
 using Com.Scm.Wpf;
 
-namespace Com.Scm.Views
+namespace Com.Scm.Login
 {
     /// <summary>
     /// 设备绑定窗口的交互逻辑

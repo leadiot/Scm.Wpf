@@ -7,7 +7,7 @@ using Com.Scm.Wpf.Dto.Login;
 using Com.Scm.Wpf.Dvo.Login;
 using System.Windows.Controls;
 
-namespace Com.Scm.Wpf.Views.Login
+namespace Com.Scm.Login.User
 {
     /// <summary>
     /// 验证码登录
@@ -17,7 +17,7 @@ namespace Com.Scm.Wpf.Views.Login
         /// <summary>
         /// 父窗体
         /// </summary>
-        private LoginWindow _Owner;
+        private UserWindow _Owner;
         /// <summary>
         /// OIDC客户端
         /// </summary>
@@ -30,7 +30,7 @@ namespace Com.Scm.Wpf.Views.Login
             InitializeComponent();
         }
 
-        public void Init(LoginWindow owner, OidcClient client)
+        public void Init(UserWindow owner, OidcClient client)
         {
             _Owner = owner;
             _Client = client;
@@ -64,7 +64,7 @@ namespace Com.Scm.Wpf.Views.Login
                 return;
             }
 
-            var url = AppSettings.Instance.EnvConfig.GetApiUrl("/operator/SignIn");
+            var url = AppSettings.Instance.Env.GetApiUrl("/operator/SignIn");
 
             var response = await HttpUtils.PostJsonObjectAsync<ScmApiDataResponse<LoginResult>>(url, body.ToJsonString());
             if (response == null)

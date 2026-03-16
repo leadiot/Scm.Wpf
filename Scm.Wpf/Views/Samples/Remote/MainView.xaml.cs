@@ -1,4 +1,5 @@
-﻿using Com.Scm.Wpf.Models;
+﻿using Com.Scm.Enums;
+using Com.Scm.Wpf.Models;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -53,7 +54,7 @@ namespace Com.Scm.Wpf.Views.Samples.Remote
             {
                 if (dvo.Checked == true)
                 {
-                    dvo.row_status = Enums.ScmRowStatusEnum.Enabled;
+                    dvo.row_status = ScmRowStatusEnum.Enabled;
                 }
             }
         }
@@ -64,7 +65,7 @@ namespace Com.Scm.Wpf.Views.Samples.Remote
             {
                 if (dvo.Checked == true)
                 {
-                    dvo.row_status = Enums.ScmRowStatusEnum.Disabled;
+                    dvo.row_status = ScmRowStatusEnum.Disabled;
                 }
             }
         }

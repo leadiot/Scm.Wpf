@@ -9,17 +9,17 @@ using Com.Scm.Wpf.Dto.Login;
 using System.Diagnostics;
 using System.Windows;
 
-namespace Com.Scm
+namespace Com.Scm.Login
 {
     /// <summary>
     /// Login.xaml 的交互逻辑
     /// </summary>
-    public partial class LoginWindow : HandyControl.Controls.Window
+    public partial class UserWindow : HandyControl.Controls.Window
     {
         private OidcConfig _Config;
         private OidcClient _Client;
 
-        public LoginWindow()
+        public UserWindow()
         {
             InitializeComponent();
         }
@@ -121,7 +121,7 @@ namespace Com.Scm
         /// <returns></returns>
         public async Task<bool> LoadMenuAsync(LoginResult result, string lang = null)
         {
-            var url = AppSettings.Instance.EnvConfig.GetApiUrl("/operator/authoritymenu");
+            var url = AppSettings.Instance.Env.GetApiUrl("/operator/authoritymenu");
 
             var body = new Dictionary<string, string>();
             body["client"] = "20";

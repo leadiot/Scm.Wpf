@@ -1,4 +1,6 @@
-﻿namespace Com.Scm.Config
+﻿using Com.Scm.Wpf.Enums;
+
+namespace Com.Scm.Config
 {
     /// <summary>
     /// 
@@ -8,6 +10,8 @@
         public string UpgradeFilePath { get; set; }
 
         public string UpgradeJsonName { get; set; }
+
+        public ScmLoginTypeEnum LoginMode { get; set; }
 
         public void LoadDefault()
         {

@@ -1,5 +1,7 @@
 ﻿using Com.Scm.Config;
 using Com.Scm.Dao;
+using Com.Scm.Enums;
+using Com.Scm.Login;
 using Com.Scm.Uid.Config;
 using Com.Scm.Utils;
 using Com.Scm.Views;
@@ -50,47 +52,19 @@ public partial class App : Application
             uidConfig.Type = UidType.SnowFlake;
             UidUtils.InitConfig(uidConfig);
 
-            await CheckSignIn(splashWindow);
+            // 校验用户登录
+            if (AppSettings.Instance.Env.LoginMode == Enums.ScmLoginTypeEnum.User)
+            {
+                ShowUserWindow(splashWindow, AppSettings.Instance);
+                return;
+            }
+
+            await CheckBind(splashWindow);
         }
         catch (Exception ex)
         {
             splashWindow.ShowError(ex);
         }
-    }
-
-    private async Task CheckSignIn(SplashWindow splashWindow)
-    {
-        ShowLoginWindow(splashWindow, AppSettings.Instance);
-    }
-
-    private async Task CheckBind(SplashWindow splashWindow)
-    {
-        var scmTerminal = new ScmTerminal();
-        if (!scmTerminal.LoadToken())
-        {
-            ShowBindWindow(splashWindow, AppSettings.Instance, scmTerminal);
-            return;
-        }
-
-        // 已过期
-        if (scmTerminal.IsExpired())
-        {
-            ShowBindWindow(splashWindow, AppSettings.Instance, scmTerminal);
-            return;
-        }
-
-        // 临近过期
-        if (scmTerminal.IsExpires())
-        {
-            var result = await scmTerminal.RefreshTokenAsync();
-            if (!result)
-            {
-                ShowBindWindow(splashWindow, AppSettings.Instance, scmTerminal);
-                return;
-            }
-        }
-
-        ShowMainWindow(splashWindow, AppSettings.Instance, scmTerminal);
     }
 
     /// <summary>
@@ -119,14 +93,30 @@ public partial class App : Application
         base.OnExit(e);
     }
 
-    private void ShowLoginWindow(SplashWindow splashWindow, AppSettings appSettings)
+    /// <summary>
+    /// 显示用户登录
+    /// </summary>
+    /// <param name="splashWindow"></param>
+    /// <param name="appSettings"></param>
+    private void ShowUserWindow(SplashWindow splashWindow, AppSettings appSettings)
     {
-        var window = new LoginWindow();
+        var window = new UserWindow();
         window.Show();
         splashWindow.Close();
         window.Init(appSettings);
     }
 
+    private async Task CheckSignIn(SplashWindow splashWindow)
+    {
+        ShowUserWindow(splashWindow, AppSettings.Instance);
+    }
+
+    /// <summary>
+    /// 显示设备绑定
+    /// </summary>
+    /// <param name="splashWindow"></param>
+    /// <param name="appSettings"></param>
+    /// <param name="scmTerminal"></param>
     private void ShowBindWindow(SplashWindow splashWindow, AppSettings appSettings, ScmTerminal scmTerminal)
     {
         var window = new BindWindow();
@@ -135,17 +125,58 @@ public partial class App : Application
         window.Init(appSettings, scmTerminal);
     }
 
+    /// <summary>
+    /// 校验绑定状态
+    /// </summary>
+    /// <param name="splashWindow"></param>
+    /// <returns></returns>
+    private async Task CheckBind(SplashWindow splashWindow)
+    {
+        var scmTerminal = new ScmTerminal();
+        if (!scmTerminal.LoadToken())
+        {
+            ShowBindWindow(splashWindow, AppSettings.Instance, scmTerminal);
+            return;
+        }
+
+        // 已过期
+        if (scmTerminal.IsExpired())
+        {
+            ShowBindWindow(splashWindow, AppSettings.Instance, scmTerminal);
+            return;
+        }
+
+        // 临近过期
+        //if (scmTerminal.IsExpires())
+        //{
+        var result = await scmTerminal.RefreshTokenAsync();
+        if (!result)
+        {
+            ShowBindWindow(splashWindow, AppSettings.Instance, scmTerminal);
+            return;
+        }
+        //}
+
+        ShowMainWindow(splashWindow, AppSettings.Instance, scmTerminal);
+    }
+
+    /// <summary>
+    /// 显示主窗口
+    /// </summary>
+    /// <param name="splashWindow"></param>
+    /// <param name="appSettings"></param>
+    /// <param name="scmTerminal"></param>
     private async void ShowMainWindow(SplashWindow splashWindow, AppSettings appSettings, ScmTerminal scmTerminal)
     {
         var window = new MainWindow();
-        //await window.Init(appSettings, scmTerminal);
+        await window.Init(appSettings, scmTerminal);
 
         switch (appSettings.WindowState)
         {
-            case Enums.ScmWindowState.Minimized:
+            case ScmWindowState.Minimized:
                 window.WindowState = WindowState.Minimized;
                 break;
-            case Enums.ScmWindowState.Maximized:
+            case ScmWindowState.Maximized:
                 window.WindowState = WindowState.Maximized;
                 break;
             default:
@@ -155,7 +186,7 @@ public partial class App : Application
         window.Show();
 
         splashWindow.Close();
-        if (appSettings.WindowState == Enums.ScmWindowState.Hidden)
+        if (appSettings.WindowState == ScmWindowState.Hidden)
         {
             window.Hide();
         }

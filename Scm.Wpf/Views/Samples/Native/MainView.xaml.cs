@@ -1,4 +1,5 @@
-﻿using Com.Scm.Wpf.Dao.Samples;
+﻿using Com.Scm.Enums;
+using Com.Scm.Wpf.Dao.Samples;
 using Com.Scm.Wpf.Helper;
 using Com.Scm.Wpf.Models;
 using System.Windows;
@@ -163,7 +164,7 @@ namespace Com.Scm.Wpf.Views.Samples.Native
             {
                 if (dvo.Checked == true)
                 {
-                    dvo.row_status = Enums.ScmRowStatusEnum.Enabled;
+                    dvo.row_status = ScmRowStatusEnum.Enabled;
                 }
             }
         }
@@ -174,7 +175,7 @@ namespace Com.Scm.Wpf.Views.Samples.Native
             {
                 if (dvo.Checked == true)
                 {
-                    dvo.row_status = Enums.ScmRowStatusEnum.Disabled;
+                    dvo.row_status = ScmRowStatusEnum.Disabled;
                 }
             }
         }

@@ -11,12 +11,17 @@
 		<ApplicationIcon>Resources\logo.ico</ApplicationIcon>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <None Remove="Resources\bind.jpg" />
+	</ItemGroup>
+
   <ItemGroup>
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="Assets\Images\avatar.png" />
     <Resource Include="Assets\Images\bg.png" />
+    <Resource Include="Resources\bind.jpg" />
     <Resource Include="Resources\logo.ico" />
     <Resource Include="Resources\logo.png" />
     <Resource Include="Resources\splash.png" />

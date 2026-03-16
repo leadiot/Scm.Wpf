@@ -371,7 +371,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
 
     protected string GenUrl(string url)
     {
-        return AppSettings.Instance.EnvConfig.GetApiUrl(url);
+        return AppSettings.Instance.Env.GetApiUrl(url);
     }
 
     private Dictionary<string, string> GetHeader(Dictionary<string, string> head)
