@@ -30,6 +30,7 @@ namespace Com.Scm.Views.About
             _Window = window;
 
             _Dvo = new MainViewDvo();
+            Load();
         }
 
         public UserControl GetView()

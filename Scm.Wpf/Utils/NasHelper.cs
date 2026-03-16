@@ -13,7 +13,7 @@ namespace Com.Scm.Utils
                 "tiff", "tif", "heic", "heif", "ai", "eps", "cdr", "ico", "psd" };
             _ExtList[ScmFileKindEnum.Audio] = new List<string> { "wav", "flac", "ape", "m4a", "aiff", "aif", "mp3", "aac", "m4a",
                 "ogg", "wma", "amr", "mid", "midi", "dsf", "dff", "aac" };
-            _ExtList[ScmFileKindEnum.Vedio] = new List<string> { "mp4", "mkv", "avi", "mov", "flv", "webm", "m3u8", "wmv", "ts",
+            _ExtList[ScmFileKindEnum.Video] = new List<string> { "mp4", "mkv", "avi", "mov", "flv", "webm", "m3u8", "wmv", "ts",
                 "mov", "3gp", "vob" };
             _ExtList[ScmFileKindEnum.Office] = new List<string> { "doc", "docx", "wps", "wpt", "pdf", "odt", "xls", "xlsx", "csv",
                 "et", "ett", "ods", "ppt", "pptx", "dps", "dot", "odp", "vsx", "vsdx", "draw", "xmind" };
@@ -53,7 +53,7 @@ namespace Com.Scm.Utils
 
         public static bool IsVedio(string ext)
         {
-            return IsValid(ScmFileKindEnum.Vedio, ext);
+            return IsValid(ScmFileKindEnum.Video, ext);
         }
 
         public static bool IsOffice(string ext)

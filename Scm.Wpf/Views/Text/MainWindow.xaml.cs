@@ -246,7 +246,7 @@ namespace Com.Scm.Views.Text
             Title = $"WPF文本编辑器 - {Path.GetFileName(currentFilePath)}";
 
             var info = new FileInfo(path);
-            if (info.Length > NasEnv.MAX_CHUNK_SIZE)
+            if (info.Length > 0) // NasEnv.MAX_CHUNK_SIZE)
             {
                 MessageWindow.ShowDialog(this, "文件内容过大！");
                 return;

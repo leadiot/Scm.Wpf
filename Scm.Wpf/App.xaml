@@ -13,9 +13,6 @@
                 <ResourceDictionary Source="/Assets/Styles/Style.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
             <converters:DateFormatConverter x:Key="DateFormatConverter"/>
-            <converters:NasTypeConverter x:Key="NasTypeConverter"/>
-            <converters:NasOptConverter x:Key="NasOptConverter"/>
-            <converters:NasDirConverter x:Key="NasDirConverter"/>
             <converters:ScmHandleConverter x:Key="ScmHandleConverter"/>
             <converters:ScmResultConverter x:Key="ScmResultConverter"/>
         </ResourceDictionary>
