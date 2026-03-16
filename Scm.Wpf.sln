@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scm.Client.Dvo", "Scm.Clien
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scm.Client", "Scm.Client\Scm.Client.csproj", "{19B22999-705C-C80C-513F-98870C7ACB49}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scm.View", "Scm.View\Scm.View.csproj", "{6000CBE1-7999-4E38-80FC-1A0897370327}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{19B22999-705C-C80C-513F-98870C7ACB49}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19B22999-705C-C80C-513F-98870C7ACB49}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19B22999-705C-C80C-513F-98870C7ACB49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6000CBE1-7999-4E38-80FC-1A0897370327}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6000CBE1-7999-4E38-80FC-1A0897370327}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6000CBE1-7999-4E38-80FC-1A0897370327}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6000CBE1-7999-4E38-80FC-1A0897370327}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

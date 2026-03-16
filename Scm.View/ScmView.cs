@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Com.Scm.Wpf
+namespace Com.Scm
 {
     /// <summary>
     /// SCM视图接口

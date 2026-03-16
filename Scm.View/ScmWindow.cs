@@ -1,6 +1,4 @@
-﻿using Com.Scm.Controls;
-
-namespace Com.Scm.Wpf
+﻿namespace Com.Scm
 {
     /// <summary>
     /// SCM窗口接口

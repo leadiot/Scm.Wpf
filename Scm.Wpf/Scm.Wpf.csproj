@@ -44,6 +44,7 @@
 	  <ProjectReference Include="..\Scm.Client.Dao\Scm.Client.Dao.csproj" />
 	  <ProjectReference Include="..\Scm.Client.Dvo\Scm.Client.Dvo.csproj" />
 	  <ProjectReference Include="..\Scm.Client\Scm.Client.csproj" />
+	  <ProjectReference Include="..\Scm.View\Scm.View.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

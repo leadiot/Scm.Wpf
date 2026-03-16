@@ -216,15 +216,4 @@ namespace Com.Scm.Controls
         }
         #endregion
     }
-
-    /// <summary>
-    /// Toast消息类型
-    /// </summary>
-    public enum ToastType
-    {
-        Info,    // 普通信息
-        Success, // 成功
-        Warning, // 警告
-        Error    // 错误
-    }
 }
