@@ -12,12 +12,12 @@ namespace Com.Scm.Wpf.Dvo.Login
         /// <summary>
         /// 登录类型
         /// </summary>
-        private ScmLoginTypeEnum type = ScmLoginTypeEnum.AllUnit;
+        //private ScmLoginModeEnum type = ScmLoginModeEnum.AllUnit;
 
         /// <summary>
         /// 登录模式
         /// </summary>
-        private ScmLoginModeEnum mode = ScmLoginModeEnum.Pwd;
+        private ScmLoginModeEnum mode = ScmLoginModeEnum.ByPass;
         public ScmLoginModeEnum Mode { get { return mode; } set { SetProperty(ref mode, value); } }
 
         [Required(ErrorMessage = "登录用户不能为空！")]
@@ -91,7 +91,7 @@ namespace Com.Scm.Wpf.Dvo.Login
             var pass = SecUtils.Sha256(this.Pass);
 
             var body = new Dictionary<string, string>();
-            body["type"] = ((int)type).ToString();
+            //body["type"] = ((int)type).ToString();
             body["mode"] = ((int)Mode).ToString();
             body["user"] = user;
             body["unit"] = unit;
