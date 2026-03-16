@@ -101,10 +101,25 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     /// <summary>
     /// 显示提示（弹窗，中止当前操作）
     /// </summary>
-    public void ShowAlert(string message)
+    public void ShowAlert(string message, string title = null)
     {
         LogUtils.Info("ShowAlert:" + message);
-        MessageWindow.ShowDialog(this, message);
+        MessageWindow.ShowDialog(this, message, title);
+    }
+
+    public void ShowError(string message)
+    {
+
+    }
+
+    public void ShowException(Exception exception)
+    {
+        ExceptionWindow.ShowException(this, exception);
+    }
+
+    public bool? ShowDialog(string message, string title = null)
+    {
+        return MessageWindow.ShowDialog(this, message, title);
     }
 
     public void HideGuid()
@@ -273,6 +288,28 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
         head = GetHeader(head);
 
         return await HttpUtils.PostJsonStringAsync(url, null, head);
+    }
+
+    public ScmAppInfo GetAppInfo(string code)
+    {
+        var info = _Client.GetAppInfo(code);
+        if (info == null)
+        {
+            return null;
+        }
+
+        return info;
+    }
+
+    public ScmVerInfo GetVerInfo(string code)
+    {
+        var info = _Client.GetVerInfo(code);
+        if (info == null)
+        {
+            return null;
+        }
+
+        return info;
     }
     #endregion
 

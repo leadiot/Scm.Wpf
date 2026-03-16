@@ -74,11 +74,17 @@
 
         void ShowTray();
 
-        void ShowNotice(string message);
+        void ShowAlert(string message, string title = null);
 
         void ShowToast(string message, ToastType type = ToastType.Info);
 
-        void ShowAlert(string message);
+        void ShowNotice(string message);
+
+        void ShowError(string message);
+
+        void ShowException(Exception exception);
+
+        bool? ShowDialog(string message, string title = null);
 
         void ShowHome();
 
@@ -88,5 +94,9 @@
         /// <param name="viewClass"></param>
         /// <param name="useCache"></param>
         void ShowView(string codec, string namec, string viewClass, bool useCache = true);
+
+        ScmAppInfo GetAppInfo(string code);
+
+        ScmVerInfo GetVerInfo(string code);
     }
 }

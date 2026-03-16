@@ -1,0 +1,116 @@
+﻿<Window x:Class="Com.Scm.Views.Audio.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Background="Transparent"
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen"
+        Title="WPF音乐播放器"
+        Height="180" Width="520">
+    <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5">
+        <Border.Background>
+            <LinearGradientBrush>
+                <GradientStop Color="#1D1D1D"/>
+                <GradientStop Color="#1E1E1E"/>
+            </LinearGradientBrush>
+        </Border.Background>
+        <DockPanel Margin="12">
+            <Grid DockPanel.Dock="Top">
+                <!-- 1. 核心音频播放控件：隐藏显示，只做逻辑播放 -->
+                <MediaElement x:Name="MpPlayer"
+                          Visibility="Hidden"
+                          LoadedBehavior="Manual"
+                          UnloadedBehavior="Manual"
+                          Stretch="Uniform"/>
+                <!-- 1. 播放状态显示 -->
+                <TextBlock x:Name="TxtStatus"
+                       Margin="0,5"
+                       Text="123123123123"
+                       TextAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontSize="14"
+                       Foreground="Red"/>
+            </Grid>
+
+            <DockPanel DockPanel.Dock="Bottom">
+                <Button
+                    x:Name="BtSelect"
+                    DockPanel.Dock="Left"
+                    Width="24"
+                    Height="24"
+                    Padding="0"
+                    Margin="0"
+                    ToolTip="打开文件"
+                    Click="BtSelect_Click">
+                    <iconPacks:PackIconMaterial Kind="FolderOpen"/>
+                </Button>
+                <ToggleButton
+                    x:Name="BtnRandom"
+                    DockPanel.Dock="Right"
+                    Width="24"
+                    Height="24"
+                    Padding="0"
+                    Margin="0"
+                    ToolTip="随机播放"
+                    Click="BtnRandom_Click">
+                    <iconPacks:PackIconMaterial Kind="Cross"/>
+                </ToggleButton>
+                <DockPanel
+                    Grid.Row="1"
+                    Margin="12 0"
+                    VerticalAlignment="Center">
+                    <TextBlock
+                        x:Name="TxtCurrentTime"
+                        DockPanel.Dock="Left"
+                        Text="00:00"
+                        Foreground="White"
+                        Margin="0,0,5,0"/>
+                    <TextBlock
+                        x:Name="TxtTotalTime"
+                        DockPanel.Dock="Right"
+                        Text="00:00"
+                        Foreground="White"
+                        Margin="5,0,0,0"/>
+                    <Slider
+                        x:Name="SliProgress"
+                        Minimum="0"
+                        Maximum="100" 
+                        ValueChanged="SliProgress_ValueChanged"/>
+                </DockPanel>
+            </DockPanel>
+
+            <!-- 2. 播放控制按钮：播放/暂停/停止 -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Button x:Name="BtnLast"
+                        Background="Transparent"
+                        Padding="0"
+                        Width="24"
+                        Height="24"
+                        Click="BtnPlay_Click">
+                    <iconPacks:PackIconMaterial Kind="ArrowLeft" Foreground="White"/>
+                </Button>
+                <Button x:Name="BtnPause"
+                        Background="Transparent"
+                        Padding="0"
+                        Margin="12"
+                        Width="32"
+                        Height="32"
+                        Style="{StaticResource ButtonIconCircular}"
+                        Click="BtnPause_Click">
+                    <iconPacks:PackIconMaterial Kind="Play" Foreground="White"/>
+                </Button>
+                <Button x:Name="BtnNext"
+                        Background="Transparent"
+                        Padding="0"
+                        Width="24"
+                        Height="24"
+                        Click="BtnPlay_Click">
+                    <iconPacks:PackIconMaterial Kind="ArrowRight" Foreground="White"/>
+                </Button>
+            </StackPanel>
+        </DockPanel>
+    </Border>
+</Window>

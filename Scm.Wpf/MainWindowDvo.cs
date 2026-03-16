@@ -102,6 +102,14 @@ namespace Com.Scm.Wpf.Dvo
             item.pid = menu.id;
             item.uri = "Com.Scm.Wpf.Actions.ViewAction";
             item.view = "Com.Scm.Wpf.Views.Samples.Remote.MainView";
+
+            item = new MenuDto();
+            item.id = 13;
+            item.codec = "scm-about";
+            item.namec = "关于软件";
+            item.pid = menu.id;
+            item.uri = "Com.Scm.Wpf.Actions.ViewAction";
+            item.view = "Com.Scm.Views.About.MainView";
             menuList.Add(item);
         }
 

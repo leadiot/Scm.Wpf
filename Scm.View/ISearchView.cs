@@ -1,4 +1,4 @@
-﻿namespace Com.Scm.Wpf.Views
+﻿namespace Com.Scm
 {
     public interface ISearchView
     {

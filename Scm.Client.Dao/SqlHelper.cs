@@ -1,5 +1,4 @@
-﻿using Com.Scm.Utils;
-using SqlSugar;
+﻿using SqlSugar;
 
 namespace Com.Scm.Wpf.Helper
 {
@@ -24,7 +23,7 @@ namespace Com.Scm.Wpf.Helper
                 {
                     sql = sql.Replace(p.ParameterName, "'" + p.Value + "'");
                 }
-                LogUtils.Sql(sql);
+                //LogUtils.Sql(sql);
             };
             Instance.Open();
         }

@@ -21,7 +21,7 @@ namespace Com.Scm.Wpf.Views.Uc
     /// </summary>
     public partial class UcPageData : UserControl
     {
-        private Views.ISearchView _Owner;
+        private ISearchView _Owner;
         private ScmPageDataDvo _Dvo;
         private List<ScmColumnInfo> _Columns;
         private List<int> _PageItems = new List<int> { 10, 20, 30, 50, 100, 200, 300, 500 };
@@ -36,7 +36,7 @@ namespace Com.Scm.Wpf.Views.Uc
         /// </summary>
         /// <param name="columns"></param>
         /// <param name="autoData"></param>
-        public void Init(Views.ISearchView owner, List<ScmColumnInfo> columns, bool autoData = true)
+        public void Init(ISearchView owner, List<ScmColumnInfo> columns, bool autoData = true)
         {
             _Owner = owner;
 
