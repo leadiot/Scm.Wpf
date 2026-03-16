@@ -3,6 +3,7 @@ using Com.Scm.Enums;
 using Com.Scm.Sys.Menu;
 using Com.Scm.Utils;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Com.Scm
 {
@@ -40,6 +41,8 @@ namespace Com.Scm
         /// </summary>
         public string TokenName { get; protected set; }
 
+        protected ScmToken _Token { get; set; }
+
         /// <summary>
         /// 用户菜单
         /// </summary>
@@ -53,7 +56,7 @@ namespace Com.Scm
         public void SetHost(string host)
         {
             _Host = host ?? SERVER_HOST;
-            RemoteUrl = "http://" + _Host;
+            RemoteUrl = "http://" + _Host + "/Api";
         }
 
         /// <summary>
@@ -79,6 +82,39 @@ namespace Com.Scm
         /// 异常信息
         /// </summary>
         public string ErrorMessage { get; protected set; }
+
+        /// <summary>
+        /// 加载菜单
+        /// </summary>
+        /// <param name="type">终端类型</param>
+        /// <param name="lang"></param>
+        /// <returns></returns>
+        public async Task<bool> LoadMenuAsync(ScmClientTypeEnum type, string lang = null)
+        {
+            var url = GetApiUrl("/operator/authoritymenu");
+
+            var body = new Dictionary<string, string>();
+            body["client"] = "20";
+            body["lang"] = lang ?? "zh-cn";
+
+            var head = new Dictionary<string, string>();
+            head["Accesstoken"] = _Token.GetAccessToken();
+            head["Appkey"] = "";
+
+            var response = await HttpUtils.GetObjectAsync<ScmApiListResponse<MenuDto>>(url, body, head);
+            if (response == null)
+            {
+                return false;
+            }
+            if (response.Code != 200)
+            {
+                ErrorMessage = response.GetMessage();
+                return false;
+            }
+
+            Menu = response.Data;
+            return true;
+        }
 
         /// <summary>
         /// 获取应用信息

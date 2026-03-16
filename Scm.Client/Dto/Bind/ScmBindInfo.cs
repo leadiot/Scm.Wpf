@@ -3,7 +3,7 @@ using System;
 
 namespace Com.Scm.Dto.Bind
 {
-    public class ScmBindInfo
+    public class ScmBindInfo : ScmToken
     {
         public long id { get; set; }
 
@@ -66,6 +66,22 @@ namespace Com.Scm.Dto.Bind
         /// 最终过期时间
         /// </summary>
         public long expired_time { get; set; }
+
+        public override long GetUserId() { return user_id; }
+
+        public override string GetUserCodes() { return user_codes; }
+
+        public override string GetUserNames() { return user_names; }
+
+        public override string GetAvatar() { return avatar; }
+
+        public override long GetTerminalId() { return terminal_id; }
+
+        public override string GetTerminalCodes() { return terminal_codes; }
+
+        public override string GetTerminalNames() { return terminal_names; }
+
+        public override string GetAccessToken() { return access_token; }
 
         public void CalcExpireTime(long expiresIn)
         {

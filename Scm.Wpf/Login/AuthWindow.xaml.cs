@@ -74,9 +74,9 @@ namespace Com.Scm.Login
             //UcOAuth.Login(ospInfo);
         }
 
-        public void ShowMain(AuthResult result, List<MenuDto> menus)
+        public void ShowMain(ScmClient client, List<MenuDto> menus)
         {
-            new MainWindow().Init(result, menus);
+            new MainWindow().Init(client, menus);
             Close();
         }
 
@@ -123,6 +123,8 @@ namespace Com.Scm.Login
         {
             var url = AppSettings.Instance.Env.GetApiUrl("/operator/authoritymenu");
 
+            var client = new ScmPassword();
+
             var body = new Dictionary<string, string>();
             body["client"] = "20";
             body["lang"] = lang ?? "zh-cn";
@@ -142,7 +144,7 @@ namespace Com.Scm.Login
                 return false;
             }
 
-            ShowMain(result, response.Data);
+            ShowMain(null, response.Data);
             return true;
         }
     }

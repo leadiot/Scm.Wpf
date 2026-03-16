@@ -6,12 +6,17 @@ using Com.Scm.Wpf.Views.Home;
 using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace Com.Scm.Wpf.Dvo
 {
     public class MainWindowDvo : ScmDvo
     {
         private MainWindow _Window;
+
+        public ICommand OpenFileCommand { get; }
+        public ICommand OpenDataCommand { get; }
+
 
         public ObservableCollection<MenuDvo> MenuList { get; set; } = new ObservableCollection<MenuDvo>();
         public ObservableCollection<TabModel> TabModels { get; set; } = new ObservableCollection<TabModel>();
@@ -21,15 +26,46 @@ namespace Com.Scm.Wpf.Dvo
 
         private HomeView _HomeView;
 
+        public MainWindowDvo()
+        {
+            OpenFileCommand = new ScmCommand(OnOpenFile);
+            OpenDataCommand = new ScmCommand(OnOpenData);
+        }
+
         public void Init(MainWindow window, List<MenuDto> menuList)
         {
             _Window = window;
+
             InitTestMenu(menuList);
 
             foreach (var itemDto in menuList)
             {
                 var itemDvo = MenuDvo.FromDto(itemDto);
                 this.MenuList.Add(itemDvo);
+            }
+        }
+
+        private void OnOpenFile(object sender)
+        {
+            try
+            {
+                OsHelper.OpenFolder(ScmClientEnv.FileDir);
+            }
+            catch (Exception exception)
+            {
+                LogUtils.Error(exception);
+            }
+        }
+
+        private void OnOpenData(object sender)
+        {
+            try
+            {
+                OsHelper.OpenFolder(ScmClientEnv.DataDir);
+            }
+            catch (Exception exception)
+            {
+                LogUtils.Error(exception);
             }
         }
 
@@ -69,6 +105,13 @@ namespace Com.Scm.Wpf.Dvo
             menuList.Add(item);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="codec"></param>
+        /// <param name="namec"></param>
+        /// <param name="viewClass"></param>
+        /// <param name="useCache"></param>
         public void ShowView(string codec, string namec, string viewClass, bool useCache = false)
         {
             for (int i = 0; i < TabModels.Count; i++)
@@ -104,7 +147,12 @@ namespace Com.Scm.Wpf.Dvo
             TabIndex = TabModels.Count - 1;
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="codec"></param>
+        /// <param name="namec"></param>
+        /// <param name="control"></param>
         public void ShowView(string codec, string namec, UserControl control)
         {
             for (int i = 0; i < TabModels.Count; i++)

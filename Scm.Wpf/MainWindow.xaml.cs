@@ -1,13 +1,11 @@
 ﻿using Com.Scm.Api;
 using Com.Scm.Config;
 using Com.Scm.Controls;
-using Com.Scm.Dto.Auth;
 using Com.Scm.Sys.Config;
 using Com.Scm.Sys.Menu;
 using Com.Scm.Utils;
 using Com.Scm.Views;
 using Com.Scm.Wpf.Actions;
-using Com.Scm.Wpf.Dto.Login;
 using Com.Scm.Wpf.Dvo;
 using Com.Scm.Wpf.Helper;
 using System.Reflection;
@@ -19,6 +17,13 @@ namespace Com.Scm.Wpf;
 /// </summary>
 public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
 {
+    private ScmClient _Client;
+
+    /// <summary>
+    /// 当前用户
+    /// </summary>
+    public ScmToken _Token { get; private set; }
+
     /// <summary>
     /// 访问凭据
     /// </summary>
@@ -27,11 +32,6 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     /// 应用代码
     /// </summary>
     private string _AppKey = "";
-
-    /// <summary>
-    /// 当前用户
-    /// </summary>
-    public ScmAuthInfo UserInfo { get; private set; }
 
     /// <summary>
     /// 数据字典
@@ -49,27 +49,27 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
         InitializeComponent();
     }
 
-    public async Task Init(AppSettings appSettings, ScmTerminal scmTerminal)
-    {
-    }
-
     /// <summary>
-    /// 初始化
+    /// 
     /// </summary>
-    /// <param name="result"></param>
-    /// <param name="menus"></param>
-    public void Init(AuthResult result, List<MenuDto> menus)
+    /// <param name="client"></param>
+    /// <returns></returns>
+    public void Init(ScmClient client, List<MenuDto> menuList)
     {
-        UserInfo = result.UserInfo;
-        _AccessToken = result.AccessToken;
+        _Client = client;
+
+        if (menuList == null)
+        {
+            menuList = new List<MenuDto>();
+        }
         _AppKey = "";
 
         _Dvo = new MainWindowDvo();
-        _Dvo.Init(this, menus);
+        _Dvo.Init(this, menuList);
         this.DataContext = _Dvo;
 
-        UcMenu.Init(this, menus);
-        UcGuid.Init(this, menus);
+        UcMenu.Init(this, menuList);
+        UcGuid.Init(this, menuList);
         UcTray.Init(this);
         UcInfo.Init(this);
 

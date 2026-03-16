@@ -222,7 +222,7 @@ namespace Com.Scm
         private async void ShowMainWindow(AppSettings appSettings, ScmTerminal scmTerminal)
         {
             var window = new MainWindow();
-            await window.Init(appSettings, scmTerminal);
+            window.Init(scmTerminal, null);
 
             switch (appSettings.WindowState)
             {

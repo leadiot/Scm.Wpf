@@ -77,7 +77,7 @@ namespace Com.Scm.Login
         {
             var nasWindow = new MainWindow();
             nasWindow.Show();
-            await nasWindow.Init(_AppSettings, _ScmTerminal);
+            nasWindow.Init(_ScmTerminal, null);
             this.Close();
 
             if (!nasWindow.IsActive)

@@ -35,6 +35,7 @@ namespace Com.Scm.Wpf.Views.Uc
                 menu.Header = itemDto.namec;
                 menu.Icon = GetIcon(itemDto.icon);
                 menu.Tag = itemDvo;
+                //menu.Background = Brushes.Transparent;
                 MbMenu.Items.Add(menu);
 
                 GenMenu(menu, itemDvo, menuList);
@@ -59,6 +60,7 @@ namespace Com.Scm.Wpf.Views.Uc
                 menu.Header = itemDto.namec;
                 menu.Icon = GetIcon(itemDto.icon);
                 menu.Tag = itemDvo;
+                //menu.Background = Brushes.Transparent;
                 parentMenu.Items.Add(menu);
 
                 GenMenu(menu, itemDvo, list);

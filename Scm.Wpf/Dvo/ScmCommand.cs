@@ -14,7 +14,7 @@ namespace Com.Scm.Wpf.Dvo
 
         private Predicate<object> _CanExcute { get; set; }
 
-        public ScmCommand(Action<object> ExcuteMethod, Predicate<object> CanExcuteMethod)
+        public ScmCommand(Action<object> ExcuteMethod, Predicate<object> CanExcuteMethod = null)
         {
             _Excute = ExcuteMethod;
             _CanExcute = CanExcuteMethod;

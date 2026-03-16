@@ -133,7 +133,7 @@ namespace Com.Scm
 
                 var data = response.Data;
                 _Token = data.Adapt<ScmBindInfo>();
-                _Token.CalcExpireTime(data.expires_in);
+                _Token.CalcExpireTime(data.expires);
                 await SaveTokenAsync();
 
                 IsConnecting = true;
@@ -166,11 +166,15 @@ namespace Com.Scm
         /// <returns></returns>
         public async Task<bool> RefreshTokenAsync()
         {
-            var url = GetApiUrl("/operator/login");
+            var url = GetApiUrl("/Terminal/Refresh");
 
             try
             {
                 var body = new Dictionary<string, string>();
+                body["terminal_id"] = _Token.terminal_id.ToString();
+                body["access_token"] = _Token.access_token;
+                body["refresh_token"] = _Token.refresh_token;
+
                 var json = body?.ToJsonString();
                 var response = await HttpUtils.PostJsonObjectAsync<ScmApiDataResponse<BindResult>>(url, json);
                 if (response == null)
@@ -191,7 +195,8 @@ namespace Com.Scm
 
                 _Token.access_token = data.access_token;
                 _Token.refresh_token = data.refresh_token;
-                _Token.CalcExpireTime(data.expires_in);
+                _Token.CalcExpireTime(data.expires);
+                await SaveTokenAsync();
 
                 return true;
             }

@@ -2,6 +2,9 @@
 
 namespace Com.Scm.Wpf
 {
+    /// <summary>
+    /// SCM窗口接口
+    /// </summary>
     public interface ScmWindow
     {
         /// <summary>
