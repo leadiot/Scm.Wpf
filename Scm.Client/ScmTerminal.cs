@@ -1,6 +1,5 @@
 ﻿using Com.Scm.Api;
 using Com.Scm.Dto;
-using Com.Scm.Dto.Bind;
 using Com.Scm.Enums;
 using Com.Scm.Http.Config;
 using Com.Scm.Utils;
