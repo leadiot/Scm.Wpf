@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using Com.Scm.Utils;
+using Com.Scm.Views.Demo;
+using System.Windows.Controls;
 
 namespace Com.Scm.Wpf.Views.Demo
 {
@@ -9,6 +11,8 @@ namespace Com.Scm.Wpf.Views.Demo
     {
         private ScmWindow _Window;
 
+        private DemoViewDvo _Dvo;
+
         public DemoView()
         {
             InitializeComponent();
@@ -17,11 +21,19 @@ namespace Com.Scm.Wpf.Views.Demo
         public void Init(ScmWindow window)
         {
             _Window = window;
+
+            _Dvo = new DemoViewDvo();
+            this.DataContext = _Dvo;
         }
 
         public UserControl GetView()
         {
             return this;
+        }
+
+        private void BtAppend_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            _Dvo.Text += TimeUtils.FormatDataTime(DateTime.Now) + Environment.NewLine;
         }
 
         private void BtNotice_Click(object sender, System.Windows.RoutedEventArgs e)
