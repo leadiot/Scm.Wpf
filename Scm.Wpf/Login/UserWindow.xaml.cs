@@ -12,7 +12,7 @@ using System.Windows;
 namespace Com.Scm.Login
 {
     /// <summary>
-    /// Login.xaml 的交互逻辑
+    /// 用户登录窗口的交互逻辑
     /// </summary>
     public partial class UserWindow : HandyControl.Controls.Window
     {
@@ -93,7 +93,7 @@ namespace Com.Scm.Login
 
             if (!native)
             {
-                var browser = new Browser();
+                var browser = new BrowserWindow();
                 browser.Owner = this;
                 browser.Open(url);
                 return;

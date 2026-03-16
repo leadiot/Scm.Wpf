@@ -6,19 +6,18 @@
 		<Nullable>disable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UseWPF>true</UseWPF>
-		<RootNamespace>Com.Scm.Wpf</RootNamespace>
-		<StartupObject>Com.Scm.Wpf.App</StartupObject>
+		<RootNamespace>Com.Scm</RootNamespace>
+		<StartupObject>Com.Scm.App</StartupObject>
 		<ApplicationIcon>Resources\logo.ico</ApplicationIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="Resources\bind.jpg" />
-	</ItemGroup>
-
-  <ItemGroup>
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+	</ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Assets\Images\avatar.png" />
     <Resource Include="Assets\Images\bg.png" />
     <Resource Include="Resources\bind.jpg" />
