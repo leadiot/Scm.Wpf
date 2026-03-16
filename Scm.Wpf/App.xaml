@@ -1,6 +1,7 @@
 ﻿<Application x:Class="Com.Scm.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:Com.Scm.Converter"
              StartupUri="SplashWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
@@ -11,6 +12,12 @@
                 <ResourceDictionary Source="Controls/NavigationDrawer.xaml"/>
                 <ResourceDictionary Source="/Assets/Styles/Style.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
+            <converters:DateFormatConverter x:Key="DateFormatConverter"/>
+            <converters:NasTypeConverter x:Key="NasTypeConverter"/>
+            <converters:NasOptConverter x:Key="NasOptConverter"/>
+            <converters:NasDirConverter x:Key="NasDirConverter"/>
+            <converters:ScmHandleConverter x:Key="ScmHandleConverter"/>
+            <converters:ScmResultConverter x:Key="ScmResultConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -35,6 +35,11 @@ namespace Com.Scm.Utils
             logger.Info($"{message}：{arg}");
         }
 
+        public static void Info(string method, string message, string arg)
+        {
+            logger.Info($"【{method}】{message}：{arg}");
+        }
+
         public static void Error(string message)
         {
             logger.Error(message);
