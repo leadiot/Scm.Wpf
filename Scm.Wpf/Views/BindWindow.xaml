@@ -15,7 +15,7 @@
     Title="终端绑定">
     <DockPanel>
         <Grid Background="Black" DockPanel.Dock="Top">
-            <Image Source="/Resources/bind.png"></Image>
+            <Image Source="/Resources/bind.jpg"></Image>
         </Grid>
         <StackPanel DockPanel.Dock="Bottom" Margin="12" Orientation="Horizontal" HorizontalAlignment="Center">
             <TextBlock Text="{Binding Version}"></TextBlock>
