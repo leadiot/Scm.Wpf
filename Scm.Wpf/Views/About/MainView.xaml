@@ -11,7 +11,7 @@
             <Setter Property="FontSize" Value="14"/>
         </Style>
     </UserControl.Resources>
-    <Border Background="White" BorderThickness="1" BorderBrush="LightGray" CornerRadius="3">
+    <Border Background="White" BorderThickness="0" BorderBrush="LightGray" CornerRadius="3">
         <DockPanel>
             <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button x:Name="BtVersion" Style="{StaticResource ButtonPrimary}" Width="240" Margin="12" Click="BtVersion_Click">检测更新</Button>
