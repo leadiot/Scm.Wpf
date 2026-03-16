@@ -109,7 +109,7 @@ namespace Com.Scm
                 UidUtils.InitConfig(uidConfig);
 
                 // 校验用户登录
-                if (AppSettings.Instance.Env.LoginMode == ScmLoginTypeEnum.User)
+                if (AppSettings.Instance.Env.LoginMode == ScmLoginTypeEnum.Operator)
                 {
                     ShowUserWindow(AppSettings.Instance);
                     return;

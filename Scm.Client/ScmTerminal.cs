@@ -38,7 +38,7 @@ namespace Com.Scm
         public ScmTerminal()
         {
             TokenName = KEY_TOKEN_NAME;
-            RemoteUrl = "";
+            RemoteUrl = "http://" + SERVER_HOST + "/Api";
         }
 
         public long GetTerminalId()

@@ -40,14 +40,12 @@ namespace Com.Scm.Wpf.Dvo.Login
 
         public PassDvo()
         {
-            Key = TextUtils.GuidString();
-            vCodeUrl = $"{ScmClientEnv.API_URL}/captcha/cha/{Key}";
         }
 
-        public void ChangeVCode()
+        public void ChangeVCode(string apiUrl)
         {
             Key = TextUtils.GuidString();
-            VCodeUrl = $"{ScmClientEnv.API_URL}/captcha/cha/{Key}?timestamp={TimeUtils.GetUnixTime()}";
+            VCodeUrl = $"{apiUrl}/captcha/cha/{Key}?timestamp={TimeUtils.GetUnixTime()}";
         }
 
         public override bool IsValid()

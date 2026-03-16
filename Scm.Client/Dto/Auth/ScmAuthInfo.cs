@@ -10,6 +10,8 @@
 
         public string Avatar { get; set; }
 
+        public string AccessToken { get; set; }
+
         public override long GetUserId()
         {
             return UserId;
@@ -47,7 +49,7 @@
 
         public override string GetAccessToken()
         {
-            return "";
+            return AccessToken;
         }
     }
 }

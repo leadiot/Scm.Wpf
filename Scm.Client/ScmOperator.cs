@@ -1,8 +1,5 @@
 ﻿using Com.Scm.Api;
-using Com.Scm.Dto.Auth;
-using Com.Scm.Enums;
 using Com.Scm.Http.Config;
-using Com.Scm.Sys.Menu;
 using Com.Scm.Utils;
 using Com.Scm.Wpf.Dto.Login;
 using System;
@@ -16,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Com.Scm
 {
-    public class ScmPassword : ScmClient
+    public class ScmOperator : ScmClient
     {
         /// <summary>
         /// 默认授权令牌名称
@@ -24,19 +21,9 @@ namespace Com.Scm
         public const string KEY_TOKEN_NAME = "ApiToken";
 
         /// <summary>
-        /// 当前用户
-        /// </summary>
-        public ScmAuthInfo User { get; private set; }
-
-        /// <summary>
         /// HTTP请求对象
         /// </summary>
         private HttpClient _HttpClient;
-
-        /// <summary>
-        /// 访问凭据
-        /// </summary>
-        private string _AccessToken;
         /// <summary>
         /// 应用代码
         /// </summary>
@@ -50,37 +37,10 @@ namespace Com.Scm
         /// </summary>
         private long _ExpiredTime;
 
-        public ScmPassword()
+        public ScmOperator()
         {
             TokenName = KEY_TOKEN_NAME;
-            RemoteUrl = "";
-        }
-
-        /// <summary>
-        /// 用户登录
-        /// </summary>
-        /// <param name="body"></param>
-        /// <returns></returns>
-        public async Task<bool> LoginAsync(Dictionary<string, string> body)
-        {
-            var url = GetApiUrl("/operator/SignIn");
-
-            var json = body?.ToJsonString();
-            var response = await HttpUtils.PostJsonObjectAsync<ScmApiDataResponse<AuthResult>>(url, json);
-            if (response == null)
-            {
-                return false;
-            }
-            if (response.Code != 200)
-            {
-                ErrorMessage = response.GetMessage();
-                return false;
-            }
-
-            var data = response.Data;
-            _AccessToken = data.AccessToken;
-            User = data.UserInfo;
-            return true;
+            RemoteUrl = "http://" + SERVER_HOST + "/Api";
         }
 
         /// <summary>
@@ -99,6 +59,39 @@ namespace Com.Scm
         public bool IsExpired()
         {
             return TimeUtils.GetUnixTime() > _ExpiredTime;
+        }
+
+        /// <summary>
+        /// 用户登录
+        /// </summary>
+        /// <param name="body"></param>
+        /// <returns></returns>
+        public async Task<bool> SignInAsync(Dictionary<string, string> body)
+        {
+            var url = GetApiUrl("/Operator/SignIn");
+
+            var json = body?.ToJsonString();
+            var response = await HttpUtils.PostJsonObjectAsync<ScmApiDataResponse<AuthResult>>(url, json);
+            if (response == null)
+            {
+                return false;
+            }
+            if (response.Code != 200)
+            {
+                ErrorMessage = response.GetMessage();
+                return false;
+            }
+
+            var data = response.Data;
+            if (!data.IsSuccess())
+            {
+                ErrorMessage = data.GetMessage();
+                return false;
+            }
+
+            data.UserInfo.AccessToken = data.AccessToken;
+            _Token = data.UserInfo;
+            return true;
         }
 
         /// <summary>
@@ -124,8 +117,14 @@ namespace Com.Scm
             }
 
             var data = response.Data;
-            _AccessToken = data.AccessToken;
-            User = data.UserInfo;
+            if (!data.IsSuccess())
+            {
+                ErrorMessage = data.GetMessage();
+                return false;
+            }
+
+            data.UserInfo.AccessToken = data.AccessToken;
+            _Token = data.UserInfo;
             return true;
         }
 
@@ -271,7 +270,7 @@ namespace Com.Scm
             {
                 headers = new Dictionary<string, string>();
             }
-            headers["ApiToken"] = _AccessToken;
+            headers[TokenName] = _Token.GetAccessToken();
             headers["Appkey"] = _AppKey;
 
             return headers;

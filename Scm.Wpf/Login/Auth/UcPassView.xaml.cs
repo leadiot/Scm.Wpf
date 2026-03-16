@@ -1,9 +1,5 @@
-﻿using Com.Scm.Api;
-using Com.Scm.Config;
-using Com.Scm.Oidc;
-using Com.Scm.Utils;
+﻿using Com.Scm.Oidc;
 using Com.Scm.Views;
-using Com.Scm.Wpf.Dto.Login;
 using Com.Scm.Wpf.Dvo.Login;
 using System.Windows.Controls;
 
@@ -23,6 +19,8 @@ namespace Com.Scm.Login.Auth
         /// </summary>
         private OidcClient _Client;
 
+        private ScmOperator _ScmOperator;
+
         private PassDvo _Dvo;
 
         public UcPassView()
@@ -35,7 +33,10 @@ namespace Com.Scm.Login.Auth
             _Owner = owner;
             _Client = client;
 
+            _ScmOperator = new ScmOperator();
+
             _Dvo = new PassDvo();
+            _Dvo.ChangeVCode(_ScmOperator.GetApiUrl(""));
             this.DataContext = _Dvo;
         }
 
@@ -46,15 +47,15 @@ namespace Com.Scm.Login.Auth
                 return;
             }
 
-            _Dvo.ChangeVCode();
+            _Dvo.ChangeVCode(_ScmOperator.GetApiUrl(""));
         }
 
         private void BtVerify_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            DoLoginAsync();
+            DoAuthAsync();
         }
 
-        private async void DoLoginAsync()
+        private async void DoAuthAsync()
         {
             _Dvo.Pass = TbPass.Password;
 
@@ -64,26 +65,14 @@ namespace Com.Scm.Login.Auth
                 return;
             }
 
-            var url = AppSettings.Instance.Env.GetApiUrl("/operator/SignIn");
-
-            var response = await HttpUtils.PostJsonObjectAsync<ScmApiDataResponse<AuthResult>>(url, body.ToJsonString());
-            if (response == null)
+            var result = await _ScmOperator.SignInAsync(body);
+            if (!result)
             {
-                return;
-            }
-            if (response.Code != 200)
-            {
-                MessageWindow.ShowDialog(_Owner, response.GetMessage());
+                MessageWindow.ShowDialog(_Owner, _ScmOperator.ErrorMessage);
                 return;
             }
 
-            var data = response.Data;
-            if (!data.IsSuccess())
-            {
-                MessageWindow.ShowDialog(_Owner, data.GetMessage());
-                return;
-            }
-            _Owner.Load(data);
+            await _Owner.LoadMenuAsync(_ScmOperator);
         }
     }
 }

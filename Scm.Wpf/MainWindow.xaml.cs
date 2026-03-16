@@ -1,5 +1,4 @@
 ﻿using Com.Scm.Api;
-using Com.Scm.Config;
 using Com.Scm.Controls;
 using Com.Scm.Sys.Config;
 using Com.Scm.Sys.Menu;
@@ -156,7 +155,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     /// <returns></returns>
     public async Task<T> GetObjectAsync<T>(string url, Dictionary<string, string> body = null, Dictionary<string, string> head = null)
     {
-        url = GenUrl(url);
+        url = _Client.GetApiUrl(url);
 
         head = GetHeader(head);
 
@@ -182,7 +181,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     /// <returns></returns>
     public async Task<string> GetStringAsync(string url, Dictionary<string, string> body = null, Dictionary<string, string> head = null)
     {
-        url = GenUrl(url);
+        url = _Client.GetApiUrl(url);
 
         head = GetHeader(head);
 
@@ -198,7 +197,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     /// <returns></returns>
     public async Task<T> PostFormObjectAsync<T>(string url, Dictionary<string, string> body = null, Dictionary<string, string> head = null)
     {
-        url = GenUrl(url);
+        url = _Client.GetApiUrl(url);
 
         head = GetHeader(head);
 
@@ -225,7 +224,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     /// <returns></returns>
     public async Task<string> PostFormStringAsync(string url, Dictionary<string, string> body = null, Dictionary<string, string> head = null)
     {
-        url = GenUrl(url);
+        url = _Client.GetApiUrl(url);
 
         head = GetHeader(head);
 
@@ -242,7 +241,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     /// <returns></returns>
     public async Task<T> PostJsonObjectAsync<T>(string url, string body = null, Dictionary<string, string> head = null)
     {
-        url = GenUrl(url);
+        url = _Client.GetApiUrl(url);
 
         head = GetHeader(head);
 
@@ -269,7 +268,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     /// <returns></returns>
     public async Task<string> PostJsonStringAsync(string url, string body = null, Dictionary<string, string> head = null)
     {
-        url = GenUrl(url);
+        url = _Client.GetApiUrl(url);
 
         head = GetHeader(head);
 
@@ -301,7 +300,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
             }
         }
 
-        var url = GenUrl("/scmcfg/option/" + key);
+        var url = _Client.GetApiUrl("/scmcfg/option/" + key);
 
         var body = new Dictionary<string, string>();
         //body["client"] = "20";
@@ -343,7 +342,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
             }
         }
 
-        var url = GenUrl("/scmdic/option/" + key);
+        var url = _Client.GetApiUrl("/scmdic/option/" + key);
 
         var body = new Dictionary<string, string>();
         //body["client"] = "20";
@@ -367,11 +366,6 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
             _Dic[key] = dic;
         }
         return dic;
-    }
-
-    protected string GenUrl(string url)
-    {
-        return AppSettings.Instance.Env.GetApiUrl(url);
     }
 
     private Dictionary<string, string> GetHeader(Dictionary<string, string> head)

@@ -1,5 +1,6 @@
 ﻿using Com.Scm.Config;
 using Com.Scm.Dvo.Login;
+using Com.Scm.Views;
 using Com.Scm.Wpf;
 
 namespace Com.Scm.Login
@@ -37,16 +38,18 @@ namespace Com.Scm.Login
         /// </summary>
         private async void DoBindAsync()
         {
+            _ScmTerminal.SetHost(_Dvo.Host);
+
             var body = _Dvo.GetBind();
             if (body == null)
             {
                 return;
             }
 
-            _ScmTerminal.SetHost(_Dvo.Host);
             var result = await _ScmTerminal.BindAsync(body);
             if (!result)
             {
+                MessageWindow.ShowDialog(this, _ScmTerminal.ErrorMessage);
                 return;
             }
 

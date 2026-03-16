@@ -11,17 +11,12 @@ namespace Com.Scm.Config
 
         public string UpgradeJsonName { get; set; }
 
-        public ScmLoginTypeEnum LoginMode { get; set; }
+        public ScmLoginTypeEnum LoginMode { get; set; } = ScmLoginTypeEnum.Operator;
 
         public void LoadDefault()
         {
             UpgradeFilePath = "Upgrade/Scm.Upgrade.exe";
             UpgradeJsonName = "Upgrade/Scm.Upgrade.json";
-        }
-
-        public string GetApiUrl(string path)
-        {
-            return "http://api.c-scm.net/api" + path;
         }
     }
 }

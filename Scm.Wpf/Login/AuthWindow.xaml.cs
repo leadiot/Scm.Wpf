@@ -1,11 +1,11 @@
-﻿using Com.Scm.Api;
-using Com.Scm.Config;
+﻿using Com.Scm.Config;
+using Com.Scm.Enums;
 using Com.Scm.Oidc;
 using Com.Scm.Oidc.Response;
 using Com.Scm.Sys.Menu;
 using Com.Scm.Utils;
+using Com.Scm.Views;
 using Com.Scm.Wpf;
-using Com.Scm.Wpf.Dto.Login;
 using System.Diagnostics;
 using System.Windows;
 
@@ -109,42 +109,21 @@ namespace Com.Scm.Login
             }
         }
 
-        public async void Load(AuthResult result)
-        {
-            await LoadMenuAsync(result);
-        }
-
         /// <summary>
         /// 获取菜单
         /// </summary>
         /// <param name="lang"></param>
         /// <returns></returns>
-        public async Task<bool> LoadMenuAsync(AuthResult result, string lang = null)
+        public async Task<bool> LoadMenuAsync(ScmClient client, string lang = null)
         {
-            var url = AppSettings.Instance.Env.GetApiUrl("/operator/authoritymenu");
-
-            var client = new ScmPassword();
-
-            var body = new Dictionary<string, string>();
-            body["client"] = "20";
-            body["lang"] = lang ?? "zh-cn";
-
-            var head = new Dictionary<string, string>();
-            head["ApiToken"] = result.AccessToken;
-            head["Appkey"] = "";
-
-            var response = await HttpUtils.GetObjectAsync<ScmApiListResponse<MenuDto>>(url, body, head);
-            if (response == null)
+            var menuList = await client.LoadMenuAsync(ScmClientTypeEnum.Windows, lang);
+            if (menuList == null)
             {
-                return false;
-            }
-            if (response.Code != 200)
-            {
-                MessageBox.Show(response.GetMessage());
+                MessageWindow.ShowDialog(this, client.ErrorMessage);
                 return false;
             }
 
-            ShowMain(null, response.Data);
+            ShowMain(client, menuList);
             return true;
         }
     }

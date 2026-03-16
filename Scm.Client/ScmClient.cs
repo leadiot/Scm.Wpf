@@ -64,7 +64,7 @@ namespace Com.Scm
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        protected string GetApiUrl(string url)
+        public string GetApiUrl(string url)
         {
             return RemoteUrl + url;
         }
@@ -89,7 +89,7 @@ namespace Com.Scm
         /// <param name="type">终端类型</param>
         /// <param name="lang"></param>
         /// <returns></returns>
-        public async Task<bool> LoadMenuAsync(ScmClientTypeEnum type, string lang = null)
+        public async Task<List<MenuDto>> LoadMenuAsync(ScmClientTypeEnum type, string lang = null)
         {
             var url = GetApiUrl("/operator/authoritymenu");
 
@@ -98,22 +98,21 @@ namespace Com.Scm
             body["lang"] = lang ?? "zh-cn";
 
             var head = new Dictionary<string, string>();
-            head["Accesstoken"] = _Token.GetAccessToken();
+            head[TokenName] = _Token.GetAccessToken();
             head["Appkey"] = "";
 
             var response = await HttpUtils.GetObjectAsync<ScmApiListResponse<MenuDto>>(url, body, head);
             if (response == null)
             {
-                return false;
+                return null;
             }
             if (response.Code != 200)
             {
                 ErrorMessage = response.GetMessage();
-                return false;
+                return null;
             }
 
-            Menu = response.Data;
-            return true;
+            return response.Data;
         }
 
         /// <summary>
