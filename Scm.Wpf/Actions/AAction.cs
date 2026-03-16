@@ -4,7 +4,7 @@ namespace Com.Scm.Wpf.Actions
 {
     public abstract class AAction
     {
-        public abstract void Execute(MenuDvo dto);
+        public abstract void Execute(ScmMenuDvo dto);
 
         public ScmWindow Owner { get; set; }
 

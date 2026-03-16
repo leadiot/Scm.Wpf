@@ -1,11 +1,12 @@
 ﻿using Com.Scm.Enums;
 using Com.Scm.Utils;
+using Com.Scm.Wpf.Dvo;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
-namespace Com.Scm.Wpf.Dvo.Login
+namespace Com.Scm.Login.Auth
 {
-    public partial class PassDvo : ScmDvo
+    public partial class UcPassViewDvo : ScmDvo
     {
         public string Key { get; set; }
 
@@ -38,7 +39,7 @@ namespace Com.Scm.Wpf.Dvo.Login
         public string VCodeUrl { get { return vCodeUrl; } set { SetProperty(ref vCodeUrl, value); } }
         private string vCodeUrl;
 
-        public PassDvo()
+        public UcPassViewDvo()
         {
         }
 

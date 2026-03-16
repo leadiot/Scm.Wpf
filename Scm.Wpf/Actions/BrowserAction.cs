@@ -5,7 +5,7 @@ namespace Com.Scm.Wpf.Actions
 {
     public class BrowserAction : AAction
     {
-        public override void Execute(MenuDvo dvo)
+        public override void Execute(ScmMenuDvo dvo)
         {
             LogUtils.Debug("BrowserAction-Execute");
 

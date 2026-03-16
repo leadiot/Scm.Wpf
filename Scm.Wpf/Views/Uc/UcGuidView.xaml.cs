@@ -15,7 +15,7 @@ namespace Com.Scm.Wpf.Views.Uc
     public partial class UcGuidView : UserControl
     {
         private ScmWindow _Owner;
-        private ObservableCollection<MenuDvo> MenuList = new ObservableCollection<MenuDvo>();
+        private ObservableCollection<ScmMenuDvo> MenuList = new ObservableCollection<ScmMenuDvo>();
         private List<SideMenuItem> _LastItems;
 
         public UcGuidView()
@@ -29,7 +29,7 @@ namespace Com.Scm.Wpf.Views.Uc
 
             foreach (var itemDto in menuList.Where(a => a.pid == 0).OrderBy(a => a.od))
             {
-                var itemDvo = MenuDvo.FromDto(itemDto);
+                var itemDvo = ScmMenuDvo.FromDto(itemDto);
 
                 var menu = new SideMenuItem();
                 menu.Header = itemDto.namec;
@@ -42,7 +42,7 @@ namespace Com.Scm.Wpf.Views.Uc
             }
         }
 
-        private void GenMenu(SideMenuItem parentMenu, MenuDvo parentDto, List<MenuDto> list)
+        private void GenMenu(SideMenuItem parentMenu, ScmMenuDvo parentDto, List<MenuDto> list)
         {
             var subList = list.Where(a => a.pid == parentDto.Id).OrderBy(a => a.od).ToList();
             if (subList.Count < 1)
@@ -50,10 +50,10 @@ namespace Com.Scm.Wpf.Views.Uc
                 return;
             }
 
-            var items = new List<MenuDvo>();
+            var items = new List<ScmMenuDvo>();
             foreach (var itemDto in subList)
             {
-                var itemDvo = MenuDvo.FromDto(itemDto);
+                var itemDvo = ScmMenuDvo.FromDto(itemDto);
                 items.Add(itemDvo);
 
                 var menu = new SideMenuItem();
@@ -79,7 +79,7 @@ namespace Com.Scm.Wpf.Views.Uc
                 return;
             }
 
-            var dvo = item.Tag as MenuDvo;
+            var dvo = item.Tag as ScmMenuDvo;
             if (dvo == null)
             {
                 return;

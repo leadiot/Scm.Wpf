@@ -5,7 +5,7 @@ using System.Windows;
 
 namespace Com.Scm.Wpf.Dvo.Menu
 {
-    public class MenuDvo : ScmDvo
+    public class ScmMenuDvo : ScmDvo
     {
         private ScmClientTypeEnum client;
         public ScmClientTypeEnum Client { get { return client; } set { SetProperty(ref client, value); } }
@@ -58,7 +58,7 @@ namespace Com.Scm.Wpf.Dvo.Menu
         private bool keepAlive;
         public bool KeepAlive { get { return keepAlive; } set { SetProperty(ref keepAlive, value); } }
 
-        public List<MenuDvo> children;
+        public List<ScmMenuDvo> children;
 
         /// <summary>
         /// 是否已加载
@@ -80,19 +80,19 @@ namespace Com.Scm.Wpf.Dvo.Menu
         /// </summary>
         public FrameworkElement Element { get; set; }
 
-        public void Add(MenuDvo dto)
+        public void Add(ScmMenuDvo dto)
         {
             if (children == null)
             {
-                children = new List<MenuDvo>();
+                children = new List<ScmMenuDvo>();
             }
 
             children.Add(dto);
         }
 
-        public static MenuDvo FromDto(MenuDto dto)
+        public static ScmMenuDvo FromDto(MenuDto dto)
         {
-            var dvo = new MenuDvo();
+            var dvo = new ScmMenuDvo();
             dvo.Id = dto.id;
             dvo.Client = dto.client;
             dvo.Types = dto.types;

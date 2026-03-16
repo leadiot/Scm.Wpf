@@ -19,7 +19,7 @@ namespace Com.Scm.Wpf.Views.Uc
         {
             foreach (var itemDto in menuList.Where(a => a.pid == 0).OrderBy(a => a.od))
             {
-                var itemDvo = MenuDvo.FromDto(itemDto);
+                var itemDvo = ScmMenuDvo.FromDto(itemDto);
 
                 var menu = new MenuItem();
                 menu.Header = itemDto.namec;
@@ -31,7 +31,7 @@ namespace Com.Scm.Wpf.Views.Uc
             }
         }
 
-        private int GenMenu(MenuItem parent, MenuDvo dvo, List<MenuDto> list)
+        private int GenMenu(MenuItem parent, ScmMenuDvo dvo, List<MenuDto> list)
         {
             var subList = list.Where(a => a.pid == dvo.Id).OrderBy(a => a.od).ToList();
             if (subList.Count < 1)
@@ -39,10 +39,10 @@ namespace Com.Scm.Wpf.Views.Uc
                 return 0;
             }
 
-            var items = new List<MenuDvo>();
+            var items = new List<ScmMenuDvo>();
             foreach (var itemDto in subList)
             {
-                var itemDvo = MenuDvo.FromDto(itemDto);
+                var itemDvo = ScmMenuDvo.FromDto(itemDto);
                 items.Add(itemDvo);
 
                 var menu = new MenuItem();
@@ -69,7 +69,7 @@ namespace Com.Scm.Wpf.Views.Uc
                 return;
             }
 
-            var dto = menu.Tag as MenuDvo;
+            var dto = menu.Tag as ScmMenuDvo;
             if (dto == null)
             {
                 return;

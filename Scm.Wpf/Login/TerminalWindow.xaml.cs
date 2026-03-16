@@ -1,5 +1,4 @@
 ﻿using Com.Scm.Config;
-using Com.Scm.Dvo.Login;
 using Com.Scm.Views;
 using Com.Scm.Wpf;
 
@@ -8,13 +7,13 @@ namespace Com.Scm.Login
     /// <summary>
     /// 设备绑定窗口的交互逻辑
     /// </summary>
-    public partial class BindWindow : HandyControl.Controls.Window
+    public partial class TerminalWindow : HandyControl.Controls.Window
     {
-        private BindDvo _Dvo;
+        private TerminalWindowDvo _Dvo;
         private AppSettings _AppSettings;
         private ScmTerminal _ScmTerminal;
 
-        public BindWindow()
+        public TerminalWindow()
         {
             InitializeComponent();
         }
@@ -23,7 +22,7 @@ namespace Com.Scm.Login
         {
             _AppSettings = appSettings;
             _ScmTerminal = scmTerminal;
-            _Dvo = new BindDvo();
+            _Dvo = new TerminalWindowDvo();
 
             this.DataContext = _Dvo;
         }

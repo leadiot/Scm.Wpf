@@ -18,7 +18,7 @@ namespace Com.Scm.Wpf.Dvo
         public ICommand OpenDataCommand { get; }
 
 
-        public ObservableCollection<MenuDvo> MenuList { get; set; } = new ObservableCollection<MenuDvo>();
+        public ObservableCollection<ScmMenuDvo> MenuList { get; set; } = new ObservableCollection<ScmMenuDvo>();
         public ObservableCollection<TabModel> TabModels { get; set; } = new ObservableCollection<TabModel>();
 
         private int tabIndex;
@@ -40,7 +40,7 @@ namespace Com.Scm.Wpf.Dvo
 
             foreach (var itemDto in menuList)
             {
-                var itemDvo = MenuDvo.FromDto(itemDto);
+                var itemDvo = ScmMenuDvo.FromDto(itemDto);
                 this.MenuList.Add(itemDvo);
             }
         }

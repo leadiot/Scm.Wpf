@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:hc="https://handyorg.github.io/handycontrol"
-    x:Class="Com.Scm.Login.BindWindow"
+    x:Class="Com.Scm.Login.TerminalWindow"
     mc:Ignorable="d"
     WindowStartupLocation="CenterScreen"
     Width="280"

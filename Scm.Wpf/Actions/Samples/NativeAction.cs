@@ -4,7 +4,7 @@ namespace Com.Scm.Wpf.Actions.Samples
 {
     public class NativeAction : AAction
     {
-        public override void Execute(MenuDvo dvo)
+        public override void Execute(ScmMenuDvo dvo)
         {
             if (Owner == null)
             {

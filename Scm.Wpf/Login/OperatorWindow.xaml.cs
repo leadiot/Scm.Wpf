@@ -14,12 +14,12 @@ namespace Com.Scm.Login
     /// <summary>
     /// 用户登录窗口的交互逻辑
     /// </summary>
-    public partial class AuthWindow : HandyControl.Controls.Window
+    public partial class OperatorWindow : HandyControl.Controls.Window
     {
         private OidcConfig _Config;
         private OidcClient _Client;
 
-        public AuthWindow()
+        public OperatorWindow()
         {
             InitializeComponent();
         }

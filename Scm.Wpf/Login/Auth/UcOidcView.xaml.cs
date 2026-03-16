@@ -14,7 +14,7 @@ namespace Com.Scm.Login.Auth
         /// <summary>
         /// 父窗体
         /// </summary>
-        private AuthWindow _Owner;
+        private OperatorWindow _Owner;
         /// <summary>
         /// OIDC客户端
         /// </summary>
@@ -33,7 +33,7 @@ namespace Com.Scm.Login.Auth
             InitializeComponent();
         }
 
-        public async Task Init(AuthWindow owner, OidcClient client)
+        public async Task Init(OperatorWindow owner, OidcClient client)
         {
             _Owner = owner;
             _Client = client;

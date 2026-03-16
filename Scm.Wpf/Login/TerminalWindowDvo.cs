@@ -2,9 +2,9 @@
 using Com.Scm.Wpf.Dvo;
 using System.ComponentModel.DataAnnotations;
 
-namespace Com.Scm.Dvo.Login
+namespace Com.Scm.Login
 {
-    public partial class BindDvo : ScmDvo
+    public partial class TerminalWindowDvo : ScmDvo
     {
         [Required(ErrorMessage = "远端路径不能为空！")]
         private string host = "";
@@ -23,7 +23,7 @@ namespace Com.Scm.Dvo.Login
         private string version = "1.0";
         public string Version { get { return version; } set { SetProperty(ref version, value); } }
 
-        public BindDvo()
+        public TerminalWindowDvo()
         {
             Version = $"版本信息：V{ScmClientEnv.GetVersionString()} Build {ScmClientEnv.BUILD}";
         }

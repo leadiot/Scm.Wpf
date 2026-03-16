@@ -150,7 +150,7 @@ namespace Com.Scm
         /// <param name="appSettings"></param>
         private void ShowUserWindow(AppSettings appSettings)
         {
-            var window = new AuthWindow();
+            var window = new OperatorWindow();
             window.Show();
             Close();
 
@@ -170,7 +170,7 @@ namespace Com.Scm
         /// <param name="scmTerminal"></param>
         private void ShowBindWindow(AppSettings appSettings, ScmTerminal scmTerminal)
         {
-            var window = new BindWindow();
+            var window = new TerminalWindow();
             window.Show();
             Close();
 
