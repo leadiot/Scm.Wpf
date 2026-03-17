@@ -36,6 +36,8 @@
     <SolidColorBrush x:Key="ScmColorOnPrimary" Color="{StaticResource white}"/>
 
     <SolidColorBrush x:Key="ScmWindowBackground" Color="{StaticResource china_neutral_100}"/>
+    <SolidColorBrush x:Key="ScmPanelBackground" Color="{StaticResource china_neutral_50}"/>
+    <SolidColorBrush x:Key="ScmBorderBrush" Color="{StaticResource china_neutral_200}"/>
     <SolidColorBrush x:Key="ScmTextColorPrimary" Color="{StaticResource china_neutral_700}"/>
     <SolidColorBrush x:Key="ScmTextColorSecondary" Color="{StaticResource china_neutral_500}"/>
 
@@ -71,7 +73,7 @@
 
     <Style TargetType="Border" x:Key="PrimaryBorder">
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="BorderBrush" Value="LightGray"/>
+        <Setter Property="BorderBrush" Value="{StaticResource ScmBorderBrush}"/>
     </Style>
 
     <Style TargetType="Border" x:Key="PrimaryBorderWithEffect">

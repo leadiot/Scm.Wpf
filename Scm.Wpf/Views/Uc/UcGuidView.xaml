@@ -81,20 +81,11 @@
         </Border.Effect>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="52"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <TextBlock
-                Grid.Row="0"
-                Text="Scm.Net"
-                FontSize="32"
-                FontWeight="Bold"
-                Foreground="#3DD0FB"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Center"/>
-            <StackPanel Grid.Row="1" Margin="0 0 0 0">
-                <hc:SideMenu Name="MbMenu" BorderThickness="1" Margin="1" Background="Transparent">
+            <StackPanel Grid.Row="0" Margin="0 0 0 0">
+                <hc:SideMenu Name="MbMenu" Margin="0">
                 </hc:SideMenu>
             </StackPanel>
         </Grid>

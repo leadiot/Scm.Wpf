@@ -16,13 +16,24 @@
             <MenuItem x:Name="MiExit" Header="退出登录" Click="MiExit_Click"/>
         </ContextMenu>
     </UserControl.Resources>
-    <Border BorderThickness="0 0 0 1" BorderBrush="Black" Padding="12 6">
+    <Border BorderThickness="0 0 0 1" BorderBrush="Black">
         <Grid>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0" Orientation="Horizontal">
+            <Grid Grid.Column="0" Background="{StaticResource ScmColorPrimaryVariant}"  Width="200" Height="50">
+                <TextBlock
+                    Grid.Row="0"
+                    Text="Scm.Net"
+                    FontSize="32"
+                    FontWeight="Bold"
+                    Foreground="#3DD0FB"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"/>
+            </Grid>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="12 0">
                 <ToggleButton
                     x:Name="TbGuid"
                     IsEnabled="False"
@@ -65,7 +76,7 @@
                     </Button.Style>
                 </Button>
             </StackPanel>
-            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="12 0" HorizontalAlignment="Right">
                 <Button x:Name="BtAvatar" Style="{StaticResource ButtonCustom}" Cursor="Hand" Click="BtAvatar_Click">
                     <Image x:Name="IvAvatar" Source="/Assets/Images/avatar.png" Width="40" Height="40" Stretch="Fill">
                         <Image.Clip>
