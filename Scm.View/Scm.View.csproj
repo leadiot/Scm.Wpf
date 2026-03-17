@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Scm.Client.Dvo\Scm.Client.Dvo.csproj" />
+    <ProjectReference Include="..\Scm.Client\Scm.Client.csproj" />
   </ItemGroup>
   
   <ItemGroup>

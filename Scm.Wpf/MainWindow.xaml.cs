@@ -311,6 +311,11 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
 
         return info;
     }
+
+    public ScmClient GetClient()
+    {
+        return _Client;
+    }
     #endregion
 
     #region 事件处理

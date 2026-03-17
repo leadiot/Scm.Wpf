@@ -98,5 +98,7 @@
         ScmAppInfo GetAppInfo(string code);
 
         ScmVerInfo GetVerInfo(string code);
+
+        ScmClient GetClient();
     }
 }

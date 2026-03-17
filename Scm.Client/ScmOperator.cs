@@ -1,14 +1,8 @@
 ﻿using Com.Scm.Api;
-using Com.Scm.Http.Config;
 using Com.Scm.Utils;
 using Com.Scm.Wpf.Dto.Login;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Net;
 using System.Net.Http;
-using System.Net.Security;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace Com.Scm
@@ -129,63 +123,6 @@ namespace Com.Scm
         }
 
         /// <summary>
-        /// POST请求（同步）
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="url"></param>
-        /// <param name="body"></param>
-        /// <param name="head"></param>
-        /// <returns></returns>
-        public T PostFormObject<T>(string url, Dictionary<string, string> body = null, Dictionary<string, string> head = null)
-        {
-            url = GetApiUrl(url);
-
-            head = BuildHeader(head);
-
-            var json = body?.ToJsonString();
-            var response = HttpUtils.PostJsonObject<ScmApiDataResponse<T>>(url, json, head);
-            if (response == null)
-            {
-                return default;
-            }
-            if (response.Success)
-            {
-                ErrorMessage = response.Message;
-                return default;
-            }
-
-            return response.Data;
-        }
-
-        /// <summary>
-        /// POST请求（异步）
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="body"></param>
-        /// <param name="head"></param>
-        /// <returns></returns>
-        public async Task<T> PostFormObjectAsync<T>(string url, Dictionary<string, string> body = null, Dictionary<string, string> head = null)
-        {
-            url = GetApiUrl(url);
-
-            head = BuildHeader(head);
-
-            var json = body?.ToJsonString();
-            var response = await HttpUtils.PostJsonObjectAsync<ScmApiDataResponse<T>>(url, json, head);
-            if (response == null)
-            {
-                return default;
-            }
-            if (response.Success)
-            {
-                ErrorMessage = response.Message;
-                return default;
-            }
-
-            return response.Data;
-        }
-
-        /// <summary>
         /// Form表单提交
         /// </summary>
         /// <param name="url"></param>
@@ -210,61 +147,7 @@ namespace Com.Scm
             return await response.Content.ReadAsStringAsync();
         }
 
-        /// <summary>
-        /// GET请求（同步）
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="url"></param>
-        /// <param name="body"></param>
-        /// <param name="head"></param>
-        /// <returns></returns>
-        public T GetObject<T>(string url, Dictionary<string, string> body = null, Dictionary<string, string> head = null)
-        {
-            url = GetApiUrl(url);
-
-            head = BuildHeader(head);
-
-            var response = HttpUtils.GetObject<ScmApiDataResponse<T>>(url, body, head);
-            if (response == null)
-            {
-                return default;
-            }
-            if (response.Success)
-            {
-                ErrorMessage = response.Message;
-                return default;
-            }
-
-            return response.Data;
-        }
-
-        /// <summary>
-        /// GET请求（异步）
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="body"></param>
-        /// <returns></returns>
-        public async Task<T> GetObjectAsync<T>(string url, Dictionary<string, string> body = null, Dictionary<string, string> head = null)
-        {
-            url = GetApiUrl(url);
-
-            head = BuildHeader(head);
-
-            var response = await HttpUtils.GetObjectAsync<ScmApiDataResponse<T>>(url, body, head);
-            if (response == null)
-            {
-                return default;
-            }
-            if (response.Success)
-            {
-                ErrorMessage = response.Message;
-                return default;
-            }
-
-            return response.Data;
-        }
-
-        protected Dictionary<string, string> BuildHeader(Dictionary<string, string> headers)
+        protected override Dictionary<string, string> BuildHeader(Dictionary<string, string> headers)
         {
             if (headers == null)
             {
@@ -274,60 +157,6 @@ namespace Com.Scm
             headers["Appkey"] = _AppKey;
 
             return headers;
-        }
-
-        /// <summary>
-        /// HTTPS+代理配置（复用企业级逻辑）
-        /// </summary>
-        /// <param name="timeout">过期时间（分钟）</param>
-        /// <param name="certConfig"></param>
-        /// <param name="proxyConfig"></param>
-        public void CreateHttpClient(int timeout = 5, CertConfig certConfig = null, ProxyConfig proxyConfig = null)
-        {
-            var handler = new HttpClientHandler();
-
-            // 1. HTTPS证书配置
-            if (certConfig != null)
-            {
-                if (!string.IsNullOrWhiteSpace(certConfig.ClientCertPath) && File.Exists(certConfig.ClientCertPath))
-                {
-                    var clientCert = new X509Certificate2(
-                        certConfig.ClientCertPath, certConfig.ClientCertPassword,
-                        X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.PersistKeySet);
-                    handler.ClientCertificates.Add(clientCert);
-                }
-                handler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) =>
-                {
-                    if (certConfig.AllowAnyCert) return true;
-                    if (!string.IsNullOrWhiteSpace(certConfig.TrustedCertThumbprint))
-                    {
-                        string certThumbprint = cert.Thumbprint?.ToUpperInvariant();
-                        string trustedThumbprint = certConfig.TrustedCertThumbprint.ToUpperInvariant();
-                        return certThumbprint == trustedThumbprint;
-                    }
-                    return sslPolicyErrors == SslPolicyErrors.None;
-                };
-            }
-
-            // 2. 代理配置
-            if (proxyConfig != null && !string.IsNullOrWhiteSpace(proxyConfig.ProxyUrl))
-            {
-                var proxyUri = new Uri(proxyConfig.ProxyUrl);
-                handler.Proxy = string.IsNullOrWhiteSpace(proxyConfig.ProxyUsername)
-                    ? new WebProxy(proxyUri, proxyConfig.BypassLocal)
-                    : new WebProxy(proxyUri, proxyConfig.BypassLocal)
-                    {
-                        Credentials = new NetworkCredential(proxyConfig.ProxyUsername, proxyConfig.ProxyPassword)
-                    };
-                handler.UseProxy = true;
-            }
-
-            // 3. 初始化HttpClient
-            _HttpClient = new HttpClient(handler)
-            {
-                Timeout = TimeSpan.FromMinutes(timeout),
-                DefaultRequestHeaders = { { "User-Agent", "Super-Uploader/1.0" } }
-            };
         }
     }
 }
