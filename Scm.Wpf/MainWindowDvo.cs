@@ -1,9 +1,9 @@
 ﻿using Com.Scm.Helper;
 using Com.Scm.Sys.Menu;
-using Com.Scm.Utils;
 using Com.Scm.Wpf.Dvo.Menu;
 using Com.Scm.Wpf.Models;
 using Com.Scm.Wpf.Views.Home;
+using NLog;
 using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Windows.Controls;
@@ -13,6 +13,8 @@ namespace Com.Scm.Wpf.Dvo
 {
     public class MainWindowDvo : ScmDvo
     {
+        private static readonly ILogger _Logger = LogManager.GetCurrentClassLogger();
+
         private MainWindow _Window;
 
         public ICommand OpenFileCommand { get; }
@@ -54,7 +56,7 @@ namespace Com.Scm.Wpf.Dvo
             }
             catch (Exception exception)
             {
-                LogUtils.Error(exception);
+                _Logger.Error(exception);
             }
         }
 
@@ -66,7 +68,7 @@ namespace Com.Scm.Wpf.Dvo
             }
             catch (Exception exception)
             {
-                LogUtils.Error(exception);
+                _Logger.Error(exception);
             }
         }
 
@@ -113,40 +115,47 @@ namespace Com.Scm.Wpf.Dvo
             item.view = "Com.Scm.Views.About.MainView";
             menuList.Add(item);
 
+            menu = new MenuDto();
+            menu.id = 20;
+            menu.codec = "nas";
+            menu.namec = "松果云盘";
+            //menu.pid = menu.id;
+            menuList.Add(menu);
+
             item = new MenuDto();
             item.id = 21;
-            item.codec = "scm-about";
+            item.codec = "nas-folder";
             item.namec = "目录管理";
             item.pid = menu.id;
             item.uri = "Com.Scm.Wpf.Actions.ViewAction";
-            item.view = "Com.Scm.Views.About.MainView";
+            item.view = "Com.Scm.Nas.Views.FolderView";
             menuList.Add(item);
 
             item = new MenuDto();
             item.id = 22;
-            item.codec = "scm-about";
+            item.codec = "nas-sync";
             item.namec = "同步日志";
             item.pid = menu.id;
             item.uri = "Com.Scm.Wpf.Actions.ViewAction";
-            item.view = "Com.Scm.Views.About.MainView";
+            item.view = "Com.Scm.Nas.Views.SyncView";
             menuList.Add(item);
 
             item = new MenuDto();
             item.id = 23;
-            item.codec = "scm-about";
+            item.codec = "nas-native";
             item.namec = "本地目录";
             item.pid = menu.id;
             item.uri = "Com.Scm.Wpf.Actions.ViewAction";
-            item.view = "Com.Scm.Views.About.MainView";
+            item.view = "Com.Scm.Nas.Views.NativeView";
             menuList.Add(item);
 
             item = new MenuDto();
             item.id = 24;
-            item.codec = "scm-about";
+            item.codec = "nas-remote";
             item.namec = "远端目录";
             item.pid = menu.id;
             item.uri = "Com.Scm.Wpf.Actions.ViewAction";
-            item.view = "Com.Scm.Views.About.MainView";
+            item.view = "Com.Scm.Nas.Views.RemoteView";
             menuList.Add(item);
         }
 
@@ -168,16 +177,22 @@ namespace Com.Scm.Wpf.Dvo
                 }
             }
 
-            LogUtils.Info($"MainWindow-ShowView:viewClass[{viewClass}],useCache:[{useCache}]");
+            _Logger.Info($"MainWindow-ShowView:viewClass[{viewClass}],useCache:[{useCache}]");
             if (string.IsNullOrWhiteSpace(viewClass))
             {
                 return;
             }
 
-            var view = Assembly.GetEntryAssembly().CreateInstance(viewClass) as ScmView;
+            var assembly = Assembly.Load("Nas.Wpf");
+            if (assembly == null)
+            {
+                return;
+            }
+
+            var view = assembly.CreateInstance(viewClass) as ScmView;
             if (view == null)
             {
-                LogUtils.Error("MainWindow-ShowView:创建视图失败-" + viewClass);
+                _Logger.Error("MainWindow-ShowView:创建视图失败-" + viewClass);
                 return;
             }
 
