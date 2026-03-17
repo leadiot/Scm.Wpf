@@ -8,6 +8,7 @@ using Com.Scm.Wpf.Actions;
 using Com.Scm.Wpf.Dvo;
 using Com.Scm.Wpf.Helper;
 using System.Reflection;
+using System.Windows;
 
 namespace Com.Scm.Wpf;
 
@@ -315,6 +316,11 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     public ScmClient GetClient()
     {
         return _Client;
+    }
+
+    public Window GetWindow()
+    {
+        return this;
     }
     #endregion
 

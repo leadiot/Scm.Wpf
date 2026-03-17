@@ -18,7 +18,7 @@ namespace Com.Scm
         /// <summary>
         /// 服务端授权信息
         /// </summary>
-        private ScmBindInfo _Token { get; set; }
+        private ScmBindInfo _Info { get; set; }
 
         /// <summary>
         /// 绑定信息保存文件
@@ -33,17 +33,17 @@ namespace Com.Scm
 
         public long GetTerminalId()
         {
-            return _Token.terminal_id;
+            return _Info.terminal_id;
         }
 
         public string GetTerminalCodes()
         {
-            return _Token.terminal_codes;
+            return _Info.terminal_codes;
         }
 
         public bool LoadToken(string file = null)
         {
-            _Token = new ScmBindInfo();
+            _Info = new ScmBindInfo();
 
             if (string.IsNullOrEmpty(file))
             {
@@ -62,8 +62,9 @@ namespace Com.Scm
                 return false;
             }
 
-            _Token = json.AsJsonObject<ScmBindInfo>();
-            SetHost(_Token.host);
+            _Info = json.AsJsonObject<ScmBindInfo>();
+            SetHost(_Info.host);
+            _Token = _Info;
             return true;
         }
 
@@ -75,8 +76,8 @@ namespace Com.Scm
             }
 
             file = Path.Combine(DataDir, file);
-            _Token.host = _Host;
-            var json = _Token.ToJsonString();
+            _Info.host = _Host;
+            var json = _Info.ToJsonString();
             return await FileUtils.WriteTextAsync(file, json);
         }
 
@@ -86,7 +87,7 @@ namespace Com.Scm
         /// <returns></returns>
         public bool IsExpires()
         {
-            return _Token.IsExpires();
+            return _Info.IsExpires();
         }
 
         /// <summary>
@@ -95,7 +96,7 @@ namespace Com.Scm
         /// <returns></returns>
         public bool IsExpired()
         {
-            return _Token.IsExpired();
+            return _Info.IsExpired();
         }
 
         /// <summary>
@@ -122,8 +123,9 @@ namespace Com.Scm
                 }
 
                 var data = response.Data;
-                _Token = data.Adapt<ScmBindInfo>();
-                _Token.CalcExpireTime(data.expires);
+                _Info = data.Adapt<ScmBindInfo>();
+                _Info.CalcExpireTime(data.expires);
+                _Token = _Info;
                 await SaveTokenAsync();
 
                 IsConnecting = true;
@@ -143,8 +145,8 @@ namespace Com.Scm
         /// <returns></returns>
         public async Task<bool> Logout()
         {
-            _Token.expires_time = 0;
-            _Token.expired_time = 0;
+            _Info.expires_time = 0;
+            _Info.expired_time = 0;
             await SaveTokenAsync();
             return true;
         }
@@ -161,9 +163,9 @@ namespace Com.Scm
             try
             {
                 var body = new Dictionary<string, string>();
-                body["terminal_id"] = _Token.terminal_id.ToString();
-                body["access_token"] = _Token.access_token;
-                body["refresh_token"] = _Token.refresh_token;
+                body["terminal_id"] = _Info.terminal_id.ToString();
+                body["access_token"] = _Info.access_token;
+                body["refresh_token"] = _Info.refresh_token;
 
                 var json = body?.ToJsonString();
                 var response = await HttpUtils.PostJsonObjectAsync<ScmApiDataResponse<BindResult>>(url, json);
@@ -183,9 +185,10 @@ namespace Com.Scm
                     return false;
                 }
 
-                _Token.access_token = data.access_token;
-                _Token.refresh_token = data.refresh_token;
-                _Token.CalcExpireTime(data.expires);
+                _Info.access_token = data.access_token;
+                _Info.refresh_token = data.refresh_token;
+                _Info.CalcExpireTime(data.expires);
+                _Token = _Info;
                 await SaveTokenAsync();
 
                 return true;
@@ -201,10 +204,10 @@ namespace Com.Scm
         private string GetBasicToken()
         {
             var time = TimeUtils.GetUnixTime(true);
-            var key = _Token.terminal_id + ":" + time + ":" + _Token.access_token;
+            var key = _Info.terminal_id + ":" + time + ":" + _Info.access_token;
             var hash = TextUtils.Md5(key);
 
-            var token = _Token.terminal_id + ":" + time + ":" + hash;
+            var token = _Info.terminal_id + ":" + time + ":" + hash;
             var bytes = System.Text.Encoding.UTF8.GetBytes(token);
             //return Basic(Convert.ToBase64String(bytes));
             return HttpUtils.ToBase64String(bytes);

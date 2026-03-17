@@ -562,5 +562,10 @@ namespace Com.Scm
                 DefaultRequestHeaders = { { "User-Agent", "Super-Uploader/1.0" } }
             };
         }
+
+        public ScmToken GetToken()
+        {
+            return _Token;
+        }
     }
 }

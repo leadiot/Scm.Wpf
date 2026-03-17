@@ -8,9 +8,10 @@
     xmlns:uc="clr-namespace:Com.Scm.Wpf.Views.Uc"
     xmlns:hc="https://handyorg.github.io/handycontrol"
     mc:Ignorable="d"
-    Title="Scm.Net"
     Icon="/Resources/logo.ico"
     WindowStartupLocation="CenterScreen"
+    Background="LightGray"
+    Title="Scm.Net"
     Width="960" Height="640"
     MinHeight="400" MinWidth="840">
     <hc:Window.InputBindings>
@@ -41,7 +42,6 @@
                     <uc:UcInfobarView x:Name="UcInfo" DockPanel.Dock="Top"/>
                     <hc:TabControl 
                         Name="TcView"
-                        Margin="4"
                         TabItemWidth="120"
                         Foreground="#5a5e66"
                         IsAnimationEnabled="True"

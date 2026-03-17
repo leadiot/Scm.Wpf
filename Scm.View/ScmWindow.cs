@@ -1,4 +1,6 @@
-﻿namespace Com.Scm
+﻿using System.Windows;
+
+namespace Com.Scm
 {
     /// <summary>
     /// SCM窗口接口
@@ -100,5 +102,7 @@
         ScmVerInfo GetVerInfo(string code);
 
         ScmClient GetClient();
+
+        Window GetWindow();
     }
 }
