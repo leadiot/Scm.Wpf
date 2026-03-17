@@ -237,6 +237,7 @@ namespace Com.Scm
                     break;
             }
             window.Show();
+            window.Activate();
 
             Close();
             if (appSettings.WindowState == ScmWindowState.Hidden)

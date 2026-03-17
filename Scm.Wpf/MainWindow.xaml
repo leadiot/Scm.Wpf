@@ -66,6 +66,24 @@
                 </DockPanel>
             </DockPanel>
             <Grid x:Name="GdToast"></Grid>
+            <hc:NotifyIcon
+                x:Name="TiTask"
+                Token="Nas.Net"
+                Text="Nas.Net"
+                IsBlink="{Binding IsBlink}"
+                Visibility="{Binding TrayVisibility}"
+                MouseDoubleClick="TiTask_MouseDoubleClick">
+                <hc:NotifyIcon.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem x:Name="MiMain" Click="MiMain_Click" Header="显示主窗口"/>
+                        <Separator/>
+                        <MenuItem x:Name="MiLogout" Click="MiLogout_Click" Header="退出登录"/>
+                        <Separator/>
+                        <MenuItem x:Name="MiExit" Click="MiExit_Click" Header="退出应用"/>
+                    </ContextMenu>
+                </hc:NotifyIcon.ContextMenu>
+            </hc:NotifyIcon>
+
         </Grid>
     </Border>
 </hc:Window>

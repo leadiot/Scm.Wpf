@@ -567,5 +567,10 @@ namespace Com.Scm
         {
             return _Token;
         }
+
+        public virtual void Logout()
+        {
+            _Token = null;
+        }
     }
 }

@@ -143,12 +143,11 @@ namespace Com.Scm
         /// 退出登录
         /// </summary>
         /// <returns></returns>
-        public async Task<bool> Logout()
+        public override async void Logout()
         {
             _Info.expires_time = 0;
             _Info.expired_time = 0;
             await SaveTokenAsync();
-            return true;
         }
 
         /// <summary>

@@ -1,5 +1,7 @@
 ﻿using Com.Scm.Api;
+using Com.Scm.Config;
 using Com.Scm.Controls;
+using Com.Scm.Login;
 using Com.Scm.Sys.Config;
 using Com.Scm.Sys.Menu;
 using Com.Scm.Utils;
@@ -17,12 +19,25 @@ namespace Com.Scm.Wpf;
 /// </summary>
 public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
 {
+    #region 成员属性
+    /// <summary>
+    /// 数据字典
+    /// </summary>
+    private static Dictionary<string, List<ResOptionDvo>> _Dic = new Dictionary<string, List<ResOptionDvo>>();
+    /// <summary>
+    /// 系统配置
+    /// </summary>
+    private static Dictionary<string, ConfigDto> _Cfg = new Dictionary<string, ConfigDto>();
+
+    /// <summary>
+    /// 客户端对象
+    /// </summary>
     private ScmClient _Client;
 
     /// <summary>
     /// 当前用户
     /// </summary>
-    public ScmToken _Token { get; private set; }
+    private ScmToken _Token;
 
     /// <summary>
     /// 访问凭据
@@ -33,24 +48,19 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     /// </summary>
     private string _AppKey = "";
 
-    /// <summary>
-    /// 数据字典
-    /// </summary>
-    private static Dictionary<string, List<ResOptionDvo>> _Dic = new Dictionary<string, List<ResOptionDvo>>();
-    /// <summary>
-    /// 系统配置
-    /// </summary>
-    private static Dictionary<string, ConfigDto> _Cfg = new Dictionary<string, ConfigDto>();
-
     private MainWindowDvo _Dvo;
+    #endregion
 
+    /// <summary>
+    /// 构造函数
+    /// </summary>
     public MainWindow()
     {
         InitializeComponent();
     }
 
     /// <summary>
-    /// 
+    /// 初始化方法
     /// </summary>
     /// <param name="client"></param>
     /// <returns></returns>
@@ -75,20 +85,12 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
 
         Show();
 
+        //ShowTray();
+
         _Dvo.ShowHomeView();
     }
 
     #region ScmWindow 接口实现
-    /// <summary>
-    /// 显示提示（标签，不需要交互）
-    /// </summary>
-    /// <param name="message"></param>
-    public void ShowNotice(string message)
-    {
-        LogUtils.Info("ShowInfo:" + message);
-        UcTray.ShowInfo(message);
-    }
-
     /// <summary>
     /// 显示提示（弹窗，但不是需要交互）
     /// </summary>
@@ -100,6 +102,16 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     }
 
     /// <summary>
+    /// 显示提示（标签，不需要交互）
+    /// </summary>
+    /// <param name="message"></param>
+    public void ShowNotice(string message, string title = null)
+    {
+        LogUtils.Info("ShowInfo:" + message);
+        UcTray.ShowInfo(message);
+    }
+
+    /// <summary>
     /// 显示提示（弹窗，中止当前操作）
     /// </summary>
     public void ShowAlert(string message, string title = null)
@@ -108,12 +120,11 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
         MessageWindow.ShowDialog(this, message, title);
     }
 
-    public void ShowError(string message)
+    public void ShowError(string message, string title = null)
     {
-
     }
 
-    public void ShowException(Exception exception)
+    public void ShowException(Exception exception, string title = null)
     {
         ExceptionWindow.ShowException(this, exception);
     }
@@ -135,22 +146,52 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
 
     public void HideMenu()
     {
-        AnimationHelper.CreateWidthChangedAnimation(this.UcGuid, 200, 60, new TimeSpan(0, 0, 0, 0, 300));
+        UcMenu.Visibility = Visibility.Collapsed;
     }
 
     public void ShowMenu()
     {
-        AnimationHelper.CreateWidthChangedAnimation(this.UcGuid, 60, 200, new TimeSpan(0, 0, 0, 0, 300));
+        UcMenu.Visibility = Visibility.Visible;
     }
 
     public void HideTray()
     {
-        AnimationHelper.CreateWidthChangedAnimation(this.UcGuid, 200, 60, new TimeSpan(0, 0, 0, 0, 300));
+        _Dvo.TrayVisibility = Visibility.Hidden;
     }
 
     public void ShowTray()
     {
-        AnimationHelper.CreateWidthChangedAnimation(this.UcGuid, 60, 200, new TimeSpan(0, 0, 0, 0, 300));
+        //_Tray = new NotifyIcon();
+        //_Tray.Text = "Scm.Net";
+        //_Tray.Visibility = Visibility.Visible;
+        //_Tray.MouseDoubleClick += TiTask_MouseDoubleClick;
+
+        //var menu = new ContextMenu();
+        //_Tray.ContextMenu = menu;
+
+        //var item = new MenuItem();
+        //item.Name = "MiMain";
+        //item.Header = "显示主窗口";
+        //item.Click += MiMain_Click;
+        //menu.Items.Add(item);
+
+        //menu.Items.Add(new Separator());
+
+        //item = new MenuItem();
+        //item.Name = "MiLogout";
+        //item.Header = "退出登录";
+        //item.Click += MiLogout_Click;
+        //menu.Items.Add(item);
+
+        //menu.Items.Add(new Separator());
+
+        //item = new MenuItem();
+        //item.Name = "MiExit";
+        //item.Header = "退出应用";
+        //item.Click += MiExit_Click;
+        //menu.Items.Add(item);
+
+        _Dvo.TrayVisibility = Visibility.Visible;
     }
 
     public void ShowHome()
@@ -318,7 +359,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
         return _Client;
     }
 
-    public Window GetWindow()
+    public System.Windows.Window GetWindow()
     {
         return this;
     }
@@ -329,6 +370,28 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     {
 
     }
+
+    #region 托盘图标
+    private void TiTask_MouseDoubleClick(object sender, RoutedEventArgs e)
+    {
+        ShowMainWindow();
+    }
+
+    private void MiMain_Click(object sender, RoutedEventArgs e)
+    {
+        ShowMainWindow();
+    }
+
+    private void MiLogout_Click(object sender, RoutedEventArgs e)
+    {
+        ConfirmLogout();
+    }
+
+    private void MiExit_Click(object sender, RoutedEventArgs e)
+    {
+        ConfirmExit();
+    }
+    #endregion
     #endregion
 
     #region 私有方法
@@ -447,6 +510,77 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
             action.Owner = this;
         }
         return action;
+    }
+
+    /// <summary>
+    /// 显示主窗口
+    /// </summary>
+    private void ShowMainWindow()
+    {
+        if (Visibility != Visibility.Visible)
+        {
+            Visibility = Visibility.Visible;
+        }
+
+        if (WindowState != WindowState.Normal)
+        {
+            WindowState = WindowState.Normal;
+        }
+
+        if (!IsActive)
+        {
+            this.Activate();
+        }
+
+        Show();
+    }
+
+    /// <summary>
+    /// 显示认证窗口
+    /// </summary>
+    private void ShowAuthWindow()
+    {
+        if (AppSettings.Instance.Env.LoginMode == Enums.ScmLoginTypeEnum.Terminal)
+        {
+            var window1 = new TerminalWindow();
+            window1.Show();
+            window1.Init(AppSettings.Instance, new ScmTerminal());
+            return;
+        }
+
+        var window2 = new OperatorWindow();
+        window2.Show();
+        window2.Init(AppSettings.Instance);
+        return;
+    }
+
+    private void ConfirmExit()
+    {
+        var result = MessageWindow.ShowDialog(this, "确认要退出应用吗？");
+        if (result != true)
+        {
+            if (IsVisible)
+            {
+                this.Activate();
+            }
+            return;
+        }
+
+        _Dvo.Exit();
+    }
+
+    public async void ConfirmLogout()
+    {
+        var result = MessageWindow.ShowDialog(this, "确认要退出当前登录用户吗？");
+        if (result != true)
+        {
+            return;
+        }
+
+        _Client.Logout();
+
+        ShowAuthWindow();
+        Close();
     }
     #endregion
 }

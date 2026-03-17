@@ -76,15 +76,15 @@ namespace Com.Scm
 
         void ShowTray();
 
-        void ShowAlert(string message, string title = null);
-
         void ShowToast(string message, ToastType type = ToastType.Info);
 
-        void ShowNotice(string message);
+        void ShowNotice(string message, string title = null);
 
-        void ShowError(string message);
+        void ShowAlert(string message, string title = null);
 
-        void ShowException(Exception exception);
+        void ShowError(string message, string title = null);
+
+        void ShowException(Exception exception, string title = null);
 
         bool? ShowDialog(string message, string title = null);
 

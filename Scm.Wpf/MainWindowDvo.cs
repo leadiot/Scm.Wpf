@@ -1,11 +1,13 @@
 ﻿using Com.Scm.Helper;
 using Com.Scm.Sys.Menu;
 using Com.Scm.Wpf.Dvo.Menu;
+using Com.Scm.Wpf.Helper;
 using Com.Scm.Wpf.Models;
 using Com.Scm.Wpf.Views.Home;
 using NLog;
 using System.Collections.ObjectModel;
 using System.Reflection;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -28,6 +30,12 @@ namespace Com.Scm.Wpf.Dvo
         public int TabIndex { get { return tabIndex; } set { SetProperty(ref tabIndex, value); } }
 
         private HomeView _HomeView;
+
+        private bool isBlink = false;
+        public bool IsBlink { get { return isBlink; } set { SetProperty(ref isBlink, value); } }
+
+        private Visibility trayVisibility = Visibility.Visible;
+        public Visibility TrayVisibility { get { return trayVisibility; } set { SetProperty(ref trayVisibility, value); } }
 
         public MainWindowDvo()
         {
@@ -244,6 +252,16 @@ namespace Com.Scm.Wpf.Dvo
                 _HomeView.Init(_Window);
             }
             ShowView("home", "首页", _HomeView);
+        }
+
+        public void Exit()
+        {
+            SqlHelper.Close();
+            Application.Current.Shutdown();
+        }
+
+        public void Logout()
+        {
         }
     }
 }

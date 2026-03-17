@@ -16,6 +16,7 @@
             <StackPanel Grid.Column="0" Orientation="Horizontal">
                 <ToggleButton
                     x:Name="TbGuid"
+                    IsEnabled="False"
                     IsChecked="True"
                     Click="ToggleMenu_Click"
                     Style="{StaticResource ToggleButtonCustom}"
@@ -28,7 +29,8 @@
                 <Button
                     x:Name="BtHome"
                     Margin="12 0 0 0"
-                    Click="BtHome_Click">
+                    Click="BtHome_Click"
+                    ToolTip="显示首页">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Template">
@@ -37,7 +39,7 @@
                                         <Border Background="Transparent" Name="back">
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                                 <iconPacks:PackIconMaterial Kind="Monitor"/>
-                                                <TextBlock FontSize="15" Text="首页" Foreground="#5a5e66" Margin="5 0 0 0" HorizontalAlignment="Right" VerticalAlignment="Center" ></TextBlock>
+                                                <TextBlock Text="首页" FontWeight="Bold" Foreground="#5a5e66" Margin="5 0 0 0"/>
                                             </StackPanel>
                                         </Border>
                                         <ControlTemplate.Triggers>
