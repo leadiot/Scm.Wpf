@@ -10,7 +10,7 @@
     mc:Ignorable="d"
     Icon="/Resources/logo.ico"
     WindowStartupLocation="CenterScreen"
-    Background="LightGray"
+    Background="{StaticResource ScmWindowBackground}"
     Title="Scm.Net"
     Width="960" Height="640"
     MinHeight="400" MinWidth="840">
@@ -57,7 +57,7 @@
                         </TabControl.ItemTemplate>
                         <TabControl.ContentTemplate>
                             <DataTemplate>
-                                <Border Background="White">
+                                <Border Background="{StaticResource ScmWindowBackground}">
                                     <ContentControl Grid.Row="1" Grid.Column="1"  Content="{Binding Content}" Margin="4 6"/>
                                 </Border>
                             </DataTemplate>
@@ -83,7 +83,6 @@
                     </ContextMenu>
                 </hc:NotifyIcon.ContextMenu>
             </hc:NotifyIcon>
-
         </Grid>
     </Border>
 </hc:Window>

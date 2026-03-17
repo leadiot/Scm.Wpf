@@ -4,7 +4,58 @@
     xmlns:local="clr-namespace:Com.Scm.Wpf.Controls.Attach"
     xmlns:hc="https://handyorg.github.io/handycontrol">
 
+    <!-- 基础色 -->
+    <Color x:Key="white">#FFFFFF</Color>
+    <Color x:Key="black">#000000</Color>
+
+    <!-- 中国蓝核心色 -->
+    <Color x:Key="china_blue_100">#E0EDF8</Color>
+    <Color x:Key="china_blue_200">#B3D1EC</Color>
+    <Color x:Key="china_blue_500">#1A68B8</Color>
+    <Color x:Key="china_blue_700">#0F4A8A</Color>
+    <Color x:Key="china_blue_900">#082C55</Color>
+
+    <!-- 次要色（中国红） -->
+    <Color x:Key="china_red_50">#FFF5F5</Color>
+    <Color x:Key="china_red_100">#FED7D7</Color>
+    <Color x:Key="china_red_500">#E53E3E</Color>
+    <Color x:Key="china_red_700">#C53030</Color>
+    <Color x:Key="china_red_900">#742A2A</Color>
+
+    <!-- 中性色（水墨灰） -->
+    <Color x:Key="china_neutral_50">#FFFFFF</Color>
+    <Color x:Key="china_neutral_100">#F7F7F7</Color>
+    <Color x:Key="china_neutral_200">#E5E5E5</Color>
+    <Color x:Key="china_neutral_500">#838383</Color>
+    <Color x:Key="china_neutral_700">#525252</Color>
+    <Color x:Key="china_neutral_800">#2D2D2D</Color>
+    <Color x:Key="china_neutral_900">#212121</Color>
+
+    <SolidColorBrush x:Key="ScmColorPrimary" Color="{StaticResource china_blue_500}"/>
+    <SolidColorBrush x:Key="ScmColorPrimaryVariant" Color="{StaticResource china_blue_700}"/>
+    <SolidColorBrush x:Key="ScmColorOnPrimary" Color="{StaticResource white}"/>
+
+    <SolidColorBrush x:Key="ScmWindowBackground" Color="{StaticResource china_neutral_100}"/>
+    <SolidColorBrush x:Key="ScmTextColorPrimary" Color="{StaticResource china_neutral_700}"/>
+    <SolidColorBrush x:Key="ScmTextColorSecondary" Color="{StaticResource china_neutral_500}"/>
+
+    <!-- 1. 全局样式：自动应用到所有Label -->
+    <Style TargetType="Label">
+        <Setter Property="Foreground" Value="{StaticResource ScmTextColorPrimary}"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+    </Style>
+
+    <!-- 2. 全局样式：自动应用到所有TextBlock -->
+    <Style TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource ScmTextColorPrimary}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <!-- 可顺带统一字体大小 -->
+    </Style>
+
+    <!-- 3. 全局样式：自动应用到所有TextBox -->
     <Style TargetType="TextBox">
+        <Setter Property="Foreground" Value="{StaticResource ScmTextColorPrimary}"/>
+        <!-- 聚焦时修改字体颜色 -->
         <Style.Triggers>
             <Trigger Property="Validation.HasError" Value="True">
                 <Setter Property="BorderBrush" Value="Red"/>

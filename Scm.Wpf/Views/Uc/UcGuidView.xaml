@@ -70,7 +70,12 @@
             </Setter>
         </Style>
     </UserControl.Resources>
-    <Border Background="#243A56" x:Name="menu" Panel.ZIndex="999" HorizontalAlignment="Left" Width="200" Style="{StaticResource BorderCornor}" >
+    <Border 
+        x:Name="menu"
+        Background="{StaticResource ScmColorPrimaryVariant}"
+        Panel.ZIndex="999"
+        HorizontalAlignment="Left"
+        Width="200">
         <Border.Effect>
             <DropShadowEffect Color="#243A56" ShadowDepth="0" BlurRadius="5" Opacity="0.5" Direction="0"/>
         </Border.Effect>
