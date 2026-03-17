@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Management;
 using System.Net.NetworkInformation;
 
-namespace Com.Scm.Utils
+namespace Com.Scm.Helper
 {
     public static class OsHelper
     {

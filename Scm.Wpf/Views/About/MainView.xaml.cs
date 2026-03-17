@@ -1,4 +1,5 @@
 ﻿using Com.Scm.Config;
+using Com.Scm.Helper;
 using Com.Scm.Utils;
 using HandyControl.Controls;
 using System.IO;

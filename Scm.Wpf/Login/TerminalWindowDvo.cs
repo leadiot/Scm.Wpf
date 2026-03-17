@@ -1,4 +1,4 @@
-﻿using Com.Scm.Utils;
+﻿using Com.Scm.Helper;
 using Com.Scm.Wpf.Dvo;
 using System.ComponentModel.DataAnnotations;
 

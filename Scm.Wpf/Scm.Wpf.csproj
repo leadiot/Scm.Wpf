@@ -79,7 +79,6 @@
 
 	<ItemGroup>
 	  <Folder Include="Dto\" />
-	  <Folder Include="Views\Video\" />
 	</ItemGroup>
 
 	<ItemGroup>

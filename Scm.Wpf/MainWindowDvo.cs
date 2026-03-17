@@ -1,4 +1,5 @@
-﻿using Com.Scm.Sys.Menu;
+﻿using Com.Scm.Helper;
+using Com.Scm.Sys.Menu;
 using Com.Scm.Utils;
 using Com.Scm.Wpf.Dvo.Menu;
 using Com.Scm.Wpf.Models;
@@ -107,6 +108,42 @@ namespace Com.Scm.Wpf.Dvo
             item.id = 13;
             item.codec = "scm-about";
             item.namec = "关于软件";
+            item.pid = menu.id;
+            item.uri = "Com.Scm.Wpf.Actions.ViewAction";
+            item.view = "Com.Scm.Views.About.MainView";
+            menuList.Add(item);
+
+            item = new MenuDto();
+            item.id = 21;
+            item.codec = "scm-about";
+            item.namec = "目录管理";
+            item.pid = menu.id;
+            item.uri = "Com.Scm.Wpf.Actions.ViewAction";
+            item.view = "Com.Scm.Views.About.MainView";
+            menuList.Add(item);
+
+            item = new MenuDto();
+            item.id = 22;
+            item.codec = "scm-about";
+            item.namec = "同步日志";
+            item.pid = menu.id;
+            item.uri = "Com.Scm.Wpf.Actions.ViewAction";
+            item.view = "Com.Scm.Views.About.MainView";
+            menuList.Add(item);
+
+            item = new MenuDto();
+            item.id = 23;
+            item.codec = "scm-about";
+            item.namec = "本地目录";
+            item.pid = menu.id;
+            item.uri = "Com.Scm.Wpf.Actions.ViewAction";
+            item.view = "Com.Scm.Views.About.MainView";
+            menuList.Add(item);
+
+            item = new MenuDto();
+            item.id = 24;
+            item.codec = "scm-about";
+            item.namec = "远端目录";
             item.pid = menu.id;
             item.uri = "Com.Scm.Wpf.Actions.ViewAction";
             item.view = "Com.Scm.Views.About.MainView";
