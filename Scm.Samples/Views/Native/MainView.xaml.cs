@@ -2,6 +2,7 @@
 using Com.Scm.Wpf.Dao.Samples;
 using Com.Scm.Wpf.Helper;
 using Com.Scm.Wpf.Models;
+using System.Collections;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -10,7 +11,7 @@ namespace Com.Scm.Wpf.Views.Samples.Native
     /// <summary>
     /// MainView.xaml 的交互逻辑
     /// </summary>
-    public partial class MainView : UserControl, ScmView, ISearchView
+    public partial class MainView : UserControl, ScmView, ScmPageView
     {
         private ScmWindow _Owner;
         private MainViewDvo _Dvo;
@@ -30,18 +31,13 @@ namespace Com.Scm.Wpf.Views.Samples.Native
             InitializeComponent();
         }
 
+        #region 接口实现
+
         public void Init(ScmWindow owner)
         {
             _Owner = owner;
 
-            var columns = new List<ScmColumnInfo>
-            {
-                new ScmColumnInfo { Type=ScmColumnType.Text, Label = "ID", Value = "Id",Hidden=true },
-                new ScmColumnInfo { Type=ScmColumnType.CheckBox, Label = "", Value = "IsChecked", Width="70" },
-                new ScmColumnInfo { Type=ScmColumnType.Text, Label = "系统编码", Value = "Codec" },
-                new ScmColumnInfo { Type=ScmColumnType.Text, Label = "系统名称", Value = "Namec", Width="*", MinWidth="100" }
-            };
-            PgData.Init(this, columns);
+            PgData.Init(this);
 
             _Dvo = new MainViewDvo();
             this.DataContext = _Dvo;
@@ -54,12 +50,25 @@ namespace Com.Scm.Wpf.Views.Samples.Native
             return this;
         }
 
-        #region 接口实现
+        public List<ScmColumnInfo> GetColumns()
+        {
+            return null;
+        }
+
+        public IEnumerable GetItemsSource()
+        {
+            return null;
+        }
+
+        public void SearchAsync(int pageIndex = 0)
+        {
+        }
+
         public void FirstPageAsync()
         {
             _SearchParamsDvo.Page = 1;
 
-            ReloadPageAsync();
+            ReloadAsync();
         }
 
         public void PrevPageAsync()
@@ -72,7 +81,7 @@ namespace Com.Scm.Wpf.Views.Samples.Native
             }
             _SearchParamsDvo.Page = page;
 
-            ReloadPageAsync();
+            ReloadAsync();
         }
 
         public void NextPageAsync()
@@ -85,14 +94,14 @@ namespace Com.Scm.Wpf.Views.Samples.Native
             }
             _SearchParamsDvo.Page = page;
 
-            ReloadPageAsync();
+            ReloadAsync();
         }
 
         public void EndPageAsync()
         {
             _SearchParamsDvo.Page = (int)_Response.TotalPages;
 
-            ReloadPageAsync();
+            ReloadAsync();
         }
 
         public void FixedPageAsync(int page)
@@ -108,10 +117,10 @@ namespace Com.Scm.Wpf.Views.Samples.Native
             }
             _SearchParamsDvo.Page = page;
 
-            ReloadPageAsync();
+            ReloadAsync();
         }
 
-        public async void ReloadPageAsync()
+        public async void ReloadAsync()
         {
             var client = SqlHelper.GetSqlClient();
 
@@ -125,6 +134,26 @@ namespace Com.Scm.Wpf.Views.Samples.Native
             _Response.SetSuccess();
 
             PgData.ShowData(_Response);
+        }
+
+        public UserControl GetCustomView()
+        {
+            return null;
+        }
+
+        public UserControl GetSearchView()
+        {
+            return null;
+        }
+
+        public UserControl GetInfoView()
+        {
+            return null;
+        }
+
+        public UserControl GetEditView()
+        {
+            return null;
         }
         #endregion
 
@@ -196,12 +225,7 @@ namespace Com.Scm.Wpf.Views.Samples.Native
                 _SearchView = new SearchControl();
             }
 
-            PgData.ShowSearch(_SearchView, SearchData);
-        }
-
-        private bool SearchData()
-        {
-            return true;
+            PgData.ShowSearch(_SearchView);
         }
         #endregion
     }

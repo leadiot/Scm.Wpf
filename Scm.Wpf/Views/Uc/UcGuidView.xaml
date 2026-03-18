@@ -73,9 +73,7 @@
     <Border 
         x:Name="menu"
         Background="{StaticResource ScmColorPrimaryVariant}"
-        Panel.ZIndex="999"
-        HorizontalAlignment="Left"
-        Width="200">
+        Panel.ZIndex="999">
         <Border.Effect>
             <DropShadowEffect Color="#243A56" ShadowDepth="0" BlurRadius="5" Opacity="0.5" Direction="0"/>
         </Border.Effect>

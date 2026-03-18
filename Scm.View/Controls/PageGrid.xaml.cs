@@ -1,32 +1,99 @@
 ﻿using Com.Scm.Utils;
-using Com.Scm.Wpf.Dvo;
 using Com.Scm.Wpf.Models;
 using HandyControl.Controls;
+using MahApps.Metro.IconPacks;
 using Microsoft.Win32;
 using MiniExcelLibs;
 using MiniExcelLibs.Attributes;
 using MiniExcelLibs.OpenXml;
 using System.Collections;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 
-namespace Com.Scm.Wpf.Views.Uc
+namespace Com.Scm.Wpf.Controls
 {
     /// <summary>
     /// UcPageData.xaml 的交互逻辑
     /// </summary>
-    public partial class UcPageData : UserControl
+    public partial class PageGrid : UserControl, INotifyPropertyChanged
     {
-        private ISearchView _Owner;
-        private ScmPageDataDvo _Dvo;
-        private List<ScmColumnInfo> _Columns;
+        public event PropertyChangedEventHandler PropertyChanged;
+        private IEnumerable<ScmColumnInfo> _Columns;
         private List<int> _PageItems = new List<int> { 10, 20, 30, 50, 100, 200, 300, 500 };
 
-        public UcPageData()
+        private ScmPageView _Window;
+        public ScmPageView SearchView { get { return _Window; } set { _Window = value; } }
+
+        private int pageIndex;
+        public int PageIndex { get { return pageIndex; } set { SetProperty(ref pageIndex, value); } }
+
+        private int pageItems = 20;
+        public int PageItems { get { return pageItems; } set { SetProperty(ref pageItems, value); } }
+
+        private int view;
+        public int View { get { return view; } set { SetProperty(ref view, value); } }
+
+        private int totalPages;
+        public int TotalPages { get { return totalPages; } set { SetProperty(ref totalPages, value); } }
+
+        private int totalItems;
+        public int TotalItems { get { return totalItems; } set { SetProperty(ref totalItems, value); } }
+
+        /// <summary>
+        /// 表头组件是否可见
+        /// </summary>
+        public Visibility HeadVisibility { get { return (Visibility)GetValue(HeadVisibilityProperty); } set { SetValue(HeadVisibilityProperty, value); } }
+        public static readonly DependencyProperty HeadVisibilityProperty = DependencyProperty.Register(nameof(HeadVisibility), typeof(Visibility), typeof(PageGrid), new PropertyMetadata(null));
+
+        /// <summary>
+        /// 客制组件是否可见
+        /// </summary>
+        public Visibility CustomVisibility { get { return (Visibility)GetValue(CustomVisibilityProperty); } set { SetValue(CustomVisibilityProperty, value); } }
+        public static readonly DependencyProperty CustomVisibilityProperty = DependencyProperty.Register(nameof(CustomVisibility), typeof(Visibility), typeof(PageGrid), new PropertyMetadata(null));
+
+        /// <summary>
+        /// 搜索组件是否可见
+        /// </summary>
+        public Visibility SearchVisibility { get { return (Visibility)GetValue(SearchVisibilityProperty); } set { SetValue(SearchVisibilityProperty, value); } }
+        public static readonly DependencyProperty SearchVisibilityProperty = DependencyProperty.Register(nameof(SearchVisibility), typeof(Visibility), typeof(PageGrid), new PropertyMetadata(null));
+
+        /// <summary>
+        /// 高级组件是否可见
+        /// </summary>
+        public Visibility MoreVisibility { get { return (Visibility)GetValue(MoreVisibilityProperty); } set { SetValue(MoreVisibilityProperty, value); } }
+        public static readonly DependencyProperty MoreVisibilityProperty = DependencyProperty.Register(nameof(MoreVisibility), typeof(Visibility), typeof(PageGrid), new PropertyMetadata(null));
+
+        /// <summary>
+        /// 表尾组件是否可见
+        /// </summary>
+        public Visibility FootVisibility { get { return (Visibility)GetValue(FootVisibilityProperty); } set { SetValue(FootVisibilityProperty, value); } }
+        public static readonly DependencyProperty FootVisibilityProperty = DependencyProperty.Register(nameof(FootVisibility), typeof(Visibility), typeof(PageGrid), new PropertyMetadata(null));
+
+        /// <summary>
+        /// 分页组件是否可见
+        /// </summary>
+        public Visibility PageVisibility { get { return (Visibility)GetValue(PageVisibilityProperty); } set { SetValue(PageVisibilityProperty, value); } }
+        public static readonly DependencyProperty PageVisibilityProperty = DependencyProperty.Register(nameof(PageVisibility), typeof(Visibility), typeof(PageGrid), new PropertyMetadata(null));
+
+        /// <summary>
+        /// 操作组件是否可见
+        /// </summary>
+        public Visibility OptionVisibility { get { return (Visibility)GetValue(OptionVisibilityProperty); } set { SetValue(OptionVisibilityProperty, value); } }
+        public static readonly DependencyProperty OptionVisibilityProperty = DependencyProperty.Register(nameof(OptionVisibility), typeof(Visibility), typeof(PageGrid), new PropertyMetadata(null));
+
+        public string PagesInfo
+        {
+            get { return $"共 {TotalPages} 页"; }
+        }
+
+        public PageGrid()
         {
             InitializeComponent();
         }
@@ -36,15 +103,72 @@ namespace Com.Scm.Wpf.Views.Uc
         /// </summary>
         /// <param name="columns"></param>
         /// <param name="autoData"></param>
-        public void Init(ISearchView owner, List<ScmColumnInfo> columns, bool autoData = true)
+        public void Init(ScmPageView view)
         {
-            _Owner = owner;
+            _Window = view;
 
-            //CbItems.ItemsSource = _PageItems;
+            GenColumns(view.GetColumns());
 
-            _Dvo = new ScmPageDataDvo();
-            this.DataContext = _Dvo;
+            if (view.GetCustomView() != null)
+            {
+                GdCustom.Children.Clear();
+                GdCustom.Children.Add(view.GetCustomView());
+                CustomVisibility = Visibility.Visible;
+            }
 
+            if (view.GetSearchView() != null)
+            {
+                SearchVisibility = Visibility.Visible;
+            }
+
+            DgGrid.ItemsSource = view.GetItemsSource();
+            this.DataContext = this;
+        }
+
+        #region 列配置
+        /// <summary>
+        /// 
+        /// </summary>
+        public static readonly DependencyProperty ColumnsSourceProperty = DependencyProperty.Register(
+            "ColumnsSource", typeof(IEnumerable<ScmColumnInfo>), typeof(PageGrid), new PropertyMetadata(null));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public IEnumerable<ScmColumnInfo> ColumnsSource
+        {
+            get { return (IEnumerable<ScmColumnInfo>)GetValue(ColumnsSourceProperty); }
+            set { SetValue(ColumnsSourceProperty, value); GenColumns(value); }
+        }
+
+        /// <summary>
+        /// 设置列信息
+        /// </summary>
+        /// <param name="columns"></param>
+        /// <param name="autoData"></param>
+        public void SetColumns(IEnumerable<ScmColumnInfo> columns, bool autoData = true)
+        {
+            _Columns = columns;
+            GenColumns(columns);
+        }
+
+        /// <summary>
+        /// 追加列信息
+        /// </summary>
+        /// <param name="column"></param>
+        public void AddColumn(ScmColumnInfo column)
+        {
+            _Columns.Append(column);
+            GenColumns(_Columns);
+        }
+
+        /// <summary>
+        /// 生成列信息
+        /// </summary>
+        /// <param name="columns"></param>
+        /// <param name="autoData"></param>
+        private void GenColumns(IEnumerable<ScmColumnInfo> columns, bool autoData = true)
+        {
             _Columns = columns;
             if (columns == null)
             {
@@ -54,32 +178,32 @@ namespace Com.Scm.Wpf.Views.Uc
 
             if (autoData)
             {
-                columns.Add(new ScmColumnInfo { Type = Models.ScmColumnType.Status, Label = "数据状态", Value = "IsEnabled" });
-                columns.Add(new ScmColumnInfo { Type = Models.ScmColumnType.Text, Label = "更新人员", Value = "update_name" });
-                columns.Add(new ScmColumnInfo { Type = Models.ScmColumnType.Text, Label = "更新时间", Value = "UpdateTime", Format = ScmColumnFormat.DateTime });
-                columns.Add(new ScmColumnInfo { Type = Models.ScmColumnType.Text, Label = "创建人员", Value = "create_name" });
-                columns.Add(new ScmColumnInfo { Type = Models.ScmColumnType.Text, Label = "创建时间", Value = "CreateTime", Format = ScmColumnFormat.DateTime });
+                columns.Append(new ScmColumnInfo { Type = ScmColumnType.Status, Label = "数据状态", Value = "IsEnabled" });
+                columns.Append(new ScmColumnInfo { Type = ScmColumnType.Text, Label = "更新人员", Value = "update_name" });
+                columns.Append(new ScmColumnInfo { Type = ScmColumnType.Text, Label = "更新时间", Value = "UpdateTime", Format = ScmColumnFormat.DateTime });
+                columns.Append(new ScmColumnInfo { Type = ScmColumnType.Text, Label = "创建人员", Value = "create_name" });
+                columns.Append(new ScmColumnInfo { Type = ScmColumnType.Text, Label = "创建时间", Value = "CreateTime", Format = ScmColumnFormat.DateTime });
             }
 
             DgGrid.AutoGenerateColumns = false;
             foreach (var column in columns)
             {
-                if (column.Type == Models.ScmColumnType.Text)
+                if (column.Type == ScmColumnType.Text)
                 {
                     DgGrid.Columns.Add(CreateTextColumn(column));
                     continue;
                 }
-                if (column.Type == Models.ScmColumnType.CheckBox)
+                if (column.Type == ScmColumnType.CheckBox)
                 {
                     DgGrid.Columns.Add(CreateCheckboxColumn(column));
                     continue;
                 }
-                if (column.Type == Models.ScmColumnType.Template)
+                if (column.Type == ScmColumnType.Template)
                 {
                     DgGrid.Columns.Add(CreateTemplateColumn(column));
                     continue;
                 }
-                if (column.Type == Models.ScmColumnType.Status)
+                if (column.Type == ScmColumnType.Status)
                 {
                     DgGrid.Columns.Add(CreateStatusColumn(column));
                     continue;
@@ -87,7 +211,6 @@ namespace Com.Scm.Wpf.Views.Uc
             }
         }
 
-        #region 列配置
         /// <summary>
         /// 列通用属性配置
         /// </summary>
@@ -136,7 +259,15 @@ namespace Com.Scm.Wpf.Views.Uc
         {
             var column = new DataGridTextColumn();
             AdjustColumnInfo(column, info);
-            column.Binding = new Binding(info.Value);
+            var binding = new Binding(info.Value)
+            {
+                Mode = info.Mode
+            };
+            if (info.Converter != null)
+            {
+                binding.Converter = info.Converter;
+            }
+            column.Binding = binding;
             column.IsReadOnly = info.ReadOnly;
 
             Style styleRight = new Style(typeof(TextBlock));
@@ -206,7 +337,11 @@ namespace Com.Scm.Wpf.Views.Uc
         private DataGridTemplateColumn CreateTemplateColumn(ScmColumnInfo info)
         {
             var column = new DataGridTemplateColumn();
-            if (info.Format == ScmColumnFormat.Number)
+            if (info.Format == ScmColumnFormat.Icon)
+            {
+                column.CellTemplate = CreateIconCellTemplate(info);
+            }
+            else if (info.Format == ScmColumnFormat.Number)
             {
                 column.CellTemplate = CreateNumberCellTemplate(info);
             }
@@ -239,9 +374,38 @@ namespace Com.Scm.Wpf.Views.Uc
         private static DataTemplate CreateNumberCellTemplate(ScmColumnInfo info)
         {
             DataTemplate template = new DataTemplate();
-            FrameworkElementFactory factory = new FrameworkElementFactory(typeof(TextBlock));
-            factory.SetBinding(TextBlock.TextProperty, new Binding(info.Value) { StringFormat = "{0:N2}" });
+            FrameworkElementFactory factory = new FrameworkElementFactory(typeof(PackIconMaterial));
+            factory.SetBinding(PackIconMaterial.KindProperty, new Binding(info.Value));
             template.VisualTree = factory;
+            return template;
+        }
+
+        /// <summary>
+        /// 创建图标列
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        private static DataTemplate CreateIconCellTemplate(ScmColumnInfo info)
+        {
+            DataTemplate template = new DataTemplate();
+            FrameworkElementFactory gridFactory = new FrameworkElementFactory(typeof(Grid));
+            gridFactory.SetValue(Grid.HorizontalAlignmentProperty, HorizontalAlignment.Center);
+            gridFactory.SetValue(Grid.VerticalAlignmentProperty, VerticalAlignment.Center);
+
+            var iconFactory = new FrameworkElementFactory(typeof(PackIconMaterial));
+            iconFactory.SetBinding(PackIconMaterial.KindProperty, new Binding(info.Value));
+            if (info.Foreground != null)
+            {
+                iconFactory.SetBinding(PackIconMaterial.ForegroundProperty, new Binding(info.Foreground));
+            }
+            if (info.Background != null)
+            {
+                iconFactory.SetBinding(PackIconMaterial.BackgroundProperty, new Binding(info.Background));
+            }
+
+            gridFactory.AppendChild(iconFactory);
+
+            template.VisualTree = gridFactory;
             return template;
         }
         #endregion
@@ -253,9 +417,9 @@ namespace Com.Scm.Wpf.Views.Uc
         /// <param name="response"></param>
         public void ShowData<T>(ScmSearchPageResponse<T> response) where T : ScmSearchResultItemDvo
         {
-            _Dvo.PageIndex = 1;
-            _Dvo.TotalPages = (int)response.TotalPages;
-            _Dvo.TotalItems = (int)response.TotalItems;
+            PageIndex = 1;
+            TotalPages = (int)response.TotalPages;
+            TotalItems = (int)response.TotalItems;
 
             DgGrid.ItemsSource = response.Items;
         }
@@ -357,11 +521,11 @@ namespace Com.Scm.Wpf.Views.Uc
         /// <param name="file"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<bool> ExportCsv(IEnumerable itemSource, List<ScmColumnInfo> columns, string file)
+        public async Task<bool> ExportCsv(IEnumerable itemSource, IEnumerable<ScmColumnInfo> columns, string file)
         {
             try
             {
-                if (columns == null || columns.Count < 1)
+                if (columns == null || !columns.Any())
                 {
                     throw new Exception("请选择需要导出的列!");
                 }
@@ -396,7 +560,7 @@ namespace Com.Scm.Wpf.Views.Uc
         /// <param name="columns"></param>
         /// <param name="file"></param>
         /// <returns></returns>
-        public async Task<bool> ExportJson(IEnumerable itemSource, List<ScmColumnInfo> columns, string file)
+        public async Task<bool> ExportJson(IEnumerable itemSource, IEnumerable<ScmColumnInfo> columns, string file)
         {
             var items = GetValues(itemSource, columns);
 
@@ -414,7 +578,7 @@ namespace Com.Scm.Wpf.Views.Uc
         /// <param name="columns"></param>
         /// <param name="file"></param>
         /// <returns></returns>
-        public async Task<bool> ExportSql(IEnumerable itemSource, List<ScmColumnInfo> columns, string file)
+        public async Task<bool> ExportSql(IEnumerable itemSource, IEnumerable<ScmColumnInfo> columns, string file)
         {
             var items = GetValues(itemSource, columns);
 
@@ -458,11 +622,11 @@ namespace Com.Scm.Wpf.Views.Uc
         /// <param name="file"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<bool> ExportXls(IEnumerable itemSource, List<ScmColumnInfo> columns, string file)
+        public async Task<bool> ExportXls(IEnumerable itemSource, IEnumerable<ScmColumnInfo> columns, string file)
         {
             try
             {
-                if (columns == null || columns.Count < 1)
+                if (columns == null || !columns.Any())
                 {
                     throw new Exception("请选择需要导出的列!");
                 }
@@ -562,7 +726,7 @@ namespace Com.Scm.Wpf.Views.Uc
         /// <param name="source"></param>
         /// <param name="columns"></param>
         /// <returns></returns>
-        private List<Dictionary<string, object>> GetValues(IEnumerable source, List<ScmColumnInfo> columns)
+        private List<Dictionary<string, object>> GetValues(IEnumerable source, IEnumerable<ScmColumnInfo> columns)
         {
             var data = new List<Dictionary<string, object>>();
             foreach (var item in source)
@@ -578,7 +742,7 @@ namespace Com.Scm.Wpf.Views.Uc
         /// <param name="obj"></param>
         /// <param name="columns"></param>
         /// <returns></returns>
-        private Dictionary<string, object> GetValue(object obj, List<ScmColumnInfo> columns)
+        private Dictionary<string, object> GetValue(object obj, IEnumerable<ScmColumnInfo> columns)
         {
             var dic = new Dictionary<string, object>();
             try
@@ -624,7 +788,7 @@ namespace Com.Scm.Wpf.Views.Uc
 
         private void BtOption_Click(object sender, RoutedEventArgs e)
         {
-            var view = new UcGridColumnsView();
+            var view = new PageGridColumnsView();
 
             var window = new PopupWindow();
             window.PopupElement = view;
@@ -641,7 +805,7 @@ namespace Com.Scm.Wpf.Views.Uc
         /// <param name="e"></param>
         private void BtFirst_Click(object sender, RoutedEventArgs e)
         {
-            _Owner.FirstPageAsync();
+            _Window.FirstPageAsync();
         }
 
         /// <summary>
@@ -651,7 +815,7 @@ namespace Com.Scm.Wpf.Views.Uc
         /// <param name="e"></param>
         private void BtPrev_Click(object sender, RoutedEventArgs e)
         {
-            _Owner.PrevPageAsync();
+            _Window.PrevPageAsync();
         }
 
         /// <summary>
@@ -661,7 +825,7 @@ namespace Com.Scm.Wpf.Views.Uc
         /// <param name="e"></param>
         private void BtNext_Click(object sender, RoutedEventArgs e)
         {
-            _Owner.NextPageAsync();
+            _Window.NextPageAsync();
         }
 
         /// <summary>
@@ -671,7 +835,7 @@ namespace Com.Scm.Wpf.Views.Uc
         /// <param name="e"></param>
         private void BtEnd_Click(object sender, RoutedEventArgs e)
         {
-            _Owner.EndPageAsync();
+            _Window.EndPageAsync();
         }
 
         /// <summary>
@@ -687,7 +851,7 @@ namespace Com.Scm.Wpf.Views.Uc
             }
 
             e.Handled = true;
-            _Owner.FixedPageAsync(_Dvo.PageIndex);
+            _Window.SearchAsync(PageIndex);
         }
         #endregion
 
@@ -701,53 +865,76 @@ namespace Com.Scm.Wpf.Views.Uc
 
         }
 
+        #region 扩展功能
+        /// <summary>
+        /// 显示详情
+        /// </summary>
+        /// <param name="element"></param>
         public void ShowInfo(FrameworkElement element)
         {
             TbTitle.Text = "详情";
 
-            GdPanel.Children.Clear();
-            GdPanel.Children.Add(element);
+            GdDrawer.Children.Clear();
+            GdDrawer.Children.Add(element);
 
             BtAccept.Visibility = Visibility.Collapsed;
             BtSearch.Visibility = Visibility.Collapsed;
 
-            DrSide.IsOpen = true;
+            DrDrawer.IsOpen = true;
         }
 
         private SaveDelegate _SaveDelegate;
 
+        /// <summary>
+        /// 显示编辑
+        /// </summary>
+        /// <param name="view"></param>
+        /// <param name="saveDelegate"></param>
         public void ShowEdit(FrameworkElement view, SaveDelegate saveDelegate)
         {
             TbTitle.Text = "编辑";
 
             _SaveDelegate = saveDelegate;
 
-            GdPanel.Children.Clear();
-            GdPanel.Children.Add(view);
+            GdDrawer.Children.Clear();
+            GdDrawer.Children.Add(view);
 
             BtAccept.Visibility = Visibility.Visible;
             BtSearch.Visibility = Visibility.Collapsed;
 
-            DrSide.IsOpen = true;
+            DrDrawer.IsOpen = true;
         }
 
-        private SearchDelegate _SearchDelegate;
-
-        public void ShowSearch(FrameworkElement view, SearchDelegate searchDelegate)
+        /// <summary>
+        /// 显示查询
+        /// </summary>
+        /// <param name="view"></param>
+        /// <param name="searchDelegate"></param>
+        public void ShowSearch(FrameworkElement view)
         {
             TbTitle.Text = "查询";
 
-            _SearchDelegate = searchDelegate;
-
-            GdPanel.Children.Clear();
-            GdPanel.Children.Add(view);
+            GdDrawer.Children.Clear();
+            GdDrawer.Children.Add(view);
 
             BtAccept.Visibility = Visibility.Collapsed;
             BtSearch.Visibility = Visibility.Visible;
 
-            DrSide.IsOpen = true;
+            DrDrawer.IsOpen = true;
         }
 
+        private FrameworkElement _SearchElement;
+        public void SetSearch(FrameworkElement element)
+        {
+            _SearchElement = element;
+            MoreVisibility = Visibility.Visible;
+        }
+
+        /// <summary>
+        /// 保存事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BtAccept_Click(object sender, RoutedEventArgs e)
         {
             if (_SaveDelegate == null)
@@ -760,54 +947,62 @@ namespace Com.Scm.Wpf.Views.Uc
                 return;
             }
 
-            DrSide.IsOpen = false;
+            DrDrawer.IsOpen = false;
         }
 
+        /// <summary>
+        /// 查询事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BtSearch_Click(object sender, RoutedEventArgs e)
         {
-            if (_SearchDelegate == null)
-            {
-                return;
-            }
-
-            if (!_SearchDelegate())
-            {
-                return;
-            }
-
-            DrSide.IsOpen = false;
+            _Window.SearchAsync(0);
         }
 
+        /// <summary>
+        /// 取消事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BtCancel_Click(object sender, RoutedEventArgs e)
         {
-            DrSide.IsOpen = false;
+            DrDrawer.IsOpen = false;
+        }
+        #endregion
+
+        #region 模型处理
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        protected bool SetProperty<T>([NotNullIfNotNull("newValue")] ref T field, T newValue, [CallerMemberName] string propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(field, newValue))
+            {
+                return false;
+            }
+
+            field = newValue;
+            OnPropertyChanged(propertyName);
+            return true;
+        }
+        #endregion
+
+        private void ShowSearch_Click(object sender, RoutedEventArgs e)
+        {
+            if (_Window.GetSearchView() != null)
+            {
+                ShowSearch(_Window.GetSearchView());
+            }
+        }
+
+        private void Pagination_PageUpdated(object sender, HandyControl.Data.FunctionEventArgs<int> e)
+        {
+            _Window.SearchAsync(HpPage.PageIndex);
         }
     }
 
     public delegate bool SaveDelegate();
-
-    public delegate bool SearchDelegate();
-
-    public partial class ScmPageDataDvo : ScmDvo
-    {
-        private int pageIndex;
-        public int PageIndex { get { return pageIndex; } set { SetProperty(ref pageIndex, value); } }
-
-        private int pageItems = 20;
-        public int PageItems { get { return pageItems; } set { SetProperty(ref pageItems, value); } }
-
-        private int view;
-        public int View { get { return view; } set { SetProperty(ref view, value); } }
-
-        private int totalPages;
-        public int TotalPages { get { return totalPages; } set { SetProperty(ref totalPages, value); } }
-
-        private int totalItems;
-        public int TotalItems { get { return totalItems; } set { SetProperty(ref totalItems, value); } }
-
-        public string PagesInfo
-        {
-            get { return $"共 {TotalPages} 页"; }
-        }
-    }
 }

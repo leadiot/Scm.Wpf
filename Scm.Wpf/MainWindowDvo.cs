@@ -145,7 +145,7 @@ namespace Com.Scm.Wpf.Dvo
             item.namec = "同步日志";
             item.pid = menu.id;
             item.uri = "Com.Scm.Wpf.Actions.ViewAction";
-            item.view = "Com.Scm.Nas.Views.SyncView";
+            item.view = "Com.Scm.Nas.Views.Sync.SyncView";
             menuList.Add(item);
 
             item = new MenuDto();

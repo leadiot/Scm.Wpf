@@ -38,6 +38,9 @@ namespace Com.Scm.Wpf.Controls
         {
             if (sender is TreeViewItem treeViewItem && treeViewItem.DataContext is ScmMenuDvo menuItem)
             {
+                // 自动展开子菜单
+                treeViewItem.IsExpanded = true;
+
                 SelectedItem = menuItem;
                 MenuItemSelected?.Invoke(this, menuItem);
             }

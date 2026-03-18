@@ -6,32 +6,25 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:dvo="clr-namespace:Com.Scm.Wpf.Dvo.Menu"
     mc:Ignorable="d"
-    Background="#2C3E50"
+    Background="{StaticResource ScmColorPrimaryVariant}"
     d:DesignHeight="600" d:DesignWidth="250">
 
     <UserControl.Resources>
         <SolidColorBrush x:Key="MenuBackgroundBrush" Color="#2C3E50" />
         <SolidColorBrush x:Key="MenuHoverBrush" Color="#34495E" />
         <SolidColorBrush x:Key="MenuActiveBrush" Color="#3498DB" />
-        <SolidColorBrush x:Key="MenuTextBrush" Color="#ECF0F1" />
         <SolidColorBrush x:Key="MenuTextActiveBrush" Color="White" />
-
-        <Style x:Key="MenuIconStyle" TargetType="Image">
-            <Setter Property="Width" Value="20" />
-            <Setter Property="Height" Value="20" />
-            <Setter Property="Margin" Value="0,0,10,0" />
-        </Style>
 
         <Style x:Key="MenuExpanderStyle" TargetType="ToggleButton">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="Foreground" Value="{StaticResource MenuTextBrush}" />
+            <Setter Property="Foreground" Value="{StaticResource ScmColorOnPrimary}" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ToggleButton">
                         <Grid Background="Transparent">
                             <Path x:Name="Arrow" 
-                                  Data="M0,0 L8,8 L16,0" 
+                                  Data="M0,4 L8,12 L16,4" 
                                   Fill="{TemplateBinding Foreground}" 
                                   HorizontalAlignment="Center" 
                                   VerticalAlignment="Center" 
@@ -42,7 +35,7 @@
                             <Trigger Property="IsChecked" Value="True">
                                 <Setter TargetName="Arrow" Property="RenderTransform">
                                     <Setter.Value>
-                                        <RotateTransform Angle="90" CenterX="8" CenterY="8" />
+                                        <RotateTransform Angle="180" CenterX="8" CenterY="8" />
                                     </Setter.Value>
                                 </Setter>
                             </Trigger>
@@ -56,7 +49,7 @@
             x:Key="MenuTemplate" 
             DataType="{x:Type dvo:ScmMenuDvo}" 
             ItemsSource="{Binding children}">
-            <Grid x:Name="MenuGrid" Height="48" Background="Transparent">
+            <Grid x:Name="MenuGrid" Height="48" Margin="0 0 0 0" Background="Transparent">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="40" />
                     <ColumnDefinition Width="*" />
@@ -65,18 +58,20 @@
 
                 <Image
                     Grid.Column="0"
-                    Style="{StaticResource MenuIconStyle}"
+                    Width="20"
+                    Height="20"
                     Source="{Binding Icon}" />
 
                 <TextBlock
                     Grid.Column="1" 
                     Text="{Binding Namec}" 
-                    Foreground="{StaticResource MenuTextBrush}" 
+                    Foreground="{StaticResource ScmColorOnPrimary}" 
                     VerticalAlignment="Center" 
                     FontSize="14" />
 
                 <ToggleButton
                     Grid.Column="2" 
+                    Visibility="{Binding ExpanderVisibility}"
                     Style="{StaticResource MenuExpanderStyle}" 
                     IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource AncestorType=TreeViewItem}}"  />
             </Grid>
@@ -85,7 +80,7 @@
                 <HierarchicalDataTemplate
                     DataType="{x:Type dvo:ScmMenuDvo}" 
                     ItemsSource="{Binding children}">
-                    <Grid x:Name="SubMenuGrid" Height="40" Background="Transparent" Margin="20,0,0,0">
+                    <Grid x:Name="SubMenuGrid" Height="40" Margin="20 0 0 0" Background="Transparent">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="30" />
                             <ColumnDefinition Width="*" />
@@ -93,22 +88,50 @@
                         </Grid.ColumnDefinitions>
 
                         <Image
-                            Grid.Column="0" 
-                            Style="{StaticResource MenuIconStyle}" 
-                            Source="{Binding Icon}"  />
+                            Grid.Column="0"
+                            Width="16"
+                            Height="16"
+                            Source="{Binding Icon}" />
 
                         <TextBlock
                             Grid.Column="1" 
                             Text="{Binding Namec}" 
-                            Foreground="{StaticResource MenuTextBrush}" 
+                            Foreground="{StaticResource ScmColorOnPrimary}" 
                             VerticalAlignment="Center" 
                             FontSize="13" />
 
                         <ToggleButton
                             Grid.Column="2" 
-                            Style="{StaticResource MenuExpanderStyle}" 
+                            Style="{StaticResource MenuExpanderStyle}"
+                            Visibility="{Binding ExpanderVisibility}"
                             IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource AncestorType=TreeViewItem}}"  />
                     </Grid>
+
+                    <HierarchicalDataTemplate.ItemTemplate>
+                        <HierarchicalDataTemplate
+                            DataType="{x:Type dvo:ScmMenuDvo}" 
+                            ItemsSource="{Binding children}">
+                            <Grid x:Name="SubSubMenuGrid" Height="36" Margin="40 0 0 0" Background="Transparent">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Image
+                                    Grid.Column="0"
+                                    Width="14"
+                                    Height="14"
+                                    Source="{Binding Icon}" />
+
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Text="{Binding Namec}"
+                                    Foreground="{StaticResource ScmColorOnPrimary}" 
+                                    VerticalAlignment="Center" 
+                                    FontSize="12" />
+                            </Grid>
+                        </HierarchicalDataTemplate>
+                    </HierarchicalDataTemplate.ItemTemplate>
                 </HierarchicalDataTemplate>
             </HierarchicalDataTemplate.ItemTemplate>
         </HierarchicalDataTemplate>
@@ -121,8 +144,13 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="TreeViewItem">
                         <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
                             <Border
                                 x:Name="Bd" 
+                                Grid.Row="0"
                                 Background="{TemplateBinding Background}" 
                                 BorderBrush="{TemplateBinding BorderBrush}" 
                                 BorderThickness="{TemplateBinding BorderThickness}" 
@@ -132,7 +160,7 @@
                                     ContentSource="Header" 
                                     HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
                             </Border>
-                            <ItemsPresenter x:Name="ItemsHost" />
+                            <ItemsPresenter x:Name="ItemsHost" Grid.Row="1" />
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
@@ -141,6 +169,12 @@
                             <Trigger Property="IsSelected" Value="True">
                                 <Setter TargetName="Bd" Property="Background" Value="{StaticResource MenuActiveBrush}" />
                                 <Setter Property="Foreground" Value="{StaticResource MenuTextActiveBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsExpanded" Value="False">
+                                <Setter TargetName="ItemsHost" Property="Visibility" Value="Collapsed" />
+                            </Trigger>
+                            <Trigger Property="IsExpanded" Value="True">
+                                <Setter TargetName="ItemsHost" Property="Visibility" Value="Visible" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>

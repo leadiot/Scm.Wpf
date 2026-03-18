@@ -45,7 +45,7 @@
     <Compile Update="Uc\UcDataView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Uc\UcPageData.xaml.cs">
+    <Compile Update="Controls\PageGrid.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

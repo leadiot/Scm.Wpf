@@ -45,7 +45,7 @@
             <uc:UcInfobarView x:Name="UcInfo" Grid.Row="1"/>
             <DockPanel Grid.Row="2">
                 <!-- 导航栏 -->
-                <uc:UcGuidView x:Name="UcGuid" DockPanel.Dock="Left" />
+                <uc:UcGuidView x:Name="UcGuid" DockPanel.Dock="Left" Width="240" />
                 <!-- 侧边栏 -->
                 <uc:UcSideView x:Name="UcSide" DockPanel.Dock="Right"/>
                 <!-- 内容 -->

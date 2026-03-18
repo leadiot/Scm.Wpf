@@ -4,7 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:Uc="clr-namespace:Com.Scm.Wpf.Views.Uc"
+             xmlns:Uc="clr-namespace:Com.Scm.Wpf.Controls"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -57,7 +57,7 @@
                     <ToggleButton x:Name="BtMore" Content="显示" Click="BtMore_Click"></ToggleButton>
                 </StackPanel>
             </Grid>
-            <Uc:UcPageData Grid.Row="1" Margin="5"/>
+            <Uc:PageGrid Grid.Row="1" Margin="5"/>
         </Grid>
         <hc:Drawer x:Name="DrSide" Dock="Right" ShowMask="True" ShowMode="Cover">
             <Border Background="Red" Width="120"></Border>

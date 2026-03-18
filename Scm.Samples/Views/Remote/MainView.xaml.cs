@@ -1,5 +1,6 @@
 ﻿using Com.Scm.Enums;
 using Com.Scm.Wpf.Models;
+using System.Collections;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -8,7 +9,7 @@ namespace Com.Scm.Wpf.Views.Samples.Remote
     /// <summary>
     /// UcSamplesView.xaml 的交互逻辑
     /// </summary>
-    public partial class MainView : UserControl, ScmView, ISearchView
+    public partial class MainView : UserControl, ScmView, ScmPageView
     {
         private ScmWindow _Owner;
         private SearchParamsDvo _Dvo;
@@ -26,14 +27,7 @@ namespace Com.Scm.Wpf.Views.Samples.Remote
             _Dvo = new SearchParamsDvo();
             this.DataContext = _Dvo;
 
-            var columns = new List<ScmColumnInfo>
-            {
-                new ScmColumnInfo { Type=ScmColumnType.Text, Label = "ID", Value = "Id",Hidden=true },
-                new ScmColumnInfo { Type=ScmColumnType.CheckBox, Label = "", Value = "IsChecked", Width="70" },
-                new ScmColumnInfo { Type=ScmColumnType.Text, Label = "系统编码", Value = "Codec" },
-                new ScmColumnInfo { Type=ScmColumnType.Text, Label = "系统名称", Value = "Namec", Width="*", MinWidth="100" }
-            };
-            PgData.Init(this, columns);
+            PgData.Init(this);
 
             FirstPageAsync();
         }
@@ -85,11 +79,26 @@ namespace Com.Scm.Wpf.Views.Samples.Remote
         }
 
         #region 接口实现
+
+        public List<ScmColumnInfo> GetColumns()
+        {
+            return null;
+        }
+
+        public IEnumerable GetItemsSource()
+        {
+            return null;
+        }
+
+        public void SearchAsync(int pageIndex = 0)
+        {
+        }
+
         public void FirstPageAsync()
         {
             _Dvo.Page = 1;
 
-            ReloadPageAsync();
+            ReloadAsync();
         }
 
         public void PrevPageAsync()
@@ -102,7 +111,7 @@ namespace Com.Scm.Wpf.Views.Samples.Remote
             }
             _Dvo.Page = page;
 
-            ReloadPageAsync();
+            ReloadAsync();
         }
 
         public void NextPageAsync()
@@ -115,33 +124,17 @@ namespace Com.Scm.Wpf.Views.Samples.Remote
             }
             _Dvo.Page = page;
 
-            ReloadPageAsync();
+            ReloadAsync();
         }
 
         public void EndPageAsync()
         {
             _Dvo.Page = (int)_Response.TotalPages;
 
-            ReloadPageAsync();
+            ReloadAsync();
         }
 
-        public void FixedPageAsync(int page)
-        {
-            if (page > _Response.TotalPages)
-            {
-                page = (int)_Response.TotalPages;
-            }
-
-            if (page < 1)
-            {
-                page = 1;
-            }
-            _Dvo.Page = page;
-
-            ReloadPageAsync();
-        }
-
-        public async void ReloadPageAsync()
+        public async void ReloadAsync()
         {
             var body = _Dvo.ToDictionary();
             _Response = await _Owner.GetObjectAsync<ScmSearchPageResponse<SearchResultDataDvo>>("/urposition/pages", body);
@@ -151,6 +144,26 @@ namespace Com.Scm.Wpf.Views.Samples.Remote
             //}
 
             PgData.ShowData(_Response);
+        }
+
+        public UserControl GetCustomView()
+        {
+            return null;
+        }
+
+        public UserControl GetSearchView()
+        {
+            return null;
+        }
+
+        public UserControl GetInfoView()
+        {
+            return null;
+        }
+
+        public UserControl GetEditView()
+        {
+            return null;
         }
         #endregion
     }

@@ -1,6 +1,7 @@
-﻿using Com.Scm.Enums;
+using Com.Scm.Enums;
 using Com.Scm.Sys.Menu;
 using Com.Scm.Wpf.Actions;
+using System.Collections.ObjectModel;
 using System.Windows;
 
 namespace Com.Scm.Wpf.Dvo.Menu
@@ -58,7 +59,21 @@ namespace Com.Scm.Wpf.Dvo.Menu
         private bool keepAlive;
         public bool KeepAlive { get { return keepAlive; } set { SetProperty(ref keepAlive, value); } }
 
-        public List<ScmMenuDvo> children;
+        private ObservableCollection<ScmMenuDvo> _children;
+        public ObservableCollection<ScmMenuDvo> Children { get { return _children; } set { SetProperty(ref _children, value); } }
+
+        private Visibility expanderVisibility = Visibility.Visible;
+        public Visibility ExpanderVisibility
+        {
+            get
+            {
+                return expanderVisibility;
+            }
+            set
+            {
+                SetProperty(ref expanderVisibility, value);
+            }
+        }
 
         /// <summary>
         /// 是否已加载
@@ -82,12 +97,13 @@ namespace Com.Scm.Wpf.Dvo.Menu
 
         public void Add(ScmMenuDvo dto)
         {
-            if (children == null)
+            if (_children == null)
             {
-                children = new List<ScmMenuDvo>();
+                _children = new ObservableCollection<ScmMenuDvo>();
             }
 
-            children.Add(dto);
+            _children.Add(dto);
+            expanderVisibility = Visibility.Hidden;
         }
 
         public static ScmMenuDvo FromDto(MenuDto dto)

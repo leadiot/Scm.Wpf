@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using System.Windows.Data;
 
 namespace Com.Scm.Wpf.Models
 {
@@ -58,6 +59,14 @@ namespace Com.Scm.Wpf.Models
         /// 是否只读
         /// </summary>
         public bool ReadOnly { get; set; } = true;
+
+        public BindingMode Mode { get; set; } = BindingMode.OneWay;
+
+        public IValueConverter Converter { get; set; }
+
+        public string Foreground { get; set; }
+
+        public string Background { get; set; }
     }
 
     public class ScmColumnSize
@@ -130,6 +139,7 @@ namespace Com.Scm.Wpf.Models
     public enum ScmColumnFormat
     {
         None,
+        Icon,
         Number,
         DateTime
     }
