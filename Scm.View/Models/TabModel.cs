@@ -11,6 +11,11 @@ namespace Com.Scm.Models
         private string header;
         public string Header { get { return header; } set { SetProperty(ref header, value); } }
 
+        /// <summary>
+        /// 是否可以关闭
+        /// </summary>
+        public bool Closable { get; set; } = true;
+
         private FrameworkElement content;
         public FrameworkElement Content { get { return content; } set { SetProperty(ref content, value); } }
     }

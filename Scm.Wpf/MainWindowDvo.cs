@@ -1,7 +1,7 @@
-﻿using Com.Scm.Helper;
-using Com.Scm.Sys.Menu;
-using Com.Scm.Dvo.Menu;
+﻿using Com.Scm.Dvo.Menu;
+using Com.Scm.Helper;
 using Com.Scm.Models;
+using Com.Scm.Sys.Menu;
 using Dm.util;
 using NLog;
 using System.Collections.ObjectModel;
@@ -16,11 +16,8 @@ namespace Com.Scm.Dvo
     {
         private static readonly ILogger _Logger = LogManager.GetCurrentClassLogger();
 
-        private MainWindow _Window;
-
         public ICommand OpenFileCommand { get; }
         public ICommand OpenDataCommand { get; }
-
 
         public ObservableCollection<ScmMenuDvo> MenuList { get; set; } = new ObservableCollection<ScmMenuDvo>();
         public ObservableCollection<TabModel> TabModels { get; set; } = new ObservableCollection<TabModel>();
@@ -33,6 +30,8 @@ namespace Com.Scm.Dvo
 
         private Visibility trayVisibility = Visibility.Visible;
         public Visibility TrayVisibility { get { return trayVisibility; } set { SetProperty(ref trayVisibility, value); } }
+
+        private MainWindow _Window;
 
         public MainWindowDvo()
         {
@@ -85,18 +84,18 @@ namespace Com.Scm.Dvo
         {
             var item = new MenuDto();
             item.id = 1;
-            item.icon = "Home";
-            item.codec = "root";
+            item.codec = "home";
             item.namec = "Home";
+            item.icon = "Home";
             item.uri = "Com.Scm.Actions.ViewAction";
             item.view = "Com.Scm.Views.Home.MainView";
             menuList.Add(item);
 
             item = new MenuDto();
             item.id = 21;
-            item.icon = "FolderSync";
             item.codec = "nas-folder";
             item.namec = "目录管理";
+            item.icon = "FolderSync";
             item.uri = "Com.Scm.Actions.ViewAction";
             item.view = "Com.Scm.Nas.Views.Folder.FolderView";
             item.module = "Nas.Wpf";
@@ -104,9 +103,9 @@ namespace Com.Scm.Dvo
 
             item = new MenuDto();
             item.id = 22;
-            item.icon = "FileSync";
             item.codec = "nas-sync";
             item.namec = "同步日志";
+            item.icon = "FileSync";
             item.uri = "Com.Scm.Actions.ViewAction";
             item.view = "Com.Scm.Nas.Views.Sync.SyncView";
             item.module = "Nas.Wpf";
@@ -114,9 +113,9 @@ namespace Com.Scm.Dvo
 
             item = new MenuDto();
             item.id = 23;
-            item.icon = "Folder";
             item.codec = "nas-native";
             item.namec = "本地目录";
+            item.icon = "Folder";
             item.uri = "Com.Scm.Actions.ViewAction";
             item.view = "Com.Scm.Nas.Views.Native.NativeView";
             item.module = "Nas.Wpf";
@@ -124,9 +123,9 @@ namespace Com.Scm.Dvo
 
             item = new MenuDto();
             item.id = 24;
-            item.icon = "Cloud";
             item.codec = "nas-remote";
             item.namec = "远端目录";
+            item.icon = "Cloud";
             item.uri = "Com.Scm.Actions.ViewAction";
             item.view = "Com.Scm.Nas.Views.Remote.RemoteView";
             item.module = "Nas.Wpf";
@@ -135,9 +134,9 @@ namespace Com.Scm.Dvo
 
             item = new MenuDto();
             item.id = 13;
-            item.icon = "InformationBox";
             item.codec = "scm-about";
             item.namec = "关于软件";
+            item.icon = "InformationBox";
             item.uri = "Com.Scm.Actions.ViewAction";
             item.view = "Com.Scm.Views.About.MainView";
             menuList.Add(item);
@@ -148,7 +147,7 @@ namespace Com.Scm.Dvo
             var menu = new MenuDto();
             menu.id = 1;
             menu.icon = "Home";
-            menu.codec = "root";
+            menu.codec = "home";
             menu.namec = "Home";
             menuList.Add(menu);
 

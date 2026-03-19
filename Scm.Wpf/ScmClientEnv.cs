@@ -2,7 +2,7 @@
 
 namespace Com.Scm
 {
-    public class ScmClientEnv
+    public class ScmClientEnv : ScmEnv
     {
         public const string API_URL = "http://api.c-scm.net/api";
 
