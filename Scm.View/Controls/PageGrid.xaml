@@ -65,7 +65,9 @@
                     <Border x:Name="BdBody" Grid.Row="0">
                         <DataGrid
                             x:Name="DgGrid"
+                             Background="White"
                             ItemsSource="{Binding Items}"
+                            Style="{StaticResource DataGrid.Small}"
                             hc:DataGridAttach.ShowRowNumber="True"
                             hc:DataGridAttach.ShowSelectAllButton="False" 
                             BorderThickness="0"
@@ -127,7 +129,7 @@
                             <Button x:Name="BtCancel" Click="BtCancel_Click" Style="{StaticResource ButtonDefault}" Content="取消"></Button>
                         </StackPanel>
                         <Border BorderBrush="LightGray" BorderThickness="0 1" Margin="0 6">
-                            <Grid x:Name="GdDrawer" Margin="0 6"></Grid>
+                            <Grid x:Name="GdDrawer" Margin="0 12"></Grid>
                         </Border>
                     </DockPanel>
                 </Border>

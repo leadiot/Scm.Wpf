@@ -8,7 +8,7 @@
     xmlns:hc="https://handyorg.github.io/handycontrol"
     mc:Ignorable="d"
     Background="{StaticResource ScmColorPrimary}"
-    d:DesignHeight="80" d:DesignWidth="400">
+    d:DesignHeight="50" d:DesignWidth="480">
     <UserControl.Resources>
         <ContextMenu x:Key="CmMenu" Width="200">
             <MenuItem x:Name="MiInfo" Header="账户信息" Click="MiInfo_Click"/>
@@ -79,13 +79,22 @@
                 </Button>
             </StackPanel>
             <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="12 0" HorizontalAlignment="Right">
-                <Button x:Name="BtAvatar" Style="{StaticResource ButtonCustom}" Cursor="Hand" Click="BtAvatar_Click">
-                    <Image x:Name="IvAvatar" Source="/Assets/Images/avatar.png" Width="40" Height="40" Stretch="Fill">
+                <Border
+                    x:Name="BdAvatar"
+                    Width="40"
+                    Height="40"
+                    CornerRadius="20"
+                    BorderThickness="2"
+                    BorderBrush="LightGray"
+                    Background="#FAFAFA"
+                    Cursor="Hand"
+                    MouseLeftButtonUp="BdAvatar_MouseLeftButtonUp">
+                    <Image x:Name="IvAvatar" Source="/Assets/Images/avatar.png" Width="36" Height="36" Stretch="Fill">
                         <Image.Clip>
-                            <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
+                            <EllipseGeometry RadiusX="18" RadiusY="18" Center="18,18"/>
                         </Image.Clip>
                     </Image>
-                </Button>
+                </Border>
 
                 <Button Foreground="#5a5e66"  Click="MinWin_click" Style="{StaticResource ControlBtnStyle}" Visibility="Collapsed">
                     <iconPacks:PackIconMaterial Kind="WindowMinimize"/>

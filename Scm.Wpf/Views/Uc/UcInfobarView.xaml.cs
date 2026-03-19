@@ -1,4 +1,5 @@
-﻿using HandyControl.Tools.Extension;
+﻿using HandyControl.Controls;
+using HandyControl.Tools.Extension;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -66,9 +67,9 @@ namespace Com.Scm.Views.Uc
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void BtAvatar_Click(object sender, RoutedEventArgs e)
+        private void BdAvatar_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            _Menu.PlacementTarget = BtAvatar;
+            _Menu.PlacementTarget = BdAvatar;
             _Menu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
             _Menu.HorizontalOffset = -150;
             _Menu.IsOpen = true;
