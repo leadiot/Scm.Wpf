@@ -155,7 +155,7 @@ namespace Com.Scm.Helper
         /// </summary>
         /// <param name="appName">应用标识（自定义，如"MyWpfApp"）</param>
         /// <returns>是否开启开机启动</returns>
-        public static bool IsStartupEnabled(string appName)
+        public static bool IsStartupEnabled(string appName, string appPath)
         {
             using (var key = Registry.CurrentUser.OpenSubKey(RunRegistryPath, false))
             {
@@ -163,7 +163,7 @@ namespace Com.Scm.Helper
                 // 获取对应键值的应用路径
                 var value = key.GetValue(appName)?.ToString();
                 // 校验路径是否匹配当前应用
-                return !string.IsNullOrEmpty(value) && value.Equals(GetAppExePath(), StringComparison.OrdinalIgnoreCase);
+                return !string.IsNullOrEmpty(value) && value.Equals(appPath, StringComparison.OrdinalIgnoreCase);
             }
         }
 
@@ -172,7 +172,7 @@ namespace Com.Scm.Helper
         /// </summary>
         /// <param name="appName">应用标识（自定义，如"MyWpfApp"）</param>
         /// <returns>是否设置成功</returns>
-        public static bool EnableStartup(string appName)
+        public static bool EnableStartup(string appName, string appPath)
         {
             try
             {
@@ -180,7 +180,7 @@ namespace Com.Scm.Helper
                 {
                     if (key == null) return false;
                     // 写入：键名=应用标识，值=应用完整路径（带引号，避免路径含空格）
-                    key.SetValue(appName, $"\"{GetAppExePath()}\"", RegistryValueKind.String);
+                    key.SetValue(appName, $"\"{appPath}\"", RegistryValueKind.String);
                     return true;
                 }
             }
@@ -211,14 +211,6 @@ namespace Com.Scm.Helper
             {
                 return false;
             }
-        }
-
-        /// <summary>
-        /// 获取当前应用程序的EXE完整路径
-        /// </summary>
-        private static string GetAppExePath()
-        {
-            return System.Reflection.Assembly.GetExecutingAssembly().Location;
         }
 
         /// 获取有效物理网卡的MAC地址（过滤虚拟/隧道接口、全0地址）

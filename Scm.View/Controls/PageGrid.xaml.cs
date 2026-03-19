@@ -105,10 +105,10 @@ namespace Com.Scm.Wpf.Controls
         /// </summary>
         /// <param name="columns"></param>
         /// <param name="autoData"></param>
-        private void GenColumns(IEnumerable<ScmColumnInfo> columns, bool autoData = true)
+        private void GenColumns(IEnumerable<ScmColumnInfo> columns, bool autoData = false)
         {
             _Columns = columns;
-            if (columns == null)
+            if (columns == null || columns.Count() < 1)
             {
                 DgGrid.AutoGenerateColumns = true;
                 return;
@@ -186,6 +186,8 @@ namespace Com.Scm.Wpf.Controls
             {
                 column.MinWidth = uom.Width;
             }
+
+            column.CanUserSort = info.Sortable;
         }
 
         /// <summary>
@@ -241,7 +243,10 @@ namespace Com.Scm.Wpf.Controls
             //checkbox.Content = "全选";
             checkbox.Click += CheckAll_Click;
             column.Header = checkbox;
-            column.Binding = new Binding(info.Value);
+            column.Binding = new Binding(info.Value)
+            {
+                Mode = info.Mode
+            };
             column.CanUserSort = false;
 
             return column;
@@ -260,7 +265,10 @@ namespace Com.Scm.Wpf.Controls
             DataTemplate template = new DataTemplate();
             FrameworkElementFactory factory = new FrameworkElementFactory(typeof(ToggleButton));
             factory.SetValue(ToggleButton.StyleProperty, FindResource("ToggleButtonSwitch"));
-            factory.SetBinding(ToggleButton.IsCheckedProperty, new Binding("IsEnabled"));
+            factory.SetBinding(ToggleButton.IsCheckedProperty, new Binding("IsEnabled")
+            {
+                Mode = info.Mode
+            });
             template.VisualTree = factory;
 
             column.CellTemplate = template;
@@ -275,6 +283,8 @@ namespace Com.Scm.Wpf.Controls
         private DataGridTemplateColumn CreateTemplateColumn(ScmColumnInfo info)
         {
             var column = new DataGridTemplateColumn();
+            AdjustColumnInfo(column, info);
+
             if (info.Format == ScmColumnFormat.Icon)
             {
                 column.CellTemplate = CreateIconCellTemplate(info);
@@ -299,7 +309,7 @@ namespace Com.Scm.Wpf.Controls
         {
             DataTemplate template = new DataTemplate();
             FrameworkElementFactory factory = new FrameworkElementFactory(typeof(TextBlock));
-            factory.SetBinding(TextBlock.TextProperty, new Binding(info.Value) { StringFormat = "{0:yyyy-MM-dd HH:mm:ss}" });
+            factory.SetBinding(TextBlock.TextProperty, new Binding(info.Value) { Mode = info.Mode, StringFormat = "{0:yyyy-MM-dd HH:mm:ss}" });
             template.VisualTree = factory;
             return template;
         }
@@ -313,7 +323,7 @@ namespace Com.Scm.Wpf.Controls
         {
             DataTemplate template = new DataTemplate();
             FrameworkElementFactory factory = new FrameworkElementFactory(typeof(PackIconMaterial));
-            factory.SetBinding(PackIconMaterial.KindProperty, new Binding(info.Value));
+            factory.SetBinding(PackIconMaterial.KindProperty, new Binding(info.Value) { Mode = info.Mode });
             template.VisualTree = factory;
             return template;
         }
@@ -331,14 +341,14 @@ namespace Com.Scm.Wpf.Controls
             gridFactory.SetValue(Grid.VerticalAlignmentProperty, VerticalAlignment.Center);
 
             var iconFactory = new FrameworkElementFactory(typeof(PackIconMaterial));
-            iconFactory.SetBinding(PackIconMaterial.KindProperty, new Binding(info.Value));
+            iconFactory.SetBinding(PackIconMaterial.KindProperty, new Binding(info.Value) { Converter = info.Converter, Mode = BindingMode.OneWay });
             if (info.Foreground != null)
             {
-                iconFactory.SetBinding(PackIconMaterial.ForegroundProperty, new Binding(info.Foreground));
+                iconFactory.SetBinding(PackIconMaterial.ForegroundProperty, new Binding(info.Foreground) { Mode = BindingMode.OneWay });
             }
             if (info.Background != null)
             {
-                iconFactory.SetBinding(PackIconMaterial.BackgroundProperty, new Binding(info.Background));
+                iconFactory.SetBinding(PackIconMaterial.BackgroundProperty, new Binding(info.Background) { Mode = BindingMode.OneWay });
             }
 
             gridFactory.AppendChild(iconFactory);

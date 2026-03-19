@@ -1,5 +1,6 @@
 ﻿using Com.Scm.Wpf.Dvo;
 using Com.Scm.Wpf.Models;
+using System.Collections.ObjectModel;
 using System.Windows;
 
 namespace Com.Scm.Wpf
@@ -49,31 +50,31 @@ namespace Com.Scm.Wpf
         public Visibility OptionVisibility { get { return optionVisibility; } set { SetProperty(ref optionVisibility, value); } }
 
         /// <summary>
-        /// 当前页索引
-        /// </summary>
-        private int pageIndex;
-        public int PageIndex { get { return pageIndex; } set { SetProperty(ref pageIndex, value); } }
-
-        /// <summary>
         /// 当前页数量
         /// </summary>
         private int pageItems = 20;
         public int PageItems { get { return pageItems; } set { SetProperty(ref pageItems, value); } }
 
-        private int view;
-        public int View { get { return view; } set { SetProperty(ref view, value); } }
-
         /// <summary>
-        /// 总页数
+        /// 当前页索引
         /// </summary>
-        protected int totalPages;
-        public int TotalPages { get { return totalPages; } set { SetProperty(ref totalPages, value); } }
+        private int pageIndex = 1;
+        public int PageIndex { get { return pageIndex; } set { SetProperty(ref pageIndex, value); } }
 
         /// <summary>
         /// 总行数
         /// </summary>
-        protected int totalItems;
-        public int TotalItems { get { return totalItems; } set { SetProperty(ref totalItems, value); } }
+        protected int itemCount;
+        public int ItemCount { get { return itemCount; } set { SetProperty(ref itemCount, value); } }
+
+        /// <summary>
+        /// 总页数
+        /// </summary>
+        protected int pageCount;
+        public int PageCount { get { return pageCount; } set { SetProperty(ref pageCount, value); } }
+
+        private int view;
+        public int View { get { return view; } set { SetProperty(ref view, value); } }
 
         /// <summary>
         /// 查询条件
@@ -85,18 +86,22 @@ namespace Com.Scm.Wpf
         /// 展示列表
         /// </summary>
         /// <returns></returns>
-        public List<ScmColumnInfo> Columns { get; protected set; }
+        public List<ScmColumnInfo> Columns { get; protected set; } = new List<ScmColumnInfo>();
 
         /// <summary>
         /// 数据列表
         /// </summary>
-        public List<ScmSearchResultItemDvo> Items { get; protected set; }
+        public ObservableCollection<ScmSearchResultItemDvo> Items { get; protected set; } = new ObservableCollection<ScmSearchResultItemDvo>();
 
         /// <summary>
         /// 查询
         /// </summary>
         /// <param name="pageIndex"></param>
         public virtual void SearchAsync(int pageIndex = 0)
+        {
+        }
+
+        public virtual void SearchAsync(int pageIndex, int pageCount)
         {
         }
 

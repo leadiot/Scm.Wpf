@@ -25,7 +25,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0" Background="{StaticResource ScmColorPrimaryVariant}"  Width="200" Height="50">
+            <Grid Grid.Column="0" Background="{StaticResource ScmColorPrimaryVariant}"  Width="240" Height="50">
                 <TextBlock
                     Grid.Row="0"
                     Text="Scm.Net"

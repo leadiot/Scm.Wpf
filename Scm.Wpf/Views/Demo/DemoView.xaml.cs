@@ -23,6 +23,8 @@ namespace Com.Scm.Wpf.Views.Demo
             _Window = window;
 
             _Dvo = new DemoViewDvo();
+            _Dvo.Init();
+
             this.DataContext = _Dvo;
         }
 
@@ -49,6 +51,11 @@ namespace Com.Scm.Wpf.Views.Demo
         private void BtAlert_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             _Window.ShowAlert("这是一个Alert");
+        }
+
+        private void Pagination_PageUpdated(object sender, HandyControl.Data.FunctionEventArgs<int> e)
+        {
+            _Dvo.PageUpdated(PgPpp.PageIndex);
         }
     }
 }

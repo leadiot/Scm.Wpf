@@ -5,6 +5,7 @@ using Com.Scm.Wpf.Dvo.Menu;
 using HandyControl.Controls;
 using MahApps.Metro.IconPacks;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Com.Scm.Wpf.Views.Uc
@@ -33,8 +34,9 @@ namespace Com.Scm.Wpf.Views.Uc
 
                 var menu = new SideMenuItem();
                 menu.Header = itemDto.namec;
-                menu.Icon = GetIcon(itemDto.icon);
+                menu.Icon = GetIcon(itemDto.icon, 16);
                 menu.Tag = itemDvo;
+                menu.FontWeight = FontWeights.Bold;
                 //menu.Background = Brushes.Transparent;
                 MbMenu.Items.Add(menu);
 
@@ -58,8 +60,9 @@ namespace Com.Scm.Wpf.Views.Uc
 
                 var menu = new SideMenuItem();
                 menu.Header = itemDto.namec;
-                menu.Icon = GetIcon(itemDto.icon);
+                menu.Icon = GetIcon(itemDto.icon, 12);
                 menu.Tag = itemDvo;
+                menu.FontWeight = FontWeights.Normal;
                 //menu.Background = Brushes.Transparent;
                 parentMenu.Items.Add(menu);
 
@@ -118,17 +121,17 @@ namespace Com.Scm.Wpf.Views.Uc
             action.Execute(dvo);
         }
 
-        private PackIconMaterial GetIcon(string icon)
+        private PackIconMaterial GetIcon(string icon, int size)
         {
             if (!string.IsNullOrEmpty(icon))
             {
                 var kind = PackIconMaterialKind.Menu;
                 if (Enum.TryParse<PackIconMaterialKind>(icon, out kind))
                 {
-                    return new PackIconMaterial { Kind = kind };
+                    return new PackIconMaterial { Kind = kind, FontSize = size };
                 }
             }
-            return new PackIconMaterial { Kind = PackIconMaterialKind.Menu };
+            return new PackIconMaterial { Kind = PackIconMaterialKind.Menu, FontSize = size, RenderSize = new System.Windows.Size(size, size) };
         }
 
         private void LvMenu_SelectionChanged(object sender, SelectionChangedEventArgs e)

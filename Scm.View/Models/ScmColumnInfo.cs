@@ -60,6 +60,8 @@ namespace Com.Scm.Wpf.Models
         /// </summary>
         public bool ReadOnly { get; set; } = true;
 
+        public bool Sortable { get; set; }
+
         public BindingMode Mode { get; set; } = BindingMode.OneWay;
 
         public IValueConverter Converter { get; set; }

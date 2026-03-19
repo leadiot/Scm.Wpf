@@ -1,5 +1,6 @@
 ﻿using Com.Scm.Api;
 using Com.Scm.Config;
+using Com.Scm.Helper;
 using Com.Scm.Login;
 using Com.Scm.Sys.Config;
 using Com.Scm.Sys.Menu;
@@ -9,6 +10,7 @@ using Com.Scm.Wpf.Actions;
 using Com.Scm.Wpf.Dvo;
 using Com.Scm.Wpf.Helper;
 using HandyControl.Controls;
+using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
 
@@ -608,6 +610,30 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
 
         ShowAuthWindow();
         Close();
+    }
+
+    /// <summary>
+    /// 设置是否自行启动
+    /// </summary>
+    /// <param name="autoStart"></param>
+    public void SetAutoStart(bool autoStart)
+    {
+        var appPath = Assembly.GetEntryAssembly()?.Location;
+        if (appPath == null)
+        {
+            appPath = Process.GetCurrentProcess().MainModule?.FileName;
+        }
+
+        var appName = "Scm.Net";
+
+        if (autoStart)
+        {
+            OsHelper.EnableStartup(appName, appPath);
+        }
+        else
+        {
+            OsHelper.DisableStartup(appName);
+        }
     }
     #endregion
 }

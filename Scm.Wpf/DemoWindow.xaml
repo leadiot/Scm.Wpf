@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:hc="https://handyorg.github.io/handycontrol"
-    xmlns:local="clr-namespace:Com.Scm.Wpf"
+    xmlns:local="clr-namespace:Com.Scm.Wpf" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     x:Class="Com.Scm.Wpf.DemoWindow"
     mc:Ignorable="d"
     Title="DemoWindow" Height="450" Width="800">
@@ -144,10 +144,14 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <TreeView x:Name="TvView" Margin="5" Width="300" Style="{DynamicResource TreeViewStyle1}">
+        <TreeView x:Name="TvView" Margin="5" Width="300">
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                    <TextBlock Text="{Binding DisplayText}"/>
+                    <DockPanel SnapsToDevicePixels="True">
+                        <iconPacks:PackIconMaterial Kind="Menu" />
+                        <TextBlock Text="{Binding DisplayText}"/>
+                        <iconPacks:PackIconMaterial Kind="Folder" />
+                    </DockPanel>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>

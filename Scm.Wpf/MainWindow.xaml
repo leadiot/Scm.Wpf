@@ -69,8 +69,8 @@
                     </TabControl.ItemTemplate>
                     <TabControl.ContentTemplate>
                         <DataTemplate>
-                            <Border Background="{StaticResource ScmWindowBackground}">
-                                <ContentControl Grid.Row="1" Grid.Column="1"  Content="{Binding Content}" Margin="4 6"/>
+                            <Border Background="{StaticResource ScmWindowBackground}" Padding="6">
+                                <ContentControl Content="{Binding Content}"/>
                             </Border>
                         </DataTemplate>
                     </TabControl.ContentTemplate>

@@ -106,16 +106,10 @@
                                 <hc:Pagination
                                     Name="HpPage"
                                     Margin="6 0"
-                                    MaxPageCount="10"
-                                    PageIndex="1"
+                                    MaxPageCount="{Binding PageCount}"
+                                    PageIndex="{Binding PageIndex}"
                                     PageUpdated="Pagination_PageUpdated"
-                                    IsJumpEnabled="True">
-                                    <hc:Interaction.Triggers>
-                                        <hc:EventTrigger EventName="PageUpdated">
-                                            <hc:EventToCommand PassEventArgsToCommand="True" />
-                                        </hc:EventTrigger>
-                                    </hc:Interaction.Triggers>
-                                </hc:Pagination>
+                                    IsJumpEnabled="True"/>
                             </StackPanel>
                         </Grid>
                     </Border>

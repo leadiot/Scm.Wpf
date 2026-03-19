@@ -48,9 +48,9 @@ namespace Com.Scm.Wpf.Views.Samples.Native
         public override void NextPageAsync()
         {
             PageIndex += 1;
-            if (PageIndex > TotalPages)
+            if (PageIndex > PageCount)
             {
-                PageIndex = TotalPages;
+                PageIndex = PageCount;
             }
 
             ReloadAsync();
@@ -58,7 +58,7 @@ namespace Com.Scm.Wpf.Views.Samples.Native
 
         public override void EndPageAsync()
         {
-            PageIndex = TotalPages;
+            PageIndex = PageCount;
 
             ReloadAsync();
         }
@@ -73,7 +73,7 @@ namespace Com.Scm.Wpf.Views.Samples.Native
                 var result = await client.Queryable<ScmDemoNativeDao>()
                     //.Where(a => a != null)
                     .Select<SearchResultItemDvo>()
-                    .ToPageListAsync(0, 10, new RefAsync<int>(totalItems));
+                    .ToPageListAsync(0, 10, new RefAsync<int>(itemCount));
 
                 Items.Clear();
                 Items.AddRange(result);

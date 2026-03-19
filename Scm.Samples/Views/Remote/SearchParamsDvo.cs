@@ -47,9 +47,9 @@ namespace Com.Scm.Wpf.Views.Samples.Remote
         public override void NextPageAsync()
         {
             PageIndex += 1;
-            if (PageIndex > TotalPages)
+            if (PageIndex > PageCount)
             {
-                PageIndex = TotalPages;
+                PageIndex = PageCount;
             }
 
             ReloadAsync();
@@ -57,7 +57,7 @@ namespace Com.Scm.Wpf.Views.Samples.Remote
 
         public void EndPageAsync()
         {
-            PageIndex = TotalPages;
+            PageIndex = PageCount;
 
             ReloadAsync();
         }

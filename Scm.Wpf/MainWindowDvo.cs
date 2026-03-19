@@ -80,12 +80,14 @@ namespace Com.Scm.Wpf.Dvo
         {
             var menu = new MenuDto();
             menu.id = 1;
+            menu.icon = "Home";
             menu.codec = "root";
             menu.namec = "Home";
             menuList.Add(menu);
 
             var item = new MenuDto();
             item.id = 10;
+            item.icon = "Responsive";
             item.codec = "demo";
             item.namec = "工具演示";
             item.pid = menu.id;
@@ -95,6 +97,7 @@ namespace Com.Scm.Wpf.Dvo
 
             item = new MenuDto();
             item.id = 11;
+            item.icon = "DatabaseMarker";
             item.codec = "demo-native";
             item.namec = "本地数据";
             item.pid = menu.id;
@@ -105,6 +108,7 @@ namespace Com.Scm.Wpf.Dvo
 
             item = new MenuDto();
             item.id = 12;
+            item.icon = "DatabaseSync";
             item.codec = "demo-remote";
             item.namec = "远程数据";
             item.pid = menu.id;
@@ -115,6 +119,7 @@ namespace Com.Scm.Wpf.Dvo
 
             item = new MenuDto();
             item.id = 13;
+            item.icon = "InformationBox";
             item.codec = "scm-about";
             item.namec = "关于软件";
             item.pid = menu.id;
@@ -124,6 +129,7 @@ namespace Com.Scm.Wpf.Dvo
 
             menu = new MenuDto();
             menu.id = 20;
+            menu.icon = "Harddisk";
             menu.codec = "nas";
             menu.namec = "松果云盘";
             //menu.pid = menu.id;
@@ -131,6 +137,7 @@ namespace Com.Scm.Wpf.Dvo
 
             item = new MenuDto();
             item.id = 21;
+            item.icon = "FolderSync";
             item.codec = "nas-folder";
             item.namec = "目录管理";
             item.pid = menu.id;
@@ -141,6 +148,7 @@ namespace Com.Scm.Wpf.Dvo
 
             item = new MenuDto();
             item.id = 22;
+            item.icon = "FileSync";
             item.codec = "nas-sync";
             item.namec = "同步日志";
             item.pid = menu.id;
@@ -151,6 +159,7 @@ namespace Com.Scm.Wpf.Dvo
 
             item = new MenuDto();
             item.id = 23;
+            item.icon = "Folder";
             item.codec = "nas-native";
             item.namec = "本地目录";
             item.pid = menu.id;
@@ -161,6 +170,7 @@ namespace Com.Scm.Wpf.Dvo
 
             item = new MenuDto();
             item.id = 24;
+            item.icon = "Cloud";
             item.codec = "nas-remote";
             item.namec = "远端目录";
             item.pid = menu.id;
@@ -218,8 +228,10 @@ namespace Com.Scm.Wpf.Dvo
             tabs.Header = namec;
             tabs.Content = scmView.GetView();
 
+            var index = TabModels.Count;
             TabModels.Add(tabs);
-            TabIndex = TabModels.Count - 1;
+
+            TabIndex = index;
         }
 
         /// <summary>
