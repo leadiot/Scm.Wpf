@@ -26,72 +26,10 @@ namespace Com.Scm.Wpf.Controls
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private IEnumerable<ScmColumnInfo> _Columns;
-        private List<int> _PageItems = new List<int> { 10, 20, 30, 50, 100, 200, 300, 500 };
 
         private ScmPageView _Window;
         public ScmPageView SearchView { get { return _Window; } set { _Window = value; } }
-
-        private int pageIndex;
-        public int PageIndex { get { return pageIndex; } set { SetProperty(ref pageIndex, value); } }
-
-        private int pageItems = 20;
-        public int PageItems { get { return pageItems; } set { SetProperty(ref pageItems, value); } }
-
-        private int view;
-        public int View { get { return view; } set { SetProperty(ref view, value); } }
-
-        private int totalPages;
-        public int TotalPages { get { return totalPages; } set { SetProperty(ref totalPages, value); } }
-
-        private int totalItems;
-        public int TotalItems { get { return totalItems; } set { SetProperty(ref totalItems, value); } }
-
-        /// <summary>
-        /// 表头组件是否可见
-        /// </summary>
-        public Visibility HeadVisibility { get { return (Visibility)GetValue(HeadVisibilityProperty); } set { SetValue(HeadVisibilityProperty, value); } }
-        public static readonly DependencyProperty HeadVisibilityProperty = DependencyProperty.Register(nameof(HeadVisibility), typeof(Visibility), typeof(PageGrid), new PropertyMetadata(null));
-
-        /// <summary>
-        /// 客制组件是否可见
-        /// </summary>
-        public Visibility CustomVisibility { get { return (Visibility)GetValue(CustomVisibilityProperty); } set { SetValue(CustomVisibilityProperty, value); } }
-        public static readonly DependencyProperty CustomVisibilityProperty = DependencyProperty.Register(nameof(CustomVisibility), typeof(Visibility), typeof(PageGrid), new PropertyMetadata(null));
-
-        /// <summary>
-        /// 搜索组件是否可见
-        /// </summary>
-        public Visibility SearchVisibility { get { return (Visibility)GetValue(SearchVisibilityProperty); } set { SetValue(SearchVisibilityProperty, value); } }
-        public static readonly DependencyProperty SearchVisibilityProperty = DependencyProperty.Register(nameof(SearchVisibility), typeof(Visibility), typeof(PageGrid), new PropertyMetadata(null));
-
-        /// <summary>
-        /// 高级组件是否可见
-        /// </summary>
-        public Visibility MoreVisibility { get { return (Visibility)GetValue(MoreVisibilityProperty); } set { SetValue(MoreVisibilityProperty, value); } }
-        public static readonly DependencyProperty MoreVisibilityProperty = DependencyProperty.Register(nameof(MoreVisibility), typeof(Visibility), typeof(PageGrid), new PropertyMetadata(null));
-
-        /// <summary>
-        /// 表尾组件是否可见
-        /// </summary>
-        public Visibility FootVisibility { get { return (Visibility)GetValue(FootVisibilityProperty); } set { SetValue(FootVisibilityProperty, value); } }
-        public static readonly DependencyProperty FootVisibilityProperty = DependencyProperty.Register(nameof(FootVisibility), typeof(Visibility), typeof(PageGrid), new PropertyMetadata(null));
-
-        /// <summary>
-        /// 分页组件是否可见
-        /// </summary>
-        public Visibility PageVisibility { get { return (Visibility)GetValue(PageVisibilityProperty); } set { SetValue(PageVisibilityProperty, value); } }
-        public static readonly DependencyProperty PageVisibilityProperty = DependencyProperty.Register(nameof(PageVisibility), typeof(Visibility), typeof(PageGrid), new PropertyMetadata(null));
-
-        /// <summary>
-        /// 操作组件是否可见
-        /// </summary>
-        public Visibility OptionVisibility { get { return (Visibility)GetValue(OptionVisibilityProperty); } set { SetValue(OptionVisibilityProperty, value); } }
-        public static readonly DependencyProperty OptionVisibilityProperty = DependencyProperty.Register(nameof(OptionVisibility), typeof(Visibility), typeof(PageGrid), new PropertyMetadata(null));
-
-        public string PagesInfo
-        {
-            get { return $"共 {TotalPages} 页"; }
-        }
+        private ScmPageGridDvo _Dvo;
 
         public PageGrid()
         {
@@ -103,26 +41,26 @@ namespace Com.Scm.Wpf.Controls
         /// </summary>
         /// <param name="columns"></param>
         /// <param name="autoData"></param>
-        public void Init(ScmPageView view)
+        public void Init(ScmPageView view, ScmPageGridDvo dvo)
         {
             _Window = view;
+            _Dvo = dvo;
 
-            GenColumns(view.GetColumns());
+            GenColumns(dvo.Columns);
 
             if (view.GetCustomView() != null)
             {
                 GdCustom.Children.Clear();
                 GdCustom.Children.Add(view.GetCustomView());
-                CustomVisibility = Visibility.Visible;
+                _Dvo.CustomVisibility = Visibility.Visible;
             }
 
             if (view.GetSearchView() != null)
             {
-                SearchVisibility = Visibility.Visible;
+                _Dvo.MoreVisibility = Visibility.Visible;
             }
 
-            DgGrid.ItemsSource = view.GetItemsSource();
-            this.DataContext = this;
+            this.DataContext = _Dvo;
         }
 
         #region 列配置
@@ -411,20 +349,6 @@ namespace Com.Scm.Wpf.Controls
         #endregion
 
         /// <summary>
-        /// 数据展示
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="response"></param>
-        public void ShowData<T>(ScmSearchPageResponse<T> response) where T : ScmSearchResultItemDvo
-        {
-            PageIndex = 1;
-            TotalPages = (int)response.TotalPages;
-            TotalItems = (int)response.TotalItems;
-
-            DgGrid.ItemsSource = response.Items;
-        }
-
-        /// <summary>
         /// 选中所有事件
         /// </summary>
         /// <param name="sender"></param>
@@ -445,7 +369,7 @@ namespace Com.Scm.Wpf.Controls
             {
                 var dvo = item as ScmSearchResultItemDvo;
                 if (dvo == null) return;
-                dvo.Checked = isChecked;
+                dvo.IsChecked = isChecked;
             }
         }
 
@@ -805,7 +729,7 @@ namespace Com.Scm.Wpf.Controls
         /// <param name="e"></param>
         private void BtFirst_Click(object sender, RoutedEventArgs e)
         {
-            _Window.FirstPageAsync();
+            _Dvo.FirstPageAsync();
         }
 
         /// <summary>
@@ -815,7 +739,7 @@ namespace Com.Scm.Wpf.Controls
         /// <param name="e"></param>
         private void BtPrev_Click(object sender, RoutedEventArgs e)
         {
-            _Window.PrevPageAsync();
+            _Dvo.PrevPageAsync();
         }
 
         /// <summary>
@@ -825,7 +749,7 @@ namespace Com.Scm.Wpf.Controls
         /// <param name="e"></param>
         private void BtNext_Click(object sender, RoutedEventArgs e)
         {
-            _Window.NextPageAsync();
+            _Dvo.NextPageAsync();
         }
 
         /// <summary>
@@ -835,7 +759,7 @@ namespace Com.Scm.Wpf.Controls
         /// <param name="e"></param>
         private void BtEnd_Click(object sender, RoutedEventArgs e)
         {
-            _Window.EndPageAsync();
+            _Dvo.EndPageAsync();
         }
 
         /// <summary>
@@ -851,7 +775,7 @@ namespace Com.Scm.Wpf.Controls
             }
 
             e.Handled = true;
-            _Window.SearchAsync(PageIndex);
+            _Dvo.SearchAsync();
         }
         #endregion
 
@@ -923,13 +847,6 @@ namespace Com.Scm.Wpf.Controls
             DrDrawer.IsOpen = true;
         }
 
-        private FrameworkElement _SearchElement;
-        public void SetSearch(FrameworkElement element)
-        {
-            _SearchElement = element;
-            MoreVisibility = Visibility.Visible;
-        }
-
         /// <summary>
         /// 保存事件
         /// </summary>
@@ -957,7 +874,7 @@ namespace Com.Scm.Wpf.Controls
         /// <param name="e"></param>
         private void BtSearch_Click(object sender, RoutedEventArgs e)
         {
-            _Window.SearchAsync(0);
+            _Dvo.SearchAsync(0);
         }
 
         /// <summary>
@@ -1000,7 +917,7 @@ namespace Com.Scm.Wpf.Controls
 
         private void Pagination_PageUpdated(object sender, HandyControl.Data.FunctionEventArgs<int> e)
         {
-            _Window.SearchAsync(HpPage.PageIndex);
+            _Dvo.SearchAsync(HpPage.PageIndex);
         }
     }
 

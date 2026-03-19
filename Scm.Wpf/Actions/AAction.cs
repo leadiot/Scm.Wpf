@@ -6,7 +6,7 @@ namespace Com.Scm.Wpf.Actions
     {
         public abstract void Execute(ScmMenuDvo dto);
 
-        public ScmWindow Owner { get; set; }
+        public ScmWindow Window { get; set; }
 
         protected string GetParam(Dictionary<string, string> paramList, string key, string def = null)
         {
@@ -28,11 +28,10 @@ namespace Com.Scm.Wpf.Actions
             var val = paramList[key];
             if (val == null)
             {
-                return val;
+                return def;
             }
 
-            val = val.Trim();
-            return val;
+            return val.Trim();
         }
     }
 }

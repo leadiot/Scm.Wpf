@@ -31,7 +31,7 @@
             </Grid>
         </Grid>
     </hc:Window.NonClientAreaContent>
-    <Border MouseLeftButtonDown="Border_MouseLeftButtonDown" Background="White">
+    <Border MouseLeftButtonDown="Border_MouseLeftButtonDown" Background="{StaticResource ScmWindowBackground}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
@@ -39,10 +39,13 @@
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
+
             <!-- 菜单栏 -->
             <uc:UcMenubarView x:Name="UcMenu" Grid.Row="0" Visibility="Collapsed" />
+
             <!-- 信息栏 -->
             <uc:UcInfobarView x:Name="UcInfo" Grid.Row="1"/>
+
             <DockPanel Grid.Row="2">
                 <!-- 导航栏 -->
                 <uc:UcGuidView x:Name="UcGuid" DockPanel.Dock="Left" Width="240" />
@@ -77,9 +80,6 @@
             <!-- 任务栏 -->
             <uc:UcTraybarView x:Name="UcTray" Grid.Row="3" />
 
-            <!-- 窗口遮罩层 -->
-            <Grid x:Name="GdToast"></Grid>
-
             <!-- 系统托盘图标 -->
             <hc:NotifyIcon
                 x:Name="TiTask"
@@ -98,6 +98,15 @@
                     </ContextMenu>
                 </hc:NotifyIcon.ContextMenu>
             </hc:NotifyIcon>
+
+            <!-- 窗口遮罩层 -->
+            <StackPanel
+                x:Name="GdToast"
+                Grid.Row="0"
+                Grid.RowSpan="4"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Width="360"/>
         </Grid>
     </Border>
 </hc:Window>

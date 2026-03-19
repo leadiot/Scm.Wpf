@@ -86,16 +86,18 @@ namespace Com.Scm
 
         void ShowException(Exception exception, string title = null);
 
-        bool? ShowDialog(string message, string title = null);
+        bool? ShowConfirm(string message, string title = null);
 
         void ShowHome();
+
+        void ShowAccount();
 
         /// <summary>
         /// 显示视图
         /// </summary>
-        /// <param name="viewClass"></param>
+        /// <param name="view"></param>
         /// <param name="useCache"></param>
-        void ShowView(string codec, string namec, string viewClass, bool useCache = true);
+        void ShowView(string codec, string namec, string view, string args = null, string module = null, bool useCache = true);
 
         ScmAppInfo GetAppInfo(string code);
 
@@ -104,5 +106,9 @@ namespace Com.Scm
         ScmClient GetClient();
 
         Window GetWindow();
+
+        void Logout();
+
+        void Exit();
     }
 }

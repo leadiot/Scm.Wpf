@@ -82,6 +82,16 @@ namespace Com.Scm
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public string GetDataUrl(string url)
+        {
+            return "http://" + _Host + "/Data" + url;
+        }
+
+        /// <summary>
         /// 本地数据目录
         /// </summary>
         public string DataDir { get; set; }

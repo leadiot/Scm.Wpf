@@ -1,0 +1,28 @@
+﻿<UserControl x:Class="Com.Scm.Samples.Views.Remote.CustomView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Com.Scm.Samples.Views.Remote" xmlns:hc="https://handyorg.github.io/handycontrol" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <StackPanel Orientation="Horizontal">
+        <hc:ButtonGroup>
+            <Button x:Name="BtAppend" Click="BtAppend_Click" ToolTip="新增" Style="{StaticResource ButtonPrimary}">
+                <iconPacks:PackIconMaterial Kind="Plus" Width="12" Height="12" />
+            </Button>
+        </hc:ButtonGroup>
+        <hc:Divider Orientation="Vertical"/>
+        <hc:ButtonGroup>
+            <Button x:Name="BtEnable" Click="BtEnable_Click" ToolTip="启用">
+                <iconPacks:PackIconMaterial Kind="CheckboxOutline" Width="12" Height="12" />
+            </Button>
+            <Button x:Name="BtDisable" Click="BtDisable_Click" ToolTip="禁用">
+                <iconPacks:PackIconMaterial Kind="CloseBoxOutline" Width="12" Height="12" />
+            </Button>
+            <Button x:Name="BtDelete" Click="BtDelete_Click" ToolTip="删除">
+                <iconPacks:PackIconMaterial Kind="DeleteOutline" Width="12" Height="12" Foreground="Red" />
+            </Button>
+        </hc:ButtonGroup>
+    </StackPanel>
+</UserControl>

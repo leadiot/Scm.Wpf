@@ -1,9 +1,7 @@
 ﻿using Com.Scm.Helper;
 using Com.Scm.Sys.Menu;
 using Com.Scm.Wpf.Dvo.Menu;
-using Com.Scm.Wpf.Helper;
 using Com.Scm.Wpf.Models;
-using Com.Scm.Wpf.Views.Home;
 using NLog;
 using System.Collections.ObjectModel;
 using System.Reflection;
@@ -28,8 +26,6 @@ namespace Com.Scm.Wpf.Dvo
 
         private int tabIndex;
         public int TabIndex { get { return tabIndex; } set { SetProperty(ref tabIndex, value); } }
-
-        private HomeView _HomeView;
 
         private bool isBlink = false;
         public bool IsBlink { get { return isBlink; } set { SetProperty(ref isBlink, value); } }
@@ -104,6 +100,7 @@ namespace Com.Scm.Wpf.Dvo
             item.pid = menu.id;
             item.uri = "Com.Scm.Wpf.Actions.ViewAction";
             item.view = "Com.Scm.Wpf.Views.Samples.Native.MainView";
+            item.module = "Scm.Samples";
             menuList.Add(item);
 
             item = new MenuDto();
@@ -113,6 +110,8 @@ namespace Com.Scm.Wpf.Dvo
             item.pid = menu.id;
             item.uri = "Com.Scm.Wpf.Actions.ViewAction";
             item.view = "Com.Scm.Wpf.Views.Samples.Remote.MainView";
+            item.module = "Scm.Samples";
+            menuList.Add(item);
 
             item = new MenuDto();
             item.id = 13;
@@ -136,7 +135,8 @@ namespace Com.Scm.Wpf.Dvo
             item.namec = "目录管理";
             item.pid = menu.id;
             item.uri = "Com.Scm.Wpf.Actions.ViewAction";
-            item.view = "Com.Scm.Nas.Views.FolderView";
+            item.view = "Com.Scm.Nas.Views.Folder.FolderView";
+            item.module = "Nas.Wpf";
             menuList.Add(item);
 
             item = new MenuDto();
@@ -146,6 +146,7 @@ namespace Com.Scm.Wpf.Dvo
             item.pid = menu.id;
             item.uri = "Com.Scm.Wpf.Actions.ViewAction";
             item.view = "Com.Scm.Nas.Views.Sync.SyncView";
+            item.module = "Nas.Wpf";
             menuList.Add(item);
 
             item = new MenuDto();
@@ -154,7 +155,8 @@ namespace Com.Scm.Wpf.Dvo
             item.namec = "本地目录";
             item.pid = menu.id;
             item.uri = "Com.Scm.Wpf.Actions.ViewAction";
-            item.view = "Com.Scm.Nas.Views.NativeView";
+            item.view = "Com.Scm.Nas.Views.Native.NativeView";
+            item.module = "Nas.Wpf";
             menuList.Add(item);
 
             item = new MenuDto();
@@ -163,7 +165,8 @@ namespace Com.Scm.Wpf.Dvo
             item.namec = "远端目录";
             item.pid = menu.id;
             item.uri = "Com.Scm.Wpf.Actions.ViewAction";
-            item.view = "Com.Scm.Nas.Views.RemoteView";
+            item.view = "Com.Scm.Nas.Views.Remote.RemoteView";
+            item.module = "Nas.Wpf";
             menuList.Add(item);
         }
 
@@ -172,9 +175,9 @@ namespace Com.Scm.Wpf.Dvo
         /// </summary>
         /// <param name="codec"></param>
         /// <param name="namec"></param>
-        /// <param name="viewClass"></param>
+        /// <param name="view"></param>
         /// <param name="useCache"></param>
-        public void ShowView(string codec, string namec, string viewClass, bool useCache = false)
+        public void ShowView(string codec, string namec, string view, string args = null, string module = null, bool useCache = false)
         {
             for (int i = 0; i < TabModels.Count; i++)
             {
@@ -185,31 +188,35 @@ namespace Com.Scm.Wpf.Dvo
                 }
             }
 
-            _Logger.Info($"MainWindow-ShowView:viewClass[{viewClass}],useCache:[{useCache}]");
-            if (string.IsNullOrWhiteSpace(viewClass))
+            _Logger.Info($"MainWindow-ShowView:viewClass[{view}],useCache:[{useCache}]");
+            if (string.IsNullOrWhiteSpace(view))
             {
                 return;
             }
 
-            var assembly = Assembly.Load("Nas.Wpf");
+            Assembly assembly = null;
+            if (!string.IsNullOrWhiteSpace(module))
+            {
+                assembly = Assembly.Load(module);
+            }
             if (assembly == null)
             {
-                return;
+                assembly = Assembly.GetExecutingAssembly();
             }
 
-            var view = assembly.CreateInstance(viewClass) as ScmView;
-            if (view == null)
+            var scmView = assembly.CreateInstance(view) as ScmView;
+            if (scmView == null)
             {
-                _Logger.Error("MainWindow-ShowView:创建视图失败-" + viewClass);
+                _Logger.Error("MainWindow-ShowView:创建视图失败-" + view);
                 return;
             }
 
-            view.Init(_Window);
+            scmView.Init(_Window);
 
             TabModel tabs = new TabModel();
             tabs.Code = codec;
             tabs.Header = namec;
-            tabs.Content = view.GetView();
+            tabs.Content = scmView.GetView();
 
             TabModels.Add(tabs);
             TabIndex = TabModels.Count - 1;
@@ -239,29 +246,6 @@ namespace Com.Scm.Wpf.Dvo
 
             TabModels.Add(tabs);
             TabIndex = TabModels.Count - 1;
-        }
-
-        /// <summary>
-        /// 显示首页
-        /// </summary>
-        public void ShowHomeView()
-        {
-            if (_HomeView == null)
-            {
-                _HomeView = new HomeView();
-                _HomeView.Init(_Window);
-            }
-            ShowView("home", "首页", _HomeView);
-        }
-
-        public void Exit()
-        {
-            SqlHelper.Close();
-            Application.Current.Shutdown();
-        }
-
-        public void Logout()
-        {
         }
     }
 }

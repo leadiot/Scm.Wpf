@@ -111,7 +111,7 @@ namespace Com.Scm.Wpf.Views.Uc
                 }
 
                 action = (AAction)obj;
-                action.Owner = _Owner;
+                action.Window = _Owner;
                 dvo.Action = action;
             }
 

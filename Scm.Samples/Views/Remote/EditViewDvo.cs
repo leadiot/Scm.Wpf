@@ -2,7 +2,7 @@
 
 namespace Com.Scm.Wpf.Views.Samples.Remote
 {
-    public class ViewControlDvo : ScmDvo
+    public class EditViewDvo : ScmDvo
     {
     }
 }

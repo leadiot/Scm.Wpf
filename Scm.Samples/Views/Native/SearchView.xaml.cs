@@ -3,11 +3,11 @@
 namespace Com.Scm.Wpf.Views.Samples.Native
 {
     /// <summary>
-    /// InfoView.xaml 的交互逻辑
+    /// SearchView.xaml 的交互逻辑
     /// </summary>
-    public partial class ViewControl : UserControl
+    public partial class SearchView : UserControl
     {
-        public ViewControl()
+        public SearchView()
         {
             InitializeComponent();
         }

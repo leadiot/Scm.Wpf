@@ -5,16 +5,16 @@ namespace Com.Scm.Wpf.Views.Samples.Native
     /// <summary>
     /// EditView.xaml 的交互逻辑
     /// </summary>
-    public partial class EditControl : UserControl
+    public partial class EditView : UserControl
     {
-        private EditControlDvo _Dvo;
+        private EditViewDvo _Dvo;
 
-        public EditControl()
+        public EditView()
         {
             InitializeComponent();
         }
 
-        public void Init(EditControlDvo dvo)
+        public void Init(EditViewDvo dvo)
         {
             _Dvo = dvo;
             this.DataContext = dvo;

@@ -13,7 +13,9 @@
         <ContextMenu x:Key="CmMenu" Width="200">
             <MenuItem x:Name="MiInfo" Header="账户信息" Click="MiInfo_Click"/>
             <Separator/>
-            <MenuItem x:Name="MiExit" Header="退出登录" Click="MiExit_Click"/>
+            <MenuItem x:Name="MiLogout" Header="退出登录" Click="MiLogout_Click"/>
+            <Separator/>
+            <MenuItem x:Name="MiExit" Header="退出应用" Click="MiExit_Click"/>
         </ContextMenu>
     </UserControl.Resources>
     <Border BorderThickness="0 0 0 1" BorderBrush="Black">

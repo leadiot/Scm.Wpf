@@ -1,19 +1,25 @@
-﻿using Com.Scm.Utils;
+﻿using Com.Scm.Helper;
 using Com.Scm.Wpf.Dvo.Menu;
 
 namespace Com.Scm.Wpf.Actions
 {
+    /// <summary>
+    /// 浏览器事项
+    /// </summary>
     public class BrowserAction : AAction
     {
         public override void Execute(ScmMenuDvo dvo)
         {
-            LogUtils.Debug("BrowserAction-Execute");
-
-            if (Owner == null)
+            if (Window == null)
             {
-                LogUtils.Info("BrowserAction-Execute: Owner is null");
                 return;
             }
+
+            //var args = dvo.Args;
+            //if (string.IsNullOrWhiteSpace(args))
+            //{
+            //    return;
+            //}
 
             //if (paramList == null)
             //{
@@ -28,7 +34,7 @@ namespace Com.Scm.Wpf.Actions
             //    return;
             //}
 
-            //Owner.ShowView(url);
+            OsHelper.Browse(dvo.View);
         }
     }
 }

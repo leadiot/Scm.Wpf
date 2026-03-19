@@ -17,8 +17,7 @@
                 x:Name="BdHead"
                 Grid.Row="0"
                 Visibility="{Binding HeadVisibility}"
-                Style="{StaticResource BorderRegion}"
-                Padding="10">
+                Style="{StaticResource SearchBorder}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -36,17 +35,27 @@
                         Visibility="{Binding SearchVisibility}"
                         Orientation="Horizontal"
                         HorizontalAlignment="Right">
-                        <hc:SearchBar Width="120" Margin="6 0 0 0"></hc:SearchBar>
-                        <Button Margin="6 0 0 0" Style="{StaticResource ButtonPrimary}" Click="BtSearch_Click">查询</Button>
+                        <hc:ElementGroup Width="160">
+                            <hc:ElementGroup.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                    </Grid>
+                                </ItemsPanelTemplate>
+                            </hc:ElementGroup.ItemsPanel>
+                            <TextBox Grid.Column="0" Text="{Binding Key}" hc:InfoElement.ShowClearButton="True"></TextBox>
+                            <Button Grid.Column="1" Style="{StaticResource ButtonPrimary}" Click="BtSearch_Click">查询</Button>
+                        </hc:ElementGroup>
                         <Button Margin="6 0 0 0" Visibility="{Binding MoreVisibility}" Click="ShowSearch_Click">高级</Button>
                     </StackPanel>
                 </Grid>
             </Border>
             <Border
                 Grid.Row="1"
-                Background="{StaticResource ScmWindowBackground}"
-                BorderBrush="LightGray"
-                BorderThickness="1"
+                Style="{StaticResource ResultBorder}"
                 Margin="0 6 0 0">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -56,6 +65,7 @@
                     <Border x:Name="BdBody" Grid.Row="0">
                         <DataGrid
                             x:Name="DgGrid"
+                            ItemsSource="{Binding Items}"
                             hc:DataGridAttach.ShowRowNumber="True"
                             hc:DataGridAttach.ShowSelectAllButton="False" 
                             BorderThickness="0"
@@ -95,6 +105,7 @@
                                 Margin="6 0">
                                 <hc:Pagination
                                     Name="HpPage"
+                                    Margin="6 0"
                                     MaxPageCount="10"
                                     PageIndex="1"
                                     PageUpdated="Pagination_PageUpdated"

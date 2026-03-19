@@ -5,9 +5,9 @@ namespace Com.Scm.Wpf.Views.Home
     /// <summary>
     /// HomeView.xaml 的交互逻辑
     /// </summary>
-    public partial class HomeView : UserControl, ScmView
+    public partial class MainView : UserControl, ScmView
     {
-        public HomeView()
+        public MainView()
         {
             InitializeComponent();
         }

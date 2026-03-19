@@ -4,10 +4,13 @@ using Com.Scm.Wpf.Dvo;
 
 namespace Com.Scm.Wpf
 {
+    /// <summary>
+    /// 查询结果明细
+    /// </summary>
     public class ScmSearchResultItemDvo : ScmDvo
     {
         private bool _checked;
-        public bool Checked { get { return _checked; } set { SetProperty(ref _checked, value); } }
+        public bool IsChecked { get { return _checked; } set { SetProperty(ref _checked, value); } }
 
         private ScmRowStatusEnum _status;
         public ScmRowStatusEnum row_status { get { return _status; } set { SetProperty(ref _status, value); } }

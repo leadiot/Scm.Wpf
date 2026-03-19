@@ -2,7 +2,7 @@
 
 namespace Com.Scm.Wpf.Views.Samples.Native
 {
-    public class EditControlDvo : ScmDvo
+    public class EditViewDvo : ScmDvo
     {
         private string _codec;
         public string codec { get { return _codec; } set { SetProperty(ref _codec, value); } }

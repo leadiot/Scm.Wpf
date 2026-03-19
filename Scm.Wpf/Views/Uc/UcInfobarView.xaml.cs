@@ -23,6 +23,7 @@ namespace Com.Scm.Wpf.Views.Uc
             _Menu = FindResource("CmMenu") as ContextMenu;
         }
 
+        #region 窗体事件
         private void ToggleMenu_Click(object sender, RoutedEventArgs e)
         {
             if (TbGuid.IsChecked == true)
@@ -50,21 +51,21 @@ namespace Com.Scm.Wpf.Views.Uc
 
         }
 
+        /// <summary>
+        /// 显示首页
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BtHome_Click(object sender, RoutedEventArgs e)
         {
             _ScmWindow.ShowHome();
         }
 
-        private void MiInfo_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void MiExit_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
+        /// <summary>
+        /// 头像事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BtAvatar_Click(object sender, RoutedEventArgs e)
         {
             _Menu.PlacementTarget = BtAvatar;
@@ -73,5 +74,36 @@ namespace Com.Scm.Wpf.Views.Uc
             _Menu.IsOpen = true;
             _Menu.Show();
         }
+
+        /// <summary>
+        /// 账户信息
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MiInfo_Click(object sender, RoutedEventArgs e)
+        {
+            _ScmWindow.ShowAccount();
+        }
+
+        /// <summary>
+        /// 退出登录
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MiLogout_Click(object sender, RoutedEventArgs e)
+        {
+            _ScmWindow.Logout();
+        }
+
+        /// <summary>
+        /// 退出应用
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MiExit_Click(object sender, RoutedEventArgs e)
+        {
+            _ScmWindow.Exit();
+        }
+        #endregion
     }
 }

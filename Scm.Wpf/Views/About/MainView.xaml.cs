@@ -144,7 +144,7 @@ namespace Com.Scm.Views.About
                     return;
                 }
 
-                var result = _Window.ShowDialog($"发现新版本 {verInfo.ver}，是否立即升级？\n\n更新内容：\n{verInfo.remark}", "版本升级");
+                var result = _Window.ShowConfirm($"发现新版本 {verInfo.ver}，是否立即升级？\n\n更新内容：\n{verInfo.remark}", "版本升级");
                 if (result != true)
                 {
                     return;

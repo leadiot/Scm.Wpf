@@ -32,6 +32,12 @@ namespace Com.Scm.Wpf.Dvo.Menu
         private string view;
         public string View { get { return view; } set { SetProperty(ref view, value); } }
 
+        private string module;
+        public string Module { get { return module; } set { SetProperty(ref module, value); } }
+
+        private string args;
+        public string Args { get { return args; } set { SetProperty(ref args, value); } }
+
         private string icon;
         public string Icon { get { return icon; } set { SetProperty(ref icon, value); } }
 
@@ -86,11 +92,6 @@ namespace Com.Scm.Wpf.Dvo.Menu
         public AAction Action { get; set; }
 
         /// <summary>
-        /// 事件参数
-        /// </summary>
-        public string Args { get; set; }
-
-        /// <summary>
         /// 界面组件
         /// </summary>
         public FrameworkElement Element { get; set; }
@@ -117,6 +118,8 @@ namespace Com.Scm.Wpf.Dvo.Menu
             dvo.Pid = dto.pid;
             dvo.Uri = dto.uri;
             dvo.View = dto.view;
+            dvo.Module = dto.module;
+            dvo.Args = dto.args;
             dvo.Icon = dto.icon;
             dvo.Color = dto.color;
             dvo.Visible = dto.visible;

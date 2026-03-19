@@ -1,31 +1,77 @@
 ﻿using Com.Scm.Enums;
 using Com.Scm.Wpf.Models;
-using System.Collections.ObjectModel;
 
 namespace Com.Scm.Wpf.Views.Samples.Remote
 {
-    public class SearchParamsDvo : ScmSearchParamsDvo
+    public class SearchParamsDvo : ScmPageGridDvo
     {
-        private string key;
-        public string Key { get { return key; } set { SetProperty(ref key, value); } }
-
         private ScmRowStatusEnum status;
         public ScmRowStatusEnum Status { get { return status; } set { SetProperty(ref status, value); } }
 
         private bool drawer;
         public bool Drawer { get { return drawer; } set { SetProperty(ref drawer, value); } }
 
-        public ObservableCollection<ScmColumnInfo> Columns { get; set; }
-
-        public SearchParamsDvo()
+        public void Init()
         {
-            Columns = new ObservableCollection<ScmColumnInfo>
+            Columns = new List<ScmColumnInfo>
             {
                 new ScmColumnInfo { Type=ScmColumnType.Text, Label = "ID", Value = "Id",Hidden=true },
                 new ScmColumnInfo { Type=ScmColumnType.CheckBox, Label = "", Value = "IsChecked", Width="70" },
                 new ScmColumnInfo { Type=ScmColumnType.Text, Label = "系统编码", Value = "Codec" },
                 new ScmColumnInfo { Type=ScmColumnType.Text, Label = "系统名称", Value = "Namec", Width="*", MinWidth="100" }
             };
+        }
+
+        public override void SearchAsync(int pageIndex = 0)
+        {
+        }
+
+        public override void FirstPageAsync()
+        {
+            PageIndex += 1;
+
+            ReloadAsync();
+        }
+
+        public override void PrevPageAsync()
+        {
+            PageIndex -= 1;
+            if (PageIndex < 1)
+            {
+                PageIndex = 1;
+            }
+
+            ReloadAsync();
+        }
+
+        public override void NextPageAsync()
+        {
+            PageIndex += 1;
+            if (PageIndex > TotalPages)
+            {
+                PageIndex = TotalPages;
+            }
+
+            ReloadAsync();
+        }
+
+        public void EndPageAsync()
+        {
+            PageIndex = TotalPages;
+
+            ReloadAsync();
+        }
+
+        public async void ReloadAsync()
+        {
+            var body = ToDictionary();
+            //_Response = await _Owner.GetObjectAsync<ScmSearchPageResponse<SearchResultDataDvo>>("/urposition/pages", body);
+            //if (!_Response.Success)
+            //{
+            //    return;
+            //}
+
+            //PgData.ShowData(_Response);
         }
     }
 }

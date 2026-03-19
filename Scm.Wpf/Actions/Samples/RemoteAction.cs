@@ -6,12 +6,12 @@ namespace Com.Scm.Wpf.Actions.Samples
     {
         public override void Execute(ScmMenuDvo dvo)
         {
-            if (Owner == null)
+            if (Window == null)
             {
                 return;
             }
 
-            Owner.ShowView("", "", "Com.Scm.Wpf.Views.Samples.Remote.MainView");
+            Window.ShowView(dvo.Codec, dvo.Namec, "Com.Scm.Wpf.Views.Samples.Remote.MainView");
         }
     }
 }

@@ -8,17 +8,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Com.Scm.Wpf.Views.Samples.Remote
+namespace Com.Scm.Views
 {
     /// <summary>
-    /// SearchControl.xaml 的交互逻辑
+    /// AccountWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class SearchControl : UserControl
+    public partial class AccountWindow : Window
     {
-        public SearchControl()
+        public AccountWindow()
         {
             InitializeComponent();
         }

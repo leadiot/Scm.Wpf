@@ -1,6 +1,5 @@
 ﻿using Com.Scm.Api;
 using Com.Scm.Config;
-using Com.Scm.Controls;
 using Com.Scm.Login;
 using Com.Scm.Sys.Config;
 using Com.Scm.Sys.Menu;
@@ -9,6 +8,7 @@ using Com.Scm.Views;
 using Com.Scm.Wpf.Actions;
 using Com.Scm.Wpf.Dvo;
 using Com.Scm.Wpf.Helper;
+using HandyControl.Controls;
 using System.Reflection;
 using System.Windows;
 
@@ -48,6 +48,9 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     /// </summary>
     private string _AppKey = "";
 
+    private Scm.Wpf.Views.Home.MainView _HomeView;
+    private Scm.Views.Account.MainView _AccountView;
+
     private MainWindowDvo _Dvo;
     #endregion
 
@@ -68,6 +71,8 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     {
         _Client = client;
 
+        Growl.Register("ScmToast", GdToast);
+
         if (menuList == null)
         {
             menuList = new List<MenuDto>();
@@ -87,7 +92,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
 
         //ShowTray();
 
-        _Dvo.ShowHomeView();
+        ShowHome();
     }
 
     #region ScmWindow 接口实现
@@ -97,8 +102,8 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     public void ShowToast(string message, ToastType type = ToastType.Info)
     {
         LogUtils.Info("ShowToast:" + message);
-        //Growl.Info(message);
-        ToastManager.ShowToast(GdToast, message, type);
+        Growl.Info(message, "ScmToast");
+        //ToastManager.ShowToast(GdToast, message, type);
     }
 
     /// <summary>
@@ -124,14 +129,14 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     {
     }
 
+    public bool? ShowConfirm(string message, string title = null)
+    {
+        return MessageWindow.ShowDialog(this, message, title);
+    }
+
     public void ShowException(Exception exception, string title = null)
     {
         ExceptionWindow.ShowException(this, exception);
-    }
-
-    public bool? ShowDialog(string message, string title = null)
-    {
-        return MessageWindow.ShowDialog(this, message, title);
     }
 
     public void HideGuid()
@@ -196,12 +201,27 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
 
     public void ShowHome()
     {
-        _Dvo.ShowHomeView();
+        if (_HomeView == null)
+        {
+            _HomeView = new Scm.Wpf.Views.Home.MainView();
+            _HomeView.Init(this);
+        }
+        _Dvo.ShowView("home", "首页", _HomeView);
     }
 
-    public void ShowView(string codec, string namec, string viewClass, bool useCache = true)
+    public void ShowAccount()
     {
-        _Dvo.ShowView(codec, namec, viewClass);
+        if (_AccountView == null)
+        {
+            _AccountView = new Scm.Views.Account.MainView();
+            _AccountView.Init(this);
+        }
+        _Dvo.ShowView("account", "账户信息", _AccountView);
+    }
+
+    public void ShowView(string codec, string namec, string view, string args = null, string module = null, bool useCache = true)
+    {
+        _Dvo.ShowView(codec, namec, view, args, module, useCache);
     }
 
     /// <summary>
@@ -384,12 +404,12 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
 
     private void MiLogout_Click(object sender, RoutedEventArgs e)
     {
-        ConfirmLogout();
+        Logout();
     }
 
     private void MiExit_Click(object sender, RoutedEventArgs e)
     {
-        ConfirmExit();
+        Exit();
     }
     #endregion
     #endregion
@@ -507,7 +527,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
         var action = Assembly.GetEntryAssembly().CreateInstance(className) as AAction;
         if (action != null)
         {
-            action.Owner = this;
+            action.Window = this;
         }
         return action;
     }
@@ -554,9 +574,12 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
         return;
     }
 
-    private void ConfirmExit()
+    /// <summary>
+    /// 退出应用处理
+    /// </summary>
+    public void Exit()
     {
-        var result = MessageWindow.ShowDialog(this, "确认要退出应用吗？");
+        var result = ShowConfirm("确认要退出应用吗？");
         if (result != true)
         {
             if (IsVisible)
@@ -566,12 +589,16 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
             return;
         }
 
-        _Dvo.Exit();
+        SqlHelper.Close();
+        Application.Current.Shutdown();
     }
 
-    public async void ConfirmLogout()
+    /// <summary>
+    /// 退出登录处理
+    /// </summary>
+    public async void Logout()
     {
-        var result = MessageWindow.ShowDialog(this, "确认要退出当前登录用户吗？");
+        var result = ShowConfirm("确认要退出当前登录用户吗？");
         if (result != true)
         {
             return;

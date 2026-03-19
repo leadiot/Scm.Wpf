@@ -31,23 +31,43 @@
     <Color x:Key="china_neutral_800">#2D2D2D</Color>
     <Color x:Key="china_neutral_900">#212121</Color>
 
+    <!-- 主色调 -->
     <SolidColorBrush x:Key="ScmColorPrimary" Color="{StaticResource china_blue_500}"/>
     <SolidColorBrush x:Key="ScmColorPrimaryVariant" Color="{StaticResource china_blue_700}"/>
     <SolidColorBrush x:Key="ScmColorOnPrimary" Color="{StaticResource white}"/>
 
+    <!-- 窗体背景 -->
     <SolidColorBrush x:Key="ScmWindowBackground" Color="{StaticResource china_neutral_100}"/>
+    <!-- 面板背景 -->
     <SolidColorBrush x:Key="ScmPanelBackground" Color="{StaticResource china_neutral_50}"/>
+
     <SolidColorBrush x:Key="ScmBorderBrush" Color="{StaticResource china_neutral_200}"/>
     <SolidColorBrush x:Key="ScmTextColorPrimary" Color="{StaticResource china_neutral_700}"/>
     <SolidColorBrush x:Key="ScmTextColorSecondary" Color="{StaticResource china_neutral_500}"/>
 
-    <Style TargetType="Border" x:Key="BorderCornor">
-        <Setter Property="CornerRadius" Value="10"/>
+    <Style TargetType="TextBlock" x:Key="InputLabel">
+        <Setter Property="Margin" Value="6 0 0 0"/>
     </Style>
 
     <Style TargetType="Border" x:Key="PrimaryBorder">
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="BorderBrush" Value="{StaticResource ScmBorderBrush}"/>
+    </Style>
+
+    <!-- 查询条件边框 -->
+    <Style TargetType="Border" x:Key="SearchBorder">
+        <Setter Property="CornerRadius" Value="5"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="12"/>
+        <Setter Property="BorderBrush" Value="{StaticResource ScmBorderBrush}"/>
+        <Setter Property="Background" Value="{StaticResource ScmPanelBackground}"/>
+    </Style>
+
+    <!-- 查询结果边框 -->
+    <Style TargetType="Border" x:Key="ResultBorder">
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="{StaticResource ScmBorderBrush}"/>
+        <Setter Property="Background" Value="{StaticResource ScmPanelBackground}"/>
     </Style>
 
     <Style TargetType="Border" x:Key="PrimaryBorderWithEffect">
