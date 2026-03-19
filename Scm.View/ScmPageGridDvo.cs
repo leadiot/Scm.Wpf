@@ -1,9 +1,8 @@
-﻿using Com.Scm.Wpf.Dvo;
-using Com.Scm.Wpf.Models;
+﻿using Com.Scm.Models;
 using System.Collections.ObjectModel;
 using System.Windows;
 
-namespace Com.Scm.Wpf
+namespace Com.Scm.Dvo
 {
     public class ScmPageGridDvo : ScmDvo
     {

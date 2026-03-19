@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Media.Animation;
 
-namespace Com.Scm.Wpf.Helper
+namespace Com.Scm.Helper
 {
     public class AnimationHelper
     {

@@ -25,10 +25,12 @@ namespace Com.Scm
         /// </summary>
         private const string INFO_FILE = "info.json";
 
-        public ScmTerminal()
+        public ScmTerminal(string dataDir)
         {
             TokenName = KEY_TOKEN_NAME;
             RemoteUrl = "http://" + SERVER_HOST + "/Api";
+
+            this.DataDir = dataDir;
         }
 
         public long GetTerminalId()

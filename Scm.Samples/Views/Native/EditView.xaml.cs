@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Com.Scm.Wpf.Views.Samples.Native
+namespace Com.Scm.Views.Samples.Native
 {
     /// <summary>
     /// EditView.xaml 的交互逻辑

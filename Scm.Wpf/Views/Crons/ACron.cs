@@ -1,4 +1,4 @@
-﻿namespace Com.Scm.Wpf.Views.Crons
+﻿namespace Com.Scm.Views.Crons
 {
     /// <summary>
     /// 任务调度

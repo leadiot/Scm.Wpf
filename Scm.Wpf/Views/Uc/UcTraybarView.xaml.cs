@@ -1,9 +1,9 @@
 ﻿using Com.Scm.Utils;
-using Com.Scm.Wpf.Dvo;
+using Com.Scm.Dvo;
 using System.Windows.Controls;
 using System.Windows.Threading;
 
-namespace Com.Scm.Wpf.Views.Uc
+namespace Com.Scm.Views.Uc
 {
     /// <summary>
     /// UcInfobarView.xaml 的交互逻辑

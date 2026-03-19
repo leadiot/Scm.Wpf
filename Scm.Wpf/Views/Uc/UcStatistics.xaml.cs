@@ -11,7 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Com.Scm.Wpf.Views.Uc
+namespace Com.Scm.Views.Uc
 {
     /// <summary>
     /// UcStatistics.xaml 的交互逻辑

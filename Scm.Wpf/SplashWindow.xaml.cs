@@ -2,11 +2,9 @@
 using Com.Scm.Dao;
 using Com.Scm.Enums;
 using Com.Scm.Login;
+using Com.Scm.Sys.Menu;
 using Com.Scm.Uid.Config;
 using Com.Scm.Utils;
-using Com.Scm.Wpf;
-using Com.Scm.Wpf.Enums;
-using Com.Scm.Wpf.Helper;
 using System.Windows;
 
 namespace Com.Scm
@@ -111,7 +109,7 @@ namespace Com.Scm
                 // 校验用户登录
                 if (AppSettings.Instance.Env.LoginMode == ScmLoginTypeEnum.Operator)
                 {
-                    ShowUserWindow(AppSettings.Instance);
+                    CheckAuth();
                     return;
                 }
 
@@ -143,23 +141,25 @@ namespace Com.Scm
             helper.InitDb();
         }
 
+        private void CheckAuth()
+        {
+            var scmOperator = new ScmOperator(ScmClientEnv.DataDir);
+
+            ShowAuthWindow(AppSettings.Instance, scmOperator);
+        }
+
         /// <summary>
         /// 显示用户登录
         /// </summary>
         /// <param name="splashWindow"></param>
         /// <param name="appSettings"></param>
-        private void ShowUserWindow(AppSettings appSettings)
+        private void ShowAuthWindow(AppSettings appSettings, ScmOperator scmOperator)
         {
             var window = new OperatorWindow();
             window.Show();
             Close();
 
-            window.Init(appSettings);
-        }
-
-        private async Task CheckUser()
-        {
-            ShowUserWindow(AppSettings.Instance);
+            window.Init(appSettings, scmOperator);
         }
 
         /// <summary>
@@ -184,8 +184,7 @@ namespace Com.Scm
         /// <returns></returns>
         private async void CheckBind()
         {
-            var scmTerminal = new ScmTerminal();
-            scmTerminal.DataDir = ScmClientEnv.DataDir;
+            var scmTerminal = new ScmTerminal(ScmClientEnv.DataDir);
             if (!scmTerminal.LoadToken())
             {
                 ShowBindWindow(AppSettings.Instance, scmTerminal);
@@ -221,8 +220,11 @@ namespace Com.Scm
         /// <param name="scmTerminal"></param>
         private async void ShowMainWindow(AppSettings appSettings, ScmTerminal scmTerminal)
         {
+            //var menus = await scmTerminal.LoadMenuAsync(ScmClientTypeEnum.Windows);
+            List<MenuDto> menus = null;
+
             var window = new MainWindow();
-            window.Init(scmTerminal, null);
+            window.Init(scmTerminal, menus);
 
             switch (appSettings.WindowState)
             {
@@ -240,6 +242,7 @@ namespace Com.Scm
             window.Activate();
 
             Close();
+
             if (appSettings.WindowState == ScmWindowState.Hidden)
             {
                 window.Hide();

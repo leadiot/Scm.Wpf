@@ -16,6 +16,10 @@ namespace Com.Scm.Login.Auth
         /// </summary>
         private OperatorWindow _Owner;
         /// <summary>
+        /// 
+        /// </summary>
+        private OidcConfig _Config;
+        /// <summary>
         /// OIDC客户端
         /// </summary>
         private OidcClient _Client;
@@ -33,10 +37,19 @@ namespace Com.Scm.Login.Auth
             InitializeComponent();
         }
 
-        public async Task Init(OperatorWindow owner, OidcClient client)
+        public async void Init(OperatorWindow owner, ScmOperator scmOperator)
         {
             _Owner = owner;
-            _Client = client;
+
+            _Config = new OidcConfig();
+            // 使用测试应用
+            _Config.UseTest();
+            // 此处也可以修改为您自己的应用
+            //_Config.AppKey = "YOUR_APP_KEY";
+            //_Config.AppSecret = "YOUR_APP_SECRET";
+            _Config.Prepare();
+
+            _Client = new OidcClient(_Config);
 
             var ospList = await _Client.ListAppOspAsync();
             var idpList = new List<OidcOspInfo>();

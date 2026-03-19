@@ -1,6 +1,6 @@
 ﻿using SqlSugar;
 
-namespace Com.Scm.Wpf.Views.Tasks
+namespace Com.Scm.Views.Tasks
 {
     public abstract class ATask
     {

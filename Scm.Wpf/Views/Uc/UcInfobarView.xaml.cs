@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Com.Scm.Wpf.Views.Uc
+namespace Com.Scm.Views.Uc
 {
     /// <summary>
     /// UcInfobarView.xaml 的交互逻辑

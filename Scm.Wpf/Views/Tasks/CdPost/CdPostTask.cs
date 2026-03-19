@@ -3,7 +3,7 @@ using MiniExcelLibs.Attributes;
 using SqlSugar;
 using System.IO;
 
-namespace Com.Scm.Wpf.Views.Tasks.CdPost
+namespace Com.Scm.Views.Tasks.CdPost
 {
     /// <summary>
     /// 成都邮政扫描数据导出

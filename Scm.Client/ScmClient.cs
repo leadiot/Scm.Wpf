@@ -94,7 +94,7 @@ namespace Com.Scm
         /// <summary>
         /// 本地数据目录
         /// </summary>
-        public string DataDir { get; set; }
+        public string DataDir { get; protected set; }
 
         /// <summary>
         /// 异常代码

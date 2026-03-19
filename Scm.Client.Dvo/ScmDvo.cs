@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-namespace Com.Scm.Wpf.Dvo
+namespace Com.Scm.Dvo
 {
     public class ScmDvo : INotifyPropertyChanged, INotifyDataErrorInfo
     {

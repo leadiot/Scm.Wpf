@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Com.Scm.Wpf.Views.Samples.Native.EditView"
+﻿<UserControl x:Class="Com.Scm.Views.Samples.Native.EditView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"

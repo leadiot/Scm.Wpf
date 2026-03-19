@@ -1,4 +1,4 @@
-﻿using Com.Scm.Wpf;
+﻿using Com.Scm.Dvo;
 using System.Windows.Input;
 
 namespace Com.Scm.Views.Demo

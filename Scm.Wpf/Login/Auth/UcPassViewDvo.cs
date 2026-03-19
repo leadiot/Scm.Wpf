@@ -1,6 +1,6 @@
 ﻿using Com.Scm.Enums;
 using Com.Scm.Utils;
-using Com.Scm.Wpf.Dvo;
+using Com.Scm.Dvo;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 

@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace Com.Scm.Wpf.Helper
+namespace Com.Scm.Helper
 {
     /// <summary>
     /// PasswordBox绑定的附加属性类

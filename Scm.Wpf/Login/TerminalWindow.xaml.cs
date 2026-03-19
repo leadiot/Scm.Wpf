@@ -1,6 +1,5 @@
 ﻿using Com.Scm.Config;
 using Com.Scm.Views;
-using Com.Scm.Wpf;
 
 namespace Com.Scm.Login
 {
@@ -77,9 +76,11 @@ namespace Com.Scm.Login
         /// <param name="client"></param>
         private async void ShowMain()
         {
+            var menus = await _ScmTerminal.LoadMenuAsync(Enums.ScmClientTypeEnum.Windows);
+
             var nasWindow = new MainWindow();
             nasWindow.Show();
-            nasWindow.Init(_ScmTerminal, null);
+            nasWindow.Init(_ScmTerminal, menus);
             this.Close();
 
             if (!nasWindow.IsActive)

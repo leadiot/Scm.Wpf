@@ -1,4 +1,6 @@
-﻿namespace Com.Scm.Wpf.Views.Samples.Remote
+﻿using Com.Scm.Dvo;
+
+namespace Com.Scm.Views.Samples.Remote
 {
     public class SearchResultDvo : ScmSearchResultDvo<SearchResultDataDvo>
     {

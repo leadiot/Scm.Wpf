@@ -1,7 +1,8 @@
 ﻿using Com.Scm.Helper;
 using Com.Scm.Sys.Menu;
-using Com.Scm.Wpf.Dvo.Menu;
-using Com.Scm.Wpf.Models;
+using Com.Scm.Dvo.Menu;
+using Com.Scm.Models;
+using Dm.util;
 using NLog;
 using System.Collections.ObjectModel;
 using System.Reflection;
@@ -9,7 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace Com.Scm.Wpf.Dvo
+namespace Com.Scm.Dvo
 {
     public class MainWindowDvo : ScmDvo
     {
@@ -43,7 +44,11 @@ namespace Com.Scm.Wpf.Dvo
         {
             _Window = window;
 
-            InitTestMenu(menuList);
+            if (menuList.isEmpty())
+            {
+                InitNasMenu(menuList);
+                //InitTestMenu(menuList);
+            }
 
             foreach (var itemDto in menuList)
             {
@@ -76,6 +81,68 @@ namespace Com.Scm.Wpf.Dvo
             }
         }
 
+        private void InitNasMenu(List<MenuDto> menuList)
+        {
+            var item = new MenuDto();
+            item.id = 1;
+            item.icon = "Home";
+            item.codec = "root";
+            item.namec = "Home";
+            item.uri = "Com.Scm.Actions.ViewAction";
+            item.view = "Com.Scm.Views.Home.MainView";
+            menuList.Add(item);
+
+            item = new MenuDto();
+            item.id = 21;
+            item.icon = "FolderSync";
+            item.codec = "nas-folder";
+            item.namec = "目录管理";
+            item.uri = "Com.Scm.Actions.ViewAction";
+            item.view = "Com.Scm.Nas.Views.Folder.FolderView";
+            item.module = "Nas.Wpf";
+            menuList.Add(item);
+
+            item = new MenuDto();
+            item.id = 22;
+            item.icon = "FileSync";
+            item.codec = "nas-sync";
+            item.namec = "同步日志";
+            item.uri = "Com.Scm.Actions.ViewAction";
+            item.view = "Com.Scm.Nas.Views.Sync.SyncView";
+            item.module = "Nas.Wpf";
+            menuList.Add(item);
+
+            item = new MenuDto();
+            item.id = 23;
+            item.icon = "Folder";
+            item.codec = "nas-native";
+            item.namec = "本地目录";
+            item.uri = "Com.Scm.Actions.ViewAction";
+            item.view = "Com.Scm.Nas.Views.Native.NativeView";
+            item.module = "Nas.Wpf";
+            menuList.Add(item);
+
+            item = new MenuDto();
+            item.id = 24;
+            item.icon = "Cloud";
+            item.codec = "nas-remote";
+            item.namec = "远端目录";
+            item.uri = "Com.Scm.Actions.ViewAction";
+            item.view = "Com.Scm.Nas.Views.Remote.RemoteView";
+            item.module = "Nas.Wpf";
+            menuList.Add(item);
+
+
+            item = new MenuDto();
+            item.id = 13;
+            item.icon = "InformationBox";
+            item.codec = "scm-about";
+            item.namec = "关于软件";
+            item.uri = "Com.Scm.Actions.ViewAction";
+            item.view = "Com.Scm.Views.About.MainView";
+            menuList.Add(item);
+        }
+
         private void InitTestMenu(List<MenuDto> menuList)
         {
             var menu = new MenuDto();
@@ -91,8 +158,8 @@ namespace Com.Scm.Wpf.Dvo
             item.codec = "demo";
             item.namec = "工具演示";
             item.pid = menu.id;
-            item.uri = "Com.Scm.Wpf.Actions.ViewAction";
-            item.view = "Com.Scm.Wpf.Views.Demo.DemoView";
+            item.uri = "Com.Scm.Actions.ViewAction";
+            item.view = "Com.Scm.Views.Demo.DemoView";
             menuList.Add(item);
 
             item = new MenuDto();
@@ -101,8 +168,8 @@ namespace Com.Scm.Wpf.Dvo
             item.codec = "demo-native";
             item.namec = "本地数据";
             item.pid = menu.id;
-            item.uri = "Com.Scm.Wpf.Actions.ViewAction";
-            item.view = "Com.Scm.Wpf.Views.Samples.Native.MainView";
+            item.uri = "Com.Scm.Actions.ViewAction";
+            item.view = "Com.Scm.Views.Samples.Native.MainView";
             item.module = "Scm.Samples";
             menuList.Add(item);
 
@@ -112,8 +179,8 @@ namespace Com.Scm.Wpf.Dvo
             item.codec = "demo-remote";
             item.namec = "远程数据";
             item.pid = menu.id;
-            item.uri = "Com.Scm.Wpf.Actions.ViewAction";
-            item.view = "Com.Scm.Wpf.Views.Samples.Remote.MainView";
+            item.uri = "Com.Scm.Actions.ViewAction";
+            item.view = "Com.Scm.Views.Samples.Remote.MainView";
             item.module = "Scm.Samples";
             menuList.Add(item);
 
@@ -123,7 +190,7 @@ namespace Com.Scm.Wpf.Dvo
             item.codec = "scm-about";
             item.namec = "关于软件";
             item.pid = menu.id;
-            item.uri = "Com.Scm.Wpf.Actions.ViewAction";
+            item.uri = "Com.Scm.Actions.ViewAction";
             item.view = "Com.Scm.Views.About.MainView";
             menuList.Add(item);
 
@@ -141,7 +208,7 @@ namespace Com.Scm.Wpf.Dvo
             item.codec = "nas-folder";
             item.namec = "目录管理";
             item.pid = menu.id;
-            item.uri = "Com.Scm.Wpf.Actions.ViewAction";
+            item.uri = "Com.Scm.Actions.ViewAction";
             item.view = "Com.Scm.Nas.Views.Folder.FolderView";
             item.module = "Nas.Wpf";
             menuList.Add(item);
@@ -152,7 +219,7 @@ namespace Com.Scm.Wpf.Dvo
             item.codec = "nas-sync";
             item.namec = "同步日志";
             item.pid = menu.id;
-            item.uri = "Com.Scm.Wpf.Actions.ViewAction";
+            item.uri = "Com.Scm.Actions.ViewAction";
             item.view = "Com.Scm.Nas.Views.Sync.SyncView";
             item.module = "Nas.Wpf";
             menuList.Add(item);
@@ -163,7 +230,7 @@ namespace Com.Scm.Wpf.Dvo
             item.codec = "nas-native";
             item.namec = "本地目录";
             item.pid = menu.id;
-            item.uri = "Com.Scm.Wpf.Actions.ViewAction";
+            item.uri = "Com.Scm.Actions.ViewAction";
             item.view = "Com.Scm.Nas.Views.Native.NativeView";
             item.module = "Nas.Wpf";
             menuList.Add(item);
@@ -174,7 +241,7 @@ namespace Com.Scm.Wpf.Dvo
             item.codec = "nas-remote";
             item.namec = "远端目录";
             item.pid = menu.id;
-            item.uri = "Com.Scm.Wpf.Actions.ViewAction";
+            item.uri = "Com.Scm.Actions.ViewAction";
             item.view = "Com.Scm.Nas.Views.Remote.RemoteView";
             item.module = "Nas.Wpf";
             menuList.Add(item);

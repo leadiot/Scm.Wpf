@@ -1,8 +1,7 @@
 ﻿using Com.Scm.Enums;
 using Com.Scm.Utils;
-using Com.Scm.Wpf.Dvo;
 
-namespace Com.Scm.Wpf
+namespace Com.Scm.Dvo
 {
     /// <summary>
     /// 查询结果明细

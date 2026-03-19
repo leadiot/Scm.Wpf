@@ -1,6 +1,4 @@
-﻿using Com.Scm.Wpf.Dvo;
-
-namespace Com.Scm
+﻿namespace Com.Scm.Dvo
 {
     /// <summary>
     /// 查询结果

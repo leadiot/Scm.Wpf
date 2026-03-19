@@ -1,9 +1,9 @@
 ﻿using Com.Scm.Sys.Menu;
-using Com.Scm.Wpf.Dvo.Menu;
+using Com.Scm.Dvo.Menu;
 using MahApps.Metro.IconPacks;
 using System.Windows.Controls;
 
-namespace Com.Scm.Wpf.Views.Uc
+namespace Com.Scm.Views.Uc
 {
     /// <summary>
     /// UcMenubarView.xaml 的交互逻辑

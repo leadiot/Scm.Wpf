@@ -1,4 +1,4 @@
-﻿using Com.Scm.Wpf.Views.Samples.Native;
+﻿using Com.Scm.Views.Samples.Native;
 using System.Windows;
 using System.Windows.Controls;
 

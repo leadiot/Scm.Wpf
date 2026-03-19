@@ -1,7 +1,7 @@
-﻿using Com.Scm.Wpf.Dvo;
+﻿using Com.Scm.Dvo;
 using System.Windows;
 
-namespace Com.Scm.Wpf.Models
+namespace Com.Scm.Models
 {
     public partial class TabModel : ScmDvo
     {

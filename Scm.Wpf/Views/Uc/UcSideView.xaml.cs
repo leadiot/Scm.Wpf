@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Com.Scm.Wpf.Views.Uc
+namespace Com.Scm.Views.Uc
 {
     /// <summary>
     /// UcSideView.xaml 的交互逻辑

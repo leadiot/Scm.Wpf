@@ -1,5 +1,6 @@
-﻿using Com.Scm.Utils;
-using Com.Scm.Wpf.Models;
+﻿using Com.Scm.Dvo;
+using Com.Scm.Models;
+using Com.Scm.Utils;
 using HandyControl.Controls;
 using MahApps.Metro.IconPacks;
 using Microsoft.Win32;
@@ -17,7 +18,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 
-namespace Com.Scm.Wpf.Controls
+namespace Com.Scm.Controls
 {
     /// <summary>
     /// UcPageData.xaml 的交互逻辑

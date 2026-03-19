@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Com.Scm.Wpf.Views.Home
+namespace Com.Scm.Views.Home
 {
     /// <summary>
     /// HomeView.xaml 的交互逻辑

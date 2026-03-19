@@ -1,6 +1,6 @@
-﻿using Com.Scm.Wpf.Dvo.Menu;
+﻿using Com.Scm.Dvo.Menu;
 
-namespace Com.Scm.Wpf.Actions
+namespace Com.Scm.Actions
 {
     public abstract class AAction
     {

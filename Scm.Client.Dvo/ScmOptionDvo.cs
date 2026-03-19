@@ -1,4 +1,4 @@
-﻿namespace Com.Scm.Wpf.Dvo
+﻿namespace Com.Scm.Dvo
 {
     public partial class ScmOptionDvo<T> : ScmDvo
     {

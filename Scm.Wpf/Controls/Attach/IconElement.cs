@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Com.Scm.Wpf.Controls.Attach
+namespace Com.Scm.Controls.Attach
 {
     public class IconElement
     {

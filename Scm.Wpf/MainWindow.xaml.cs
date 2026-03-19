@@ -1,20 +1,20 @@
-﻿using Com.Scm.Api;
+﻿using Com.Scm.Actions;
+using Com.Scm.Api;
 using Com.Scm.Config;
+using Com.Scm.Dao;
+using Com.Scm.Dvo;
 using Com.Scm.Helper;
 using Com.Scm.Login;
 using Com.Scm.Sys.Config;
 using Com.Scm.Sys.Menu;
 using Com.Scm.Utils;
 using Com.Scm.Views;
-using Com.Scm.Wpf.Actions;
-using Com.Scm.Wpf.Dvo;
-using Com.Scm.Wpf.Helper;
 using HandyControl.Controls;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
 
-namespace Com.Scm.Wpf;
+namespace Com.Scm;
 
 /// <summary>
 /// Interaction logic for MainWindow.xaml
@@ -50,7 +50,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     /// </summary>
     private string _AppKey = "";
 
-    private Scm.Wpf.Views.Home.MainView _HomeView;
+    private Scm.Views.Home.MainView _HomeView;
     private Scm.Views.Account.MainView _AccountView;
 
     private MainWindowDvo _Dvo;
@@ -75,11 +75,12 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
 
         Growl.Register("ScmToast", GdToast);
 
+        _AppKey = "";
+
         if (menuList == null)
         {
             menuList = new List<MenuDto>();
         }
-        _AppKey = "";
 
         _Dvo = new MainWindowDvo();
         _Dvo.Init(this, menuList);
@@ -92,7 +93,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
 
         Show();
 
-        //ShowTray();
+        ShowTray();
 
         ShowHome();
     }
@@ -205,7 +206,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     {
         if (_HomeView == null)
         {
-            _HomeView = new Scm.Wpf.Views.Home.MainView();
+            _HomeView = new Scm.Views.Home.MainView();
             _HomeView.Init(this);
         }
         _Dvo.ShowView("home", "首页", _HomeView);
@@ -566,13 +567,13 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
         {
             var window1 = new TerminalWindow();
             window1.Show();
-            window1.Init(AppSettings.Instance, new ScmTerminal());
+            window1.Init(AppSettings.Instance, new ScmTerminal(ScmClientEnv.DataDir));
             return;
         }
 
         var window2 = new OperatorWindow();
         window2.Show();
-        window2.Init(AppSettings.Instance);
+        window2.Init(AppSettings.Instance, new ScmOperator(ScmClientEnv.DataDir));
         return;
     }
 

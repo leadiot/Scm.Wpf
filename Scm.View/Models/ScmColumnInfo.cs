@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using System.Windows.Data;
 
-namespace Com.Scm.Wpf.Models
+namespace Com.Scm.Models
 {
     public class ScmColumnInfo
     {

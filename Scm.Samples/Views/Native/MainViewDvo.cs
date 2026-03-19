@@ -1,9 +1,10 @@
-﻿using Com.Scm.Wpf.Dao.Samples;
-using Com.Scm.Wpf.Helper;
-using Com.Scm.Wpf.Models;
+﻿using Com.Scm.Dao;
+using Com.Scm.Dao.Samples;
+using Com.Scm.Dvo;
+using Com.Scm.Models;
 using SqlSugar;
 
-namespace Com.Scm.Wpf.Views.Samples.Native
+namespace Com.Scm.Views.Samples.Native
 {
     public class MainViewDvo : ScmPageGridDvo
     {

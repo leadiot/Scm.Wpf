@@ -4,156 +4,210 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:hc="https://handyorg.github.io/handycontrol"
-    xmlns:local="clr-namespace:Com.Scm.Wpf" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-    x:Class="Com.Scm.Wpf.DemoWindow"
+    x:Class="Com.Scm.DemoWindow"
     mc:Ignorable="d"
-    Title="DemoWindow" Height="450" Width="800">
+    Title="现代化企业系统" Height="700" Width="1000"
+    Background="#f5f8fa">
 
     <Window.Resources>
-        <local:TreeItemMarginConverter x:Key="TreeViewItemMarginConverter"/>
-        <Style x:Key="TreeViewStyle1" TargetType="{x:Type TreeView}">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderBrush" Value="Gray"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="0"/>
-            <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
-            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
-            <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
-            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type TreeView}">
-                        <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" 
-                                        BorderThickness="{TemplateBinding BorderThickness}"
-                                        SnapsToDevicePixels="true">
-                            <ScrollViewer x:Name="_tv_scrollviewer_" Background="{TemplateBinding Background}" 
-                                                  CanContentScroll="false" Focusable="false"
-                                                  HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
-                                                  Padding="{TemplateBinding Padding}" 
-                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                                  VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
-                                <ItemsPresenter/>
-                            </ScrollViewer>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="Background" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
-                            </Trigger>
-                            <Trigger Property="VirtualizingPanel.IsVirtualizing" Value="true">
-                                <Setter Property="CanContentScroll" TargetName="_tv_scrollviewer_" Value="true"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="VirtualizingPanel.IsVirtualizing" Value="true">
-                    <Setter Property="ItemsPanel">
-                        <Setter.Value>
-                            <ItemsPanelTemplate>
-                                <VirtualizingStackPanel/>
-                            </ItemsPanelTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="ToggleStyle" TargetType="ToggleButton">
-            <Setter Property="Width" Value="16"/>
-            <Setter Property="Height" Value="16"/>
-            <Setter Property="Focusable" Value="False"/>
-            <Setter Property="IsTabStop" Value="False"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ToggleButton">
-                        <Border>
-                            <Image x:Name="toggleImg" Source="/images/arrow16.png" RenderTransformOrigin="0.5,0.5">
-                                <Image.RenderTransform>
-                                    <RotateTransform Angle="-90"/>
-                                </Image.RenderTransform>
-                            </Image>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsChecked" Value="True">
-                                <Setter Property="RenderTransform" TargetName="toggleImg">
+        <!-- 颜色定义 -->
+        <SolidColorBrush x:Key="SidebarBg" Color="#1A68B8"/>
+        <!-- 深色背景 -->
+        <SolidColorBrush x:Key="SidebarHover" Color="#2b2b40"/>
+        <!-- 悬停背景 -->
+        <SolidColorBrush x:Key="SidebarActive" Color="#3699ff"/>
+        <!-- 选中高亮色 (蓝色) -->
+        <SolidColorBrush x:Key="TextMain" Color="#ffffff"/>
+        <!-- 主要文字 -->
+        <SolidColorBrush x:Key="TextMuted" Color="#a1a5b7"/>
+        <!-- 次要文字/箭头 -->
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="260"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- 左侧侧边栏 -->
+        <Border Grid.Column="0" Background="{StaticResource SidebarBg}" CornerRadius="0">
+            <DockPanel>
+                <!-- Logo 区域 -->
+                <Border DockPanel.Dock="Top" Height="70" Background="#151521">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock Text="🚀" FontSize="24" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBlock Text="企业管理系统" Foreground="White" FontSize="18" FontWeight="Bold" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- 菜单区域 (TreeView) -->
+                <!-- ScrollViewer 包裹以支持长列表滚动 -->
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <TreeView x:Name="MenuTree" 
+                              ItemsSource="{Binding MenuItems}"
+                              Background="Transparent" 
+                              BorderThickness="0"
+                              Focusable="False">
+                        <!-- 禁止 TreeView 自身获取焦点，避免难看的虚线框 -->
+
+                        <!-- 关键：重写 ItemContainerStyle 以控制每个菜单项的外观和行为 -->
+                        <TreeView.ItemContainerStyle>
+                            <Style TargetType="TreeViewItem">
+                                <Setter Property="Focusable" Value="False"/>
+                                <Setter Property="Template">
                                     <Setter.Value>
-                                        <RotateTransform Angle="0"/>
+                                        <ControlTemplate TargetType="TreeViewItem">
+                                            <StackPanel>
+                                                <!-- 菜单项按钮层 -->
+                                                <Border x:Name="ItemBorder" 
+                                                        Background="Transparent" 
+                                                        Padding="0" 
+                                                        Cursor="Hand"
+                                                        Margin="0,2,0,2">
+
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <!-- 缩进占位 -->
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <!-- 图标 -->
+                                                            <ColumnDefinition Width="*"/>
+                                                            <!-- 文字 -->
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <!-- 箭头 -->
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <!-- 动态缩进：根据层级深度设置 Margin (这里简化处理，实际可用 Converter) -->
+                                                        <!-- 注意：TreeViewItem 默认有缩进逻辑，我们这里手动控制更灵活 -->
+
+                                                        <!-- 图标 -->
+                                                        <TextBlock Grid.Column="1" 
+                                                                   Text="{Binding Icon}" 
+                                                                   FontSize="16" 
+                                                                   Margin="20,10,12,10" 
+                                                                   VerticalAlignment="Center"/>
+
+                                                        <!-- 标题 -->
+                                                        <TextBlock
+                                                            x:Name="ItemText"
+                                                            Grid.Column="2" 
+                                                            Text="{Binding Namec}" 
+                                                            Foreground="{StaticResource TextMuted}" 
+                                                            VerticalAlignment="Center" 
+                                                            Margin="0,10,15,10"
+                                                            FontSize="14"/>
+
+                                                        <!-- 自定义箭头 (仅当有子项时显示) -->
+                                                        <Path x:Name="ArrowIcon" 
+                                                              Grid.Column="3" 
+                                                              Data="M0,0 L4,4 L8,0" 
+                                                              Stroke="{StaticResource TextMuted}" 
+                                                              StrokeThickness="1.2" 
+                                                              Margin="0,0,15,0"
+                                                              VerticalAlignment="Center"
+                                                              RenderTransformOrigin="0.5,0.5">
+                                                            <Path.RenderTransform>
+                                                                <RotateTransform Angle="0"/>
+                                                            </Path.RenderTransform>
+                                                        </Path>
+                                                    </Grid>
+                                                </Border>
+
+                                                <!-- 子菜单容器 -->
+                                                <ItemsPresenter x:Name="ItemsHost" Visibility="Collapsed" Margin="20 0 0 0"/>
+                                            </StackPanel>
+
+                                            <ControlTemplate.Triggers>
+                                                <!-- 1. 展开状态触发器 -->
+                                                <Trigger Property="IsExpanded" Value="True">
+                                                    <Setter TargetName="ItemsHost" Property="Visibility" Value="Visible"/>
+                                                    <Setter TargetName="ArrowIcon" Property="RenderTransform">
+                                                        <Setter.Value>
+                                                            <RotateTransform Angle="90"/>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                    <Setter TargetName="ArrowIcon" Property="Stroke" Value="{StaticResource TextMain}"/>
+                                                </Trigger>
+
+                                                <!-- 2. 没有子项时隐藏箭头 -->
+                                                <Trigger Property="HasItems" Value="False">
+                                                    <Setter TargetName="ArrowIcon" Property="Visibility" Value="Collapsed"/>
+                                                </Trigger>
+
+                                                <!-- 3. 选中状态高亮 (IsSelected) -->
+                                                <Trigger Property="IsSelected" Value="True">
+                                                    <Setter TargetName="ItemBorder" Property="Background" Value="{StaticResource SidebarActive}"/>
+                                                    <Setter TargetName="ItemBorder" Property="CornerRadius" Value="6"/>
+                                                    <Setter TargetName="ItemBorder" Property="Margin" Value="10,2,10,2"/>
+                                                    <!-- 选中时文字变白 -->
+                                                    <Setter TargetName="ItemText" Property="Foreground" Value="Red"/>
+                                                    <!-- 注意：上面的 Setter 对内部 TextBlock 无效，需在 DataTemplate 中绑定 Foreground 或使用触发器修改 TextBlock 颜色 -->
+                                                    <!-- 修正方案：在 DataTemplate 中绑定颜色，或通过 VisualStateGroup 处理 -->
+                                                </Trigger>
+
+                                                <!-- 4. 鼠标悬停效果 (非选中状态) -->
+                                                <MultiTrigger>
+                                                    <MultiTrigger.Conditions>
+                                                        <Condition Property="IsMouseOver" Value="True"/>
+                                                        <Condition Property="IsSelected" Value="False"/>
+                                                    </MultiTrigger.Conditions>
+                                                    <Setter TargetName="ItemBorder" Property="Background" Value="{StaticResource SidebarHover}"/>
+                                                    <Setter TargetName="ItemBorder" Property="CornerRadius" Value="6"/>
+                                                    <Setter TargetName="ItemBorder" Property="Margin" Value="10,2,10,2"/>
+                                                </MultiTrigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
                                     </Setter.Value>
                                 </Setter>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style TargetType="TreeViewItem">
-            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Padding" Value="10,0" />
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="TreeViewItem">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition MinHeight="23" />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <Border x:Name="Bd" CornerRadius="3" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
-                                <DockPanel LastChildFill="True" Margin="{Binding Converter={StaticResource TreeViewItemMarginConverter}, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <ToggleButton x:Name="Expander" ClickMode="Press" DockPanel.Dock="Left"
-                                                  IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}" 
-                                                  Style="{StaticResource ToggleStyle}" />
-                                    <ContentPresenter VerticalAlignment="Center" x:Name="PART_Header" ContentSource="Header"    
-                                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                                </DockPanel>
-                            </Border>
-                            <ItemsPresenter x:Name="ItemsHost" Grid.Row="1" />
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True" SourceName="Bd">
-                                <Setter Property="Background"  TargetName="Bd" Value="lightGray"/>
-                            </Trigger>
-                            <Trigger Property="IsExpanded" Value="False">
-                                <Setter Property="Visibility" Value="Collapsed" TargetName="ItemsHost"/>
-                            </Trigger>
-                            <Trigger Property="HasItems" Value="false">
-                                <Setter Property="Visibility" TargetName="Expander" Value="Hidden" />
-                            </Trigger>
-                            <Trigger Property="IsSelected" Value="true">
-                                <Setter Property="Background" TargetName="Bd" Value="LightBlue" />
-                                <Setter Property="Foreground" Value="White" />
-                            </Trigger>
-                            <MultiTrigger>
-                                <MultiTrigger.Conditions>
-                                    <Condition Property="IsSelected" Value="true" />
-                                    <Condition Property="IsSelectionActive" Value="false" />
-                                </MultiTrigger.Conditions>
-                                <Setter Property="Background" TargetName="Bd" Value="Transparent" />
-                                <Setter Property="Foreground" Value="Black" />
-                            </MultiTrigger>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="Foreground" Value="Gray" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </Window.Resources>
-    <Grid>
-        <TreeView x:Name="TvView" Margin="5" Width="300">
-            <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                    <DockPanel SnapsToDevicePixels="True">
-                        <iconPacks:PackIconMaterial Kind="Menu" />
-                        <TextBlock Text="{Binding DisplayText}"/>
-                        <iconPacks:PackIconMaterial Kind="Folder" />
-                    </DockPanel>
-                </HierarchicalDataTemplate>
-            </TreeView.ItemTemplate>
-        </TreeView>
+
+                                <!-- 解决选中时文字颜色不变的问题：通过 Style 触发器修改内部元素较难，
+                                     简单做法是在 HierarchicalDataTemplate 中绑定 Foreground -->
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Foreground" Value="White"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TreeView.ItemContainerStyle>
+
+                        <!-- 数据模板：定义每个节点的内容结构 -->
+                        <TreeView.ItemTemplate>
+                            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                                <!-- 内容实际上由 ItemContainerStyle 中的 Grid 渲染了，
+                                     但 HierarchicalDataTemplate 必须定义视觉树才能显示内容。
+                                     这里我们利用 StackPanel 承载图标和文字，并通过 Binding 传递数据 -->
+                                <StackPanel Orientation="Horizontal">
+                                    <!-- 这里的内容会被放入 ControlTemplate 的 ContentPresenter (如果有的话)，
+                                         但在我们上面的重写了整个 Template 的情况下，
+                                         我们需要确保数据上下文能传进去。
+                                         
+                                         【修正策略】：
+                                         上面的 ControlTemplate 中直接绑定了 {Binding Icon} 和 {Binding Header}。
+                                         所以 HierarchicalDataTemplate 其实可以非常简单，甚至不需要定义视觉树，
+                                         只要它能把 DataContext 传下去即可。
+                                         但为了保险，我们保留一个空的 StackPanel 或者简单的 TextBlock 确保渲染。
+                                    -->
+                                    <TextBlock Text="{Binding Namec}" Visibility="Collapsed"/>
+                                </StackPanel>
+                            </HierarchicalDataTemplate>
+                        </TreeView.ItemTemplate>
+                    </TreeView>
+                </ScrollViewer>
+            </DockPanel>
+        </Border>
+
+        <!-- 右侧内容区域 -->
+        <Grid Grid.Column="1" Margin="30">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock Text="欢迎回来，管理员" FontSize="28" FontWeight="Bold" Foreground="#333"/>
+                <TextBlock Text="请从左侧菜单选择功能模块" FontSize="16" Foreground="#666" Margin="0,10,0,0"/>
+
+                <!-- 演示：显示当前选中的菜单 -->
+                <Border Background="White" Padding="20" CornerRadius="8" Margin="0,30,0,0">
+                    <TextBlock Text="{Binding ElementName=MenuTree, Path=SelectedItem.Header, StringFormat='当前查看：{0}'}" 
+                               Foreground="{StaticResource SidebarActive}" FontSize="18"/>
+                </Border>
+            </StackPanel>
+        </Grid>
     </Grid>
 </hc:Window>

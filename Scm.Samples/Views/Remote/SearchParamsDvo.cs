@@ -1,7 +1,8 @@
-﻿using Com.Scm.Enums;
-using Com.Scm.Wpf.Models;
+﻿using Com.Scm.Dvo;
+using Com.Scm.Enums;
+using Com.Scm.Models;
 
-namespace Com.Scm.Wpf.Views.Samples.Remote
+namespace Com.Scm.Views.Samples.Remote
 {
     public class SearchParamsDvo : ScmPageGridDvo
     {

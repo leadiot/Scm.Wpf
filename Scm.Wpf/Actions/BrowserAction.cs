@@ -1,7 +1,7 @@
 ﻿using Com.Scm.Helper;
-using Com.Scm.Wpf.Dvo.Menu;
+using Com.Scm.Dvo.Menu;
 
-namespace Com.Scm.Wpf.Actions
+namespace Com.Scm.Actions
 {
     /// <summary>
     /// 浏览器事项

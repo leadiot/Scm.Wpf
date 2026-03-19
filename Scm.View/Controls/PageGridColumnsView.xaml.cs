@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Com.Scm.Wpf.Controls
+namespace Com.Scm.Controls
 {
     /// <summary>
     /// UcGridColumnsView.xaml 的交互逻辑

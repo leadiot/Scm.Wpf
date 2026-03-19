@@ -1,4 +1,4 @@
-﻿using Com.Scm.Wpf.Enums;
+﻿using Com.Scm.Enums;
 
 namespace Com.Scm.Config
 {

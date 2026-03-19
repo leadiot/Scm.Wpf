@@ -1,10 +1,10 @@
-using Com.Scm.Wpf.Dvo.Menu;
+using Com.Scm.Dvo.Menu;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace Com.Scm.Wpf.Controls
+namespace Com.Scm.Controls
 {
     public partial class NavigationMenu : UserControl
     {

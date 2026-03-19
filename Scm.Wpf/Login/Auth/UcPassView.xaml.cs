@@ -1,5 +1,4 @@
-﻿using Com.Scm.Oidc;
-using Com.Scm.Views;
+﻿using Com.Scm.Views;
 using System.Windows.Controls;
 
 namespace Com.Scm.Login.Auth
@@ -13,10 +12,6 @@ namespace Com.Scm.Login.Auth
         /// 父窗体
         /// </summary>
         private OperatorWindow _Owner;
-        /// <summary>
-        /// OIDC客户端
-        /// </summary>
-        private OidcClient _Client;
 
         private ScmOperator _ScmOperator;
 
@@ -27,12 +22,10 @@ namespace Com.Scm.Login.Auth
             InitializeComponent();
         }
 
-        public void Init(OperatorWindow owner, OidcClient client)
+        public void Init(OperatorWindow owner, ScmOperator scmOperator)
         {
             _Owner = owner;
-            _Client = client;
-
-            _ScmOperator = new ScmOperator();
+            _ScmOperator = scmOperator;
 
             _Dvo = new UcPassViewDvo();
             _Dvo.ChangeVCode(_ScmOperator.GetApiUrl(""));
@@ -71,7 +64,7 @@ namespace Com.Scm.Login.Auth
                 return;
             }
 
-            await _Owner.LoadMenuAsync(_ScmOperator);
+            await _Owner.ShowMain(_ScmOperator);
         }
     }
 }

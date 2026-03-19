@@ -1,11 +1,7 @@
 ﻿using Com.Scm.Config;
 using Com.Scm.Enums;
-using Com.Scm.Oidc;
 using Com.Scm.Oidc.Response;
-using Com.Scm.Sys.Menu;
-using Com.Scm.Utils;
 using Com.Scm.Views;
-using Com.Scm.Wpf;
 using System.Diagnostics;
 using System.Windows;
 
@@ -16,32 +12,15 @@ namespace Com.Scm.Login
     /// </summary>
     public partial class OperatorWindow : HandyControl.Controls.Window
     {
-        private OidcConfig _Config;
-        private OidcClient _Client;
-
         public OperatorWindow()
         {
             InitializeComponent();
         }
 
-        public async void Init(AppSettings appSettings)
+        public async void Init(AppSettings appSettings, ScmOperator scmOperator)
         {
-            LogUtils.Setup();
-
-            AppSettings.Load();
-
-            _Config = new OidcConfig();
-            // 使用测试应用
-            _Config.UseTest();
-            // 此处也可以修改为您自己的应用
-            //_Config.AppKey = "YOUR_APP_KEY";
-            //_Config.AppSecret = "YOUR_APP_SECRET";
-            _Config.Prepare();
-
-            _Client = new OidcClient(_Config);
-
-            UcPass.Init(this, _Client);
-            await UcOidc.Init(this, _Client);
+            UcPass.Init(this, scmOperator);
+            UcOidc.Init(this, scmOperator);
         }
 
         /// <summary>
@@ -74,9 +53,16 @@ namespace Com.Scm.Login
             //UcOAuth.Login(ospInfo);
         }
 
-        public void ShowMain(ScmClient client, List<MenuDto> menus)
+        public async Task ShowMain(ScmClient client)
         {
-            new MainWindow().Init(client, menus);
+            var menuList = await client.LoadMenuAsync(ScmClientTypeEnum.Windows);
+            if (menuList == null)
+            {
+                MessageWindow.ShowDialog(this, client.ErrorMessage);
+                return;
+            }
+
+            new MainWindow().Init(client, menuList);
             Close();
         }
 
@@ -107,24 +93,6 @@ namespace Com.Scm.Login
             {
                 MessageBox.Show(ex.Message);
             }
-        }
-
-        /// <summary>
-        /// 获取菜单
-        /// </summary>
-        /// <param name="lang"></param>
-        /// <returns></returns>
-        public async Task<bool> LoadMenuAsync(ScmClient client, string lang = null)
-        {
-            var menuList = await client.LoadMenuAsync(ScmClientTypeEnum.Windows, lang);
-            if (menuList == null)
-            {
-                MessageWindow.ShowDialog(this, client.ErrorMessage);
-                return false;
-            }
-
-            ShowMain(client, menuList);
-            return true;
         }
     }
 }

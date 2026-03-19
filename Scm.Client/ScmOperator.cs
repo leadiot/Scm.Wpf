@@ -1,6 +1,6 @@
 ﻿using Com.Scm.Api;
 using Com.Scm.Utils;
-using Com.Scm.Wpf.Dto.Login;
+using Com.Scm.Dto.Login;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -31,10 +31,12 @@ namespace Com.Scm
         /// </summary>
         private long _ExpiredTime;
 
-        public ScmOperator()
+        public ScmOperator(string dataDir)
         {
             TokenName = KEY_TOKEN_NAME;
             RemoteUrl = "http://" + SERVER_HOST + "/Api";
+
+            this.DataDir = dataDir;
         }
 
         /// <summary>

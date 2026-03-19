@@ -1,4 +1,4 @@
-﻿namespace Com.Scm.Wpf.Enums
+﻿namespace Com.Scm.Enums
 {
     public enum ScmLoginTypeEnum
     {

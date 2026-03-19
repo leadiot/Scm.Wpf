@@ -1,7 +1,7 @@
 ﻿using Com.Scm.Api;
 using Com.Scm.Dto.Auth;
 
-namespace Com.Scm.Wpf.Dto.Login
+namespace Com.Scm.Dto.Login
 {
     /// <summary>
     /// 

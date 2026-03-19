@@ -1,14 +1,14 @@
 ﻿using Com.Scm.Sys.Menu;
 using Com.Scm.Utils;
-using Com.Scm.Wpf.Actions;
-using Com.Scm.Wpf.Dvo.Menu;
+using Com.Scm.Actions;
+using Com.Scm.Dvo.Menu;
 using HandyControl.Controls;
 using MahApps.Metro.IconPacks;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Com.Scm.Wpf.Views.Uc
+namespace Com.Scm.Views.Uc
 {
     /// <summary>
     /// UcSideMenuView.xaml 的交互逻辑
@@ -39,6 +39,10 @@ namespace Com.Scm.Wpf.Views.Uc
                 menu.FontWeight = FontWeights.Bold;
                 //menu.Background = Brushes.Transparent;
                 MbMenu.Items.Add(menu);
+                if (menu.Items.Count < 1)
+                {
+                    menu.Selected += Menu_Selected;
+                }
 
                 GenMenu(menu, itemDvo, menuList);
             }

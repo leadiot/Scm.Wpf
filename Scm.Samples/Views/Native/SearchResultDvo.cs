@@ -1,4 +1,6 @@
-﻿namespace Com.Scm.Wpf.Views.Samples.Native
+﻿using Com.Scm.Dvo;
+
+namespace Com.Scm.Views.Samples.Native
 {
     public class SearchResultDvo : ScmSearchResultDvo<SearchResultItemDvo>
     {

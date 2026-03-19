@@ -4,7 +4,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace Com.Scm.Wpf.Controls
+namespace Com.Scm.Controls
 {
     [TemplatePart(Name = "PART_Menu", Type = typeof(Border))]
     [TemplatePart(Name = "PART_MenuDarkSurface", Type = typeof(Border))]

@@ -1,8 +1,8 @@
-﻿using Com.Scm.Wpf.Views.Tasks.CdPost;
+﻿using Com.Scm.Views.Tasks.CdPost;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Com.Scm.Wpf.Views.Tasks
+namespace Com.Scm.Views.Tasks
 {
     /// <summary>
     /// TaskView.xaml 的交互逻辑

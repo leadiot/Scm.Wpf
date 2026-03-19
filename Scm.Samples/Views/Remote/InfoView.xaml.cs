@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Com.Scm.Wpf.Views.Samples.Remote
+namespace Com.Scm.Views.Samples.Remote
 {
     /// <summary>
     /// ViewControl.xaml 的交互逻辑

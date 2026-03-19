@@ -1,4 +1,4 @@
-﻿namespace Com.Scm.Wpf.Dto.Samples.Remote
+﻿namespace Com.Scm.Dto.Samples.Remote
 {
     public class RemoteDto
     {

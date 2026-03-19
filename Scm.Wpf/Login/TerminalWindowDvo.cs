@@ -1,5 +1,5 @@
 ﻿using Com.Scm.Helper;
-using Com.Scm.Wpf.Dvo;
+using Com.Scm.Dvo;
 using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Login

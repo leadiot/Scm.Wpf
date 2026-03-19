@@ -2,7 +2,7 @@
 using Com.Scm.Views.Demo;
 using System.Windows.Controls;
 
-namespace Com.Scm.Wpf.Views.Demo
+namespace Com.Scm.Views.Demo
 {
     /// <summary>
     /// DemoView.xaml 的交互逻辑

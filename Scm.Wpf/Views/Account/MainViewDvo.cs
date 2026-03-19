@@ -1,4 +1,4 @@
-﻿using Com.Scm.Wpf.Dvo;
+﻿using Com.Scm.Dvo;
 
 namespace Com.Scm.Views.Account
 {

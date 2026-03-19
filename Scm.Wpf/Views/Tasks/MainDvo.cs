@@ -1,8 +1,8 @@
-﻿using Com.Scm.Wpf.Dvo;
+﻿using Com.Scm.Dvo;
 using System.Collections.ObjectModel;
 using System.Text;
 
-namespace Com.Scm.Wpf.Views.Tasks
+namespace Com.Scm.Views.Tasks
 {
     public partial class MainDvo : ScmDvo
     {

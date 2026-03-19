@@ -1,10 +1,10 @@
 <UserControl
-    x:Class="Com.Scm.Wpf.Controls.NavigationMenu"
+    x:Class="Com.Scm.Controls.NavigationMenu"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:dvo="clr-namespace:Com.Scm.Wpf.Dvo.Menu"
+    xmlns:dvo="clr-namespace:Com.Scm.Dvo.Menu"
     mc:Ignorable="d"
     Background="{StaticResource ScmColorPrimaryVariant}"
     d:DesignHeight="600" d:DesignWidth="250">

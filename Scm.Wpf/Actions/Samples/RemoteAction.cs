@@ -1,6 +1,6 @@
-﻿using Com.Scm.Wpf.Dvo.Menu;
+﻿using Com.Scm.Dvo.Menu;
 
-namespace Com.Scm.Wpf.Actions.Samples
+namespace Com.Scm.Actions.Samples
 {
     public class RemoteAction : AAction
     {
@@ -11,7 +11,7 @@ namespace Com.Scm.Wpf.Actions.Samples
                 return;
             }
 
-            Window.ShowView(dvo.Codec, dvo.Namec, "Com.Scm.Wpf.Views.Samples.Remote.MainView");
+            Window.ShowView(dvo.Codec, dvo.Namec, "Com.Scm.Views.Samples.Remote.MainView");
         }
     }
 }

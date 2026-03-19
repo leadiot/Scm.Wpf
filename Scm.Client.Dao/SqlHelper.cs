@@ -1,6 +1,6 @@
 ﻿using SqlSugar;
 
-namespace Com.Scm.Wpf.Helper
+namespace Com.Scm.Dao
 {
     public class SqlHelper
     {

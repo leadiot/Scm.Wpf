@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Com.Scm.Wpf.Views.Uc
+namespace Com.Scm.Views.Uc
 {
     /// <summary>
     /// UcChart.xaml 的交互逻辑

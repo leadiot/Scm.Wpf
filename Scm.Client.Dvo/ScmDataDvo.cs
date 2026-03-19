@@ -1,7 +1,6 @@
 ﻿using Com.Scm.Enums;
-using Com.Scm.Wpf.Dvo;
 
-namespace Com.Scm
+namespace Com.Scm.Dvo
 {
     public class ScmDataDvo : ScmDvo
     {

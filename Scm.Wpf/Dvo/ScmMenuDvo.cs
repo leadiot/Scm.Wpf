@@ -1,10 +1,10 @@
+using Com.Scm.Actions;
 using Com.Scm.Enums;
 using Com.Scm.Sys.Menu;
-using Com.Scm.Wpf.Actions;
 using System.Collections.ObjectModel;
 using System.Windows;
 
-namespace Com.Scm.Wpf.Dvo.Menu
+namespace Com.Scm.Dvo.Menu
 {
     public class ScmMenuDvo : ScmDvo
     {
@@ -67,6 +67,12 @@ namespace Com.Scm.Wpf.Dvo.Menu
 
         private ObservableCollection<ScmMenuDvo> _children;
         public ObservableCollection<ScmMenuDvo> Children { get { return _children; } set { SetProperty(ref _children, value); } }
+
+        private bool _isExpanded;
+        public bool IsExpanded { get { return _isExpanded; } set { SetProperty(ref _isExpanded, value); } }
+
+        private bool _isSelected;
+        public bool IsSelected { get { return _isSelected; } set { SetProperty(ref _isSelected, value); } }
 
         private Visibility expanderVisibility = Visibility.Visible;
         public Visibility ExpanderVisibility
