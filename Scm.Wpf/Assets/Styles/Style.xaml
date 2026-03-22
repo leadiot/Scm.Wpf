@@ -1,8 +1,6 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:Com.Scm.Controls.Attach"
-    xmlns:hc="https://handyorg.github.io/handycontrol">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!-- 基础色 -->
     <Color x:Key="white">#FFFFFF</Color>
@@ -81,6 +79,7 @@
         </Setter>
     </Style>
 
+    <!-- 窗口按钮风格 -->
     <Style TargetType="Button" x:Key="ControlBtnStyle">
         <Setter Property="Width" Value="40"/>
         <Setter Property="Height" Value="40"/>
@@ -101,112 +100,5 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>
-    <Style TargetType="Button" x:Key="IconBtn">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <hc:SimplePanel>
-                        <Border Background="{TemplateBinding Background}" CornerRadius="{Binding Path=(hc:BorderElement.CornerRadius),RelativeSource={RelativeSource TemplatedParent}}"/>
-                        <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="{Binding Path=(hc:BorderElement.CornerRadius),RelativeSource={RelativeSource TemplatedParent}}">
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}">
-                                <TextBlock Text="{TemplateBinding local:IconElement.Icon}" FontFamily="../../Fonts/MyFonts/#iconfont" FontSize="13" VerticalAlignment="Center"></TextBlock>
-                                <ContentPresenter x:Name="ContentPresenterMain" RecognizesAccessKey="True" VerticalAlignment="Center" Margin="4,0,0,0" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
-                            </StackPanel>
-                        </Border>
-                    </hc:SimplePanel>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    <Style TargetType="Button" x:Key="AddBtnStyle" BasedOn="{StaticResource ButtonBaseStyle}">
-        <Setter Property="Width" Value="80"/>
-        <Setter Property="Height" Value="30"/>
-        <Setter Property="BorderBrush" Value="#a3d3ff"/>
-        <Setter Property="Foreground" Value="#1890ff"/>
-        <Setter Property="Background" Value="#e8f4ff"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <hc:SimplePanel>
-                        <Border Background="{TemplateBinding Background}" CornerRadius="{Binding Path=(hc:BorderElement.CornerRadius),RelativeSource={RelativeSource TemplatedParent}}"/>
-                        <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="{Binding Path=(hc:BorderElement.CornerRadius),RelativeSource={RelativeSource TemplatedParent}}">
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}">
-                                <TextBlock Text="&#xe68d;" FontFamily="../../Fonts/MyFonts/#iconfont" FontSize="13" VerticalAlignment="Center"></TextBlock>
-                                <ContentPresenter x:Name="ContentPresenterMain" RecognizesAccessKey="True" VerticalAlignment="Center" Margin="4,0,0,0" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
-                            </StackPanel>
-                        </Border>
-                    </hc:SimplePanel>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#1890ff"/>
-                <Setter Property="BorderBrush" Value="#1890ff"/>
-                <Setter Property="Foreground" Value="White"/>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-    <Style TargetType="Button" x:Key="EditBtnStyle" BasedOn="{StaticResource ButtonBaseStyle}">
-        <Setter Property="Width" Value="80"/>
-        <Setter Property="Height" Value="30"/>
-        <Setter Property="BorderBrush" Value="#a1ebc2"/>
-        <Setter Property="Foreground" Value="#13ce66"/>
-        <Setter Property="Background" Value="#e7faf0"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <hc:SimplePanel>
-                        <Border Background="{TemplateBinding Background}" CornerRadius="{Binding Path=(hc:BorderElement.CornerRadius),RelativeSource={RelativeSource TemplatedParent}}"/>
-                        <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="{Binding Path=(hc:BorderElement.CornerRadius),RelativeSource={RelativeSource TemplatedParent}}">
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}">
-                                <TextBlock Text="&#xe684;" FontFamily="../../Fonts/MyFonts/#iconfont" FontSize="13" VerticalAlignment="Center"></TextBlock>
-                                <ContentPresenter x:Name="ContentPresenterMain" RecognizesAccessKey="True" VerticalAlignment="Center" Margin="4,0,0,0" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
-                            </StackPanel>
-                        </Border>
-                    </hc:SimplePanel>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#13ce66"/>
-                <Setter Property="BorderBrush" Value="#13ce66"/>
-                <Setter Property="Foreground" Value="White"/>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-    <Style TargetType="Button" x:Key="DelBtnStyle" BasedOn="{StaticResource ButtonBaseStyle}">
-        <Setter Property="Width" Value="80"/>
-        <Setter Property="Height" Value="30"/>
-        <Setter Property="BorderBrush" Value="#ffb6b6"/>
-        <Setter Property="Foreground" Value="#ff4949"/>
-        <Setter Property="Background" Value="#ffeded"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <hc:SimplePanel>
-                        <Border Background="{TemplateBinding Background}" CornerRadius="{Binding Path=(hc:BorderElement.CornerRadius),RelativeSource={RelativeSource TemplatedParent}}"/>
-                        <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="{Binding Path=(hc:BorderElement.CornerRadius),RelativeSource={RelativeSource TemplatedParent}}">
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}">
-                                <TextBlock Text="&#xe678;" FontFamily="../../Fonts/MyFonts/#iconfont" FontSize="13" VerticalAlignment="Center"></TextBlock>
-                                <ContentPresenter x:Name="ContentPresenterMain" RecognizesAccessKey="True" VerticalAlignment="Center" Margin="4,0,0,0" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
-                            </StackPanel>
-                        </Border>
-                    </hc:SimplePanel>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#ff4949"/>
-                <Setter Property="BorderBrush" Value="#ff4949"/>
-                <Setter Property="Foreground" Value="White"/>
-            </Trigger>
-        </Style.Triggers>
     </Style>
 </ResourceDictionary>

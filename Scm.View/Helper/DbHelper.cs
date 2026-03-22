@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace Com.Scm.Dao
 {
-    public class ScmDbHelper
+    public class DbHelper
     {
         private const int MAJOR = 3;
         private const int MINOR = 0;

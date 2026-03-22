@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
     <UseWPF>true</UseWPF>
-    <RootNamespace>Com.Scm.Wpf</RootNamespace>
+    <RootNamespace>Com.Scm</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

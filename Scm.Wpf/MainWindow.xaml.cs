@@ -144,12 +144,12 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
 
     public void HideGuid()
     {
-        AnimationHelper.CreateWidthChangedAnimation(this.UcGuid, 200, 60, new TimeSpan(0, 0, 0, 0, 300));
+        WpfHelper.CreateWidthChangedAnimation(this.UcGuid, 200, 60, new TimeSpan(0, 0, 0, 0, 300));
     }
 
     public void ShowGuid()
     {
-        AnimationHelper.CreateWidthChangedAnimation(this.UcGuid, 60, 200, new TimeSpan(0, 0, 0, 0, 300));
+        WpfHelper.CreateWidthChangedAnimation(this.UcGuid, 60, 200, new TimeSpan(0, 0, 0, 0, 300));
     }
 
     public void HideMenu()
@@ -214,12 +214,15 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
 
     public void ShowAccount()
     {
-        if (_AccountView == null)
-        {
-            _AccountView = new Scm.Views.Account.MainView();
-            _AccountView.Init(this);
-        }
-        _Dvo.ShowView("account", "账户信息", _AccountView);
+        //if (_AccountView == null)
+        //{
+        //    _AccountView = new Scm.Views.Account.MainView();
+        //    _AccountView.Init(this);
+        //}
+        //_Dvo.ShowView("account", "账户信息", _AccountView);
+        var window = new AccountWindow();
+        window.Init(this);
+        window.ShowDialog();
     }
 
     public void ShowView(string codec, string namec, string view, string args = null, string module = null, bool useCache = true)

@@ -2,7 +2,7 @@
 
 namespace Com.Scm.Utils
 {
-    internal class LogUtils
+    public class LogUtils
     {
         private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
 

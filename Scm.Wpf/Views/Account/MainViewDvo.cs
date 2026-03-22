@@ -32,7 +32,7 @@ namespace Com.Scm.Views.Account
             var client = window.GetClient();
             var token = client.GetToken();
 
-            avatar = client.GetDataUrl(token.GetAvatar());
+            avatar = client.GetAvatar(token.GetAvatar());
 
             userName = token.GetUserNames();
             userCode = token.GetUserCodes();

@@ -4,7 +4,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
-    <RootNamespace>Com.Scm.Wpf</RootNamespace>
+    <RootNamespace>Com.Scm</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

@@ -91,6 +91,11 @@ namespace Com.Scm
             return "http://" + _Host + "/Data" + url;
         }
 
+        public string GetAvatar(string avatar)
+        {
+            return "http://" + _Host + "/Data/Avatar/" + avatar;
+        }
+
         /// <summary>
         /// 本地数据目录
         /// </summary>

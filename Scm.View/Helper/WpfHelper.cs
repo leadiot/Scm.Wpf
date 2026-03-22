@@ -3,7 +3,7 @@ using System.Windows.Media.Animation;
 
 namespace Com.Scm.Helper
 {
-    public class AnimationHelper
+    public class WpfHelper
     {
         /// <summary>
         /// 创建宽度改变动画

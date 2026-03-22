@@ -136,7 +136,7 @@ namespace Com.Scm
             SqlHelper.Setup(dbPath);
 
             var sqlClient = SqlHelper.GetSqlClient();
-            var helper = new ScmDbHelper();
+            var helper = new DbHelper();
             helper.Init(sqlClient, ScmClientEnv.DataDir);
             helper.InitDb();
         }
