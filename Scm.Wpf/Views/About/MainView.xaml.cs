@@ -83,9 +83,9 @@ namespace Com.Scm.Views.About
             }
         }
 
-        private void HlQq_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void HlQchat_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            Clipboard.SetText(_Dvo.AppContact);
+            Clipboard.SetText(_Dvo.AppQchat);
             _Window.ShowToast("QQ群号复制成功！");
         }
     }

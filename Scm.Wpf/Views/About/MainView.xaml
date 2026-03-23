@@ -41,8 +41,8 @@
                 </Hyperlink>
                 </TextBlock>
                 <TextBlock TextWrapping="Wrap">QQ沟通群：
-                <Hyperlink x:Name="HlQq" NavigateUri="http://www.c-scm.net" Click="HlQq_Click" ToolTip="点击复制群号">
-                    <Run Name="HrQq" Text="{Binding AppContact}"></Run>
+                <Hyperlink x:Name="HlQchat" NavigateUri="http://www.c-scm.net" Click="HlQchat_Click" ToolTip="点击复制群号">
+                    <Run Name="HrQchat" Text="{Binding AppQchat}"></Run>
                 </Hyperlink>
                 </TextBlock>
             </StackPanel>

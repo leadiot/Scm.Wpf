@@ -15,8 +15,29 @@ namespace Com.Scm.Views.About
         private string appName = ScmClientEnv.ProductName;
         public string AppName { get { return appName; } set { SetProperty(ref appName, value); } }
 
-        private string remark;
-        public string Remark { get { return remark; } set { SetProperty(ref remark, value); } }
+        /// <summary>
+        /// 项目
+        /// </summary>
+        private string appProject;
+        public string AppProject { get { return appProject; } set { SetProperty(ref appProject, value); } }
+
+        /// <summary>
+        /// 网站
+        /// </summary>
+        private string appWebsite;
+        public string AppWebsite { get { return appWebsite; } set { SetProperty(ref appWebsite, value); } }
+
+        /// <summary>
+        /// 邮件
+        /// </summary>
+        private string appEmail;
+        public string AppEmail { get { return appEmail; } set { SetProperty(ref appEmail, value); } }
+
+        /// <summary>
+        /// 群聊
+        /// </summary>
+        private string appQchat;
+        public string AppQchat { get { return appQchat; } set { SetProperty(ref appQchat, value); } }
 
         private string appVersion;
         public string AppVersion { get { return appVersion; } set { SetProperty(ref appVersion, value); } }
@@ -24,17 +45,8 @@ namespace Com.Scm.Views.About
         private string appRelease;
         public string AppRelease { get { return appRelease; } set { SetProperty(ref appRelease, value); } }
 
-        private string appProject;
-        public string AppProject { get { return appProject; } set { SetProperty(ref appProject, value); } }
-
-        private string appWebsite;
-        public string AppWebsite { get { return appWebsite; } set { SetProperty(ref appWebsite, value); } }
-
-        private string appEmail;
-        public string AppEmail { get { return appEmail; } set { SetProperty(ref appEmail, value); } }
-
-        private string appContact;
-        public string AppContact { get { return appContact; } set { SetProperty(ref appContact, value); } }
+        private string remark;
+        public string Remark { get { return remark; } set { SetProperty(ref remark, value); } }
 
         private ScmWindow _Window;
 
@@ -64,18 +76,23 @@ namespace Com.Scm.Views.About
             {
                 AppCode = ScmClientEnv.ProductCode;
                 AppName = ScmClientEnv.ProductName;
-                AppVersion = ScmClientEnv.GetVersionString();
-                AppRelease = ScmClientEnv.RELEASE_DATE;
                 AppProject = "https://gitee.com/leadiot/scm.net";
                 AppWebsite = "http://www.c-scm.net";
                 AppEmail = "361341288@qq.com";
-                AppContact = "415872667";
+                AppQchat = "415872667";
+                AppVersion = ScmClientEnv.GetVersionString();
+                AppRelease = ScmClientEnv.RELEASE_DATE;
 
                 _AppInfo = _Window.GetAppInfo(AppCode);
                 if (_AppInfo == null)
                 {
                     _AppInfo = LoadAppDefault();
                 }
+
+                AppProject = _AppInfo.project;
+                AppWebsite = _AppInfo.website;
+                AppEmail = _AppInfo.email;
+                AppQchat = _AppInfo.qchat;
 
                 Remark = _AppInfo.content;
             }
