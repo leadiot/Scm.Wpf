@@ -82,54 +82,7 @@ namespace Com.Scm.Views.Uc
         private void Menu_Selected(object sender, System.Windows.RoutedEventArgs e)
         {
             var item = sender as SideMenuItem;
-            if (item == null)
-            {
-                return;
-            }
-
-            var dvo = item.Tag as ScmMenuDvo;
-            if (dvo == null)
-            {
-                return;
-            }
-
-            var action = dvo.Action;
-            if (action == null)
-            {
-                if (dvo.Loaded)
-                {
-                    return;
-                }
-
-                dvo.Loaded = true;
-                if (string.IsNullOrEmpty(dvo.Uri))
-                {
-                    return;
-                }
-
-                //Type type = Type.GetType(dvo.Uri);
-                //if (type == null)
-                //{
-                //    return;
-                //}
-
-                var assembly = Assembly.Load("Scm.View");
-                if (assembly == null)
-                {
-                    return;
-                }
-                var obj = assembly.CreateInstance(dvo.Uri);
-                if (!(obj is AAction))
-                {
-                    return;
-                }
-
-                action = (AAction)obj;
-                action.Window = _Owner;
-                dvo.Action = action;
-            }
-
-            action.Execute(dvo);
+            SelectItem(item);
         }
 
         private PackIconMaterial GetIcon(string icon, int size)
@@ -182,6 +135,75 @@ namespace Com.Scm.Views.Uc
 
             //MbMenu.Visibility = System.Windows.Visibility.Visible;
             //PiMenu.Kind = PackIconMaterialKind.ChevronDoubleLeft;
+        }
+
+        public void SetSelected(int index)
+        {
+            if (index < 0 || index >= MbMenu.Items.Count)
+            {
+                return;
+            }
+
+            var item = MbMenu.Items[index] as SideMenuItem;
+            if (item == null)
+            {
+                return;
+            }
+
+            item.IsSelected = true;
+            SelectItem(item);
+        }
+
+        private void SelectItem(SideMenuItem item)
+        {
+            if (item == null)
+            {
+                return;
+            }
+
+            var dvo = item.Tag as ScmMenuDvo;
+            if (dvo == null)
+            {
+                return;
+            }
+
+            var action = dvo.Action;
+            if (action == null)
+            {
+                if (dvo.Loaded)
+                {
+                    return;
+                }
+
+                dvo.Loaded = true;
+                if (string.IsNullOrEmpty(dvo.Uri))
+                {
+                    return;
+                }
+
+                //Type type = Type.GetType(dvo.Uri);
+                //if (type == null)
+                //{
+                //    return;
+                //}
+
+                var assembly = Assembly.Load("Scm.View");
+                if (assembly == null)
+                {
+                    return;
+                }
+                var obj = assembly.CreateInstance(dvo.Uri);
+                if (!(obj is AAction))
+                {
+                    return;
+                }
+
+                action = (AAction)obj;
+                action.Window = _Owner;
+                dvo.Action = action;
+            }
+
+            action.Execute(dvo);
         }
     }
 }

@@ -15,13 +15,15 @@
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
 	</ItemGroup>
 
   <ItemGroup>
     <Resource Include="Assets\Images\avatar.png" />
     <Resource Include="Assets\Images\bg.png" />
     <Resource Include="logo.ico" />
-    <Resource Include="NLog.config" />
     <Resource Include="Resources\bind.jpg" />
     <Resource Include="Resources\logo.ico" />
     <Resource Include="Resources\logo.png" />

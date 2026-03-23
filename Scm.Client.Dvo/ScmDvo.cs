@@ -337,6 +337,14 @@ namespace Com.Scm.Dvo
 
             return dst;
         }
+
+        public virtual void Encode()
+        {
+        }
+
+        public virtual void Decode()
+        {
+        }
     }
 
     #region MVVM

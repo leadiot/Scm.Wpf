@@ -82,16 +82,16 @@ namespace Com.Scm.Dvo
 
         private void InitNasMenu(List<MenuDto> menuList)
         {
-            var item = new MenuDto();
-            item.id = 1;
-            item.codec = "home";
-            item.namec = "Home";
-            item.icon = "Home";
-            item.uri = "Com.Scm.Actions.ViewAction";
-            item.view = "Com.Scm.Views.Home.MainView";
-            menuList.Add(item);
+            //var item = new MenuDto();
+            //item.id = 1;
+            //item.codec = "home";
+            //item.namec = "Home";
+            //item.icon = "Home";
+            //item.uri = "Com.Scm.Actions.ViewAction";
+            //item.view = "Com.Scm.Views.Home.MainView";
+            //menuList.Add(item);
 
-            item = new MenuDto();
+            var item = new MenuDto();
             item.id = 21;
             item.codec = "nas-folder";
             item.namec = "目录管理";

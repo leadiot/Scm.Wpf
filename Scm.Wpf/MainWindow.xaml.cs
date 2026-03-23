@@ -204,12 +204,14 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
 
     public void ShowHome()
     {
-        if (_HomeView == null)
-        {
-            _HomeView = new Scm.Views.Home.MainView();
-            _HomeView.Init(this);
-        }
-        _Dvo.ShowView("home", "首页", _HomeView);
+        //if (_HomeView == null)
+        //{
+        //    _HomeView = new Scm.Views.Home.MainView();
+        //    _HomeView.Init(this);
+        //}
+        //_Dvo.ShowView("home", "首页", _HomeView);
+
+        UcGuid.SetSelected(0);
     }
 
     public void ShowAccount()
