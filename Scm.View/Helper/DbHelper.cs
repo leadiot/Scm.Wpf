@@ -6,16 +6,52 @@ using System.Text.RegularExpressions;
 
 namespace Com.Scm.Dao
 {
-    public class DbHelper
+    public abstract class DbHelper
     {
-        private const int MAJOR = 3;
-        private const int MINOR = 0;
-        private const int PATCH = 0;
-        private const string BUILD = "2026020601";
-        private const string RELEASE_DATE = "2026-02-06";
-
         protected ISqlSugarClient _SqlClient;
         protected string _BaseDir;
+
+        /// <summary>
+        /// 应用代码
+        /// </summary>
+        /// <returns></returns>
+        public abstract string GetAppCode();
+
+        /// <summary>
+        /// 主版本
+        /// </summary>
+        /// <returns></returns>
+        public abstract int GetMajor();
+
+        /// <summary>
+        /// 子版本
+        /// </summary>
+        /// <returns></returns>
+        public abstract int GetMinor();
+
+        /// <summary>
+        /// 修订版本
+        /// </summary>
+        /// <returns></returns>
+        public abstract int GetPatch();
+
+        /// <summary>
+        /// 建构版本
+        /// </summary>
+        /// <returns></returns>
+        public abstract string GetBuild();
+
+        /// <summary>
+        /// 发行信息
+        /// </summary>
+        /// <returns></returns>
+        public abstract string GetRelease();
+
+        /// <summary>
+        /// 版本信息
+        /// </summary>
+        /// <returns></returns>
+        public abstract string GetVersion();
 
         public void Init(ISqlSugarClient sqlClient, string baseDir)
         {
@@ -40,7 +76,7 @@ namespace Com.Scm.Dao
         /// <returns></returns>
         public virtual bool InitDb()
         {
-            var key = "nas.net";
+            var key = GetAppCode();
 
             var verDao = ReadDbVer(key);
             if (verDao == null)
@@ -50,7 +86,7 @@ namespace Com.Scm.Dao
                 verDao.create_time = TimeUtils.GetUnixTime();
             }
 
-            InitTable(Assembly.GetExecutingAssembly());
+            InitTable();
 
             InitDml(verDao);
 
@@ -60,11 +96,11 @@ namespace Com.Scm.Dao
             var dmlFile = Path.Combine(_BaseDir, "dml.sql");
             ExecuteSql(dmlFile, verDao.major);
 
-            verDao.major = MAJOR;
-            verDao.minor = MINOR;
-            verDao.patch = PATCH;
-            verDao.build = BUILD;
-            verDao.release_date = RELEASE_DATE;
+            verDao.major = GetMajor();
+            verDao.minor = GetMinor();
+            verDao.patch = GetPatch();
+            verDao.build = GetBuild();
+            verDao.release_date = GetRelease();
             verDao.update_time = TimeUtils.GetUnixTime();
             SaveDbVer(verDao);
             return true;
@@ -259,7 +295,6 @@ namespace Com.Scm.Dao
             return 0;
         }
 
-
         /// <summary>
         /// 删除表格
         /// </summary>
@@ -288,6 +323,11 @@ namespace Com.Scm.Dao
             }
 
             return true;
+        }
+
+        protected virtual bool InitTable()
+        {
+            return InitTable(Assembly.GetExecutingAssembly());
         }
 
         /// <summary>
@@ -340,7 +380,6 @@ namespace Com.Scm.Dao
 
             _SqlClient.DbMaintenance.TruncateTable(daoList.ToArray());
         }
-
 
         /// <summary>
         /// 数据库操作

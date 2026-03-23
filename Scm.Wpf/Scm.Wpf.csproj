@@ -80,10 +80,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Dto\" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <Compile Update="Views\Account\MainView.xaml.cs">
 	    <SubType>Code</SubType>
 	  </Compile>

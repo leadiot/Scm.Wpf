@@ -109,6 +109,6 @@ namespace Com.Scm
 
         void Logout();
 
-        void Exit();
+        void Exit(bool confirm = true);
     }
 }

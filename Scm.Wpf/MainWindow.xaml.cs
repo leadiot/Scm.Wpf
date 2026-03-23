@@ -583,16 +583,19 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     /// <summary>
     /// 退出应用处理
     /// </summary>
-    public void Exit()
+    public void Exit(bool confirm = true)
     {
-        var result = ShowConfirm("确认要退出应用吗？");
-        if (result != true)
+        if (confirm)
         {
-            if (IsVisible)
+            var result = ShowConfirm("确认要退出应用吗？");
+            if (result != true)
             {
-                this.Activate();
+                if (IsVisible)
+                {
+                    this.Activate();
+                }
+                return;
             }
-            return;
         }
 
         SqlHelper.Close();

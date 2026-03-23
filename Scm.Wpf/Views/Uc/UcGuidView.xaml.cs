@@ -1,10 +1,11 @@
-﻿using Com.Scm.Sys.Menu;
-using Com.Scm.Utils;
-using Com.Scm.Actions;
+﻿using Com.Scm.Actions;
 using Com.Scm.Dvo.Menu;
+using Com.Scm.Sys.Menu;
+using Com.Scm.Utils;
 using HandyControl.Controls;
 using MahApps.Metro.IconPacks;
 using System.Collections.ObjectModel;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -106,12 +107,18 @@ namespace Com.Scm.Views.Uc
                     return;
                 }
 
-                Type type = Type.GetType(dvo.Uri);
-                if (type == null)
+                //Type type = Type.GetType(dvo.Uri);
+                //if (type == null)
+                //{
+                //    return;
+                //}
+
+                var assembly = Assembly.Load("Scm.View");
+                if (assembly == null)
                 {
                     return;
                 }
-                var obj = Activator.CreateInstance(type);
+                var obj = assembly.CreateInstance(dvo.Uri);
                 if (!(obj is AAction))
                 {
                     return;

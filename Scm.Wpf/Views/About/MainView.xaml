@@ -17,25 +17,33 @@
                 <Button x:Name="BtVersion" Style="{StaticResource ButtonPrimary}" Width="240" Margin="12" Click="BtVersion_Click">检测更新</Button>
             </StackPanel>
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="6">
-                <TextBlock TextWrapping="Wrap" Style="{StaticResource TextBlockTitleBold}">Nas.Net</TextBlock>
-                <TextBlock x:Name="TbRemark" TextWrapping="Wrap">Nas.Net是一个开源的私有云存储软件。</TextBlock>
+                <TextBlock TextWrapping="Wrap" Style="{StaticResource TextBlockTitleBold}" Text="{Binding AppName}"></TextBlock>
+                <TextBlock x:Name="TbRemark" TextWrapping="Wrap" Text="{Binding Remark}"></TextBlock>
                 <TextBlock TextWrapping="Wrap">当前版本：
-                    <Run Name="HrVersion">1.0.0</Run>
+                    <Run Name="HrVersion" Text="{Binding AppVersion}"></Run>
                 </TextBlock>
                 <TextBlock TextWrapping="Wrap">发行日期：
-                    <Run Name="HrRelease">2026-01-01</Run>
+                    <Run Name="HrRelease" Text="{Binding AppRelease}"></Run>
                 </TextBlock>
                 <TextBlock TextWrapping="Wrap">项目地址：
-                <Hyperlink x:Name="HlProject" NavigateUri="https://gitee.com/openscm/nas.net" Click="HlProject_Click" ToolTip="点击访问项目">Nas.Net</Hyperlink>
+                <Hyperlink x:Name="HlProject" NavigateUri="{Binding AppProject}" Click="HlProject_Click" ToolTip="点击访问项目">
+                    <Run Name="HrProject" Text="{Binding AppProject}"></Run>
+                </Hyperlink>
                 </TextBlock>
                 <TextBlock TextWrapping="Wrap">网站首页：
-                <Hyperlink x:Name="HlWebsite" NavigateUri="http://www.c-scm.net" Click="HlWebsite_Click" ToolTip="点击访问网站">http://c-scm.net</Hyperlink>
+                <Hyperlink x:Name="HlWebsite" NavigateUri="{Binding AppWebsite}" Click="HlWebsite_Click" ToolTip="点击访问网站">
+                    <Run Name="HrWebsite" Text="{Binding AppWebsite}"></Run>
+                </Hyperlink>
                 </TextBlock>
                 <TextBlock TextWrapping="Wrap">联系作者：
-                <Hyperlink x:Name="HlEmail" NavigateUri="mailto:361341288@qq.com" Click="HlEmail_Click" ToolTip="点击复制群号">361341288@qq.com</Hyperlink>
+                <Hyperlink x:Name="HlEmail" NavigateUri="http://www.c-scm.net" Click="HlEmail_Click" ToolTip="点击发送邮件">
+                    <Run Name="HrEmail" Text="{Binding AppEmail}"></Run>
+                </Hyperlink>
                 </TextBlock>
                 <TextBlock TextWrapping="Wrap">QQ沟通群：
-                <Hyperlink x:Name="HlQq" NavigateUri="https://www.c-scm.net" Click="HlQq_Click" ToolTip="点击复制群号">297679499</Hyperlink>
+                <Hyperlink x:Name="HlQq" NavigateUri="http://www.c-scm.net" Click="HlQq_Click" ToolTip="点击复制群号">
+                    <Run Name="HrQq" Text="{Binding AppContact}"></Run>
+                </Hyperlink>
                 </TextBlock>
             </StackPanel>
         </DockPanel>
