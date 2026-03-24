@@ -2,7 +2,7 @@
 using Com.Scm.Dao;
 using Com.Scm.Enums;
 using Com.Scm.Login;
-using Com.Scm.Nas.Helper;
+using Com.Scm.Samples.Helper;
 using Com.Scm.Sys.Menu;
 using Com.Scm.Uid.Config;
 using Com.Scm.Utils;
@@ -137,7 +137,7 @@ namespace Com.Scm
             SqlHelper.Setup(dbPath);
 
             var sqlClient = SqlHelper.GetSqlClient();
-            var helper = new NasDbHelper();
+            var helper = new SamplesDbHelper();
             helper.Init(sqlClient, ScmClientEnv.DataDir);
             helper.InitDb();
         }

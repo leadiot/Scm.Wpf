@@ -20,7 +20,6 @@ namespace Com.Scm
 
             _Dvo = new DemoWindowDvo();
             _Dvo.Init(null);
-            _Dvo.LoadHome();
 
             this.DataContext = _Dvo;
         }
@@ -29,7 +28,6 @@ namespace Com.Scm
         {
             _Dvo = new DemoWindowDvo();
             _Dvo.Init(window);
-            _Dvo.LoadHome();
 
             this.DataContext = _Dvo;
         }

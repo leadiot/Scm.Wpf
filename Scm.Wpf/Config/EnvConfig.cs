@@ -11,7 +11,7 @@ namespace Com.Scm.Config
 
         public string UpgradeJsonName { get; set; }
 
-        public ScmLoginTypeEnum LoginMode { get; set; } = ScmLoginTypeEnum.Terminal;
+        public ScmLoginTypeEnum LoginMode { get; set; } = ScmLoginTypeEnum.Operator;
 
         public void LoadDefault()
         {
