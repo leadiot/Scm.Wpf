@@ -26,6 +26,7 @@
     <Resource Include="logo.ico" />
     <Resource Include="Resources\banner.png" />
     <Resource Include="Resources\bind.jpg" />
+    <Resource Include="Resources\bind.png" />
     <Resource Include="Resources\logo.ico" />
     <Resource Include="Resources\logo.png" />
     <Resource Include="Resources\splash.png" />

@@ -45,8 +45,8 @@ namespace Com.Scm.Views.About
         private string appRelease;
         public string AppRelease { get { return appRelease; } set { SetProperty(ref appRelease, value); } }
 
-        private string remark;
-        public string Remark { get { return remark; } set { SetProperty(ref remark, value); } }
+        private string introduction;
+        public string Introduction { get { return introduction; } set { SetProperty(ref introduction, value); } }
 
         private ScmWindow _Window;
 
@@ -76,10 +76,6 @@ namespace Com.Scm.Views.About
             {
                 AppCode = ScmClientEnv.ProductCode;
                 AppName = ScmClientEnv.ProductName;
-                AppProject = "https://gitee.com/leadiot/scm.net";
-                AppWebsite = "http://www.c-scm.net";
-                AppEmail = "361341288@qq.com";
-                AppQchat = "415872667";
                 AppVersion = ScmClientEnv.GetVersionString();
                 AppRelease = ScmClientEnv.RELEASE_DATE;
 
@@ -89,12 +85,12 @@ namespace Com.Scm.Views.About
                     _AppInfo = LoadAppDefault();
                 }
 
-                AppProject = _AppInfo.project;
-                AppWebsite = _AppInfo.website;
-                AppEmail = _AppInfo.email;
-                AppQchat = _AppInfo.qchat;
+                AppProject = _AppInfo.project ?? "https://gitee.com/leadiot/scm.net";
+                AppWebsite = _AppInfo.website ?? "http://www.c-scm.net";
+                AppEmail = _AppInfo.email ?? "361341288@qq.com";
+                AppQchat = _AppInfo.qchat ?? "415872667";
 
-                Remark = _AppInfo.content;
+                Introduction = _AppInfo.content;
             }
             catch (Exception e)
             {

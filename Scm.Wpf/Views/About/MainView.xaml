@@ -18,7 +18,7 @@
             </StackPanel>
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="6">
                 <TextBlock TextWrapping="Wrap" Style="{StaticResource TextBlockTitleBold}" Text="{Binding AppName}"></TextBlock>
-                <TextBlock x:Name="TbRemark" TextWrapping="Wrap" Text="{Binding Remark}"></TextBlock>
+                <TextBlock x:Name="TbIntroduction" TextWrapping="Wrap" Text="{Binding Introduction}"></TextBlock>
                 <TextBlock TextWrapping="Wrap">当前版本：
                     <Run Name="HrVersion" Text="{Binding AppVersion}"></Run>
                 </TextBlock>

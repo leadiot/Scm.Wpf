@@ -14,22 +14,22 @@ namespace Com.Scm
         /// <summary>
         /// 子版本
         /// </summary>
-        public const int MINOR = 4;
+        public const int MINOR = 6;
 
         /// <summary>
         /// 修正版本
         /// </summary>
-        public const int PATCH = 8;
+        public const int PATCH = 12;
 
         /// <summary>
         /// 构建版本
         /// </summary>
-        public const string BUILD = "2026020601";
+        public const string BUILD = "2026032601";
 
         /// <summary>
         /// 发行日期
         /// </summary>
-        public const string RELEASE_DATE = "2026-02-06";
+        public const string RELEASE_DATE = "2026-03-26";
 
         public const string CompanyName = "Scm.Net";
         public const string ProductCode = "Nas.Net";
