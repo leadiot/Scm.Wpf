@@ -21,9 +21,10 @@
 	</ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Assets\Images\avatar.png" />
-    <Resource Include="Assets\Images\bg.png" />
+    <Resource Include="Resources\avatar.png" />
+    <Resource Include="Resources\bg.png" />
     <Resource Include="logo.ico" />
+    <Resource Include="Resources\banner.png" />
     <Resource Include="Resources\bind.jpg" />
     <Resource Include="Resources\logo.ico" />
     <Resource Include="Resources\logo.png" />

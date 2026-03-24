@@ -8,7 +8,7 @@
     xmlns:hc="https://handyorg.github.io/handycontrol"
     mc:Ignorable="d"
     Background="{StaticResource ScmColorPrimary}"
-    d:DesignHeight="50" d:DesignWidth="480">
+    d:DesignHeight="50" d:DesignWidth="560">
     <UserControl.Resources>
         <ContextMenu x:Key="CmMenu" Width="200">
             <MenuItem x:Name="MiInfo" Header="账户信息" Click="MiInfo_Click"/>
@@ -26,14 +26,7 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0" Background="{StaticResource ScmColorPrimaryVariant}"  Width="240" Height="50">
-                <TextBlock
-                    Grid.Row="0"
-                    Text="Scm.Net"
-                    FontSize="32"
-                    FontWeight="Bold"
-                    Foreground="#3DD0FB"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Center"/>
+                <Image Source="/Resources/banner.png" Stretch="None"/>
             </Grid>
             <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="12 0">
                 <ToggleButton
@@ -89,7 +82,7 @@
                     Background="#FAFAFA"
                     Cursor="Hand"
                     MouseLeftButtonUp="BdAvatar_MouseLeftButtonUp">
-                    <Image x:Name="IvAvatar" Source="/Assets/Images/avatar.png" Width="36" Height="36" Stretch="Fill">
+                    <Image x:Name="IvAvatar" Source="/Resources/avatar.png" Width="36" Height="36" Stretch="Fill">
                         <Image.Clip>
                             <EllipseGeometry RadiusX="18" RadiusY="18" Center="18,18"/>
                         </Image.Clip>

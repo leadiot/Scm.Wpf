@@ -18,7 +18,7 @@
         Margin="8">
         <Border CornerRadius="4,4,0,0" Style="{StaticResource BorderClip}">
             <Border Width="80" Height="80" CornerRadius="40" BorderThickness="5" BorderBrush="LightGray" Background="White">
-                <Image x:Name="PbIcon" Width="64" Height="64" Source="/Assets/Images/avatar.png">
+                <Image x:Name="PbIcon" Width="64" Height="64" Source="/Resources/avatar.png">
                     <Image.Clip>
                         <EllipseGeometry RadiusX="32" RadiusY="32" Center="32,32"/>
                     </Image.Clip>

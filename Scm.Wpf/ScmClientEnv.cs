@@ -33,7 +33,7 @@ namespace Com.Scm
 
         public const string CompanyName = "Scm.Net";
         public const string ProductCode = "Nas.Net";
-        public const string ProductName = "松果";
+        public const string ProductName = "Nas.Net";
         public const string Copyright = "Copyright © SCM 2026";
         public const string SupportEmail = "";
 

@@ -73,6 +73,8 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     {
         _Client = client;
 
+        this.Title = ScmClientEnv.ProductName;
+
         Growl.Register("ScmToast", GdToast);
 
         _AppKey = "";
