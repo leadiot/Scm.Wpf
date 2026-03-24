@@ -2,7 +2,7 @@
 
 namespace Com.Scm.Samples.Helper
 {
-    public class SamplesDbHelper : DbHelper
+    public class SamplesDbHelper : ScmDbHelper
     {
         private const int MAJOR = 1;
         private const int MINOR = 0;

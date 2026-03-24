@@ -31,6 +31,7 @@ namespace Com.Scm
         /// </summary>
         public const string RELEASE_DATE = "2026-03-26";
 
+        public const string CompanyCode = "Scm.Net";
         public const string CompanyName = "Scm.Net";
         public const string ProductCode = "Nas.Net";
         public const string ProductName = "Nas.Net";
@@ -104,7 +105,7 @@ namespace Com.Scm
             //_DataDir = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
             // C:\Users\[用户名]\Documents\
             FileDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            DataDir = Path.Combine(FileDir, CompanyName, ProductName);
+            DataDir = Path.Combine(FileDir, CompanyCode, ProductCode);
             if (!Directory.Exists(DataDir))
             {
                 Directory.CreateDirectory(DataDir);

@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace Com.Scm.Dao
 {
-    public abstract class DbHelper
+    public abstract class ScmDbHelper
     {
         protected ISqlSugarClient _SqlClient;
         protected string _BaseDir;
@@ -298,6 +298,14 @@ namespace Com.Scm.Dao
         /// <summary>
         /// 删除表格
         /// </summary>
+        protected virtual void DropTable()
+        {
+            DropTable(Assembly.GetExecutingAssembly());
+        }
+
+        /// <summary>
+        /// 删除表格
+        /// </summary>
         protected bool DropTable(Assembly assembly)
         {
             var scmDao = typeof(ScmDao);
@@ -325,6 +333,10 @@ namespace Com.Scm.Dao
             return true;
         }
 
+        /// <summary>
+        /// 创建表格
+        /// </summary>
+        /// <returns></returns>
         protected virtual bool InitTable()
         {
             return InitTable(Assembly.GetExecutingAssembly());
@@ -348,6 +360,14 @@ namespace Com.Scm.Dao
             }
             _SqlClient.CodeFirst.InitTables(daoList.ToArray());
             return true;
+        }
+
+        /// <summary>
+        /// 清空表格
+        /// </summary>
+        protected virtual void TruncateTable()
+        {
+            TruncateTable(Assembly.GetExecutingAssembly());
         }
 
         /// <summary>
@@ -384,22 +404,8 @@ namespace Com.Scm.Dao
         /// <summary>
         /// 数据库操作
         /// </summary>
-        private void InitDml(ScmVerDao verDao)
+        protected virtual void InitDml(ScmVerDao verDao)
         {
-            if (verDao.major == 1)
-            {
-                _SqlClient.Ado.ExecuteCommand("UPDATE nas_res_file SET type= type * 10;");
-                _SqlClient.Ado.ExecuteCommand("UPDATE nas_log_file SET type= type * 10;");
-            }
-
-            if (verDao.major == 2)
-            {
-                _SqlClient.Ado.ExecuteCommand("ALTER TABLE nas_cfg_drive DROP COLUMN folder_id;");
-                _SqlClient.Ado.ExecuteCommand("ALTER TABLE nas_cfg_drive RENAME TO nas_cfg_folder;");
-                _SqlClient.Ado.ExecuteCommand("ALTER TABLE nas_cfg_folder RENAME COLUMN last_id TO log_id;");
-                _SqlClient.Ado.ExecuteCommand("ALTER TABLE nas_log_file RENAME COLUMN drive_id TO folder_id;");
-                _SqlClient.Ado.ExecuteCommand("ALTER TABLE nas_res_file RENAME COLUMN drive_id TO folder_id;");
-            }
         }
     }
 }
