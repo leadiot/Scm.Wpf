@@ -104,7 +104,7 @@ namespace Com.Scm.Helper
             });
         }
 
-        public static void OpenFile(string file)
+        public static void OpenFile(string file, string args = null)
         {
             // 启动资源管理器
             //Process.Start("explorer.exe", '"' + url + '"');
@@ -145,6 +145,16 @@ namespace Com.Scm.Helper
                 Arguments = $"/select,{filePath}",
                 UseShellExecute = true
             });
+        }
+
+        /// <summary>
+        /// 打开系统应用选择器
+        /// </summary>
+        /// <param name="file"></param>
+        public static void OpenSelector(string file)
+        {
+            file = file.Replace("/", "\\");
+            OpenFile("rundll32.exe", "shell32,OpenAs_RunDLL " + file);
         }
 
         // 注册表开机启动项路径（当前用户）
