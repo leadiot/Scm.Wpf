@@ -111,6 +111,7 @@ namespace Com.Scm.Helper
             Process.Start(new ProcessStartInfo()
             {
                 FileName = file,
+                Arguments = args,
                 UseShellExecute = true
             });
         }
@@ -154,7 +155,12 @@ namespace Com.Scm.Helper
         public static void OpenSelector(string file)
         {
             file = file.Replace("/", "\\");
-            OpenFile("rundll32.exe", "shell32,OpenAs_RunDLL " + file);
+            Process.Start(new ProcessStartInfo()
+            {
+                FileName = "rundll32.exe",
+                Arguments = "shell32,OpenAs_RunDLL " + file,
+                UseShellExecute = true
+            });
         }
 
         // 注册表开机启动项路径（当前用户）
