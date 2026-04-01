@@ -1,6 +1,6 @@
-﻿using Com.Scm.Api;
+﻿using Com.Scm.Dto.Login;
+using Com.Scm.Response;
 using Com.Scm.Utils;
-using Com.Scm.Dto.Login;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;

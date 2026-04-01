@@ -1,6 +1,6 @@
-﻿using Com.Scm.Api;
-using Com.Scm.Enums;
+﻿using Com.Scm.Enums;
 using Com.Scm.Http.Config;
+using Com.Scm.Response;
 using Com.Scm.Sys.Menu;
 using Com.Scm.Utils;
 using System;
@@ -328,7 +328,7 @@ namespace Com.Scm
             }
         }
 
-        public string UploadFile(string url, string filePath, string fileName, Dictionary<string, string> body = null, Dictionary<string, string> header = null)
+        public bool UploadFile(string url, string filePath, string fileName, Dictionary<string, string> body = null, Dictionary<string, string> header = null)
         {
             url = GetApiUrl(url);
 
@@ -336,7 +336,19 @@ namespace Com.Scm
 
             try
             {
-                return HttpUtils.UploadFile(url, filePath, fileName, "file", body, header);
+                var result = HttpUtils.UploadFile(url, filePath, fileName, "file", body, header);
+                var response = result.AsJsonObject<ScmApiDataResponse<bool>>();
+                if (response == null)
+                {
+                    return default;
+                }
+                if (!response.Success)
+                {
+                    ErrorMessage = response.Message;
+                    return default;
+                }
+
+                return response.Data;
             }
             catch (HttpRequestException ex)
             {

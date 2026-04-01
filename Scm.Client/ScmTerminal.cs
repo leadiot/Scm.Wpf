@@ -1,5 +1,5 @@
-﻿using Com.Scm.Api;
-using Com.Scm.Dto.Bind;
+﻿using Com.Scm.Dto.Bind;
+using Com.Scm.Response;
 using Com.Scm.Utils;
 using System.Collections.Generic;
 using System.IO;
