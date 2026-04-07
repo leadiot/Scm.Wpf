@@ -6,7 +6,7 @@
 
 ## 项目简介
 
-SCM WPF 是一个基于 WPF (Windows Presentation Foundation) 的客户端应用程序框架，提供完整的认证、数据访问、UI 组件和自动升级功能。该框架采用模块化设计，支持本地数据库和远程 API 两种数据操作方式。
+Scm.WPF是Scm.Net的WPF客户端，用于为Windows操作系统提供一个本地化的企业管理后台。
 
 ## 项目结构
 
