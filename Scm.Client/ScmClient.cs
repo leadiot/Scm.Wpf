@@ -212,7 +212,7 @@ namespace Com.Scm
             catch (HttpRequestException ex)
             {
                 IsConnecting = false;
-                LogUtils.Error(ex);
+                Error(ex);
                 throw;
             }
         }
@@ -249,7 +249,7 @@ namespace Com.Scm
             catch (HttpRequestException ex)
             {
                 IsConnecting = false;
-                LogUtils.Error(ex);
+                Error(ex);
                 throw;
             }
         }
@@ -286,7 +286,7 @@ namespace Com.Scm
             catch (HttpRequestException ex)
             {
                 IsConnecting = false;
-                LogUtils.Error(ex);
+                Error(ex);
                 throw;
             }
         }
@@ -323,7 +323,7 @@ namespace Com.Scm
             catch (HttpRequestException ex)
             {
                 IsConnecting = false;
-                LogUtils.Error(ex);
+                Error(ex);
                 throw;
             }
         }
@@ -353,7 +353,7 @@ namespace Com.Scm
             catch (HttpRequestException ex)
             {
                 IsConnecting = false;
-                LogUtils.Error(ex);
+                Error(ex);
                 throw;
             }
         }
@@ -385,7 +385,7 @@ namespace Com.Scm
             catch (HttpRequestException ex)
             {
                 IsConnecting = false;
-                LogUtils.Error(ex);
+                Error(ex);
                 throw;
             }
         }
@@ -420,7 +420,7 @@ namespace Com.Scm
             catch (HttpRequestException ex)
             {
                 IsConnecting = false;
-                LogUtils.Error(ex);
+                Error(ex);
                 throw;
             }
         }
@@ -457,7 +457,7 @@ namespace Com.Scm
             catch (HttpRequestException ex)
             {
                 IsConnecting = false;
-                LogUtils.Error(ex);
+                Error(ex);
                 throw;
             }
         }
@@ -485,7 +485,7 @@ namespace Com.Scm
             catch (HttpRequestException ex)
             {
                 IsConnecting = false;
-                LogUtils.Error(ex);
+                Error(ex);
                 return false;
             }
         }
@@ -515,7 +515,7 @@ namespace Com.Scm
             catch (HttpRequestException ex)
             {
                 IsConnecting = false;
-                LogUtils.Error(ex);
+                Error(ex);
                 return false;
             }
         }
@@ -531,7 +531,7 @@ namespace Com.Scm
             catch (HttpRequestException ex)
             {
                 IsConnecting = false;
-                LogUtils.Error(ex);
+                Error(ex);
                 throw;
             }
         }
@@ -598,6 +598,11 @@ namespace Com.Scm
         public virtual void Logout()
         {
             _Token = null;
+        }
+
+        public void Error(Exception exp)
+        {
+            Console.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] Error: {exp.Message}");
         }
     }
 }

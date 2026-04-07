@@ -136,7 +136,7 @@ namespace Com.Scm
             catch (HttpRequestException ex)
             {
                 IsConnecting = false;
-                LogUtils.Error(ex);
+                Error(ex);
                 throw;
             }
         }
@@ -197,7 +197,7 @@ namespace Com.Scm
             catch (HttpRequestException ex)
             {
                 IsConnecting = false;
-                LogUtils.Error(ex);
+                Error(ex);
                 throw;
             }
         }
