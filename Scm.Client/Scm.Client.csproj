@@ -29,7 +29,7 @@
       <HintPath>..\..\Libs\netstandard2.0\Scm.Common.Time.dll</HintPath>
     </Reference>
     <Reference Include="Scm.Dto">
-      <HintPath>..\..\Libs\server\net10.0\Scm.Dto.dll</HintPath>
+      <HintPath>..\..\Libs\net10.0\Scm.Dto.dll</HintPath>
     </Reference>
   </ItemGroup>
 

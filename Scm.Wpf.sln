@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scm.Samples", "Scm.Samples\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sam.Samples", "Sam.Samples", "{77972E58-6212-4FCC-B032-57D47AC8BD21}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scm.Upgrade", "Scm.Upgrade\Scm.Upgrade.csproj", "{A2FBFC3A-10A5-5E5B-5C62-66ABCF03CDD9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{3BB060E0-77B6-490E-83A6-77FF7A208A1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BB060E0-77B6-490E-83A6-77FF7A208A1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BB060E0-77B6-490E-83A6-77FF7A208A1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2FBFC3A-10A5-5E5B-5C62-66ABCF03CDD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2FBFC3A-10A5-5E5B-5C62-66ABCF03CDD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2FBFC3A-10A5-5E5B-5C62-66ABCF03CDD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2FBFC3A-10A5-5E5B-5C62-66ABCF03CDD9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
