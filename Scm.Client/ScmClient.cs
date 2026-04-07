@@ -161,6 +161,24 @@ namespace Com.Scm
         }
 
         /// <summary>
+        /// 获取应用信息
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public async Task<ScmAppInfo> GetAppInfoAsync(string code)
+        {
+            var url = $"http://{SERVER_HOST}/api/ScmInfo/App?code={code}";
+
+            var response = await HttpUtils.GetObjectAsync<ScmApiDataResponse<ScmAppInfo>>(url);
+            if (response != null && response.Success)
+            {
+                return response.Data;
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// 获取版本信息
         /// </summary>
         /// <param name="code"></param>
@@ -170,6 +188,24 @@ namespace Com.Scm
             var url = $"http://{SERVER_HOST}/api/ScmInfo/Ver?code={code}&client={ScmClientTypeEnum.Windows}";
 
             var response = HttpUtils.GetObject<ScmApiDataResponse<ScmVerInfo>>(url);
+            if (response != null && response.Success)
+            {
+                return response.Data;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 获取版本信息
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public async Task<ScmVerInfo> GetVerInfoAsync(string code)
+        {
+            var url = $"http://{SERVER_HOST}/api/ScmInfo/Ver?code={code}&client={ScmClientTypeEnum.Windows}";
+
+            var response = await HttpUtils.GetObjectAsync<ScmApiDataResponse<ScmVerInfo>>(url);
             if (response != null && response.Success)
             {
                 return response.Data;
