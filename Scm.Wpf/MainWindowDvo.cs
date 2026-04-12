@@ -273,17 +273,32 @@ namespace Com.Scm.Dvo
             Assembly assembly = null;
             if (!string.IsNullOrWhiteSpace(module))
             {
-                assembly = Assembly.Load(module);
+                try
+                {
+                    assembly = Assembly.Load(module);
+                }
+                catch
+                {
+                    return;
+                }
             }
             if (assembly == null)
             {
                 assembly = Assembly.GetExecutingAssembly();
             }
 
-            var scmView = assembly.CreateInstance(view) as ScmView;
-            if (scmView == null)
+            ScmView scmView = null;
+            try
             {
-                _Logger.Error("MainWindow-ShowView:创建视图失败-" + view);
+                scmView = assembly.CreateInstance(view) as ScmView;
+                if (scmView == null)
+                {
+                    _Logger.Error("MainWindow-ShowView:创建视图失败-" + view);
+                    return;
+                }
+            }
+            catch
+            {
                 return;
             }
 

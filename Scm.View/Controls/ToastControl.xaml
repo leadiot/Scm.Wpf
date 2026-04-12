@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Com.Scm.Controls.ToastControl"
+<UserControl x:Class="Com.Scm.Controls.ToastControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,12 +8,10 @@
              d:DesignHeight="70" d:DesignWidth="300">
     <Border
         x:Name="BdPanel"
-        CornerRadius="6"
+        CornerRadius="{StaticResource ScmCornerRadiusSm}"
         Margin="0, 0, 0, 12"
-        Padding="15">
-        <Border.Effect>
-            <DropShadowEffect Color="Black" BlurRadius="10" ShadowDepth="3" Opacity="0.3"/>
-        </Border.Effect>
+        Padding="15"
+        Effect="{StaticResource ScmShadowMd}">
         <DockPanel>
             <Button
                 x:Name="BtClose"
@@ -26,13 +24,13 @@
                 <iconPacks:PackIconMaterial
                     Kind="Close"
                     Margin="6"
-                    Foreground="Red"
+                    Foreground="{StaticResource ScmColorOnPrimary}"
                     VerticalAlignment="Center" />
             </Button>
             <TextBlock
                 x:Name="TbMessage"
-                Foreground="White"
-                FontSize="14"
+                Foreground="{StaticResource ScmColorOnPrimary}"
+                FontSize="{StaticResource ScmFontSizeMd}"
                 TextWrapping="Wrap"
                 Text="12312312"
                 Margin="0 5 0 5"

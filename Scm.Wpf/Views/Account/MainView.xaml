@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Com.Scm.Views.Account.MainView"
+<UserControl x:Class="Com.Scm.Views.Account.MainView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -12,14 +12,14 @@
         </Grid.RowDefinitions>
         <Border
             Grid.Row="0"
-            Background="White"
-            Padding="12">
+            Background="{StaticResource ScmPanelBackground}"
+            Padding="{StaticResource ScmSpacingMd}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Border Width="56" Height="56" CornerRadius="28" BorderThickness="4" BorderBrush="Red" Background="#FAFAFA">
+                <Border Width="56" Height="56" CornerRadius="28" BorderThickness="4" BorderBrush="{StaticResource china_red_500}" Background="{StaticResource ScmPanelBackground}">
                     <Image x:Name="PbIcon" Width="48" Height="48">
                         <Image.Clip>
                             <EllipseGeometry RadiusX="24" RadiusY="24" Center="24,24"/>
@@ -29,7 +29,7 @@
                 <StackPanel
                     Grid.Column="1"
                     Orientation="Vertical"
-                    Margin="12 0 0 0">
+                    Margin="12,0,0,0">
                     <TextBlock x:Name="TbUserName" Text="用户名称" Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Left"/>
                     <TextBlock x:Name="TbUserCode" Text="用户代码" Style="{StaticResource TextBlockSubTitle}" HorizontalAlignment="Left"/>
                     <TextBlock x:Name="TbTerminalName" Text="终端代码"/>

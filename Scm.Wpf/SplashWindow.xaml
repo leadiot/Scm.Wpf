@@ -15,20 +15,19 @@
     Icon="/Resources/logo.ico"
     Height="300" Width="500"
     Loaded="Window_Loaded">
-    <Border CornerRadius="5" BorderThickness="2" BorderBrush="LightGray">
+    <Border CornerRadius="{StaticResource ScmCornerRadiusSm}" BorderThickness="2" BorderBrush="{StaticResource ScmBorderBrush}">
         <Border.Background>
             <ImageBrush ImageSource="/Resources/splash.png" Stretch="Fill"/>
         </Border.Background>
         <Grid>
-            <!-- 启动屏内容：Logo + 进度条 + 提示文本 -->
             <StackPanel x:Name="PlLogo" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="20 0 20 20" Width="300">
                 <Image Source="/Resources/logo.png" Width="96" Height="96"/>
-                <TextBlock Text="Nas.Net" Foreground="White" FontSize="24" TextAlignment="Center" Margin="0"/>
-                <TextBlock Text="您的私有云盘" Foreground="White" FontSize="16" TextAlignment="Center" Margin="20 10 20 20"/>
+                <TextBlock Text="Nas.Net" Foreground="{StaticResource ScmColorOnPrimary}" FontSize="{StaticResource ScmFontSizeXl}" TextAlignment="Center" Margin="0"/>
+                <TextBlock Text="您的私有云盘" Foreground="{StaticResource ScmColorOnPrimary}" FontSize="{StaticResource ScmFontSizeLg}" TextAlignment="Center" Margin="20 10 20 20"/>
                 <ProgressBar x:Name="progressBar" Style="{StaticResource ProgressBarDanger}" Value="100" Maximum="200" IsIndeterminate="True"/>
-                <TextBlock x:Name="statusText" Text="初始化中..." Foreground="#333333" />
+                <TextBlock x:Name="statusText" Text="初始化中..." Foreground="{StaticResource ScmTextColorSecondary}" />
             </StackPanel>
-            <DockPanel x:Name="PlInfo" Visibility="Collapsed" Margin="12">
+            <DockPanel x:Name="PlInfo" Visibility="Collapsed" Margin="{StaticResource ScmSpacingMd}">
                 <StackPanel DockPanel.Dock="Bottom">
                     <Button x:Name="BtExit" Click="BtExit_Click" Style="{StaticResource ButtonPrimary}">关闭</Button>
                 </StackPanel>

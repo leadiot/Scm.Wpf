@@ -10,10 +10,10 @@
     d:DesignHeight="600" d:DesignWidth="250">
 
     <UserControl.Resources>
-        <SolidColorBrush x:Key="MenuBackgroundBrush" Color="#2C3E50" />
-        <SolidColorBrush x:Key="MenuHoverBrush" Color="#34495E" />
-        <SolidColorBrush x:Key="MenuActiveBrush" Color="#3498DB" />
-        <SolidColorBrush x:Key="MenuTextActiveBrush" Color="White" />
+        <SolidColorBrush x:Key="MenuBackgroundBrush" Color="{StaticResource china_blue_900}" />
+        <SolidColorBrush x:Key="MenuHoverBrush" Color="{StaticResource china_blue_700}" />
+        <SolidColorBrush x:Key="MenuActiveBrush" Color="{StaticResource china_blue_500}" />
+        <SolidColorBrush x:Key="MenuTextActiveBrush" Color="{StaticResource white}" />
 
         <Style x:Key="MenuExpanderStyle" TargetType="ToggleButton">
             <Setter Property="Background" Value="Transparent" />
