@@ -1,5 +1,6 @@
 ﻿using Com.Scm.Models;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace Com.Scm.Dvo
@@ -96,47 +97,54 @@ namespace Com.Scm.Dvo
         /// 查询
         /// </summary>
         /// <param name="pageIndex"></param>
-        public virtual void SearchAsync(int pageIndex = 0)
+        public virtual Task SearchAsync(int pageIndex = 0)
         {
+            return Task.CompletedTask;
         }
 
-        public virtual void SearchAsync(int pageIndex, int pageCount)
+        public virtual Task SearchAsync(int pageIndex, int pageCount)
         {
+            return Task.CompletedTask;
         }
 
         /// <summary>
         /// 首页
         /// </summary>
-        public virtual void FirstPageAsync()
+        public virtual Task FirstPageAsync()
         {
+            return Task.CompletedTask;
         }
 
         /// <summary>
         /// 前一页
         /// </summary>
-        public virtual void PrevPageAsync()
+        public virtual Task PrevPageAsync()
         {
+            return Task.CompletedTask;
         }
 
         /// <summary>
         /// 后一页
         /// </summary>
-        public virtual void NextPageAsync()
+        public virtual Task NextPageAsync()
         {
+            return Task.CompletedTask;
         }
 
         /// <summary>
         /// 尾页
         /// </summary>
-        public virtual void EndPageAsync()
+        public virtual Task EndPageAsync()
         {
+            return Task.CompletedTask;
         }
 
         /// <summary>
         /// 刷新
         /// </summary>
-        public virtual void ReloadAsync()
+        public virtual Task ReloadAsync()
         {
+            return Task.CompletedTask;
         }
     }
 }

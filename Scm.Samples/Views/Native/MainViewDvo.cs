@@ -1,8 +1,9 @@
-﻿using Com.Scm.Dao;
+using Com.Scm.Dao;
 using Com.Scm.Dao.Samples;
 using Com.Scm.Dvo;
 using Com.Scm.Models;
 using SqlSugar;
+using System.Threading.Tasks;
 
 namespace Com.Scm.Views.Samples.Native
 {
@@ -24,18 +25,19 @@ namespace Com.Scm.Views.Samples.Native
             };
         }
 
-        public override void SearchAsync(int pageIndex = 0)
+        public override Task SearchAsync(int pageIndex = 0)
         {
+            return Task.CompletedTask;
         }
 
-        public override void FirstPageAsync()
+        public override Task FirstPageAsync()
         {
             PageIndex = 1;
 
-            ReloadAsync();
+            return ReloadAsync();
         }
 
-        public override void PrevPageAsync()
+        public override Task PrevPageAsync()
         {
             PageIndex -= 1;
             if (PageIndex < 1)
@@ -43,10 +45,10 @@ namespace Com.Scm.Views.Samples.Native
                 PageIndex = 1;
             }
 
-            ReloadAsync();
+            return ReloadAsync();
         }
 
-        public override void NextPageAsync()
+        public override Task NextPageAsync()
         {
             PageIndex += 1;
             if (PageIndex > PageCount)
@@ -54,17 +56,17 @@ namespace Com.Scm.Views.Samples.Native
                 PageIndex = PageCount;
             }
 
-            ReloadAsync();
+            return ReloadAsync();
         }
 
-        public override void EndPageAsync()
+        public override Task EndPageAsync()
         {
             PageIndex = PageCount;
 
-            ReloadAsync();
+            return ReloadAsync();
         }
 
-        public async override void ReloadAsync()
+        public override async Task ReloadAsync()
         {
             try
             {

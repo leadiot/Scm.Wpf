@@ -1,4 +1,4 @@
-﻿using Com.Scm.Enums;
+using Com.Scm.Enums;
 using Com.Scm.Http.Config;
 using Com.Scm.Response;
 using Com.Scm.Sys.Menu;
@@ -61,9 +61,19 @@ namespace Com.Scm
         protected string _Host;
 
         /// <summary>
-        /// HTTP请求对象
+        /// HTTP请求对象（静态复用，避免端口耗尽）
         /// </summary>
-        private HttpClient _HttpClient;
+        private static HttpClient _HttpClient;
+
+        /// <summary>
+        /// HttpClient是否已初始化
+        /// </summary>
+        private static bool _HttpClientInitialized = false;
+
+        /// <summary>
+        /// 初始化锁
+        /// </summary>
+        private static readonly object _HttpClientLock = new object();
 
         public void SetHost(string host)
         {
@@ -405,24 +415,28 @@ namespace Com.Scm
 
             head = BuildHeader(head);
 
-            foreach (KeyValuePair<string, string> item in head)
+            using (var request = new HttpRequestMessage(HttpMethod.Post, url))
             {
-                _HttpClient.DefaultRequestHeaders.Add(item.Key, item.Value);
-            }
+                request.Content = content;
+                foreach (KeyValuePair<string, string> item in head)
+                {
+                    request.Headers.TryAddWithoutValidation(item.Key, item.Value);
+                }
 
-            try
-            {
-                var response = await _HttpClient.PostAsync(url, content);
+                try
+                {
+                    var response = await _HttpClient.SendAsync(request);
 
-                response.EnsureSuccessStatusCode();
+                    response.EnsureSuccessStatusCode();
 
-                return await response.Content.ReadAsStringAsync();
-            }
-            catch (HttpRequestException ex)
-            {
-                IsConnecting = false;
-                Error(ex);
-                throw;
+                    return await response.Content.ReadAsStringAsync();
+                }
+                catch (HttpRequestException ex)
+                {
+                    IsConnecting = false;
+                    Error(ex);
+                    throw;
+                }
             }
         }
 
@@ -580,50 +594,65 @@ namespace Com.Scm
         /// <param name="proxyConfig"></param>
         protected void CreateHttpClient(int timeout = 5, CertConfig certConfig = null, ProxyConfig proxyConfig = null)
         {
-            var handler = new HttpClientHandler();
-
-            // 1. HTTPS证书配置
-            if (certConfig != null)
+            if (_HttpClientInitialized)
             {
-                if (!string.IsNullOrWhiteSpace(certConfig.ClientCertPath) && File.Exists(certConfig.ClientCertPath))
+                return;
+            }
+
+            lock (_HttpClientLock)
+            {
+                if (_HttpClientInitialized)
                 {
-                    var clientCert = new X509Certificate2(
-                        certConfig.ClientCertPath, certConfig.ClientCertPassword,
-                        X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.PersistKeySet);
-                    handler.ClientCertificates.Add(clientCert);
+                    return;
                 }
-                handler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) =>
+
+                var handler = new HttpClientHandler();
+
+                // 1. HTTPS证书配置
+                if (certConfig != null)
                 {
-                    if (certConfig.AllowAnyCert) return true;
-                    if (!string.IsNullOrWhiteSpace(certConfig.TrustedCertThumbprint))
+                    if (!string.IsNullOrWhiteSpace(certConfig.ClientCertPath) && File.Exists(certConfig.ClientCertPath))
                     {
-                        string certThumbprint = cert.Thumbprint?.ToUpperInvariant();
-                        string trustedThumbprint = certConfig.TrustedCertThumbprint.ToUpperInvariant();
-                        return certThumbprint == trustedThumbprint;
+                        var clientCert = new X509Certificate2(
+                            certConfig.ClientCertPath, certConfig.ClientCertPassword,
+                            X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.PersistKeySet);
+                        handler.ClientCertificates.Add(clientCert);
                     }
-                    return sslPolicyErrors == SslPolicyErrors.None;
-                };
-            }
-
-            // 2. 代理配置
-            if (proxyConfig != null && !string.IsNullOrWhiteSpace(proxyConfig.ProxyUrl))
-            {
-                var proxyUri = new Uri(proxyConfig.ProxyUrl);
-                handler.Proxy = string.IsNullOrWhiteSpace(proxyConfig.ProxyUsername)
-                    ? new WebProxy(proxyUri, proxyConfig.BypassLocal)
-                    : new WebProxy(proxyUri, proxyConfig.BypassLocal)
+                    handler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) =>
                     {
-                        Credentials = new NetworkCredential(proxyConfig.ProxyUsername, proxyConfig.ProxyPassword)
+                        if (certConfig.AllowAnyCert) return true;
+                        if (!string.IsNullOrWhiteSpace(certConfig.TrustedCertThumbprint))
+                        {
+                            string certThumbprint = cert.Thumbprint?.ToUpperInvariant();
+                            string trustedThumbprint = certConfig.TrustedCertThumbprint.ToUpperInvariant();
+                            return certThumbprint == trustedThumbprint;
+                        }
+                        return sslPolicyErrors == SslPolicyErrors.None;
                     };
-                handler.UseProxy = true;
-            }
+                }
 
-            // 3. 初始化HttpClient
-            _HttpClient = new HttpClient(handler)
-            {
-                Timeout = TimeSpan.FromMinutes(timeout),
-                DefaultRequestHeaders = { { "User-Agent", "Super-Uploader/1.0" } }
-            };
+                // 2. 代理配置
+                if (proxyConfig != null && !string.IsNullOrWhiteSpace(proxyConfig.ProxyUrl))
+                {
+                    var proxyUri = new Uri(proxyConfig.ProxyUrl);
+                    handler.Proxy = string.IsNullOrWhiteSpace(proxyConfig.ProxyUsername)
+                        ? new WebProxy(proxyUri, proxyConfig.BypassLocal)
+                        : new WebProxy(proxyUri, proxyConfig.BypassLocal)
+                        {
+                            Credentials = new NetworkCredential(proxyConfig.ProxyUsername, proxyConfig.ProxyPassword)
+                        };
+                    handler.UseProxy = true;
+                }
+
+                // 3. 初始化HttpClient（静态复用）
+                _HttpClient = new HttpClient(handler)
+                {
+                    Timeout = TimeSpan.FromMinutes(timeout)
+                };
+                _HttpClient.DefaultRequestHeaders.Add("User-Agent", "Super-Uploader/1.0");
+
+                _HttpClientInitialized = true;
+            }
         }
 
         public ScmToken GetToken()

@@ -1,4 +1,4 @@
-﻿using Com.Scm.Dvo.Menu;
+using Com.Scm.Dvo.Menu;
 using Com.Scm.Helper;
 using Com.Scm.Models;
 using Com.Scm.Sys.Menu;
@@ -15,6 +15,8 @@ namespace Com.Scm.Dvo
     public class MainWindowDvo : ScmDvo
     {
         private static readonly ILogger _Logger = LogManager.GetCurrentClassLogger();
+
+        private const int MaxTabCount = 15;
 
         public ICommand OpenFileCommand { get; }
         public ICommand OpenDataCommand { get; }
@@ -277,8 +279,9 @@ namespace Com.Scm.Dvo
                 {
                     assembly = Assembly.Load(module);
                 }
-                catch
+                catch (Exception ex)
                 {
+                    _Logger.Error(ex, $"MainWindow-ShowView:加载模块失败-{module}");
                     return;
                 }
             }
@@ -293,16 +296,23 @@ namespace Com.Scm.Dvo
                 scmView = assembly.CreateInstance(view) as ScmView;
                 if (scmView == null)
                 {
-                    _Logger.Error("MainWindow-ShowView:创建视图失败-" + view);
+                    _Logger.Error($"MainWindow-ShowView:创建视图失败-{view}");
                     return;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                _Logger.Error(ex, $"MainWindow-ShowView:创建视图异常-{view}");
                 return;
             }
 
             scmView.Init(_Window);
+
+            if (TabModels.Count >= MaxTabCount)
+            {
+                TabModels.RemoveAt(0);
+                _Logger.Info($"MainWindow-ShowView:达到最大Tab数量限制，移除最早的Tab");
+            }
 
             TabModel tabs = new TabModel();
             tabs.Code = codec;
@@ -330,6 +340,12 @@ namespace Com.Scm.Dvo
                     TabIndex = i;
                     return;
                 }
+            }
+
+            if (TabModels.Count >= MaxTabCount)
+            {
+                TabModels.RemoveAt(0);
+                _Logger.Info($"MainWindow-ShowView:达到最大Tab数量限制，移除最早的Tab");
             }
 
             TabModel tabs = new TabModel();

@@ -1,4 +1,4 @@
-﻿using Com.Scm.Dvo;
+using Com.Scm.Dvo;
 using Com.Scm.Models;
 using Com.Scm.Utils;
 using HandyControl.Controls;
@@ -125,6 +125,7 @@ namespace Com.Scm.Controls
             }
 
             DgGrid.AutoGenerateColumns = false;
+            DgGrid.Columns.Clear();
             foreach (var column in columns)
             {
                 if (column.Type == ScmColumnType.Text)

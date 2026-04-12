@@ -1,4 +1,4 @@
-﻿using Com.Scm.Actions;
+using Com.Scm.Actions;
 using Com.Scm.Config;
 using Com.Scm.Dao;
 using Com.Scm.Dvo;
@@ -10,6 +10,7 @@ using Com.Scm.Sys.Menu;
 using Com.Scm.Utils;
 using Com.Scm.Views;
 using HandyControl.Controls;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
@@ -23,13 +24,13 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
 {
     #region 成员属性
     /// <summary>
-    /// 数据字典
+    /// 数据字典（线程安全）
     /// </summary>
-    private static Dictionary<string, List<ResOptionDvo>> _Dic = new Dictionary<string, List<ResOptionDvo>>();
+    private static readonly ConcurrentDictionary<string, List<ResOptionDvo>> _Dic = new ConcurrentDictionary<string, List<ResOptionDvo>>();
     /// <summary>
-    /// 系统配置
+    /// 系统配置（线程安全）
     /// </summary>
-    private static Dictionary<string, ConfigDto> _Cfg = new Dictionary<string, ConfigDto>();
+    private static readonly ConcurrentDictionary<string, ConfigDto> _Cfg = new ConcurrentDictionary<string, ConfigDto>();
 
     /// <summary>
     /// 客户端对象
@@ -455,12 +456,9 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     /// <returns></returns>
     public async Task<ConfigDto> ListCfgAsync(string key, bool useCache = true)
     {
-        if (useCache)
+        if (useCache && _Cfg.TryGetValue(key, out var cachedCfg))
         {
-            if (_Cfg.ContainsKey(key))
-            {
-                return _Cfg[key];
-            }
+            return cachedCfg;
         }
 
         var url = _Client.GetApiUrl("/scmcfg/option/" + key);
@@ -484,7 +482,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
         var dic = response.Data;
         if (useCache)
         {
-            _Cfg[key] = dic;
+            _Cfg.TryAdd(key, dic);
         }
         return dic;
     }
@@ -497,12 +495,9 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
     /// <returns></returns>
     public async Task<List<ResOptionDvo>> ListDicAsync(string key, bool useCache = true)
     {
-        if (useCache)
+        if (useCache && _Dic.TryGetValue(key, out var cachedDic))
         {
-            if (_Dic.ContainsKey(key))
-            {
-                return _Dic[key];
-            }
+            return cachedDic;
         }
 
         var url = _Client.GetApiUrl("/scmdic/option/" + key);
@@ -526,7 +521,7 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
         var dic = response.Data;
         if (useCache)
         {
-            _Dic[key] = dic;
+            _Dic.TryAdd(key, dic);
         }
         return dic;
     }
