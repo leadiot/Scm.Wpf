@@ -373,9 +373,31 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
         return info;
     }
 
+    public async Task<ScmAppInfo> GetAppInfoAsync(string code)
+    {
+        var info = await _Client.GetAppInfoAsync(code);
+        if (info == null)
+        {
+            return null;
+        }
+
+        return info;
+    }
+
     public ScmVerInfo GetVerInfo(string code)
     {
         var info = _Client.GetVerInfo(code);
+        if (info == null)
+        {
+            return null;
+        }
+
+        return info;
+    }
+
+    public async Task<ScmVerInfo> GetVerInfoAsync(string code)
+    {
+        var info = await _Client.GetVerInfoAsync(code);
         if (info == null)
         {
             return null;

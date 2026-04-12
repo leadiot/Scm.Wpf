@@ -101,7 +101,11 @@ namespace Com.Scm
 
         ScmAppInfo GetAppInfo(string code);
 
+        Task<ScmAppInfo> GetAppInfoAsync(string code);
+
         ScmVerInfo GetVerInfo(string code);
+
+        Task<ScmVerInfo> GetVerInfoAsync(string code);
 
         ScmClient GetClient();
 
