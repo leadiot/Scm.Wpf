@@ -159,7 +159,7 @@ namespace Com.Scm
         /// <returns></returns>
         public ScmAppInfo GetAppInfo(string code)
         {
-            var url = $"http://{SERVER_HOST}/api/ScmInfo/App?code={code}";
+            var url = $"http://{SERVER_HOST}/api/ScmSysApp/App?code={code}";
 
             var response = HttpUtils.GetObject<ScmApiDataResponse<ScmAppInfo>>(url);
             if (response != null && response.Success)
@@ -177,7 +177,7 @@ namespace Com.Scm
         /// <returns></returns>
         public async Task<ScmAppInfo> GetAppInfoAsync(string code)
         {
-            var url = $"http://{SERVER_HOST}/api/ScmInfo/App?code={code}";
+            var url = $"http://{SERVER_HOST}/api/ScmSysApp/App?code={code}";
 
             var response = await HttpUtils.GetObjectAsync<ScmApiDataResponse<ScmAppInfo>>(url);
             if (response != null && response.Success)
@@ -195,7 +195,7 @@ namespace Com.Scm
         /// <returns></returns>
         public ScmVerInfo GetVerInfo(string code)
         {
-            var url = $"http://{SERVER_HOST}/api/ScmInfo/Ver?code={code}&client={ScmClientTypeEnum.Windows}";
+            var url = $"http://{SERVER_HOST}/api/ScmSysApp/Ver?code={code}&client={ScmClientTypeEnum.Windows}";
 
             var response = HttpUtils.GetObject<ScmApiDataResponse<ScmVerInfo>>(url);
             if (response != null && response.Success)
@@ -213,7 +213,7 @@ namespace Com.Scm
         /// <returns></returns>
         public async Task<ScmVerInfo> GetVerInfoAsync(string code)
         {
-            var url = $"http://{SERVER_HOST}/api/ScmInfo/Ver?code={code}&client={ScmClientTypeEnum.Windows}";
+            var url = $"http://{SERVER_HOST}/api/ScmSysApp/Ver?code={code}&client={ScmClientTypeEnum.Windows}";
 
             var response = await HttpUtils.GetObjectAsync<ScmApiDataResponse<ScmVerInfo>>(url);
             if (response != null && response.Success)
