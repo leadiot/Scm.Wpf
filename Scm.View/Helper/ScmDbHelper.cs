@@ -18,40 +18,16 @@ namespace Com.Scm.Dao
         public abstract string GetAppCode();
 
         /// <summary>
-        /// 主版本
+        /// 当前版本
         /// </summary>
         /// <returns></returns>
-        public abstract int GetMajor();
+        public abstract int GetVer();
 
         /// <summary>
-        /// 子版本
+        /// 发行日期
         /// </summary>
         /// <returns></returns>
-        public abstract int GetMinor();
-
-        /// <summary>
-        /// 修订版本
-        /// </summary>
-        /// <returns></returns>
-        public abstract int GetPatch();
-
-        /// <summary>
-        /// 建构版本
-        /// </summary>
-        /// <returns></returns>
-        public abstract string GetBuild();
-
-        /// <summary>
-        /// 发行信息
-        /// </summary>
-        /// <returns></returns>
-        public abstract string GetRelease();
-
-        /// <summary>
-        /// 版本信息
-        /// </summary>
-        /// <returns></returns>
-        public abstract string GetVersion();
+        public abstract string GetDate();
 
         public void Init(ISqlSugarClient sqlClient, string baseDir)
         {
@@ -91,16 +67,13 @@ namespace Com.Scm.Dao
             InitDml(verDao);
 
             var ddlFile = Path.Combine(_BaseDir, "ddl.sql");
-            ExecuteSql(ddlFile, verDao.major);
+            ExecuteSql(ddlFile, verDao.ver);
 
             var dmlFile = Path.Combine(_BaseDir, "dml.sql");
-            ExecuteSql(dmlFile, verDao.major);
+            ExecuteSql(dmlFile, verDao.ver);
 
-            verDao.major = GetMajor();
-            verDao.minor = GetMinor();
-            verDao.patch = GetPatch();
-            verDao.build = GetBuild();
-            verDao.release_date = GetRelease();
+            verDao.ver = GetVer();
+            verDao.date = GetDate();
             verDao.update_time = TimeUtils.GetUnixTime();
             SaveDbVer(verDao);
             return true;

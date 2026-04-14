@@ -4,45 +4,22 @@ namespace Com.Scm.Samples.Helper
 {
     public class SamplesDbHelper : ScmDbHelper
     {
-        private const int MAJOR = 1;
-        private const int MINOR = 0;
-        private const int PATCH = 0;
-        private const string BUILD = "2026030101";
-        private const string RELEASE_DATE = "2026-03-01";
+        private const int VER = 1;
+        private const string DATE = "2026-03-01";
 
         public override string GetAppCode()
         {
             return "scm.samples";
         }
 
-        public override int GetMajor()
+        public override int GetVer()
         {
-            return MAJOR;
+            return VER;
         }
 
-        public override int GetMinor()
+        public override string GetDate()
         {
-            return MINOR;
-        }
-
-        public override int GetPatch()
-        {
-            return PATCH;
-        }
-
-        public override string GetBuild()
-        {
-            return BUILD;
-        }
-
-        public override string GetRelease()
-        {
-            return RELEASE_DATE;
-        }
-
-        public override string GetVersion()
-        {
-            return "";
+            return DATE;
         }
     }
 }
