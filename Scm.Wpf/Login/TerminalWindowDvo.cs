@@ -1,5 +1,5 @@
-﻿using Com.Scm.Helper;
-using Com.Scm.Dvo;
+﻿using Com.Scm.Dvo;
+using Com.Scm.Helper;
 using System.ComponentModel.DataAnnotations;
 
 namespace Com.Scm.Login
@@ -25,7 +25,7 @@ namespace Com.Scm.Login
 
         public TerminalWindowDvo()
         {
-            Version = $"版本信息：V{ScmClientEnv.GetVersionString()} Build {ScmClientEnv.BUILD}";
+            Version = $"版本信息：V{ScmClientEnv.VER_INFO}";
         }
 
         public Dictionary<string, string> GetBind()

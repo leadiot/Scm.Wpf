@@ -46,8 +46,10 @@ namespace Com.Scm.Config
         {
             Title = "Nas.Net更新";
 
-            VerInfo.ver = "1.0.0";
-            VerInfo.date = "2024-01-01";
+            VerInfo.major = 1;
+            VerInfo.ver_date = "2024-01-01";
+            VerInfo.ver_code = "2024010101";
+            VerInfo.ver_info = "1.0.0";
             VerInfo.remark = "初始版本";
             VerInfo.url = "https://download.mobatek.net/2542025111600034/MobaXterm_Portable_v25.4.zip";
 

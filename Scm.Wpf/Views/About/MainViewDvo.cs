@@ -76,8 +76,8 @@ namespace Com.Scm.Views.About
             {
                 AppCode = ScmClientEnv.ProductCode;
                 AppName = ScmClientEnv.ProductName;
-                AppVersion = ScmClientEnv.GetVersionString();
-                AppRelease = ScmClientEnv.RELEASE_DATE;
+                AppVersion = ScmClientEnv.VER_INFO;
+                AppRelease = ScmClientEnv.VER_DATE;
 
                 _AppInfo = _Window.GetAppInfo(AppCode);
                 if (_AppInfo == null)
@@ -102,9 +102,10 @@ namespace Com.Scm.Views.About
         public ScmVerInfo LoadVerDefault()
         {
             var verInfo = new ScmVerInfo();
-            verInfo.ver = "1.0.0";
-            verInfo.date = "2026-01-01";
-            verInfo.build = "2026010101";
+            verInfo.major = 1;
+            verInfo.ver_date = "2026-01-01";
+            verInfo.ver_code = "2026010101";
+            verInfo.ver_info = "1.0.0";
             return verInfo;
         }
 
@@ -118,13 +119,13 @@ namespace Com.Scm.Views.About
                     verInfo = LoadVerDefault();
                 }
 
-                if (!ScmVerInfo.IsMatch(ScmClientEnv.GetVersionString(), verInfo.ver))
+                if (!verInfo.IsNewer(ScmClientEnv.BUILD))
                 {
                     _Window.ShowToast("当前已是最新版本！");
                     return;
                 }
 
-                var result = _Window.ShowConfirm($"发现新版本 {verInfo.ver}，是否立即升级？\n\n更新内容：\n{verInfo.remark}", "版本升级");
+                var result = _Window.ShowConfirm($"发现新版本 {verInfo.ver_info}，是否立即升级？\n\n更新内容：\n{verInfo.remark}", "版本升级");
                 if (result != true)
                 {
                     return;
