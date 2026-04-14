@@ -70,7 +70,7 @@ namespace Com.Scm
         /// <summary>
         /// 升级程序文件
         /// </summary>
-        public const string UpgradeFile = "Scm.Upgrade.exe";
+        public const string UpgradeFile = "Upgrade.Net.exe";
 
         /// <summary>
         /// 应用程序目录
