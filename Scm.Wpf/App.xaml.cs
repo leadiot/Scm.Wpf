@@ -1,8 +1,9 @@
 using Com.Scm.Dao;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
+using System.Text;
 using System.Windows;
-using System.Windows.Interop;
 
 namespace Com.Scm;
 
@@ -11,13 +12,16 @@ namespace Com.Scm;
 /// </summary>
 public partial class App : Application
 {
-    private const string MutexName = "Com.Scm.Wpf.SingleInstance";
     private static Mutex _Mutex;
     private static bool _IsFirstInstance;
+    private static string _CurrentAppPath;
 
     protected override void OnStartup(StartupEventArgs e)
     {
-        _IsFirstInstance = IsFirstInstance();
+        _CurrentAppPath = Process.GetCurrentProcess().MainModule?.FileName ?? string.Empty;
+        var mutexName = GetPathBasedMutexName();
+
+        _IsFirstInstance = IsFirstInstance(mutexName);
         if (!_IsFirstInstance)
         {
             ActivateExistingInstance();
@@ -44,9 +48,15 @@ public partial class App : Application
         base.OnExit(e);
     }
 
-    private static bool IsFirstInstance()
+    private static string GetPathBasedMutexName()
     {
-        _Mutex = new Mutex(true, MutexName, out bool createdNew);
+        var hash = MD5.HashData(Encoding.UTF8.GetBytes(_CurrentAppPath));
+        return $"Com.Scm.Wpf.SingleInstance_{Convert.ToHexString(hash)}";
+    }
+
+    private static bool IsFirstInstance(string mutexName)
+    {
+        _Mutex = new Mutex(true, mutexName, out bool createdNew);
         return createdNew;
     }
 
@@ -56,21 +66,25 @@ public partial class App : Application
         {
             var currentProcess = Process.GetCurrentProcess();
             var processes = Process.GetProcessesByName(currentProcess.ProcessName);
-            
+
             foreach (var process in processes)
             {
                 if (process.Id != currentProcess.Id)
                 {
-                    var handle = process.MainWindowHandle;
-                    if (handle != IntPtr.Zero)
+                    var processPath = process.MainModule?.FileName ?? string.Empty;
+                    if (string.Equals(processPath, _CurrentAppPath, StringComparison.OrdinalIgnoreCase))
                     {
-                        if (IsIconic(handle))
+                        var handle = process.MainWindowHandle;
+                        if (handle != IntPtr.Zero)
                         {
-                            ShowWindow(handle, SW_RESTORE);
+                            if (IsIconic(handle))
+                            {
+                                ShowWindow(handle, SW_RESTORE);
+                            }
+                            SetForegroundWindow(handle);
                         }
-                        SetForegroundWindow(handle);
+                        break;
                     }
-                    break;
                 }
             }
         }
