@@ -1,4 +1,5 @@
 ﻿using Com.Scm.Dvo;
+using Com.Scm.Enums;
 using Com.Scm.Helper;
 using System.ComponentModel.DataAnnotations;
 
@@ -30,10 +31,10 @@ namespace Com.Scm.Login
 
         public Dictionary<string, string> GetBind()
         {
-
             var macList = OsHelper.GetValidMacAddresses();
 
             var body = new Dictionary<string, string>();
+            body["types"] = ((int)ScmClientTypeEnum.Windows).ToString();
             body["codes"] = this.Code;
             body["pass"] = this.Pass;
             body["mac"] = macList.Count > 0 ? macList[0] : "";
