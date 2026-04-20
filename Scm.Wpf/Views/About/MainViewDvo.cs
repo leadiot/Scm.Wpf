@@ -39,6 +39,12 @@ namespace Com.Scm.Views.About
         private string appQchat;
         public string AppQchat { get { return appQchat; } set { SetProperty(ref appQchat, value); } }
 
+        /// <summary>
+        /// 使用帮助
+        /// </summary>
+        private string appHelp;
+        public string AppHelp { get { return appHelp; } set { SetProperty(ref appHelp, value); } }
+
         private string appVersion;
         public string AppVersion { get { return appVersion; } set { SetProperty(ref appVersion, value); } }
 
@@ -70,7 +76,7 @@ namespace Com.Scm.Views.About
             return appInfo;
         }
 
-        public void LoadAppInfo()
+        public async void LoadAppInfo()
         {
             try
             {
@@ -79,16 +85,17 @@ namespace Com.Scm.Views.About
                 AppVersion = ScmClientEnv.VER_INFO;
                 AppRelease = ScmClientEnv.VER_DATE;
 
-                _AppInfo = _Window.GetAppInfo(AppCode);
+                _AppInfo = await _Window.GetAppInfoAsync(AppCode);
                 if (_AppInfo == null)
                 {
                     _AppInfo = LoadAppDefault();
                 }
 
-                AppProject = _AppInfo.project ?? "https://gitee.com/leadiot/scm.net";
+                AppProject = _AppInfo.project ?? "https://gitee.com/leadiot/nas.net";
                 AppWebsite = _AppInfo.website ?? "http://www.c-scm.net";
                 AppEmail = _AppInfo.email ?? "361341288@qq.com";
                 AppQchat = _AppInfo.qchat ?? "415872667";
+                AppHelp = "http://www.c-scm.net/nas/help.html";
 
                 Introduction = _AppInfo.content;
             }
@@ -102,18 +109,17 @@ namespace Com.Scm.Views.About
         public ScmVerInfo LoadVerDefault()
         {
             var verInfo = new ScmVerInfo();
-            verInfo.major = 1;
+            verInfo.ver_info = "1.0.0";
             verInfo.ver_date = "2026-01-01";
             verInfo.ver_code = "2026010101";
-            verInfo.ver_info = "1.0.0";
             return verInfo;
         }
 
-        public void LoadVerInfo()
+        public async void LoadVerInfo()
         {
             try
             {
-                var verInfo = _Window.GetVerInfo(ScmClientEnv.ProductCode);
+                var verInfo = await _Window.GetVerInfoAsync(ScmClientEnv.ProductCode);
                 if (verInfo == null)
                 {
                     verInfo = LoadVerDefault();
@@ -133,7 +139,7 @@ namespace Com.Scm.Views.About
 
                 var filePath = Assembly.GetExecutingAssembly().Location;
                 var basePath = Path.GetDirectoryName(filePath);
-                var upgradeFile = Path.Combine(basePath, AppSettings.Instance.Env.UpgradeFilePath ?? ScmClientEnv.UpgradeFile);
+                var upgradeFile = Path.Combine(basePath, AppSettings.Instance.Env.UpgradeFilePath ?? ScmClientEnv.UpgradeFilePath);
                 if (!File.Exists(upgradeFile))
                 {
                     _Window.ShowAlert("升级程序不存在，无法完成升级操作！", "系统提示");
@@ -161,6 +167,7 @@ namespace Com.Scm.Views.About
         private void SaveUpgradeJson(string filePath, string fileName, ScmVerInfo verInfo)
         {
             var config = new UpgradeConfig();
+            config.Title = $"正在升级 {AppName} 到版本 {verInfo.ver_info}";
             config.AutoStart = true;
             config.AutoClose = true;
             config.InstallPath = filePath;
@@ -168,7 +175,7 @@ namespace Com.Scm.Views.About
             config.AppInfo = _AppInfo;
             config.VerInfo = verInfo;
 
-            var jsonFile = Path.Combine(filePath, AppSettings.Instance.Env.UpgradeJsonName);
+            var jsonFile = Path.Combine(filePath, AppSettings.Instance.Env.UpgradeJsonName ?? ScmClientEnv.UpgradeJsonFile);
             var jsonDir = Path.GetDirectoryName(jsonFile);
             if (!Directory.Exists(jsonDir))
             {

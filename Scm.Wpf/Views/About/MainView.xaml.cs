@@ -88,5 +88,13 @@ namespace Com.Scm.Views.About
             Clipboard.SetText(_Dvo.AppQchat);
             _Window.ShowToast("QQ群号复制成功！");
         }
+
+        private void HlHelp_Click(object sender, RoutedEventArgs e)
+        {
+            var browser = new BrowserWindow();
+            browser.Owner = _Window.GetWindow();
+            browser.Title = "使用帮助";
+            browser.Open(_Dvo.AppHelp);
+        }
     }
 }

@@ -1,51 +1,142 @@
-﻿<UserControl x:Class="Com.Scm.Views.About.MainView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
-        <Style TargetType="TextBlock">
-            <Setter Property="Margin" Value="6"/>
-            <Setter Property="FontSize" Value="14"/>
-        </Style>
-    </UserControl.Resources>
-    <Border Background="White" BorderThickness="0" BorderBrush="LightGray" CornerRadius="3">
-        <DockPanel>
-            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button x:Name="BtVersion" Style="{StaticResource ButtonPrimary}" Width="240" Margin="12" Click="BtVersion_Click">检测更新</Button>
-            </StackPanel>
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="6">
-                <TextBlock TextWrapping="Wrap" Style="{StaticResource TextBlockTitleBold}" Text="{Binding AppName}"></TextBlock>
-                <TextBlock x:Name="TbIntroduction" TextWrapping="Wrap" Text="{Binding Introduction}"></TextBlock>
-                <TextBlock TextWrapping="Wrap">当前版本：
-                    <Run Name="HrVersion" Text="{Binding AppVersion}"></Run>
-                </TextBlock>
-                <TextBlock TextWrapping="Wrap">发行日期：
-                    <Run Name="HrRelease" Text="{Binding AppRelease}"></Run>
-                </TextBlock>
-                <TextBlock TextWrapping="Wrap">项目地址：
-                <Hyperlink x:Name="HlProject" NavigateUri="{Binding AppProject}" Click="HlProject_Click" ToolTip="点击访问项目">
-                    <Run Name="HrProject" Text="{Binding AppProject}"></Run>
-                </Hyperlink>
-                </TextBlock>
-                <TextBlock TextWrapping="Wrap">网站首页：
-                <Hyperlink x:Name="HlWebsite" NavigateUri="{Binding AppWebsite}" Click="HlWebsite_Click" ToolTip="点击访问网站">
-                    <Run Name="HrWebsite" Text="{Binding AppWebsite}"></Run>
-                </Hyperlink>
-                </TextBlock>
-                <TextBlock TextWrapping="Wrap">联系作者：
-                <Hyperlink x:Name="HlEmail" NavigateUri="http://www.c-scm.net" Click="HlEmail_Click" ToolTip="点击发送邮件">
-                    <Run Name="HrEmail" Text="{Binding AppEmail}"></Run>
-                </Hyperlink>
-                </TextBlock>
-                <TextBlock TextWrapping="Wrap">QQ沟通群：
-                <Hyperlink x:Name="HlQchat" NavigateUri="http://www.c-scm.net" Click="HlQchat_Click" ToolTip="点击复制群号">
-                    <Run Name="HrQchat" Text="{Binding AppQchat}"></Run>
-                </Hyperlink>
-                </TextBlock>
-            </StackPanel>
-        </DockPanel>
-    </Border>
+﻿<UserControl
+    x:Class="Com.Scm.Views.About.MainView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" 
+    d:DesignHeight="450" d:DesignWidth="800"
+    Background="{StaticResource ScmPanelBackground}">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel>
+            <Border Style="{StaticResource ScmCardStyle}" Margin="{StaticResource ScmSpacingMd}">
+                <StackPanel>
+                    <TextBlock Text="应用信息" Style="{StaticResource ScmTextTitle}" Margin="{StaticResource ScmSpacingMd}"/>
+                    <Border BorderThickness="0 0 0 1" BorderBrush="{StaticResource ScmBorderBrush}" Padding="{StaticResource ScmSpacingSm}">
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                                <iconPacks:PackIconMaterial Kind="Application" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="{StaticResource ScmColorPrimary}"/>
+                                <TextBlock Text="应用名称" Style="{StaticResource ScmTextBody}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <TextBlock HorizontalAlignment="Right" Foreground="{StaticResource ScmTextColorSecondary}" Text="{Binding AppName}" VerticalAlignment="Center"/>
+                        </DockPanel>
+                    </Border>
+                    <Border BorderThickness="0 0 0 1" BorderBrush="{StaticResource ScmBorderBrush}" Padding="{StaticResource ScmSpacingSm}">
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                                <iconPacks:PackIconMaterial Kind="TagOutline" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="{StaticResource ScmColorPrimary}"/>
+                                <TextBlock Text="当前版本" Style="{StaticResource ScmTextBody}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <TextBlock HorizontalAlignment="Right" Foreground="{StaticResource ScmTextColorSecondary}" Text="{Binding AppVersion}" VerticalAlignment="Center"/>
+                        </DockPanel>
+                    </Border>
+                    <Border BorderThickness="0 0 0 1" BorderBrush="{StaticResource ScmBorderBrush}" Padding="{StaticResource ScmSpacingSm}">
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                                <iconPacks:PackIconMaterial Kind="Calendar" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="{StaticResource ScmColorPrimary}"/>
+                                <TextBlock Text="发行日期" Style="{StaticResource ScmTextBody}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <TextBlock HorizontalAlignment="Right" Foreground="{StaticResource ScmTextColorSecondary}" Text="{Binding AppRelease}" VerticalAlignment="Center"/>
+                        </DockPanel>
+                    </Border>
+                    <Border BorderThickness="0" BorderBrush="{StaticResource ScmBorderBrush}" Padding="{StaticResource ScmSpacingSm}">
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                                <iconPacks:PackIconMaterial Kind="InformationOutline" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="{StaticResource ScmColorPrimary}"/>
+                                <TextBlock Text="应用简介" Style="{StaticResource ScmTextBody}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </DockPanel>
+                    </Border>
+                    <TextBlock TextWrapping="Wrap" Text="{Binding Introduction}" Foreground="{StaticResource ScmTextColorSecondary}" Margin="32,4,16,8"/>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource ScmCardStyle}" Margin="{StaticResource ScmSpacingMd}">
+                <StackPanel>
+                    <TextBlock Text="联系方式" Style="{StaticResource ScmTextTitle}" Margin="{StaticResource ScmSpacingMd}"/>
+                    <Border BorderThickness="0 0 0 1" BorderBrush="{StaticResource ScmBorderBrush}" Padding="{StaticResource ScmSpacingSm}">
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                                <iconPacks:PackIconMaterial Kind="Github" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="{StaticResource ScmColorPrimary}"/>
+                                <TextBlock Text="项目地址" Style="{StaticResource ScmTextBody}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center">
+                                <Hyperlink x:Name="HlProject" NavigateUri="{Binding AppProject}" Click="HlProject_Click" ToolTip="点击访问项目" Foreground="{StaticResource ScmTextColorSecondary}">
+                                    <Run Text="{Binding AppProject}"/>
+                                </Hyperlink>
+                            </TextBlock>
+                        </DockPanel>
+                    </Border>
+                    <Border BorderThickness="0 0 0 1" BorderBrush="{StaticResource ScmBorderBrush}" Padding="{StaticResource ScmSpacingSm}">
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                                <iconPacks:PackIconMaterial Kind="Web" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="{StaticResource ScmColorPrimary}"/>
+                                <TextBlock Text="网站首页" Style="{StaticResource ScmTextBody}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center">
+                                <Hyperlink x:Name="HlWebsite" NavigateUri="{Binding AppWebsite}" Click="HlWebsite_Click" ToolTip="点击访问网站" Foreground="{StaticResource ScmTextColorSecondary}">
+                                    <Run Text="{Binding AppWebsite}"/>
+                                </Hyperlink>
+                            </TextBlock>
+                        </DockPanel>
+                    </Border>
+                    <Border BorderThickness="0 0 0 1" BorderBrush="{StaticResource ScmBorderBrush}" Padding="{StaticResource ScmSpacingSm}">
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                                <iconPacks:PackIconMaterial Kind="EmailOutline" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="{StaticResource ScmColorPrimary}"/>
+                                <TextBlock Text="联系作者" Style="{StaticResource ScmTextBody}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center">
+                                <Hyperlink x:Name="HlEmail" NavigateUri="http://www.c-scm.net" Click="HlEmail_Click" ToolTip="点击发送邮件" Foreground="{StaticResource ScmTextColorSecondary}">
+                                    <Run Text="{Binding AppEmail}"/>
+                                </Hyperlink>
+                            </TextBlock>
+                        </DockPanel>
+                    </Border>
+                    <Border BorderThickness="0 0 0 1" BorderBrush="{StaticResource ScmBorderBrush}" Padding="{StaticResource ScmSpacingSm}">
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                                <iconPacks:PackIconMaterial Kind="Chat" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="{StaticResource ScmColorPrimary}"/>
+                                <TextBlock Text="QQ沟通群" Style="{StaticResource ScmTextBody}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center">
+                                <Hyperlink x:Name="HlQchat" NavigateUri="http://www.c-scm.net" Click="HlQchat_Click" ToolTip="点击复制群号" Foreground="{StaticResource ScmTextColorSecondary}">
+                                    <Run Text="{Binding AppQchat}"/>
+                                </Hyperlink>
+                            </TextBlock>
+                        </DockPanel>
+                    </Border>
+                    <Border BorderThickness="0" BorderBrush="{StaticResource ScmBorderBrush}" Padding="{StaticResource ScmSpacingSm}">
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                                <iconPacks:PackIconMaterial Kind="HelpBox" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="{StaticResource ScmColorPrimary}"/>
+                                <TextBlock Text="使用帮助" Style="{StaticResource ScmTextBody}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center">
+                                <Hyperlink x:Name="HlHelp" NavigateUri="http://www.c-scm.net/nas/help.html" Click="HlHelp_Click" ToolTip="点击查看使用帮助" Foreground="{StaticResource ScmTextColorSecondary}">
+                                    <Run Text="点击查看"/>
+                                </Hyperlink>
+                            </TextBlock>
+                        </DockPanel>
+                    </Border>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource ScmCardStyle}" Margin="{StaticResource ScmSpacingMd}">
+                <StackPanel>
+                    <TextBlock Text="软件更新" Style="{StaticResource ScmTextTitle}" Margin="{StaticResource ScmSpacingMd}"/>
+                    <Border BorderThickness="0" BorderBrush="{StaticResource ScmBorderBrush}" Padding="{StaticResource ScmSpacingSm}">
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                                <iconPacks:PackIconMaterial Kind="CloudDownload" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="{StaticResource ScmColorPrimary}"/>
+                                <TextBlock Text="版本更新" Style="{StaticResource ScmTextBody}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <Button x:Name="BtVersion" Style="{StaticResource ScmButtonPrimary}" HorizontalAlignment="Right" Click="BtVersion_Click">检测更新</Button>
+                        </DockPanel>
+                    </Border>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>
