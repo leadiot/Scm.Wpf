@@ -62,6 +62,8 @@ namespace Com.Scm.Dao
                 verDao.create_time = TimeUtils.GetUnixTime();
             }
 
+            InitDdl(verDao);
+
             InitTable();
 
             InitDml(verDao);
@@ -372,6 +374,10 @@ namespace Com.Scm.Dao
             }
 
             _SqlClient.DbMaintenance.TruncateTable(daoList.ToArray());
+        }
+
+        protected virtual void InitDdl(ScmVerDao verDao)
+        {
         }
 
         /// <summary>
