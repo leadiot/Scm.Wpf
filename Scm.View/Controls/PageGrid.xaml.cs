@@ -798,7 +798,6 @@ namespace Com.Scm.Controls
         /// <param name="e"></param>
         private void CbCount_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
         }
 
         #region 扩展功能
@@ -931,6 +930,16 @@ namespace Com.Scm.Controls
         {
             _Dvo.SearchAsync(HpPage.PageIndex);
         }
+
+        public object SelectedItem { get { return DgGrid.SelectedItem; } set { DgGrid.SelectedItem = value; } }
+
+        public IList SelectedItems { get { return DgGrid.SelectedItems; } }
+
+        public int SelectedIndex { get { return DgGrid.SelectedIndex; } set { DgGrid.SelectedIndex = value; } }
+
+        public object SelectedValue { get { return DgGrid.SelectedValue; } set { DgGrid.SelectedValue = value; } }
+
+        public IList<DataGridCellInfo> SelectedCells { get { return DgGrid.SelectedCells; } }
     }
 
     public delegate bool SaveDelegate();

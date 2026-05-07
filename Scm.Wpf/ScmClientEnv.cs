@@ -104,8 +104,8 @@ namespace Com.Scm
             //// C:\ProgramData\
             //_DataDir = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
             // C:\Users\[用户名]\Documents\
-            FileDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            DataDir = Path.Combine(FileDir, CompanyCode, ProductCode);
+            var docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            DataDir = Path.Combine(docPath, CompanyCode, ProductCode);
             if (!Directory.Exists(DataDir))
             {
                 Directory.CreateDirectory(DataDir);

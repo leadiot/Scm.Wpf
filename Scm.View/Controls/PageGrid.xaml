@@ -65,7 +65,7 @@
                     <Border x:Name="BdBody" Grid.Row="0">
                         <DataGrid
                             x:Name="DgGrid"
-                             Background="{StaticResource ScmPanelBackground}"
+                            Background="{StaticResource ScmPanelBackground}"
                             ItemsSource="{Binding Items}"
                             Style="{StaticResource DataGrid.Small}"
                             hc:DataGridAttach.ShowRowNumber="True"
