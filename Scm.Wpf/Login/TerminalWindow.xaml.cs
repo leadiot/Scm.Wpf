@@ -1,6 +1,6 @@
 ﻿using Com.Scm.Config;
+using Com.Scm.Controls.Windows;
 using Com.Scm.Sys.Menu;
-using Com.Scm.Views;
 
 namespace Com.Scm.Login
 {

@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Com.Scm.Views
+namespace Com.Scm.Controls.Windows
 {
     /// <summary>
     /// ExceptionWindow.xaml 的交互逻辑

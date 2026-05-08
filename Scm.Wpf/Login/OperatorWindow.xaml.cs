@@ -1,7 +1,7 @@
 ﻿using Com.Scm.Config;
+using Com.Scm.Controls.Windows;
 using Com.Scm.Enums;
 using Com.Scm.Oidc.Response;
-using Com.Scm.Views;
 using System.Diagnostics;
 using System.Windows;
 

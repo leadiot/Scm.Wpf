@@ -1,4 +1,5 @@
-﻿using Com.Scm.Helper;
+﻿using Com.Scm.Controls.Windows;
+using Com.Scm.Helper;
 using Com.Scm.Utils;
 using System.Windows;
 using System.Windows.Controls;

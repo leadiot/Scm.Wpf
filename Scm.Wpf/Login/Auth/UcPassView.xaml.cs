@@ -1,4 +1,4 @@
-﻿using Com.Scm.Views;
+﻿using Com.Scm.Controls.Windows;
 using System.Windows.Controls;
 
 namespace Com.Scm.Login.Auth

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Com.Scm.Views
+namespace Com.Scm.Controls.Windows
 {
     /// <summary>
     /// 浏览器窗口的交互逻辑

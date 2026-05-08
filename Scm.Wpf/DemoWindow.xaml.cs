@@ -1,6 +1,5 @@
-﻿using Com.Scm.Dao;
+﻿using Com.Scm.Controls.Windows;
 using System.Windows;
-using System.Windows.Input;
 
 namespace Com.Scm
 {
@@ -14,14 +13,6 @@ namespace Com.Scm
         public DemoWindow()
         {
             InitializeComponent();
-
-            var dbFile = "Data\\scm.db";
-            SqlHelper.Setup(dbFile);
-
-            _Dvo = new DemoWindowDvo();
-            _Dvo.Init(null);
-
-            this.DataContext = _Dvo;
         }
 
         public void Init(ScmWindow window)
@@ -32,34 +23,12 @@ namespace Com.Scm
             this.DataContext = _Dvo;
         }
 
-        private void LbFile_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
+            var window = InputWindow.ShowInput(this);
 
-        }
-
-        private void MiExplorer_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void MiCreateDir_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void MiCreateDoc_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void MiEdit_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void MiDelete_Click(object sender, RoutedEventArgs e)
-        {
-
+            var input = window.InputText;
+            TbInput.Text = input;
         }
     }
 }

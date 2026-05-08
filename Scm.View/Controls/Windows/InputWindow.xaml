@@ -1,0 +1,45 @@
+﻿<Window x:Class="Com.Scm.Controls.Windows.InputWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="输入"
+        Width="320"
+        ShowInTaskbar="False"
+        ResizeMode="NoResize"
+        SizeToContent="Height"
+        WindowStartupLocation="CenterOwner"
+        KeyUp="Window_KeyUp">
+    <Border Background="{StaticResource ScmPanelBackground}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Margin="24,18">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0">
+                    <iconPacks:PackIconMaterial Name="IpIcon" Kind="Information" Margin="6" Width="24" Height="24" />
+                </Border>
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock x:Name="TbInfo" Grid.Row="0" Margin="6" TextWrapping="Wrap" FontSize="{StaticResource ScmFontSizeMd}" VerticalAlignment="Center">这是消息提示！</TextBlock>
+                    <TextBox x:Name="TbInput" Grid.Row="1" Margin="6,0,6,6"/>
+                </Grid>
+            </Grid>
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,12,12">
+                <Button x:Name="BtCancel" Click="BtCancel_Click">取消</Button>
+                <Button x:Name="BtAccept" Click="BtAccept_Click" Margin="12,0,0,0" Style="{StaticResource ButtonPrimary}">确认</Button>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

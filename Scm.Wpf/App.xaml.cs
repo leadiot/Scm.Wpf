@@ -31,8 +31,10 @@ public partial class App : Application
 
         base.OnStartup(e);
 
-        var splashWindow = new SplashWindow();
-        splashWindow.Show();
+        //var splashWindow = new SplashWindow();
+        //splashWindow.Show();
+        var window = new DemoWindow();
+        window.Show();
     }
 
     protected override void OnExit(ExitEventArgs e)

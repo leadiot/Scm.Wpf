@@ -1,5 +1,6 @@
 using Com.Scm.Actions;
 using Com.Scm.Config;
+using Com.Scm.Controls.Windows;
 using Com.Scm.Dao;
 using Com.Scm.Dvo;
 using Com.Scm.Helper;

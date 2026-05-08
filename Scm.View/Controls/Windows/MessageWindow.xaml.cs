@@ -1,4 +1,4 @@
-﻿namespace Com.Scm.Views
+﻿namespace Com.Scm.Controls.Windows
 {
     /// <summary>
     /// ExitWindow.xaml 的交互逻辑
