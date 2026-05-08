@@ -29,6 +29,7 @@ namespace Com.Scm.Controls.Windows
 
             this.DataContext = dvo;
             TbInput.Focus();
+            TbInput.SelectAll();
         }
 
         public static InputWindow ShowInput(Window owner, string text = null, string value = null, string title = null)

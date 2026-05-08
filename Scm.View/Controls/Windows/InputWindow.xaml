@@ -5,7 +5,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="输入"
+        Title="{Binding Title}"
         Width="320"
         ShowInTaskbar="False"
         ResizeMode="NoResize"
@@ -32,8 +32,8 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <TextBlock x:Name="TbInfo" Grid.Row="0" Margin="6" TextWrapping="Wrap" FontSize="{StaticResource ScmFontSizeMd}" VerticalAlignment="Center">这是消息提示！</TextBlock>
-                    <TextBox x:Name="TbInput" Grid.Row="1" Margin="6,0,6,6"/>
+                    <TextBlock x:Name="TbInfo" Grid.Row="0" Margin="6" TextWrapping="Wrap" FontSize="{StaticResource ScmFontSizeMd}" VerticalAlignment="Center" Text="{Binding Message}"></TextBlock>
+                    <TextBox x:Name="TbInput" Grid.Row="1" Margin="6,0,6,6" Text="{Binding Value}"/>
                 </Grid>
             </Grid>
             <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,12,12">

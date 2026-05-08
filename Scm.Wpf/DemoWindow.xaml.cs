@@ -25,7 +25,11 @@ namespace Com.Scm
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var window = InputWindow.ShowInput(this);
+            var dvo = new InputWindowDvo();
+            dvo.Title = "aaa";
+            dvo.Message = "bbb";
+            dvo.Value = "111";
+            var window = InputWindow.ShowInput(this, dvo);
 
             var input = window.InputText;
             TbInput.Text = input;
