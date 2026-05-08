@@ -49,5 +49,8 @@
     <Compile Update="Controls\PageGrid.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Controls\Windows\InputWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 </Project>
