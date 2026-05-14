@@ -1,3 +1,4 @@
+using Com.Scm.Dto;
 using Com.Scm.Enums;
 using Com.Scm.Http.Config;
 using Com.Scm.Response;
@@ -29,9 +30,9 @@ namespace Com.Scm
 #endif
 
         /// <summary>
-        /// 服务地址
+        /// Scm.Net服务地址
         /// </summary>
-        public const string SERVER_HOST = "api.c-scm.net";
+        public const string SERVER_HOST = "www.c-scm.net";
 
         /// <summary>
         /// 服务器是否为连通状态
@@ -77,7 +78,7 @@ namespace Com.Scm
 
         public void SetHost(string host)
         {
-            _Host = host ?? SERVER_HOST;
+            _Host = host ?? REMOTE_HOST;
             RemoteUrl = "http://" + _Host + "/Api";
         }
 
@@ -165,7 +166,7 @@ namespace Com.Scm
             if (response != null && response.Success)
             {
                 return response.Data;
-            }
+        }
 
             return null;
         }
@@ -201,7 +202,7 @@ namespace Com.Scm
             if (response != null && response.Success)
             {
                 return response.Data;
-            }
+        }
 
             return null;
         }
@@ -260,7 +261,7 @@ namespace Com.Scm
                 IsConnecting = false;
                 Error(ex);
                 throw;
-            }
+        }
         }
 
         /// <summary>
@@ -320,7 +321,7 @@ namespace Com.Scm
                 if (response == null)
                 {
                     return default;
-                }
+        }
                 if (!response.Success)
                 {
                     ErrorMessage = response.Message;
@@ -500,7 +501,7 @@ namespace Com.Scm
                 {
                     ErrorMessage = response.Message;
                     return default;
-                }
+        }
 
                 return response.Data;
             }
@@ -523,7 +524,7 @@ namespace Com.Scm
             if (string.IsNullOrEmpty(msg))
             {
                 url += "?msg=" + msg;
-            }
+        }
 
             try
             {
@@ -665,9 +666,12 @@ namespace Com.Scm
             _Token = null;
         }
 
+        /// <summary>
+        /// 记录异常信息到调试输出（兼容 netstandard2.0，主项目 NLog Trace 监听器可捕获）
+        /// </summary>
         public void Error(Exception exp)
         {
-            Console.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] Error: {exp.Message}");
+            System.Diagnostics.Trace.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] Error: {exp.Message}");
         }
     }
 }

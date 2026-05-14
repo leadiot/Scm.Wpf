@@ -28,18 +28,20 @@ namespace Com.Scm
         public ScmTerminal(string dataDir)
         {
             TokenName = KEY_TOKEN_NAME;
-            RemoteUrl = "http://" + SERVER_HOST + "/Api";
+            RemoteUrl = "http://" + RemoteUrl + "/Api";
 
             this.DataDir = dataDir;
         }
 
         public long GetTerminalId()
         {
+            if (_Info == null) return 0;
             return _Info.terminal_id;
         }
 
         public string GetTerminalCodes()
         {
+            if (_Info == null) return null;
             return _Info.terminal_codes;
         }
 
@@ -226,4 +228,3 @@ namespace Com.Scm
         }
     }
 }
-

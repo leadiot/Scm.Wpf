@@ -1,4 +1,5 @@
 ﻿using Com.Scm.Config;
+using Com.Scm.Dto;
 using Com.Scm.Dvo;
 using Com.Scm.Helper;
 using Com.Scm.Utils;

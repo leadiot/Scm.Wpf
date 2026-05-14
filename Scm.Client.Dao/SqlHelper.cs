@@ -13,7 +13,7 @@ namespace Com.Scm.Dao
                 // 连接字符串（包含连接池配置）
                 ConnectionString = $"Data Source={file};",
                 // 自动释放连接（关键：确保连接用完后归还给池）
-                IsAutoCloseConnection = false
+                IsAutoCloseConnection = true
             };
 
             Instance = new SqlSugarClient(config);
@@ -25,7 +25,6 @@ namespace Com.Scm.Dao
                 }
                 //LogUtils.Sql(sql);
             };
-            Instance.Open();
         }
 
         // 对外提供单例实例

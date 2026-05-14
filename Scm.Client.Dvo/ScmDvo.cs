@@ -227,11 +227,7 @@ namespace Com.Scm.Dvo
         /// <returns></returns>
         public static T FromDto<T>(object src) where T : class, new()
         {
-            var dst = default(T);
-            if (dst == null)
-            {
-                return dst;
-            }
+            var dst = new T();
 
             var srcType = src.GetType();
             var srcName = srcType.FullName;

@@ -1,4 +1,5 @@
-﻿using Com.Scm.Utils;
+﻿using Com.Scm.Dto;
+using Com.Scm.Utils;
 using System.IO;
 
 namespace Com.Scm.Config
@@ -51,10 +52,10 @@ namespace Com.Scm.Config
             VerInfo.ver_code = "2024010101";
             VerInfo.ver_info = "1.0.0";
             VerInfo.remark = "初始版本";
-            VerInfo.url = "https://download.mobatek.net/2542025111600034/MobaXterm_Portable_v25.4.zip";
+            VerInfo.url = "";
 
-            AutoStart = true;
-            ExecuteFile = "MobaXterm_Personal_25.4.exe";
+            AutoStart = false;
+            ExecuteFile = null;
             ExecuteArgs = null;
         }
 

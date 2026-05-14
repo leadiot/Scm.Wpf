@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Com.Scm.Dto;
+using System.Windows;
 
 namespace Com.Scm
 {

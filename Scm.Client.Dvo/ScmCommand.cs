@@ -15,9 +15,11 @@ namespace Com.Scm.Dvo
         /// 注意：虽然内部存储为 Action<object?>，但使用时通常忽略参数。
         /// </summary>
         /// <param name="execute">执行逻辑</param>
-        public ScmCommand(Action execute) : this(o => execute(), null)
+        public ScmCommand(Action execute)
         {
             if (execute == null) throw new ArgumentNullException(nameof(execute));
+            _execute = o => execute();
+            _canExecute = null;
         }
 
         /// <summary>

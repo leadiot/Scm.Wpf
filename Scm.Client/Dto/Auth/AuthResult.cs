@@ -30,19 +30,19 @@ namespace Com.Scm.Dto.Login
         /// <summary>
         /// 无效的登录机构信息
         /// </summary>
-        public const int ERROR_02 = 1;
+        public const int ERROR_02 = 2;
         /// <summary>
         /// 登录账户不存在
         /// </summary>
-        public const int ERROR_03 = 1;
+        public const int ERROR_03 = 3;
         /// <summary>
         /// 账号被冻结，请联系管理员！
         /// </summary>
-        public const int ERROR_04 = 2;
+        public const int ERROR_04 = 4;
         /// <summary>
         /// 限制登录时间
         /// </summary>
-        public const int ERROR_05 = 3;
+        public const int ERROR_05 = 5;
         /// <summary>
         /// 不支持的登录方式
         /// </summary>
