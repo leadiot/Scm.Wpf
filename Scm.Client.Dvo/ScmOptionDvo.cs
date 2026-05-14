@@ -11,8 +11,8 @@
         /// <summary>
         /// 选项的值
         /// </summary>
-        private T value;
-        public T Value { get { return value; } set { SetProperty(ref value, value); } }
+        private T _optionValue;
+        public T Value { get { return _optionValue; } set { SetProperty(ref _optionValue, value); } }
         /// <summary>
         /// 是否禁用
         /// </summary>

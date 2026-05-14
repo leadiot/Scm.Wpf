@@ -239,29 +239,20 @@ namespace Com.Scm
         {
             url = GetApiUrl(url);
 
-            head = BuildHeader(head);
+            var headers = BuildHeader(head);
 
             try
             {
-                var response = HttpUtils.PostJsonObject<ScmApiDataResponse<T>>(url, body.ToJsonString(), head);
-                if (response == null)
-                {
-                    return default;
-                }
-                if (!response.Success)
-                {
-                    ErrorMessage = response.Message;
-                    return default;
-                }
-
-                return response.Data;
+                var response = HttpUtils.PostJsonObject<ScmApiDataResponse<T>>(url, body.ToJsonString(), headers);
+                ErrorMessage = response?.Message;
+                return UnwrapDataResponse(response);
             }
             catch (HttpRequestException ex)
             {
                 IsConnecting = false;
                 Error(ex);
                 throw;
-        }
+            }
         }
 
         /// <summary>
@@ -275,23 +266,14 @@ namespace Com.Scm
         {
             url = GetApiUrl(url);
 
-            head = BuildHeader(head);
+            var headers = BuildHeader(head);
 
             try
             {
                 var json = body?.ToJsonString();
-                var response = await HttpUtils.PostJsonObjectAsync<ScmApiDataResponse<T>>(url, json, head);
-                if (response == null)
-                {
-                    return default;
-                }
-                if (!response.Success)
-                {
-                    ErrorMessage = response.Message;
-                    return default;
-                }
-
-                return response.Data;
+                var response = await HttpUtils.PostJsonObjectAsync<ScmApiDataResponse<T>>(url, json, headers);
+                ErrorMessage = response?.Message;
+                return UnwrapDataResponse(response);
             }
             catch (HttpRequestException ex)
             {
@@ -313,22 +295,13 @@ namespace Com.Scm
         {
             url = GetApiUrl(url);
 
-            head = BuildHeader(head);
+            var headers = BuildHeader(head);
 
             try
             {
-                var response = HttpUtils.PostJsonObject<ScmApiDataResponse<T>>(url, json, head);
-                if (response == null)
-                {
-                    return default;
-        }
-                if (!response.Success)
-                {
-                    ErrorMessage = response.Message;
-                    return default;
-                }
-
-                return response.Data;
+                var response = HttpUtils.PostJsonObject<ScmApiDataResponse<T>>(url, json, headers);
+                ErrorMessage = response?.Message;
+                return UnwrapDataResponse(response);
             }
             catch (HttpRequestException ex)
             {
@@ -350,22 +323,13 @@ namespace Com.Scm
         {
             url = GetApiUrl(url);
 
-            head = BuildHeader(head);
+            var headers = BuildHeader(head);
 
             try
             {
-                var response = await HttpUtils.PostJsonObjectAsync<ScmApiDataResponse<T>>(url, json, head);
-                if (response == null)
-                {
-                    return default;
-                }
-                if (!response.Success)
-                {
-                    ErrorMessage = response.Message;
-                    return default;
-                }
-
-                return response.Data;
+                var response = await HttpUtils.PostJsonObjectAsync<ScmApiDataResponse<T>>(url, json, headers);
+                ErrorMessage = response?.Message;
+                return UnwrapDataResponse(response);
             }
             catch (HttpRequestException ex)
             {
@@ -379,11 +343,11 @@ namespace Com.Scm
         {
             url = GetApiUrl(url);
 
-            header = BuildHeader(header);
+            var headers = BuildHeader(header);
 
             try
             {
-                var result = HttpUtils.UploadFile(url, filePath, fileName, "file", body, header);
+                var result = HttpUtils.UploadFile(url, filePath, fileName, "file", body, headers);
                 var response = result.AsJsonObject<ScmApiDataResponse<bool>>();
                 if (response == null)
                 {
@@ -414,12 +378,12 @@ namespace Com.Scm
                 CreateHttpClient();
             }
 
-            head = BuildHeader(head);
+            var headers = BuildHeader(head);
 
             using (var request = new HttpRequestMessage(HttpMethod.Post, url))
             {
                 request.Content = content;
-                foreach (KeyValuePair<string, string> item in head)
+                foreach (KeyValuePair<string, string> item in headers)
                 {
                     request.Headers.TryAddWithoutValidation(item.Key, item.Value);
                 }
@@ -451,22 +415,13 @@ namespace Com.Scm
         {
             url = GetApiUrl(url);
 
-            head = BuildHeader(head);
+            var headers = BuildHeader(head);
 
             try
             {
-                var response = await HttpUtils.GetObjectAsync<ScmApiDataResponse<T>>(url, body, head);
-                if (response == null)
-                {
-                    return default;
-                }
-                if (!response.Success)
-                {
-                    ErrorMessage = response.Message;
-                    return default;
-                }
-
-                return response.Data;
+                var response = await HttpUtils.GetObjectAsync<ScmApiDataResponse<T>>(url, body, headers);
+                ErrorMessage = response?.Message;
+                return UnwrapDataResponse(response);
             }
             catch (HttpRequestException ex)
             {
@@ -488,22 +443,13 @@ namespace Com.Scm
         {
             url = GetApiUrl(url);
 
-            head = BuildHeader(head);
+            var headers = BuildHeader(head);
 
             try
             {
-                var response = HttpUtils.GetObject<ScmApiDataResponse<T>>(url, body, head);
-                if (response == null)
-                {
-                    return default;
-                }
-                if (!response.Success)
-                {
-                    ErrorMessage = response.Message;
-                    return default;
-        }
-
-                return response.Data;
+                var response = HttpUtils.GetObject<ScmApiDataResponse<T>>(url, body, headers);
+                ErrorMessage = response?.Message;
+                return UnwrapDataResponse(response);
             }
             catch (HttpRequestException ex)
             {
@@ -521,10 +467,10 @@ namespace Com.Scm
         public bool Echo(string msg = "check")
         {
             var url = "/Hb/Echo";
-            if (string.IsNullOrEmpty(msg))
+            if (!string.IsNullOrEmpty(msg))
             {
                 url += "?msg=" + msg;
-        }
+            }
 
             try
             {
@@ -551,7 +497,7 @@ namespace Com.Scm
         public async Task<bool> EchoAsync(string msg)
         {
             var url = "/Hb/Echo";
-            if (string.IsNullOrEmpty(msg))
+            if (!string.IsNullOrEmpty(msg))
             {
                 url += "?msg=" + msg;
             }
@@ -664,6 +610,22 @@ namespace Com.Scm
         public virtual void Logout()
         {
             _Token = null;
+        }
+
+        /// <summary>
+        /// 解包 ScmApiDataResponse，提取泛型数据或设置错误消息
+        /// </summary>
+        private static T UnwrapDataResponse<T>(ScmApiDataResponse<T> response)
+        {
+            if (response == null)
+            {
+                return default;
+            }
+            if (!response.Success)
+            {
+                return default;
+            }
+            return response.Data;
         }
 
         /// <summary>

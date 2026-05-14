@@ -135,18 +135,20 @@ namespace Com.Scm
         {
             url = GetApiUrl(url);
 
-            head = BuildHeader(head);
+            var headers = BuildHeader(head);
 
-            foreach (KeyValuePair<string, string> item in head)
+            using (var request = new HttpRequestMessage(HttpMethod.Post, url))
             {
-                _HttpClient.DefaultRequestHeaders.Add(item.Key, item.Value);
+                request.Content = content;
+                foreach (KeyValuePair<string, string> item in headers)
+                {
+                    request.Headers.TryAddWithoutValidation(item.Key, item.Value);
+                }
+
+                var response = await _HttpClient.SendAsync(request);
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadAsStringAsync();
             }
-
-            var response = await _HttpClient.PostAsync(url, content);
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsStringAsync();
         }
 
         protected override Dictionary<string, string> BuildHeader(Dictionary<string, string> headers)

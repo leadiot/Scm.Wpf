@@ -28,9 +28,10 @@ namespace Com.Scm.Dvo
         /// <param name="execute">执行逻辑</param>
         /// <param name="canExecute">判断是否可以执行的逻辑</param>
         public ScmCommand(Action execute, Func<bool> canExecute)
-            : this(o => execute(), canExecute != null ? o => canExecute() : null)
         {
             if (execute == null) throw new ArgumentNullException(nameof(execute));
+            _execute = o => execute();
+            _canExecute = canExecute != null ? o => canExecute() : null;
         }
 
         /// <summary>

@@ -174,36 +174,6 @@ public partial class MainWindow : HandyControl.Controls.Window, ScmWindow
 
     public void ShowTray()
     {
-        //_Tray = new NotifyIcon();
-        //_Tray.Text = "Scm.Net";
-        //_Tray.Visibility = Visibility.Visible;
-        //_Tray.MouseDoubleClick += TiTask_MouseDoubleClick;
-
-        //var menu = new ContextMenu();
-        //_Tray.ContextMenu = menu;
-
-        //var item = new MenuItem();
-        //item.Name = "MiMain";
-        //item.Header = "显示主窗口";
-        //item.Click += MiMain_Click;
-        //menu.Items.Add(item);
-
-        //menu.Items.Add(new Separator());
-
-        //item = new MenuItem();
-        //item.Name = "MiLogout";
-        //item.Header = "退出登录";
-        //item.Click += MiLogout_Click;
-        //menu.Items.Add(item);
-
-        //menu.Items.Add(new Separator());
-
-        //item = new MenuItem();
-        //item.Name = "MiExit";
-        //item.Header = "退出应用";
-        //item.Click += MiExit_Click;
-        //menu.Items.Add(item);
-
         _Dvo.TrayVisibility = Visibility.Visible;
     }
 

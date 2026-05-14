@@ -4,6 +4,8 @@ namespace Com.Scm.Dao
 {
     public class SqlHelper
     {
+        private static readonly object _Lock = new object();
+
         public static void Setup(string file)
         {
             var config = new ConnectionConfig
@@ -16,7 +18,14 @@ namespace Com.Scm.Dao
                 IsAutoCloseConnection = true
             };
 
-            Instance = new SqlSugarClient(config);
+            lock (_Lock)
+            {
+                if (Instance != null)
+                {
+                    Instance.Dispose();
+                }
+                Instance = new SqlSugarClient(config);
+            }
             Instance.Aop.OnLogExecuting = (sql, pars) =>
             {
                 foreach (var p in pars)
@@ -40,8 +49,7 @@ namespace Com.Scm.Dao
             if (Instance != null)
             {
                 Instance.Dispose();
-                //Instance.Close();
-            }
+                Instance = null;
         }
     }
 }
