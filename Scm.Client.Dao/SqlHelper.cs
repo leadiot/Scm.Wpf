@@ -50,6 +50,7 @@ namespace Com.Scm.Dao
             {
                 Instance.Dispose();
                 Instance = null;
+            }
         }
     }
 }

@@ -162,10 +162,5 @@ namespace Com.Scm
 
             return headers;
         }
-
-        public ScmToken GetToken()
-        {
-            return _Token;
-        }
     }
 }

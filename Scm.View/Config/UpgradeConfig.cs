@@ -46,6 +46,7 @@ namespace Com.Scm.Config
         public void LoadDefault()
         {
             Title = "Nas.Net更新";
+            InstallPath = AppContext.BaseDirectory;
 
             VerInfo.major = 1;
             VerInfo.ver_date = "2024-01-01";
