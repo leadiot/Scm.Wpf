@@ -2,10 +2,14 @@
 # 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
 ################################################################################
 
-# Vue项目文件
-dist/
-node_modules/
-webpack/
+# IDE相关文件
+.git/
+.gitcode/
+.gitee/
+.github/
+.qoder/
+.vs/
+.vscode/
 
 # Visual Studio项目文件
 .vs/
@@ -22,8 +26,3 @@ PublishProfiles/
 [Gg]enerated/
 
 # 需要特殊处理的文件
-/net/Scm.Api/logs/
-/net/Scm.Api/dev/
-/net/Scm.Api/quartz/settings/logs/
-/net/Scm.Api/Properties/PublishProfiles/FolderProfile.pubxml.user
-/Scm.Common.Http

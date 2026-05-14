@@ -1,160 +1,235 @@
-# SCM WPF Client Framework
+<p align="center">
+  <img src="logo.png" alt="Scm.Net Logo" width="120" />
+</p>
 
-Simplified Chinese | [English](./README-en.md)
+<h1 align="center">Scm.Wpf</h1>
 
-## Project Overview
+<p align="center">
+  <img src="https://img.shields.io/badge/.NET-10.0-512BD4?logo=dotnet" alt=".NET 10" />
+  <img src="https://img.shields.io/badge/WPF-10.0-512BD4?logo=windows" alt="WPF" />
+  <img src="https://img.shields.io/badge/license-MIT-green" alt="MIT License" />
+  <img src="https://img.shields.io/badge/platform-Windows-lightgrey" alt="Windows" />
+</p>
 
-SCM WPF is a client application framework based on WPF (Windows Presentation Foundation), providing comprehensive features including authentication, data access, UI components, and automatic update functionality. The framework adopts a modular design and supports both local database and remote API data operations.
+<p align="center">
+  <b>Scm.Net WPF Desktop Client</b> — A native Windows desktop application framework for enterprise management systems.
+</p>
 
-## Project Structure
+<p align="center">
+  <a href="./README.md">简体中文</a> | English
+</p>
 
-```
-scm.wpf/
-├── Libs/                          # Third-party dependencies
-│   ├── net10.0/                   # .NET 10.0 dependencies
-│   └── netstandard2.0/            # .NET Standard 2.0 dependencies
-├── Scm.Client/                    # Core client library
-│   ├── Dto/                       # Data Transfer Objects
-│   │   ├── Auth/                  # Authentication-related DTOs
-│   │   └── Bind/                  # Terminal binding-related DTOs
-│   ├── ScmClient.cs               # Client base class
-│   ├── ScmOperator.cs             # Operator client
-│   └── ScmTerminal.cs             # Terminal client
-├── Scm.Client.Dao/                # Data Access Layer
-│   ├── ScmDao.cs                  # Base DAO class
-│   ├── ScmDataDao.cs              # Data DAO
-│   ├── ScmVerDao.cs               # Version information DAO
-│   └── SqlHelper.cs               # SQL helper class
-├── Scm.Client.Dvo/                # Data Value Objects
-│   ├── ScmDvo.cs                  # Base DVO (implements INotifyPropertyChanged)
-│   ├── ScmDataDvo.cs              # Data DVO
-│   ├── ScmCommand.cs              # Command implementation
-│   └── ScmSearchParamsDvo.cs      # Search parameters DVO
-├── Scm.View/                      # UI Component Library
-│   ├── Controls/                  # Custom controls
-│   │   ├── PageGrid.xaml         # Paginated data grid
-│   │   └── NavigationDrawer.xaml # Navigation drawer
-│   ├── Converters/               # Value converters
-│   ├── Models/                   # Data models
-│   └── Views/                    # Common views
-├── Scm.Samples/                   # Sample projects
-│   ├── Views/Native/             # Local database examples
-│   └── Views/Remote/             # Remote API examples
-├── Scm.Upgrade/                   # Automatic update module
-└── Scm.Wpf/                       # Main application
-    ├── Actions/                   # Menu actions
-    ├── Config/                    # Configuration management
-    ├── Controls/                  # WPF controls
-    ├── Login/                     # Login module
-    │   ├── Auth/                  # Authentication login
-    │   ├── OperatorWindow.xaml   # Operator login window
-    │   └── TerminalWindow.xaml    # Terminal binding window
-    ├── Views/                     # Business views
-    │   ├── About/                 # About page
-    │   ├── Demo/                  # Demo page
-    │   ├── Home/                  # Home page
-    │   └── Tasks/                 # Tasks page
-    └── MainWindow.xaml            # Main window
-```
+---
 
-## Features
+## 📖 Introduction
 
-### 1. Authentication System
-- **Operator Login**: Username and password authentication
-- **OIDC/OAuth2 Authentication**: Support for third-party OAuth login
-- **Terminal Binding**: Device binding authentication mechanism
-- **Token Management**: Automatic token refresh and expiration handling
+**Scm.Wpf** is the WPF desktop client of [Scm.Net](https://gitee.com/leadiot/scm.net), providing a localized enterprise management backend for Windows operating systems. Built on .NET 10.0 + WPF architecture, it supports two authentication modes: **Operator Login** and **Terminal Binding**, along with two data access methods: **Local Database** and **Remote API**.
 
-### 2. Data Access
-- **Local Database**: Uses SqlSugar ORM to operate SQLite
-- **Remote API**: Full support for RESTful API calls
-- **Data Validation**: Implements INotifyDataErrorInfo for field validation
+Products built on this framework include: OMS (Order Management), WMS (Warehouse Management), TMS (Transportation Management), DMS (Distribution Management), BMS (Billing Management), YMS (Yard Management), EAM (Asset Management), and IOT (Internet of Things Management).
 
-### 3. UI Components
-- **PageGrid**: Powerful paginated data grid component
-  - Supports column customization
-  - Data export (CSV/JSON/SQL/TXT/XLS)
-  - Pagination navigation
-- **NavigationDrawer**: Side navigation drawer
-- **Toast Notifications**: Success/error/warning alerts
-- **Multiple Menu Modes**: Sidebar / Top menu
+---
 
-### 4. Automatic Update
+## ✨ Key Features
+
+### Authentication
+- **Operator Login** — Username/password authentication with automatic token refresh and expiry handling
+- **OIDC/OAuth2** — Third-party federated login (WeCom, DingTalk, etc.)
+- **Terminal Binding** — Device binding authentication for unattended terminal scenarios
+- **Single Instance** — Mutex-based singleton enforcement; duplicate launches activate the existing window
+
+### Data Access
+- **Local Database** — SqlSugar ORM with SQLite, supporting automatic table creation and version upgrades
+- **Remote API** — Full RESTful API invocation with unified auth headers and error code handling
+- **Data Validation** — Property-level validation via `INotifyDataErrorInfo`
+
+### UI Components
+- **PageGrid** — Feature-rich paged data grid
+  - Customizable columns, search panel, advanced query
+  - Data export: CSV / JSON / SQL / TXT / XLS
+  - Inline editing, paginated navigation, multi-select operations
+- **NavigationDrawer** — Side navigation drawer with cascading menu tree
+- **Toast Notifications** — Success, error, warning status prompts
+- **Icon System** — Material Design icon pack integration
+- **Theming** — Light / Dark theme switching
+
+### Auto Upgrade
 - Version detection and comparison
 - Incremental update support
 - Download progress display
 - Automatic installation and restart
 
-## Quick Start
+### Menu Action System
+- **AAction Abstraction** — Menu-driven action dispatch mechanism
+- **BrowserAction** — Embedded WebView2 browser pages
+- **ViewAction** — Open WPF native views
+- **NativeAction** — Execute local database business logic
+- **RemoteAction** — Invoke remote API business logic
 
-### Prerequisites
-- .NET 10.0 or higher
-- Windows 10/11
+---
 
-### Configuration
+## 🛠 Technology Stack
 
-Configure application settings in `appsettings.json`:
+| Technology | Version | Description |
+| --- | --- | --- |
+| [.NET](https://dotnet.microsoft.com) | 10.0 | Runtime framework |
+| [WPF](https://docs.microsoft.com/en-us/dotnet/wpf/) | 10.0 | Desktop UI framework |
+| [HandyControl](https://handyorg.github.io/handycontrol/) | 3.5.1 | WPF control library |
+| [SqlSugarCore](https://www.donet5.com/) | 5.1.4 | ORM data access framework |
+| [NLog](https://nlog-project.org/) | 6.1.1 | Logging framework |
+| [Newtonsoft.Json](https://www.newtonsoft.com/json) | 13.0.4 | JSON serialization |
+| [MiniExcel](https://github.com/mini-software/MiniExcel) | 1.43.0 | Excel import/export |
+| [CsvHelper](https://joshclose.github.io/CsvHelper/) | 33.1.0 | CSV file handling |
+| [MahApps.Metro.IconPacks.Material](https://github.com/MahApps/MahApps.Metro.IconPacks) | 6.2.1 | Material Design icons |
+| [Microsoft.Web.WebView2](https://developer.microsoft.com/microsoft-edge/webview2/) | 1.0.3856.49 | Embedded web browser |
+| [System.Management](https://learn.microsoft.com/dotnet/api/system.management) | 10.0.5 | WMI system information |
+
+---
+
+## 📁 Project Structure
+
+| Project | Description |
+| --- | --- |
+| `Scm.Wpf` | Main application entry (App.xaml / MainWindow.xaml) |
+| `Scm.Client` | Client core library (HTTP base class, authentication, DTO) |
+| `Scm.Client.Dao` | Data access layer (SqlSugar DAO base, SQL helpers) |
+| `Scm.Client.Dvo` | Data value objects (MVVM base, property notification, validation) |
+| `Scm.View` | UI component library (PageGrid, NavigationDrawer, Toast, etc.) |
+| `Scm.Samples` | Usage examples (local database + remote API scenarios) |
+| `Test` | Test project |
+
+### Directory Layout
+
+```
+scm.wpf/
+├── Scm.Wpf/                     # Main application
+│   ├── Actions/                 # Menu action executors
+│   ├── Config/                  # Configuration management
+│   ├── Controls/                # WPF custom controls
+│   ├── Login/                   # Login module
+│   │   ├── Auth/                # Authentication windows
+│   │   ├── OperatorWindow/      # Operator login window
+│   │   └── TerminalWindow/      # Terminal binding window
+│   ├── Views/                   # Business views
+│   │   ├── About/               # About page
+│   │   ├── Demo/                # Demo pages
+│   │   ├── Home/                # Dashboard home
+│   │   └── Tasks/               # Task scheduling pages
+│   ├── App.xaml                 # Application entry (singleton Mutex + startup)
+│   ├── MainWindow.xaml          # Main window
+│   └── appsettings.json         # Application config
+├── Scm.Client/                  # Client core library (netstandard2.0)
+│   ├── Dto/                     # Data transfer objects
+│   │   ├── Auth/                # Auth-related DTOs
+│   │   └── Bind/                # Terminal binding DTOs
+│   ├── ScmClient.cs             # Abstract client base (HTTP + Token)
+│   ├── ScmOperator.cs           # Operator client
+│   └── ScmTerminal.cs           # Terminal client
+├── Scm.Client.Dao/              # Data access layer
+│   ├── ScmDao.cs                # DAO base (primary key, ID generation)
+│   ├── ScmDataDao.cs            # Data DAO (CRUD)
+│   ├── ScmVerDao.cs             # Version DAO (auto upgrade)
+│   └── SqlHelper.cs             # SQL helper class
+├── Scm.Client.Dvo/              # Data value objects layer
+│   ├── ScmDvo.cs                # Base class (INotifyPropertyChanged + validation)
+│   ├── ScmDataDvo.cs            # Data DVO
+│   ├── ScmCommand.cs            # Command implementation (ICommand)
+│   └── ScmSearchParamsDvo.cs    # Search parameters DVO
+├── Scm.View/                    # UI component library
+│   ├── Actions/                 # Action abstractions
+│   │   ├── AAction.cs           # Abstract action base
+│   │   ├── BrowserAction.cs     # WebView2 browser action
+│   │   ├── ViewAction.cs        # WPF view action
+│   │   └── Samples/             # Sample action set
+│   ├── Config/                  # Configuration models
+│   │   ├── SqlConfig.cs         # Database connection config
+│   │   └── UpgradeConfig.cs     # Auto upgrade config
+│   ├── Controls/                # Custom controls
+│   │   ├── Attach/              # Attached properties
+│   │   ├── Windows/             # Window controls
+│   │   ├── PageGrid.xaml        # Paged data grid
+│   │   ├── NavigationDrawer.cs  # Navigation drawer
+│   │   ├── NavigationMenu.xaml  # Navigation menu
+│   │   └── ToastControl.xaml    # Toast notifications
+│   ├── Converters/              # Value converters
+│   ├── Models/                  # UI data models
+│   └── Views/                   # Common views
+├── Scm.Samples/                 # Sample project
+│   ├── Views/Native/            # Local database examples
+│   └── Views/Remote/            # Remote API examples
+├── Libs/                        # Pre-compiled library references
+│   ├── net10.0/                 # .NET 10.0 dependencies
+│   └── netstandard2.0/          # .NET Standard 2.0 dependencies
+├── Test/                        # Test project
+└── Scm.Wpf.sln                  # Solution file
+```
+
+---
+
+## 🔧 Prerequisites
+
+| Tool | Version | Download |
+| --- | --- | --- |
+| .NET SDK | ≥ 10.0 | [https://dotnet.microsoft.com](https://dotnet.microsoft.com) |
+| Visual Studio | ≥ 2026 | [https://visualstudio.microsoft.com](https://visualstudio.microsoft.com) |
+| Windows | ≥ 10 | — |
+
+---
+
+## 🚀 Quick Start
+
+### 1. Clone
+
+```bash
+git clone https://gitee.com/leadiot/scm.wpf.git
+```
+
+### 2. Configure
+
+Edit `appsettings.json`:
 
 ```json
 {
   "AutoStartup": true,
   "WindowState": "Normal",
   "Env": {
-    "LoginMode": "Terminal",
+    "LoginMode": "Operator",
     "UpgradeJsonName": "upgrade.json"
   },
   "Sql": {
     "Type": "Sqlite",
     "Text": "Data Source=scm.db"
+  },
+  "Server": {
+    "Host": "localhost",
+    "Port": "9999"
   }
 }
 ```
 
-### Running the Project
+### 3. Run
 
-1. Clone the repository
 ```bash
-git clone https://gitee.com/leadiot/scm.wpf.git
+cd Scm.Wpf
+dotnet run
 ```
 
-2. Open `Scm.Wpf.sln` in Visual Studio
+Or open `Scm.Wpf.sln` in Visual Studio, set `Scm.Wpf` as the startup project, and press `F5`.
 
-3. Set the startup project to `Scm.Wpf`
+---
 
-4. Press F5 to run
+## 📄 Core Classes
 
-## Sample Code
+| Class | Description |
+| --- | --- |
+| `ScmClient` | Abstract client base class, encapsulates HTTP requests, Token management, file upload/download |
+| `ScmOperator` | Operator client, supports password login, OIDC/OAuth2, auto token refresh |
+| `ScmTerminal` | Terminal client, device binding authentication for unattended scenarios |
+| `ScmDvo` | Data value object base class, implements `INotifyPropertyChanged` + `INotifyDataErrorInfo` |
+| `ScmDao` | DAO base class, encapsulates SqlSugar CRUD operations and ID generation |
+| `PageGrid` | Paged data grid control, supports search, edit, export, pagination |
+| `AAction` | Abstract action base class, menu-driven view switching and business dispatch |
 
-### Local Database Example
-
-```csharp
-// Create search parameters
-var searchParams = new SearchParamsDvo
-{
-    Key = "keyword",
-    Status = ScmRowStatusEnum.Enabled,
-    Page = 1,
-    Limit = 20
-};
-
-// Execute search
-await SearchAsync(searchParams.Page);
-```
-
-### Remote API Example
-
-```csharp
-// Use client to call API
-var result = await _client.GetObjectAsync<ScmSearchPageResponse<SearchResultDataDvo>>(
-    "/api/demo/list", 
-    new Dictionary<string, string>
-    {
-        { "key", searchParams.Key },
-        { "status", ((int)searchParams.Status).ToString() }
-    });
-```
-
-### Custom DVO
+### Example: Custom DVO
 
 ```csharp
 public class MyDvo : ScmDvo
@@ -165,7 +240,7 @@ public class MyDvo : ScmDvo
         get => _name;
         set => SetProperty(ref _name, value);
     }
-    
+
     public override bool IsValid()
     {
         ClearErrors();
@@ -178,31 +253,44 @@ public class MyDvo : ScmDvo
 }
 ```
 
-## Core Classes Overview
+### Example: Local Database Query
 
-| Class | Description |
-|-------|-------------|
-| `ScmClient` | Client base class handling HTTP requests and token management |
-| `ScmOperator` | Operator client for user authentication login |
-| `ScmTerminal` | Terminal client for device binding |
-| `ScmDvo` | Base data value object implementing property change notification and data validation |
-| `PageGrid` | Paginated data grid control supporting CRUD operations |
-| `ScmDbHelper` | Database helper class managing database initialization and version upgrades |
+```csharp
+var searchParams = new SearchParamsDvo
+{
+    Key = "keyword",
+    Status = ScmRowStatusEnum.Enabled,
+    Page = 1,
+    Limit = 20
+};
 
-## Technology Stack
+await SearchAsync(searchParams.Page);
+```
 
-- **.NET 10.0** - Runtime framework
-- **WPF** - UI framework
-- **SqlSugar** - ORM framework
-- **NLog** - Logging framework
-- **HandyControl** - WPF control library
+### Example: Remote API Call
 
-## License
+```csharp
+var result = await _client.GetObjectAsync<ScmSearchPageResponse<SearchResultDataDvo>>(
+    "/api/demo/list",
+    new Dictionary<string, string>
+    {
+        { "key", searchParams.Key },
+        { "status", ((int)searchParams.Status).ToString() }
+    });
+```
 
-This project is for learning and communication purposes only.
+---
 
-## Related Documentation
+## 🔗 Related Links
 
+- [Scm.Net Backend](https://gitee.com/leadiot/scm.net) — .NET 10.0 + Vue 3 enterprise management framework
+- [Scm.Vue Frontend](https://gitee.com/leadiot/scm.vue) — Vue 3 + Vite + Element Plus frontend framework
+- [Online Demo](http://www.c-scm.net)
 - [SqlSugar Documentation](https://www.donet5.com/)
 - [HandyControl Documentation](https://handyorg.github.io/handycontrol/)
-- [WPF Official Documentation](https://docs.microsoft.com/zh-cn/dotnet/wpf/)
+
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE), intended for learning and reference purposes only.
