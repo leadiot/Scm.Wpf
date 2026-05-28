@@ -1,4 +1,4 @@
-﻿<hc:Window
+<hc:Window
     x:Class="Com.Scm.Login.OperatorWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -28,7 +28,7 @@
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" TextWrapping="Wrap"><Run Text="一款基于Vue3和.Net8.0技术框架、适用于企业中后台管理系统的快速开发框架。"/></TextBlock>
-                <Image Grid.Row="1" Source="http://c-scm.net/img/loginbg.svg"/>
+                <Image Grid.Row="1" Source="http://www.c-scm.net/img/loginbg.svg"/>
             </Grid>
 
             <hc:Divider Orientation="Vertical" Grid.Column="1"></hc:Divider>

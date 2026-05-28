@@ -32,7 +32,7 @@ namespace Com.Scm
         /// <summary>
         /// Scm.Net服务地址
         /// </summary>
-        public const string SERVER_HOST = "www.c-scm.net";
+        public const string SERVER_HOST = "www.c-scm.com";
 
         /// <summary>
         /// 服务器是否为连通状态
