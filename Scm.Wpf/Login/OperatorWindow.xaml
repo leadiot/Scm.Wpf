@@ -10,7 +10,7 @@
     ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen"
     Icon="/Resources/logo.ico"
-    Title="C-SCM用户登录"
+    Title="Scm.Net 用户登录"
     Height="380" Width="600">
     <hc:Card BorderThickness="1"
              Effect="{StaticResource EffectShadow2}"
@@ -27,8 +27,8 @@
                     <RowDefinition Height="auto"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" TextWrapping="Wrap"><Run Text="一款基于Vue3和.Net8.0技术框架、适用于企业中后台管理系统的快速开发框架。"/></TextBlock>
-                <Image Grid.Row="1" Source="http://www.c-scm.net/img/loginbg.svg"/>
+                <TextBlock Grid.Row="0" TextWrapping="Wrap"><Run Text="基于 .NET 10.0 及 Vue 3.0 的企业级快速开发框架。"/></TextBlock>
+                <Image Grid.Row="1" Source="http://www.c-scm.net/images/loginbg.svg"/>
             </Grid>
 
             <hc:Divider Orientation="Vertical" Grid.Column="1"></hc:Divider>

@@ -1,14 +1,15 @@
-﻿using SqlSugar;
+using SqlSugar;
 
 namespace Com.Scm.Dao
 {
     public class SqlHelper
     {
+        private static ConnectionConfig _Config;
         private static readonly object _Lock = new object();
 
         public static void Setup(string file)
         {
-            var config = new ConnectionConfig
+            _Config = new ConnectionConfig
             {
                 // 数据库类型
                 DbType = DbType.Sqlite,
@@ -18,15 +19,28 @@ namespace Com.Scm.Dao
                 IsAutoCloseConnection = true
             };
 
-            lock (_Lock)
-            {
-                if (Instance != null)
-                {
-                    Instance.Dispose();
-                }
-                Instance = new SqlSugarClient(config);
-            }
-            Instance.Aop.OnLogExecuting = (sql, pars) =>
+            //lock (_Lock)
+            //{
+            //    if (Instance != null)
+            //    {
+            //        Instance.Dispose();
+            //    }
+            //    Instance = new SqlSugarClient(_Config);
+            //}
+            //Instance.Aop.OnLogExecuting = (sql, pars) =>
+            //{
+            //    foreach (var p in pars)
+            //    {
+            //        sql = sql.Replace(p.ParameterName, "'" + p.Value + "'");
+            //    }
+            //    //LogUtils.Sql(sql);
+            //};
+        }
+
+        private static ISqlSugarClient CreateInstance()
+        {
+            var client = new SqlSugarClient(_Config);
+            client.Aop.OnLogExecuting = (sql, pars) =>
             {
                 foreach (var p in pars)
                 {
@@ -34,6 +48,7 @@ namespace Com.Scm.Dao
                 }
                 //LogUtils.Sql(sql);
             };
+            return client;
         }
 
         // 对外提供单例实例
@@ -41,7 +56,8 @@ namespace Com.Scm.Dao
 
         public static ISqlSugarClient GetSqlClient()
         {
-            return Instance;
+            //return Instance;
+            return CreateInstance();
         }
 
         public static void Close()
