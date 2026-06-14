@@ -1,9 +1,9 @@
-﻿using Com.Scm.Utils;
+using Com.Scm.Utils;
 using System;
 
 namespace Com.Scm.Dto.Bind
 {
-    public class ScmBindInfo : ScmToken
+    public class ScmTerminalInfo : ScmToken
     {
         public long id { get; set; }
 
@@ -81,7 +81,7 @@ namespace Com.Scm.Dto.Bind
 
         public override string GetTerminalNames() { return terminal_names; }
 
-        public override string GetAccessToken() { return access_token; }
+        public override string GetAccessToken() { return "Terminal " + access_token; }
 
         public void CalcExpireTime(long expiresIn)
         {

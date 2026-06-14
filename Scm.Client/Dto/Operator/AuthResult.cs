@@ -1,4 +1,4 @@
-﻿using Com.Scm.Dto.Auth;
+using Com.Scm.Dto.Auth;
 using Com.Scm.Response;
 
 namespace Com.Scm.Dto.Login
@@ -16,7 +16,7 @@ namespace Com.Scm.Dto.Login
         /// <summary>
         /// 
         /// </summary>
-        public ScmAuthInfo UserInfo { get; set; }
+        public ScmOperatorInfo UserInfo { get; set; }
 
         /// <summary>
         /// 

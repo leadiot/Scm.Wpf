@@ -1,4 +1,4 @@
-﻿using Com.Scm.Dto.Login;
+using Com.Scm.Dto.Login;
 using Com.Scm.Response;
 using Com.Scm.Utils;
 using System.Collections.Generic;
@@ -9,11 +9,6 @@ namespace Com.Scm
 {
     public class ScmOperator : ScmClient
     {
-        /// <summary>
-        /// 默认授权令牌名称
-        /// </summary>
-        public const string KEY_TOKEN_NAME = "ApiToken";
-
         /// <summary>
         /// HTTP请求对象
         /// </summary>
@@ -33,7 +28,6 @@ namespace Com.Scm
 
         public ScmOperator(string dataDir)
         {
-            TokenName = KEY_TOKEN_NAME;
             RemoteUrl = "http://" + RemoteUrl + "/Api";
 
             this.DataDir = dataDir;

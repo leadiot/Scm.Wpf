@@ -77,9 +77,9 @@
 		<Reference Include="Scm.Dto">
 		  <HintPath>..\..\Libs\net10.0\Scm.Dto.dll</HintPath>
 		</Reference>
-		<Reference Include="Scm.Uid">
-		  <HintPath>..\..\Libs\net10.0\Scm.Uid.dll</HintPath>
-		</Reference>
+    <Reference Include="Scm.Uid">
+      <HintPath>..\..\Libs\net10.0\Scm.Uid.dll</HintPath>
+    </Reference>
 	</ItemGroup>
 
 </Project>

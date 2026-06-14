@@ -1,6 +1,6 @@
-﻿namespace Com.Scm.Dto.Auth
+namespace Com.Scm.Dto.Auth
 {
-    public class ScmAuthInfo : ScmToken
+    public class ScmOperatorInfo : ScmToken
     {
         public long UserId { get; set; }
 
@@ -49,7 +49,7 @@
 
         public override string GetAccessToken()
         {
-            return AccessToken;
+            return "Operator " + AccessToken;
         }
     }
 }

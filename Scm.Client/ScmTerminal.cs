@@ -1,4 +1,4 @@
-﻿using Com.Scm.Dto.Bind;
+using Com.Scm.Dto.Bind;
 using Com.Scm.Response;
 using Com.Scm.Utils;
 using System.Collections.Generic;
@@ -11,14 +11,9 @@ namespace Com.Scm
     public class ScmTerminal : ScmClient
     {
         /// <summary>
-        /// 默认授权令牌名称
-        /// </summary>
-        public const string KEY_TOKEN_NAME = "AppToken";
-
-        /// <summary>
         /// 服务端授权信息
         /// </summary>
-        private ScmBindInfo _Info { get; set; }
+        private ScmTerminalInfo _Info { get; set; }
 
         /// <summary>
         /// 绑定信息保存文件
@@ -27,7 +22,6 @@ namespace Com.Scm
 
         public ScmTerminal(string dataDir)
         {
-            TokenName = KEY_TOKEN_NAME;
             RemoteUrl = "http://" + RemoteUrl + "/Api";
 
             this.DataDir = dataDir;
@@ -47,7 +41,7 @@ namespace Com.Scm
 
         public bool LoadToken(string file = null)
         {
-            _Info = new ScmBindInfo();
+            _Info = new ScmTerminalInfo();
 
             if (string.IsNullOrEmpty(file))
             {
@@ -66,7 +60,7 @@ namespace Com.Scm
                 return false;
             }
 
-            _Info = json.AsJsonObject<ScmBindInfo>();
+            _Info = json.AsJsonObject<ScmTerminalInfo>();
             SetHost(_Info.host);
             _Token = _Info;
             return true;
@@ -127,7 +121,7 @@ namespace Com.Scm
                 }
 
                 var data = response.Data;
-                _Info = data.Adapt<ScmBindInfo>();
+                _Info = data.Adapt<ScmTerminalInfo>();
                 _Info.CalcExpireTime(data.expires);
                 _Token = _Info;
                 await SaveTokenAsync();

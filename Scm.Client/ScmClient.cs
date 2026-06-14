@@ -35,6 +35,11 @@ namespace Com.Scm
         public const string SERVER_HOST = "www.c-scm.com";
 
         /// <summary>
+        /// Token Name
+        /// </summary>
+        public const string TOKEN_NAME = "Authorization";
+
+        /// <summary>
         /// 服务器是否为连通状态
         /// </summary>
         public static bool IsConnecting { get; protected set; } = true;
@@ -80,6 +85,7 @@ namespace Com.Scm
         {
             _Host = host ?? REMOTE_HOST;
             RemoteUrl = "http://" + _Host + "/Api";
+            TokenName = TOKEN_NAME;
         }
 
         /// <summary>
@@ -166,7 +172,7 @@ namespace Com.Scm
             if (response != null && response.Success)
             {
                 return response.Data;
-        }
+            }
 
             return null;
         }
@@ -202,7 +208,7 @@ namespace Com.Scm
             if (response != null && response.Success)
             {
                 return response.Data;
-        }
+            }
 
             return null;
         }
