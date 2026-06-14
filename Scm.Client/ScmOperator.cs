@@ -154,7 +154,7 @@ namespace Com.Scm
             {
                 headers = new Dictionary<string, string>();
             }
-            headers[TokenName] = _Token.GetAccessToken();
+            headers[TokenName] = "Operator " + _Token.GetAccessToken();
             headers["Appkey"] = _AppKey;
 
             return headers;

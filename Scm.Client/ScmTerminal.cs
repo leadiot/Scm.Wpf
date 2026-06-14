@@ -217,7 +217,7 @@ namespace Com.Scm
             {
                 header = new Dictionary<string, string>();
             }
-            header[TokenName] = GetBasicToken();
+            header[TokenName] = "Terminal " + GetBasicToken();
 
             return header;
         }
