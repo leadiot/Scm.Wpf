@@ -23,6 +23,7 @@ namespace Com.Scm
         public ScmTerminal(string dataDir)
         {
             RemoteUrl = "http://" + RemoteUrl + "/Api";
+            TokenName = TOKEN_NAME;
 
             this.DataDir = dataDir;
         }

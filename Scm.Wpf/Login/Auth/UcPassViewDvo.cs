@@ -1,4 +1,4 @@
-﻿using Com.Scm.Enums;
+using Com.Scm.Enums;
 using Com.Scm.Utils;
 using Com.Scm.Dvo;
 using System.ComponentModel.DataAnnotations;
@@ -24,7 +24,7 @@ namespace Com.Scm.Login.Auth
         [Required(ErrorMessage = "登录用户不能为空！")]
         [Length(2, 32, ErrorMessage = "登录用户长度应为2至32个字符")]
         public string User { get { return user; } set { SetProperty(ref user, value); } }
-        private string user = "admin@dev";
+        private string user = "admin";
 
         [Required(ErrorMessage = "登录口令不能为空！")]
         [Length(6, 32, ErrorMessage = "登录口令长度应为6至32个字符")]
@@ -49,21 +49,21 @@ namespace Com.Scm.Login.Auth
             VCodeUrl = $"{apiUrl}/captcha/cha/{Key}?timestamp={TimeUtils.GetUnixTime()}";
         }
 
-        public override bool IsValid()
-        {
-            if (!base.IsValid())
-            {
-                return false;
-            }
+        //public override bool IsValid()
+        //{
+        //    if (!base.IsValid())
+        //    {
+        //        return false;
+        //    }
 
-            if (!Regex.IsMatch(User, @"^\w+@\w+$"))
-            {
-                AddError(nameof(User), "登录用户格式应为：user@unit");
-                return false;
-            }
+        //    if (!Regex.IsMatch(User, @"^\w+@\w+$"))
+        //    {
+        //        AddError(nameof(User), "登录用户格式应为：user@unit");
+        //        return false;
+        //    }
 
-            return true;
-        }
+        //    return true;
+        //}
 
         public Dictionary<string, string> GetLogin()
         {

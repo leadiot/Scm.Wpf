@@ -28,7 +28,10 @@ namespace Com.Scm
 
         public ScmOperator(string dataDir)
         {
-            RemoteUrl = "http://" + RemoteUrl + "/Api";
+            _Host = REMOTE_HOST;
+            RemoteUrl = "http://" + _Host + "/Api";
+
+            TokenName = TOKEN_NAME;
 
             this.DataDir = dataDir;
         }
