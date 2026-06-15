@@ -202,10 +202,12 @@ namespace Com.Scm
         private string GetBasicToken()
         {
             var time = TimeUtils.GetUnixTime(true);
-            var key = _Info.terminal_id + ":" + time + ":" + _Info.access_token;
+            var data = _Info.terminal_id + ":" + _Info.user_id + ":" + time;
+
+            var key = data + ":" + _Info.access_token;
             var hash = TextUtils.Md5(key);
 
-            var token = _Info.terminal_id + ":" + time + ":" + hash;
+            var token = data + ":" + hash;
             var bytes = System.Text.Encoding.UTF8.GetBytes(token);
             //return Basic(Convert.ToBase64String(bytes));
             return HttpUtils.ToBase64String(bytes);
