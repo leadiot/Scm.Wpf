@@ -127,112 +127,179 @@ namespace Com.Scm
         /// </summary>
         public string ErrorMessage { get; protected set; }
 
-        /// <summary>
-        /// 加载菜单
-        /// </summary>
-        /// <param name="type">终端类型</param>
-        /// <param name="lang"></param>
-        /// <returns></returns>
-        public async Task<List<MenuDto>> LoadMenuAsync(ScmClientTypeEnum type, string lang = null)
-        {
-            var url = GetApiUrl("/operator/authoritymenu");
-
-            var body = new Dictionary<string, string>();
-            body["client"] = "20";
-            body["lang"] = lang ?? "zh-cn";
-
-            var head = new Dictionary<string, string>();
-            head[TokenName] = _Token.GetAccessToken();
-            head["Appkey"] = "";
-
-            var response = await HttpUtils.GetObjectAsync<ScmApiListResponse<MenuDto>>(url, body, head);
-            if (response == null)
-            {
-                return null;
-            }
-            if (response.Code != 200)
-            {
-                ErrorMessage = response.GetMessage();
-                return null;
-            }
-
-            return response.Data;
-        }
-
-        /// <summary>
-        /// 获取应用信息
-        /// </summary>
-        /// <param name="code"></param>
-        /// <returns></returns>
-        public ScmAppInfo GetAppInfo(string code)
-        {
-            var url = $"http://{SERVER_HOST}/api/ScmSysApp/App?code={code}";
-
-            var response = HttpUtils.GetObject<ScmApiDataResponse<ScmAppInfo>>(url);
-            if (response != null && response.Success)
-            {
-                return response.Data;
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// 获取应用信息
-        /// </summary>
-        /// <param name="code"></param>
-        /// <returns></returns>
-        public async Task<ScmAppInfo> GetAppInfoAsync(string code)
-        {
-            var url = $"http://{SERVER_HOST}/api/ScmSysApp/App?code={code}";
-
-            var response = await HttpUtils.GetObjectAsync<ScmApiDataResponse<ScmAppInfo>>(url);
-            if (response != null && response.Success)
-            {
-                return response.Data;
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// 获取版本信息
-        /// </summary>
-        /// <param name="code"></param>
-        /// <returns></returns>
-        public ScmVerInfo GetVerInfo(string code)
-        {
-            var url = $"http://{SERVER_HOST}/api/ScmSysApp/Ver?code={code}&client={ScmClientTypeEnum.Windows}";
-
-            var response = HttpUtils.GetObject<ScmApiDataResponse<ScmVerInfo>>(url);
-            if (response != null && response.Success)
-            {
-                return response.Data;
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// 获取版本信息
-        /// </summary>
-        /// <param name="code"></param>
-        /// <returns></returns>
-        public async Task<ScmVerInfo> GetVerInfoAsync(string code)
-        {
-            var url = $"http://{SERVER_HOST}/api/ScmSysApp/Ver?code={code}&client={ScmClientTypeEnum.Windows}";
-
-            var response = await HttpUtils.GetObjectAsync<ScmApiDataResponse<ScmVerInfo>>(url);
-            if (response != null && response.Success)
-            {
-                return response.Data;
-            }
-
-            return null;
-        }
-
         protected abstract Dictionary<string, string> BuildHeader(Dictionary<string, string> header);
 
+        #region GET
+        /// <summary>
+        /// GET请求（同步）
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="url"></param>
+        /// <param name="body"></param>
+        /// <param name="head"></param>
+        /// <returns></returns>
+        public T GetObject<T>(string url, Dictionary<string, string> body = null, Dictionary<string, string> head = null)
+        {
+            url = GetApiUrl(url);
+
+            var headers = BuildHeader(head);
+
+            try
+            {
+                var response = HttpUtils.GetObject<ScmApiDataResponse<T>>(url, body, headers);
+                ErrorMessage = response?.Message;
+                return UnwrapDataResponse(response);
+            }
+            catch (HttpRequestException ex)
+            {
+                IsConnecting = false;
+                Error(ex);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// GET请求（异步）
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="body"></param>
+        /// <returns></returns>
+        public async Task<T> GetObjectAsync<T>(string url, Dictionary<string, string> body = null, Dictionary<string, string> head = null)
+        {
+            url = GetApiUrl(url);
+
+            var headers = BuildHeader(head);
+
+            try
+            {
+                var response = await HttpUtils.GetObjectAsync<ScmApiDataResponse<T>>(url, body, headers);
+                ErrorMessage = response?.Message;
+                return UnwrapDataResponse(response);
+            }
+            catch (HttpRequestException ex)
+            {
+                IsConnecting = false;
+                Error(ex);
+                throw;
+            }
+        }
+        #endregion
+
+        #region PUT
+        /// <summary>
+        /// PUT请求（同步）
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="url"></param>
+        /// <param name="body"></param>
+        /// <param name="head"></param>
+        /// <returns></returns>
+        public T PutFormObject<T>(string url, Dictionary<string, string> body = null, Dictionary<string, string> head = null)
+        {
+            url = GetApiUrl(url);
+
+            var headers = BuildHeader(head);
+
+            try
+            {
+                var response = HttpUtils.PutJsonObject<ScmApiDataResponse<T>>(url, body.ToJsonString(), headers);
+                ErrorMessage = response?.Message;
+                return UnwrapDataResponse(response);
+            }
+            catch (HttpRequestException ex)
+            {
+                IsConnecting = false;
+                Error(ex);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// PUT请求（异步）
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="body"></param>
+        /// <param name="head"></param>
+        /// <returns></returns>
+        public async Task<T> PutFormObjectAsync<T>(string url, Dictionary<string, string> body = null, Dictionary<string, string> head = null)
+        {
+            url = GetApiUrl(url);
+
+            var headers = BuildHeader(head);
+
+            try
+            {
+                var json = body?.ToJsonString();
+                var response = await HttpUtils.PutJsonObjectAsync<ScmApiDataResponse<T>>(url, json, headers);
+                ErrorMessage = response?.Message;
+                return UnwrapDataResponse(response);
+            }
+            catch (HttpRequestException ex)
+            {
+                IsConnecting = false;
+                Error(ex);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="url"></param>
+        /// <param name="json"></param>
+        /// <param name="head"></param>
+        /// <returns></returns>
+        public T PutJsonObject<T>(string url, string json, Dictionary<string, string> head = null)
+        {
+            url = GetApiUrl(url);
+
+            var headers = BuildHeader(head);
+
+            try
+            {
+                var response = HttpUtils.PutJsonObject<ScmApiDataResponse<T>>(url, json, headers);
+                ErrorMessage = response?.Message;
+                return UnwrapDataResponse(response);
+            }
+            catch (HttpRequestException ex)
+            {
+                IsConnecting = false;
+                Error(ex);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// PUT请求（异步）
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="url"></param>
+        /// <param name="json"></param>
+        /// <param name="head"></param>
+        /// <returns></returns>
+        public async Task<T> PutJsonObjectAsync<T>(string url, string json, Dictionary<string, string> head = null)
+        {
+            url = GetApiUrl(url);
+
+            var headers = BuildHeader(head);
+
+            try
+            {
+                var response = await HttpUtils.PutJsonObjectAsync<ScmApiDataResponse<T>>(url, json, headers);
+                ErrorMessage = response?.Message;
+                return UnwrapDataResponse(response);
+            }
+            catch (HttpRequestException ex)
+            {
+                IsConnecting = false;
+                Error(ex);
+                throw;
+            }
+        }
+        #endregion
+
+        #region POST
         /// <summary>
         /// POST请求（同步）
         /// </summary>
@@ -345,36 +412,6 @@ namespace Com.Scm
             }
         }
 
-        public bool UploadFile(string url, string filePath, string fileName, Dictionary<string, string> body = null, Dictionary<string, string> header = null)
-        {
-            url = GetApiUrl(url);
-
-            var headers = BuildHeader(header);
-
-            try
-            {
-                var result = HttpUtils.UploadFile(url, filePath, fileName, "file", body, headers);
-                var response = result.AsJsonObject<ScmApiDataResponse<bool>>();
-                if (response == null)
-                {
-                    return default;
-                }
-                if (!response.Success)
-                {
-                    ErrorMessage = response.Message;
-                    return default;
-                }
-
-                return response.Data;
-            }
-            catch (HttpRequestException ex)
-            {
-                IsConnecting = false;
-                Error(ex);
-                throw;
-            }
-        }
-
         public async Task<string> PostObjectAsync(string url, HttpContent content, Dictionary<string, string> head = null)
         {
             url = GetApiUrl(url);
@@ -410,14 +447,10 @@ namespace Com.Scm
                 }
             }
         }
+        #endregion
 
-        /// <summary>
-        /// GET请求（异步）
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="body"></param>
-        /// <returns></returns>
-        public async Task<T> GetObjectAsync<T>(string url, Dictionary<string, string> body = null, Dictionary<string, string> head = null)
+        #region DELETE
+        public T Delete<T>(string url, List<long> ids, Dictionary<string, string> head = null)
         {
             url = GetApiUrl(url);
 
@@ -425,7 +458,9 @@ namespace Com.Scm
 
             try
             {
-                var response = await HttpUtils.GetObjectAsync<ScmApiDataResponse<T>>(url, body, headers);
+                var body = new Dictionary<string, string>();
+                body["ids"] = ids.ToJsonString();
+                var response = HttpUtils.DeleteFormObject<ScmApiDataResponse<T>>(url, body, headers);
                 ErrorMessage = response?.Message;
                 return UnwrapDataResponse(response);
             }
@@ -437,15 +472,7 @@ namespace Com.Scm
             }
         }
 
-        /// <summary>
-        /// GET请求（同步）
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="url"></param>
-        /// <param name="body"></param>
-        /// <param name="head"></param>
-        /// <returns></returns>
-        public T GetObject<T>(string url, Dictionary<string, string> body = null, Dictionary<string, string> head = null)
+        public async Task<T> DeleteAsync<T>(string url, List<long> ids, Dictionary<string, string> head = null)
         {
             url = GetApiUrl(url);
 
@@ -453,7 +480,9 @@ namespace Com.Scm
 
             try
             {
-                var response = HttpUtils.GetObject<ScmApiDataResponse<T>>(url, body, headers);
+                var body = new Dictionary<string, string>();
+                body["ids"] = ids.ToJsonString();
+                var response = await HttpUtils.DeleteFormObjectAsync<ScmApiDataResponse<T>>(url, body, headers);
                 ErrorMessage = response?.Message;
                 return UnwrapDataResponse(response);
             }
@@ -464,7 +493,71 @@ namespace Com.Scm
                 throw;
             }
         }
+        #endregion
 
+        /// <summary>
+        /// 上传文件
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="filePath"></param>
+        /// <param name="fileName"></param>
+        /// <param name="body"></param>
+        /// <param name="header"></param>
+        /// <returns></returns>
+        public bool UploadFile(string url, string filePath, string fileName, Dictionary<string, string> body = null, Dictionary<string, string> header = null)
+        {
+            url = GetApiUrl(url);
+
+            var headers = BuildHeader(header);
+
+            try
+            {
+                var result = HttpUtils.UploadFile(url, filePath, fileName, "file", body, headers);
+                var response = result.AsJsonObject<ScmApiDataResponse<bool>>();
+                if (response == null)
+                {
+                    return default;
+                }
+                if (!response.Success)
+                {
+                    ErrorMessage = response.Message;
+                    return default;
+                }
+
+                return response.Data;
+            }
+            catch (HttpRequestException ex)
+            {
+                IsConnecting = false;
+                Error(ex);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// 下载文件
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="nativeFile"></param>
+        /// <returns></returns>
+        public bool DownloadFile(string url, string nativeFile)
+        {
+            url = GetApiUrl(url);
+
+            try
+            {
+                return HttpUtils.DownloadFile(url, nativeFile);
+            }
+            catch (HttpRequestException ex)
+            {
+                IsConnecting = false;
+                Error(ex);
+                throw;
+            }
+        }
+
+        #region 应用
+        #region ECHO
         /// <summary>
         /// 心跳服务（同步）
         /// 检测设备是否在线
@@ -522,22 +615,116 @@ namespace Com.Scm
                 return false;
             }
         }
+        #endregion
 
-        public bool DownloadFile(string url, string nativeFile)
+        /// <summary>
+        /// 加载菜单
+        /// </summary>
+        /// <param name="type">终端类型</param>
+        /// <param name="lang"></param>
+        /// <returns></returns>
+        public async Task<List<MenuDto>> LoadMenuAsync(ScmClientTypeEnum type, string lang = null)
         {
-            url = GetApiUrl(url);
+            var url = GetApiUrl("/operator/authoritymenu");
 
-            try
+            var body = new Dictionary<string, string>();
+            body["client"] = "20";
+            body["lang"] = lang ?? "zh-cn";
+
+            var head = new Dictionary<string, string>();
+            head[TokenName] = _Token.GetAccessToken();
+            head["Appkey"] = "";
+
+            var response = await HttpUtils.GetObjectAsync<ScmApiListResponse<MenuDto>>(url, body, head);
+            if (response == null)
             {
-                return HttpUtils.DownloadFile(url, nativeFile);
+                return null;
             }
-            catch (HttpRequestException ex)
+            if (response.Code != 200)
             {
-                IsConnecting = false;
-                Error(ex);
-                throw;
+                ErrorMessage = response.GetMessage();
+                return null;
             }
+
+            return response.Data;
         }
+
+        #region APP
+        /// <summary>
+        /// 获取应用信息
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public ScmAppInfo GetAppInfo(string code)
+        {
+            var url = $"http://{SERVER_HOST}/api/ScmSysApp/App?code={code}";
+
+            var response = HttpUtils.GetObject<ScmApiDataResponse<ScmAppInfo>>(url);
+            if (response != null && response.Success)
+            {
+                return response.Data;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 获取应用信息
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public async Task<ScmAppInfo> GetAppInfoAsync(string code)
+        {
+            var url = $"http://{SERVER_HOST}/api/ScmSysApp/App?code={code}";
+
+            var response = await HttpUtils.GetObjectAsync<ScmApiDataResponse<ScmAppInfo>>(url);
+            if (response != null && response.Success)
+            {
+                return response.Data;
+            }
+
+            return null;
+        }
+        #endregion
+
+        #region VER
+        /// <summary>
+        /// 获取版本信息
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public ScmVerInfo GetVerInfo(string code)
+        {
+            var url = $"http://{SERVER_HOST}/api/ScmSysApp/Ver?code={code}&client={ScmClientTypeEnum.Windows}";
+
+            var response = HttpUtils.GetObject<ScmApiDataResponse<ScmVerInfo>>(url);
+            if (response != null && response.Success)
+            {
+                return response.Data;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 获取版本信息
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public async Task<ScmVerInfo> GetVerInfoAsync(string code)
+        {
+            var url = $"http://{SERVER_HOST}/api/ScmSysApp/Ver?code={code}&client={ScmClientTypeEnum.Windows}";
+
+            var response = await HttpUtils.GetObjectAsync<ScmApiDataResponse<ScmVerInfo>>(url);
+            if (response != null && response.Success)
+            {
+                return response.Data;
+            }
+
+            return null;
+        }
+        #endregion
+        #endregion
 
         /// <summary>
         /// HTTPS+代理配置（复用企业级逻辑）
