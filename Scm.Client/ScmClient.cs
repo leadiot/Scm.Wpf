@@ -45,14 +45,14 @@ namespace Com.Scm
         public static bool IsConnecting { get; protected set; } = true;
 
         /// <summary>
-        /// 服务器地址
-        /// </summary>
-        public string RemoteUrl { get; protected set; }
-
-        /// <summary>
         /// 授权令牌名称
         /// </summary>
         public string TokenName { get; protected set; }
+
+        /// <summary>
+        /// 服务器地址
+        /// </summary>
+        public string RemoteUrl { get; protected set; }
 
         protected ScmToken _Token { get; set; }
 

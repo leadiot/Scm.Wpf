@@ -28,7 +28,10 @@ namespace Com.Scm
 
         public ScmOperator(string dataDir)
         {
-            RemoteUrl = "http://" + RemoteUrl + "/Api";
+            _Host = REMOTE_HOST;
+            RemoteUrl = "http://" + _Host + "/Api";
+
+            TokenName = TOKEN_NAME;
 
             this.DataDir = dataDir;
         }
@@ -151,7 +154,7 @@ namespace Com.Scm
             {
                 headers = new Dictionary<string, string>();
             }
-            headers[TokenName] = _Token.GetAccessToken();
+            headers[TokenName] = "Operator " + _Token.GetAccessToken();
             headers["Appkey"] = _AppKey;
 
             return headers;
