@@ -1,6 +1,6 @@
 namespace WinForm
 {
-    partial class Form1
+    partial class MqttForm
     {
         private System.ComponentModel.IContainer components = null;
 

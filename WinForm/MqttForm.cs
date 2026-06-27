@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace WinForm
 {
-    public partial class Form1 : Form
+    public partial class MqttForm : Form
     {
         private IMqttPublisher _mqttPublisher;
         private IMqttSubscriber _mqttSubscriber;
@@ -14,7 +14,7 @@ namespace WinForm
         private double _baseTemperature;
         private bool _isRunning;
 
-        public Form1()
+        public MqttForm()
         {
             InitializeComponent();
 

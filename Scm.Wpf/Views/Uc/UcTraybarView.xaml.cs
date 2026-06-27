@@ -1,5 +1,5 @@
-﻿using Com.Scm.Utils;
 using Com.Scm.Dvo;
+using Com.Scm.Utils;
 using System.Windows.Controls;
 using System.Windows.Threading;
 
@@ -32,7 +32,7 @@ namespace Com.Scm.Views.Uc
         private void Timer_Tick(object sender, EventArgs e)
         {
             var now = DateTime.Now;
-            _Dvo.Time = TimeUtils.FormatDataTime(now);
+            _Dvo.Time = TimeUtils.FormatDateTime(now);
         }
 
         public void ShowInfo(string info)

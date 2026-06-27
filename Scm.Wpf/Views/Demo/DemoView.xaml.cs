@@ -1,5 +1,4 @@
-﻿using Com.Scm.Utils;
-using Com.Scm.Views.Demo;
+using Com.Scm.Utils;
 using System.Windows.Controls;
 
 namespace Com.Scm.Views.Demo
@@ -35,7 +34,7 @@ namespace Com.Scm.Views.Demo
 
         private void BtAppend_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            _Dvo.Text += TimeUtils.FormatDataTime(DateTime.Now) + Environment.NewLine;
+            _Dvo.Text += TimeUtils.FormatDateTime(DateTime.Now) + Environment.NewLine;
         }
 
         private void BtNotice_Click(object sender, System.Windows.RoutedEventArgs e)

@@ -707,7 +707,7 @@ namespace Com.Scm.Controls
                     if (tmp is DateTime)
                     {
                         var time = (DateTime)tmp;
-                        dic[column.Label] = TimeUtils.FormatDataTime(time);
+                        dic[column.Label] = TimeUtils.FormatDateTime(time);
                         continue;
                     }
 

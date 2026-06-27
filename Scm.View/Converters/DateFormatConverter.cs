@@ -1,4 +1,4 @@
-﻿using Com.Scm.Utils;
+using Com.Scm.Utils;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
@@ -20,7 +20,7 @@ namespace Com.Scm.Converter
             if (value is long date)
             {
                 var time = TimeUtils.GetDateTimeFromUnixTimeStamp(date);
-                return TimeUtils.FormatDataTime(date);
+                return TimeUtils.FormatDateTime(date);
             }
 
             return value.ToString();
