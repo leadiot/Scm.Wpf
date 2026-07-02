@@ -1,4 +1,4 @@
-﻿using Com.Scm.Utils;
+using Com.Scm.Utils;
 using SqlSugar;
 
 namespace Com.Scm.Dao
@@ -33,7 +33,7 @@ namespace Com.Scm.Dao
         private static int _Index = 0;
         private static long NextId()
         {
-            var now = TimeUtils.GetUnixTime(DateTime.UtcNow, false) * 1000;
+            var now = TimeUtils.GetUnixTime() * 1000;
             if (now > _LastTime)
             {
                 _LastTime = now;

@@ -1,4 +1,4 @@
-﻿using Com.Scm.Enums;
+using Com.Scm.Enums;
 using Com.Scm.Utils;
 
 namespace Com.Scm.Dvo

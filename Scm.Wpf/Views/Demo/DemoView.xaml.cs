@@ -34,7 +34,7 @@ namespace Com.Scm.Views.Demo
 
         private void BtAppend_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            _Dvo.Text += TimeUtils.FormatDateTime(DateTime.Now) + Environment.NewLine;
+            _Dvo.Text += TimeUtils.FormatDateTime(DateTime.UtcNow) + Environment.NewLine;
         }
 
         private void BtNotice_Click(object sender, System.Windows.RoutedEventArgs e)
