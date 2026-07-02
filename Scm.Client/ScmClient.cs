@@ -66,6 +66,8 @@ namespace Com.Scm
         /// </summary>
         protected string _Host;
 
+        protected string _Server;
+
         /// <summary>
         /// HTTP请求对象（静态复用，避免端口耗尽）
         /// </summary>
@@ -86,6 +88,11 @@ namespace Com.Scm
             _Host = host ?? REMOTE_HOST;
             RemoteUrl = "http://" + _Host + "/Api";
             TokenName = TOKEN_NAME;
+        }
+
+        public string GetHost()
+        {
+            return _Host;
         }
 
         /// <summary>

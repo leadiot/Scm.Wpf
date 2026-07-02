@@ -1,4 +1,4 @@
-﻿using Com.Scm.Controls.Windows;
+using Com.Scm.Controls.Windows;
 using System.Windows;
 
 namespace Com.Scm

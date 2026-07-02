@@ -1,4 +1,4 @@
-﻿using Com.Scm.Config;
+using Com.Scm.Config;
 using Com.Scm.Dao;
 using Com.Scm.Enums;
 using Com.Scm.Login;
