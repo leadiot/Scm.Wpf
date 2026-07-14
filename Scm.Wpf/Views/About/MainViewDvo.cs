@@ -1,7 +1,8 @@
-﻿using Com.Scm.Config;
+using Com.Scm.Config;
 using Com.Scm.Dto;
 using Com.Scm.Dvo;
 using Com.Scm.Helper;
+using Com.Scm.Upgrade;
 using Com.Scm.Utils;
 using System.IO;
 using System.Reflection;
@@ -168,13 +169,18 @@ namespace Com.Scm.Views.About
         private void SaveUpgradeJson(string filePath, string fileName, ScmVerInfo verInfo)
         {
             var config = new UpgradeConfig();
-            config.Title = $"正在升级 {AppName} 到版本 {verInfo.ver_info}";
+            config.Title = AppName;
+            config.OldVersion = ScmClientEnv.VER_INFO;
+            config.NewVersion = verInfo.ver_info;
             config.AutoStart = true;
             config.AutoClose = true;
             config.InstallPath = filePath;
-            config.ExecuteFile = fileName;
-            config.AppInfo = _AppInfo;
-            config.VerInfo = verInfo;
+            config.InstallType = InstallType.Auto;
+            config.DownloadUrl = verInfo.url;
+            config.Launch = new LaunchConfig { Command = fileName };
+            config.IgnoreFiles = new List<string>() { "/data/scm.db" };
+            config.AppInfo = _AppInfo.content;
+            config.VerInfo = verInfo.remark;
 
             var jsonFile = Path.Combine(filePath, AppSettings.Instance.Env.UpgradeJsonName ?? ScmClientEnv.UpgradeJsonFile);
             var jsonDir = Path.GetDirectoryName(jsonFile);

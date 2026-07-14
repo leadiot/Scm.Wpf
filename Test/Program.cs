@@ -1,15 +1,21 @@
 using Com.Scm.Utils;
+using Test;
 
 internal class Program
 {
-    private static void Main(string[] args)
+    private static async Task Main(string[] args)
     {
-        var url = "http://localhost:5000/api/NasSync/Dir";
-        var header = new Dictionary<string, string>
+        string inputText = "4.30 复制打开抖音，看看【中式养生之道的作品】每天多听听 释放多巴胺 # 五音疗愈# 养心曲推荐... https://v.douyin.com/O-LRr3kA1Dg/ :7pm SlP:/ 05/04 g@b.nQ";
+
+        try
         {
-            ["appToken"] = "MjA1NTQ0NjM2OTg0MTMxOTkzNjoxNzc4ODkyMTUyMjE5OmI1YjU0Mjg1ZTE2YmRmNWE0ZTRlYjQ2ZmI3YjczMWYy"
-        };
-        var text = HttpUtils.GetString(url, null, header);
-        Console.WriteLine(text);
+            string videoUrl = await DouyinParser.ParseNoWatermarkVideoUrlAsync(inputText);
+            Console.WriteLine("解析成功！无水印视频地址：");
+            Console.WriteLine(videoUrl);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"解析失败：{ex.Message}");
+        }
     }
 }

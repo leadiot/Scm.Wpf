@@ -1,0 +1,339 @@
+﻿<Window
+    x:Class="Com.Scm.Nas.Image.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="#202020"
+    WindowStartupLocation="CenterScreen"
+    Title="WPF图片查看器"
+    Height="640" Width="900"
+    MinHeight="640" MinWidth="900">
+    <Grid >
+        <Grid x:Name="GdViewer" Visibility="Collapsed">
+            <Border
+                x:Name="BdImage"
+                Background="Black"
+                MouseLeftButtonDown="BdImage_MouseLeftButtonDown"
+                MouseLeftButtonUp="BdImage_MouseLeftButtonUp"
+                MouseMove="BdImage_MouseMove"
+                MouseWheel="BdImage_MouseWheel"
+                ClipToBounds="True">
+                <Border.ContextMenu>
+                    <ContextMenu Background="White">
+                        <MenuItem x:Name="MiOpenFile"
+                                  IsEnabled="True"
+                                  Header="打开文件"
+                                  Click="MiOpenFile_Click"
+                                  InputGestureText="Ctrl + O"></MenuItem>
+                        <Separator/>
+                        <MenuItem x:Name="MiLastFile"
+                                  IsEnabled="False"
+                                  Header="上一图像"
+                                  Click="MiLastFile_Click"
+                                  InputGestureText="Left"></MenuItem>
+                        <MenuItem x:Name="MiNextFile"
+                                  IsEnabled="False"
+                                  Header="下一图像"
+                                  Click="MiNextFile_Click"
+                                  InputGestureText="Right"></MenuItem>
+                        <Separator/>
+                        <MenuItem x:Name="MiImport"
+                                  IsEnabled="False"
+                                  Header="导入到图库"
+                                  Click="MiImport_Click"
+                                  Visibility="Collapsed"
+                                  InputGestureText="F12"></MenuItem>
+                        <Separator
+                                  Visibility="Collapsed"/>
+                        <MenuItem x:Name="MiSave"
+                                  IsEnabled="False"
+                                  Header="保存"
+                                  Visibility="Collapsed"
+                                  Click="MiSave_Click"></MenuItem>
+                        <MenuItem x:Name="MiSaveas"
+                                  IsEnabled="False"
+                                  Header="另存为…"
+                                  Click="MiSaveas_Click"
+                                  Visibility="Collapsed"
+                                  InputGestureText="Ctrl + T"></MenuItem>
+                        <MenuItem x:Name="MiReszie"
+                                  IsEnabled="False"
+                                  Header="调整大小"
+                                  Click="MiReszie_Click"
+                                  Visibility="Collapsed"></MenuItem>
+                        <Separator
+                                  Visibility="Collapsed"/>
+                        <MenuItem x:Name="MiCopy" Header="复制" IsEnabled="False">
+                            <MenuItem x:Name="MiCopyName" Header="复制名称" Click="MiCopyName_Click"></MenuItem>
+                            <MenuItem x:Name="MiCopyPath" Header="复制路径" Click="MiCopyPath_Click"></MenuItem>
+                            <MenuItem x:Name="MiCopyFile" Header="复制文件" Click="MiCopyFile_Click"></MenuItem>
+                            <MenuItem x:Name="MiCopyImage" Header="复制图像" Click="MiCopyImage_Click"></MenuItem>
+                        </MenuItem>
+                        <MenuItem x:Name="MiOpenas" Header="打开为…" IsEnabled="False">
+                            <MenuItem x:Name="MiOpenSys" Header="默认程序" Click="MiOpenSys_Click"></MenuItem>
+                            <MenuItem x:Name="MiBrowser" Header="本地目录" Click="MiBrowser_Click"></MenuItem>
+                            <MenuItem x:Name="MiOther" Header="其它程序" Click="MiOther_Click"></MenuItem>
+                        </MenuItem>
+                        <Separator
+                                  Visibility="Collapsed"/>
+                        <MenuItem x:Name="MiWallPaper"
+                                  IsEnabled="False"
+                                  Header="设为电脑桌面壁纸"
+                                  Visibility="Collapsed"
+                                  Click="MiWallPaper_Click"/>
+                        <Separator
+                                  Visibility="Collapsed"/>
+                        <MenuItem x:Name="MiDelete"
+                                  IsEnabled="False"
+                                  Header="删除文件"
+                                  Click="MiDelete_Click"
+                                  Visibility="Collapsed"
+                                  InputGestureText="Delete"/>
+                    </ContextMenu>
+                </Border.ContextMenu>
+                <Grid x:Name="PlImage" Visibility="Visible">
+                    <Grid.RenderTransform>
+                        <TransformGroup/>
+                    </Grid.RenderTransform>
+                    <Image x:Name="PbImage" HorizontalAlignment="Center">
+                        <Image.RenderTransform >
+                            <ScaleTransform x:Name="ImageScale"/>
+                        </Image.RenderTransform>
+                    </Image>
+                </Grid>
+            </Border>
+            <Border
+                x:Name="PlTool"
+                CornerRadius="5"
+                Padding="4"
+                Margin="0 10 0 0"
+                VerticalAlignment="Top">
+                <ToolBarTray IsLocked="True" Background="#353535" HorizontalAlignment="Center">
+                    <ToolBar x:Name="TbTool">
+                        <Button
+                            x:Name="BtScreen"
+                            Click="BtScreen_Click"
+                            ToolTip="全屏查看"
+                            Style="{StaticResource ButtonDefault}">
+                            <iconPacks:PackIconMaterial x:Name="PiScreen" Kind="Fullscreen"/>
+                        </Button>
+                        <Separator />
+                        <Button
+                            x:Name="BtCopyImage"
+                            IsEnabled="False"
+                            Click="BtCopyImage_Click"
+                            ToolTip="复制图像"
+                            Style="{StaticResource ButtonDefault}">
+                            <iconPacks:PackIconMaterial Kind="ContentCopy"/>
+                        </Button>
+                        <Button
+                            x:Name="BtSaveas"
+                            IsEnabled="False"
+                            Click="BtSaveas_Click"
+                            ToolTip="另存为…"
+                            Visibility="Collapsed"
+                            Style="{StaticResource ButtonDefault}">
+                            <iconPacks:PackIconMaterial Kind="FileReplaceOutline"/>
+                        </Button>
+                        <Separator />
+                        <Button
+                            x:Name="BtResize"
+                            IsEnabled="False"
+                            Click="BtResize_Click"
+                            ToolTip="调整大小"
+                            Visibility="Collapsed"
+                            Style="{StaticResource ButtonDefault}">
+                            <iconPacks:PackIconMaterial Kind="Crop"/>
+                        </Button>
+                        <Separator
+                            Visibility="Collapsed" />
+                        <Button
+                            x:Name="BtZoomIn"
+                            IsEnabled="False"
+                            Click="BtZoomIn_Click"
+                            ToolTip="放大"
+                            Style="{StaticResource ButtonDefault}">
+                            <iconPacks:PackIconMaterial Kind="MagnifyPlusOutline"/>
+                        </Button>
+                        <Button
+                            x:Name="BtZoomOut"
+                            IsEnabled="False"
+                            Click="BtZoomOut_Click"
+                            ToolTip="缩小"
+                            Style="{StaticResource ButtonDefault}">
+                            <iconPacks:PackIconMaterial Kind="MagnifyMinusOutline"/>
+                        </Button>
+                        <Button
+                            x:Name="BtFit"
+                            IsEnabled="False"
+                            Click="BtFit_Click"
+                            ToolTip="适应窗口"
+                            Style="{StaticResource ButtonDefault}">
+                            <iconPacks:PackIconMaterial x:Name="PiFit" Kind="FitToPageOutline"/>
+                        </Button>
+                        <Separator/>
+                        <Button
+                            x:Name="BtRotateL"
+                            IsEnabled="False"
+                            Click="BtRotateL_Click"
+                            ToolTip="左旋转90度"
+                            Style="{StaticResource ButtonDefault}">
+                            <iconPacks:PackIconMaterial Kind="RotateLeft"/>
+                        </Button>
+                        <Button
+                            x:Name="BtRotateR"
+                            IsEnabled="False"
+                            Click="BtRotateR_Click"
+                            ToolTip="右旋转90度"
+                            Style="{StaticResource ButtonDefault}">
+                            <iconPacks:PackIconMaterial Kind="RotateRight"/>
+                        </Button>
+                        <Button
+                            x:Name="BtRotateH"
+                            IsEnabled="False"
+                            Click="BtRotateH_Click"
+                            ToolTip="水平翻转"
+                            Style="{StaticResource ButtonDefault}">
+                            <iconPacks:PackIconMaterial Kind="AxisZRotateCounterclockwise"/>
+                        </Button>
+                        <Button
+                            x:Name="BtRotateV"
+                            IsEnabled="False"
+                            Click="BtRotateV_Click"
+                            ToolTip="垂直翻转"
+                            Style="{StaticResource ButtonDefault}">
+                            <iconPacks:PackIconMaterial Kind="HorizontalRotateCounterclockwise"/>
+                        </Button>
+                        <Separator />
+                        <Button
+                            x:Name="BtSave"
+                            IsEnabled="False"
+                            Click="BtSave_Click"
+                            ToolTip="保存"
+                            Visibility="Collapsed"
+                            Style="{StaticResource ButtonDefault}">
+                            <iconPacks:PackIconMaterial Kind="ContentSaveOutline"/>
+                        </Button>
+                        <Button
+                            x:Name="BtImport"
+                            IsEnabled="False"
+                            Click="BtImport_Click"
+                            ToolTip="导入到图库"
+                            Visibility="Collapsed"
+                            Style="{StaticResource ButtonDefault}">
+                            <iconPacks:PackIconMaterial Kind="DatabaseImportOutline"/>
+                        </Button>
+                        <Button
+                            x:Name="BtEditor"
+                            IsEnabled="False"
+                            Click="BtEditor_Click"
+                            ToolTip="打开图库"
+                            Visibility="Collapsed"
+                            Style="{StaticResource ButtonDefault}">
+                            <iconPacks:PackIconMaterial Kind="ImageMultipleOutline" Foreground="Green"/>
+                        </Button>
+                        <Button
+                            x:Name="BtConfig"
+                            IsEnabled="True"
+                            Click="BtConfig_Click"
+                            ToolTip="系统设置"
+                            Visibility="Collapsed"
+                            Style="{StaticResource ButtonDefault}">
+                            <iconPacks:PackIconMaterial Kind="CogOutline"/>
+                        </Button>
+                        <Button
+                            x:Name="BtDelete"
+                            IsEnabled="False"
+                            Click="BtDelete_Click"
+                            ToolTip="删除文件"
+                            Visibility="Collapsed"
+                            Style="{StaticResource ButtonDanger}">
+                            <iconPacks:PackIconMaterial Kind="DeleteOutline" Foreground="White"/>
+                        </Button>
+                    </ToolBar>
+                </ToolBarTray>
+            </Border>
+            <Border
+                x:Name="PlGuid"
+                Background="#2E2E2E"
+                CornerRadius="7"
+                Visibility="Collapsed"
+                MaxWidth="900"
+                Padding="4"
+                Margin="0 0 0 10"
+                VerticalAlignment="Bottom">
+                <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled">
+                    <ListBox
+                        x:Name="LbFile"
+                        SelectionMode="Single"
+                        SelectionChanged="LbFile_SelectionChanged"
+                        Height="90"
+                        ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                        ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                        ScrollViewer.CanContentScroll="True"
+                        VirtualizingPanel.IsVirtualizing="True"
+                        VirtualizingPanel.VirtualizationMode="Recycling">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Image
+                                Width="80"
+                                Height="80"
+                                ToolTip="{Binding Text}"
+                                Source="{Binding Path}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </ScrollViewer>
+            </Border>
+            <StackPanel x:Name="PlLast" VerticalAlignment="Center" HorizontalAlignment="Left">
+                <Button
+                    x:Name="BtLast"
+                    Click="BtLast_Click"
+                    Width="80"
+                    Height="80"
+                    Cursor="Hand"
+                    Style="{StaticResource ButtonCustom}"
+                    ToolTip="上一图像">
+                    <iconPacks:PackIconMaterial Kind="ArrowLeftDropCircleOutline" Width="60" Height="60" Foreground="LightGray" />
+                </Button>
+            </StackPanel>
+            <StackPanel x:Name="PlNext" VerticalAlignment="Center" HorizontalAlignment="Right">
+                <Button
+                    x:Name="BtNext"
+                    Click="BtNext_Click"
+                    Width="80"
+                    Height="80"
+                    Cursor="Hand"
+                    Style="{StaticResource ButtonCustom}"
+                    ToolTip="下一图像">
+                    <iconPacks:PackIconMaterial Kind="ArrowRightDropCircleOutline" Width="60" Height="60" Foreground="LightGray" />
+                </Button>
+            </StackPanel>
+        </Grid>
+        <StackPanel x:Name="GdOpen" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button
+                x:Name="BtOpen"
+                Click="BtOpen_Click"
+                Content="打开文件"
+                ToolTip="点击打开文件，以开起图像浏览之旅。"
+                FontSize="20"
+                FontWeight="Bold"
+                Width="200"
+                Height="50"
+                Style="{StaticResource ButtonPrimary}"/>
+        </StackPanel>
+    </Grid>
+</Window>
