@@ -46,6 +46,8 @@ namespace Com.Scm
         /// </summary>
         public static readonly string VER_INFO = $"{MAJOR}.{MINOR}.{PATCH}.{BUILD} @Build {VER_CODE}";
 
+        public static readonly string VER = $"{MAJOR}.{MINOR}.{PATCH}.{BUILD}";
+
         public const string CompanyCode = "LeadIOT.Net";
         public const string CompanyName = "LeadIOT.Net";
         public const string SuiteCode = "Scm.Net";

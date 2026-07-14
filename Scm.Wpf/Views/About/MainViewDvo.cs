@@ -170,15 +170,15 @@ namespace Com.Scm.Views.About
         {
             var config = new UpgradeConfig();
             config.Title = AppName;
-            config.OldVersion = ScmClientEnv.VER_INFO;
+            config.OldVersion = ScmClientEnv.VER;
             config.NewVersion = verInfo.ver_info;
             config.AutoStart = true;
             config.AutoClose = true;
             config.InstallPath = filePath;
             config.InstallType = InstallType.Auto;
             config.DownloadUrl = verInfo.url;
-            config.Launch = new LaunchConfig { Command = fileName };
-            config.IgnoreFiles = new List<string>() { "/data/scm.db" };
+            config.Launch = new LaunchConfig { Command = Path.Combine(filePath, fileName) };
+            config.IgnoreFiles = new List<string>() { "data/scm.db" };
             config.AppInfo = _AppInfo.content;
             config.VerInfo = verInfo.remark;
 
