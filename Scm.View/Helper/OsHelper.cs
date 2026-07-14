@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using System.Diagnostics;
 using System.Management;
 using System.Net.NetworkInformation;
@@ -104,13 +104,14 @@ namespace Com.Scm.Helper
             });
         }
 
-        public static void OpenFile(string file, string args = null)
+        public static void OpenFile(string file, string workDir, string args = null)
         {
             // 启动资源管理器
             //Process.Start("explorer.exe", '"' + url + '"');
             Process.Start(new ProcessStartInfo()
             {
                 FileName = file,
+                WorkingDirectory = workDir,
                 Arguments = args,
                 UseShellExecute = true
             });

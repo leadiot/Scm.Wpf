@@ -155,7 +155,7 @@ namespace Com.Scm.Views.About
                 }
                 SaveUpgradeJson(basePath, fileName, verInfo);
 
-                OsHelper.OpenFile(upgradeFile);
+                OsHelper.OpenFile(upgradeFile, Path.GetDirectoryName(upgradeFile));
 
                 _Window.Exit(false);
             }
