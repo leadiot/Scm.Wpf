@@ -2,7 +2,6 @@ using Com.Scm.Config;
 using Com.Scm.Dto;
 using Com.Scm.Dvo;
 using Com.Scm.Helper;
-using Com.Scm.Upgrade;
 using Com.Scm.Utils;
 using System.IO;
 using System.Reflection;
@@ -140,20 +139,20 @@ namespace Com.Scm.Views.About
                 }
 
                 var filePath = Assembly.GetExecutingAssembly().Location;
-                var basePath = Path.GetDirectoryName(filePath);
-                var upgradeFile = Path.Combine(basePath, AppSettings.Instance.Env.UpgradeFilePath ?? ScmClientEnv.UpgradeFilePath);
+                var installPath = Path.GetDirectoryName(filePath);
+                var upgradeFile = Path.Combine(installPath, AppSettings.Instance.Env.UpgradeFilePath ?? ScmClientEnv.UpgradeFilePath);
                 if (!File.Exists(upgradeFile))
                 {
                     _Window.ShowAlert("升级程序不存在，无法完成升级操作！", "系统提示");
                     return;
                 }
 
-                var fileName = Path.GetFileName(filePath);
-                if (fileName.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
+                var launchFile = Path.GetFileName(filePath);
+                if (launchFile.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
                 {
-                    fileName = fileName.Substring(0, fileName.Length - 3) + "exe";
+                    launchFile = launchFile.Substring(0, launchFile.Length - 3) + "exe";
                 }
-                SaveUpgradeJson(basePath, fileName, verInfo);
+                SaveUpgradeJson(installPath, launchFile, verInfo);
 
                 OsHelper.OpenFile(upgradeFile, Path.GetDirectoryName(upgradeFile));
 
@@ -166,23 +165,47 @@ namespace Com.Scm.Views.About
             }
         }
 
-        private void SaveUpgradeJson(string filePath, string fileName, ScmVerInfo verInfo)
+        private void SaveUpgradeJson(string installPath, string launchFile, ScmVerInfo verInfo)
         {
             var config = new UpgradeConfig();
             config.Title = AppName;
+            config.AppInfo = _AppInfo.content;
+            config.VerInfo = verInfo.remark;
             config.OldVersion = ScmClientEnv.VER;
             config.NewVersion = verInfo.ver_info;
             config.AutoStart = true;
             config.AutoClose = true;
-            config.InstallPath = filePath;
-            config.InstallType = InstallType.Auto;
-            config.DownloadUrl = verInfo.url;
-            config.Launch = new LaunchConfig { Command = Path.Combine(filePath, fileName) };
-            config.IgnoreFiles = new List<string>() { "data/scm.db" };
-            config.AppInfo = _AppInfo.content;
-            config.VerInfo = verInfo.remark;
 
-            var jsonFile = Path.Combine(filePath, AppSettings.Instance.Env.UpgradeJsonName ?? ScmClientEnv.UpgradeJsonFile);
+            var backupPath = Path.Combine(installPath, "backup");
+            var tempPath = Path.Combine(installPath, "temp");
+
+            var dataFile = Path.Combine(installPath, "data", "scm.db");
+            var time = DateTime.Now.ToString("yyyyMMddHHmmss");
+            var backupFile = Path.Combine(backupPath, "data", $"scm-{time}.db");
+
+            var downloadFile = Path.Combine(tempPath, "upgrade.zip");
+            var stepConfig = StepConfig.NewDownloadStep("升级文件下载", verInfo.url, downloadFile);
+            config.Add(stepConfig);
+
+            stepConfig = StepConfig.NewMoveDocStep("数据备份", dataFile, backupFile);
+            config.Add(stepConfig);
+
+            stepConfig = StepConfig.NewUnzipStep("升级包解压", downloadFile, tempPath);
+            config.Add(stepConfig);
+
+            stepConfig = StepConfig.NewMoveDirStep("应用更新", Path.Combine(tempPath, "Scm.Wpf"), installPath);
+            config.Add(stepConfig);
+
+            stepConfig = StepConfig.NewCopyDocStep("数据恢复", backupFile, dataFile);
+            config.Add(stepConfig);
+
+            //stepConfig = StepConfig.NewCopyDocStep("配置恢复", Path.Combine(installPath, launchFile), null);
+            //config.Add(stepConfig);
+
+            stepConfig = StepConfig.NewCommandStep("启用应用", Path.Combine(installPath, launchFile), null);
+            config.Add(stepConfig);
+
+            var jsonFile = Path.Combine(installPath, AppSettings.Instance.Env.UpgradeJsonName ?? ScmClientEnv.UpgradeJsonFile);
             var jsonDir = Path.GetDirectoryName(jsonFile);
             if (!Directory.Exists(jsonDir))
             {
