@@ -183,11 +183,18 @@ namespace Com.Scm.Views.About
             var time = DateTime.Now.ToString("yyyyMMddHHmmss");
             var backupFile = Path.Combine(backupPath, "data", $"scm-{time}.db");
 
+            var stepConfig = StepConfig.NewCreateDirStep("创建备份目录", backupPath);
+            config.Add(stepConfig);
+
+            stepConfig = StepConfig.NewCreateDirStep("创建临时目录", tempPath);
+            config.Add(stepConfig);
+
             var downloadFile = Path.Combine(tempPath, "upgrade.zip");
-            var stepConfig = StepConfig.NewDownloadStep("升级文件下载", verInfo.url, downloadFile);
+            stepConfig = StepConfig.NewDownloadStep("升级文件下载", verInfo.url, downloadFile);
             config.Add(stepConfig);
 
             stepConfig = StepConfig.NewMoveDocStep("数据备份", dataFile, backupFile);
+            stepConfig.ContinueOnError = true;
             config.Add(stepConfig);
 
             stepConfig = StepConfig.NewUnzipStep("升级包解压", downloadFile, tempPath);
@@ -197,12 +204,16 @@ namespace Com.Scm.Views.About
             config.Add(stepConfig);
 
             stepConfig = StepConfig.NewCopyDocStep("数据恢复", backupFile, dataFile);
+            stepConfig.ContinueOnError = true;
             config.Add(stepConfig);
 
             //stepConfig = StepConfig.NewCopyDocStep("配置恢复", Path.Combine(installPath, launchFile), null);
             //config.Add(stepConfig);
 
             stepConfig = StepConfig.NewCommandStep("启用应用", Path.Combine(installPath, launchFile), null);
+            config.Add(stepConfig);
+
+            stepConfig = StepConfig.NewDeleteDirStep("临时文件清理", tempPath);
             config.Add(stepConfig);
 
             var jsonFile = Path.Combine(installPath, AppSettings.Instance.Env.UpgradeJsonName ?? ScmClientEnv.UpgradeJsonFile);
