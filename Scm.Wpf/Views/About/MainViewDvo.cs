@@ -210,7 +210,7 @@ namespace Com.Scm.Views.About
             //stepConfig = StepConfig.NewCopyDocStep("配置恢复", Path.Combine(installPath, launchFile), null);
             //config.Add(stepConfig);
 
-            stepConfig = StepConfig.NewCommandStep("启用应用", Path.Combine(installPath, launchFile), null);
+            stepConfig = StepConfig.NewLaunchStep("启用应用", Path.Combine(installPath, launchFile), null);
             config.Add(stepConfig);
 
             stepConfig = StepConfig.NewDeleteDirStep("临时文件清理", tempPath);
