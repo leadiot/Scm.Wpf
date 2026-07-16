@@ -1,4 +1,4 @@
-﻿using Com.Scm.Config;
+using Com.Scm.Config;
 using Com.Scm.Helper;
 using System.Diagnostics;
 using System.Reflection;
@@ -25,7 +25,7 @@ namespace Com.Scm.Views.Config
         {
             _Window = window;
 
-            TbVersion.Text = ScmClientEnv.VER_INFO;
+            TbVersion.Text = ScmClientEnv.VER_FULL;
             CkAutoStart.IsChecked = AppSettings.Instance.AutoStartup;
         }
 

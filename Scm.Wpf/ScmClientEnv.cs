@@ -42,11 +42,16 @@ namespace Com.Scm
 
         /// <summary>
         /// 发行版本
-        /// 格式：Scm.Net 1.9.15 (Build 2026041301)
+        /// 格式：1.9.15
         /// </summary>
-        public static readonly string VER_INFO = $"{MAJOR}.{MINOR}.{PATCH}.{BUILD} @Build {VER_CODE}";
 
-        public static readonly string VER = $"{MAJOR}.{MINOR}.{PATCH}.{BUILD}";
+        public static readonly string VER_INFO = $"{MAJOR}.{MINOR}.{PATCH}.{BUILD}";
+
+        /// <summary>
+        /// 发行版本
+        /// 格式：1.9.15 @Build 2026041301
+        /// </summary>
+        public static readonly string VER_FULL = $"{VER_INFO} @Build {VER_CODE}";
 
         public const string CompanyCode = "LeadIOT.Net";
         public const string CompanyName = "LeadIOT.Net";
@@ -59,7 +64,10 @@ namespace Com.Scm
 
         public const string API_URL = "http://api.c-scm.net/api";
         public const string Website = "https://www.c-scm.net";
-        public const string UpdateUrl = "https://www.c-scm.net";
+        /// <summary>
+        /// 升级路径
+        /// </summary>
+        public const string UpgradeUrl = "https://www.c-scm.net";
         public const string HelpUrl = "https://www.c-scm.net";
         public const string PrivacyUrl = "https://www.c-scm.net";
         public const string TermsUrl = "https://www.c-scm.net";
@@ -70,10 +78,13 @@ namespace Com.Scm
         public const string FeedbackUrl = "https://www.c-scm.net";
 
         /// <summary>
-        /// 升级程序文件
+        /// 升级程序路径
         /// </summary>
-        public const string UpgradeFilePath = "Upgrade.Net.exe";
-        public const string UpgradeJsonFile = "Upgrade.Net.json";
+        public const string UpgradeFilePath = "Upgrade.Wpf.exe";
+        /// <summary>
+        /// 升级配置路径
+        /// </summary>
+        public const string UpgradeJsonPath = "Upgrade.json";
 
         /// <summary>
         /// 应用程序目录

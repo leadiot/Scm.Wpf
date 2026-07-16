@@ -172,7 +172,7 @@ namespace Com.Scm.Views.About
             config.Title = AppName;
             config.AppInfo = _AppInfo.content;
             config.VerInfo = verInfo.remark;
-            config.OldVersion = ScmClientEnv.VER;
+            config.OldVersion = ScmClientEnv.VER_INFO;
             config.NewVersion = verInfo.ver_info;
             config.AutoStart = true;
             config.AutoClose = true;
@@ -217,7 +217,7 @@ namespace Com.Scm.Views.About
             stepConfig = StepConfig.NewDeleteDirStep("临时文件清理", tempPath);
             config.AddStep(stepConfig);
 
-            var jsonFile = Path.Combine(installPath, AppSettings.Instance.Env.UpgradeJsonName ?? ScmClientEnv.UpgradeJsonFile);
+            var jsonFile = Path.Combine(installPath, AppSettings.Instance.Env.UpgradeJsonName ?? ScmClientEnv.UpgradeJsonPath);
             var jsonDir = Path.GetDirectoryName(jsonFile);
             if (!Directory.Exists(jsonDir))
             {
