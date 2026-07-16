@@ -2,6 +2,7 @@ using Com.Scm.Config;
 using Com.Scm.Dto;
 using Com.Scm.Dvo;
 using Com.Scm.Helper;
+using Com.Scm.Upgrade.Config;
 using Com.Scm.Utils;
 using System.IO;
 using System.Reflection;
@@ -184,37 +185,37 @@ namespace Com.Scm.Views.About
             var backupFile = Path.Combine(backupPath, "data", $"scm-{time}.db");
 
             var stepConfig = StepConfig.NewCreateDirStep("创建备份目录", backupPath);
-            config.Add(stepConfig);
+            config.AddStep(stepConfig);
 
             stepConfig = StepConfig.NewCreateDirStep("创建临时目录", tempPath);
-            config.Add(stepConfig);
+            config.AddStep(stepConfig);
 
             var downloadFile = Path.Combine(tempPath, "upgrade.zip");
             stepConfig = StepConfig.NewDownloadStep("升级文件下载", verInfo.url, downloadFile);
-            config.Add(stepConfig);
+            config.AddStep(stepConfig);
 
             stepConfig = StepConfig.NewMoveDocStep("数据备份", dataFile, backupFile);
             stepConfig.ContinueOnError = true;
-            config.Add(stepConfig);
+            config.AddStep(stepConfig);
 
             stepConfig = StepConfig.NewUnzipStep("升级包解压", downloadFile, tempPath);
-            config.Add(stepConfig);
+            config.AddStep(stepConfig);
 
             stepConfig = StepConfig.NewMoveDirStep("应用更新", Path.Combine(tempPath, "Scm.Wpf"), installPath);
-            config.Add(stepConfig);
+            config.AddStep(stepConfig);
 
             stepConfig = StepConfig.NewCopyDocStep("数据恢复", backupFile, dataFile);
             stepConfig.ContinueOnError = true;
-            config.Add(stepConfig);
+            config.AddStep(stepConfig);
 
             //stepConfig = StepConfig.NewCopyDocStep("配置恢复", Path.Combine(installPath, launchFile), null);
-            //config.Add(stepConfig);
+            //config.AddStep(stepConfig);
 
             stepConfig = StepConfig.NewLaunchStep("启用应用", Path.Combine(installPath, launchFile), null);
-            config.Add(stepConfig);
+            config.AddStep(stepConfig);
 
             stepConfig = StepConfig.NewDeleteDirStep("临时文件清理", tempPath);
-            config.Add(stepConfig);
+            config.AddStep(stepConfig);
 
             var jsonFile = Path.Combine(installPath, AppSettings.Instance.Env.UpgradeJsonName ?? ScmClientEnv.UpgradeJsonFile);
             var jsonDir = Path.GetDirectoryName(jsonFile);
