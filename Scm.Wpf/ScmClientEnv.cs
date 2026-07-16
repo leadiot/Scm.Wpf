@@ -80,11 +80,11 @@ namespace Com.Scm
         /// <summary>
         /// 升级程序路径
         /// </summary>
-        public const string UpgradeFilePath = "Upgrade.Wpf.exe";
+        public const string UpgradeFilePath = "Upgrade/Upgrade.Wpf.exe";
         /// <summary>
         /// 升级配置路径
         /// </summary>
-        public const string UpgradeJsonPath = "Upgrade.json";
+        public const string UpgradeJsonPath = "Upgrade/Upgrade.json";
 
         /// <summary>
         /// 应用程序目录

@@ -1,4 +1,4 @@
-﻿using Com.Scm.Enums;
+using Com.Scm.Enums;
 
 namespace Com.Scm.Config
 {
@@ -7,6 +7,8 @@ namespace Com.Scm.Config
     /// </summary>
     public class EnvConfig
     {
+        public string CheckUpgradeUrl { get; set; }
+
         public string UpgradeFilePath { get; set; }
 
         public string UpgradeJsonName { get; set; }
@@ -15,8 +17,9 @@ namespace Com.Scm.Config
 
         public void LoadDefault()
         {
-            UpgradeFilePath = "Upgrade/Scm.Upgrade.exe";
-            UpgradeJsonName = "Upgrade/Scm.Upgrade.json";
+            CheckUpgradeUrl = ScmClientEnv.UpgradeUrl;
+            UpgradeFilePath = ScmClientEnv.UpgradeFilePath;
+            UpgradeJsonName = ScmClientEnv.UpgradeJsonPath;
         }
     }
 }
