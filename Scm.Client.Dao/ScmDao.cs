@@ -30,21 +30,16 @@ namespace Com.Scm.Dao
         }
 
         private static long _LastTime = 0;
-        private static int _Index = 0;
         private static long NextId()
         {
             var now = TimeUtils.GetUnixTime() * 1000;
             if (now > _LastTime)
             {
                 _LastTime = now;
-                _Index = 1;
             }
-            else
-            {
-                _Index += 1;
-            }
+            _LastTime += 1;
 
-            return _LastTime + _Index;
+            return _LastTime;
         }
     }
 }
