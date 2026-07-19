@@ -130,7 +130,7 @@ namespace Com.Scm.Dvo.Menu
             dvo.Color = dto.color;
             dvo.Visible = dto.visible;
             dvo.Enabled = dto.enabled;
-            dvo.KeepAlive = dto.keepAlive;
+            dvo.KeepAlive = dto.keep_alive;
             return dvo;
         }
     }
