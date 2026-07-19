@@ -11,7 +11,7 @@
     ShowInTaskbar="False"
     ResizeMode="NoResize"
     WindowStartupLocation="CenterOwner"
-    Width="320" MinHeight="160"
+    Width="360" MinHeight="160"
     SizeToContent="Height"
     KeyUp="Window_KeyUp">
     <Border Background="{StaticResource ScmPanelBackground}">
