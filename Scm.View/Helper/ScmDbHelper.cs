@@ -1,4 +1,4 @@
-﻿using Com.Scm.Utils;
+using Com.Scm.Utils;
 using SqlSugar;
 using System.IO;
 using System.Reflection;
@@ -15,7 +15,7 @@ namespace Com.Scm.Dao
         /// 应用代码
         /// </summary>
         /// <returns></returns>
-        public abstract string GetAppCode();
+        public abstract string GetKey();
 
         /// <summary>
         /// 当前版本
@@ -52,7 +52,7 @@ namespace Com.Scm.Dao
         /// <returns></returns>
         public virtual bool InitDb()
         {
-            var key = GetAppCode();
+            var key = GetKey();
 
             var verDao = ReadDbVer(key);
             if (verDao == null)
@@ -60,19 +60,17 @@ namespace Com.Scm.Dao
                 verDao = new ScmVerDao();
                 verDao.key = key;
                 verDao.create_time = TimeUtils.GetUnixTime();
+
+                OnCreate(verDao);
             }
+            else if (verDao.ver == GetVer())
+            {
 
-            InitDdl(verDao);
-
-            InitTable();
-
-            InitDml(verDao);
-
-            var ddlFile = Path.Combine(_BaseDir, "ddl.sql");
-            ExecuteSql(ddlFile, verDao.ver);
-
-            var dmlFile = Path.Combine(_BaseDir, "dml.sql");
-            ExecuteSql(dmlFile, verDao.ver);
+            }
+            else
+            {
+                OnUpgrade(verDao);
+            }
 
             verDao.ver = GetVer();
             verDao.date = GetDate();
@@ -309,13 +307,16 @@ namespace Com.Scm.Dao
         }
 
         /// <summary>
-        /// 创建表格
+        /// 数据库创建
         /// </summary>
-        /// <returns></returns>
-        protected virtual bool InitTable()
-        {
-            return InitTable(Assembly.GetExecutingAssembly());
-        }
+        /// <param name="verDao"></param>
+        public abstract void OnCreate(ScmVerDao verDao);
+
+        /// <summary>
+        /// 数据库升级
+        /// </summary>
+        /// <param name="verDao"></param>
+        public abstract void OnUpgrade(ScmVerDao verDao);
 
         /// <summary>
         /// 数据库定义
@@ -374,17 +375,6 @@ namespace Com.Scm.Dao
             }
 
             _SqlClient.DbMaintenance.TruncateTable(daoList.ToArray());
-        }
-
-        protected virtual void InitDdl(ScmVerDao verDao)
-        {
-        }
-
-        /// <summary>
-        /// 数据库操作
-        /// </summary>
-        protected virtual void InitDml(ScmVerDao verDao)
-        {
         }
     }
 }

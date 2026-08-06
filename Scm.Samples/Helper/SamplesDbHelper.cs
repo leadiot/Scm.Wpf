@@ -1,4 +1,4 @@
-﻿using Com.Scm.Dao;
+using Com.Scm.Dao;
 
 namespace Com.Scm.Samples.Helper
 {
@@ -7,7 +7,7 @@ namespace Com.Scm.Samples.Helper
         private const int VER = 1;
         private const string DATE = "2026-03-01";
 
-        public override string GetAppCode()
+        public override string GetKey()
         {
             return "scm.samples";
         }
@@ -20,6 +20,14 @@ namespace Com.Scm.Samples.Helper
         public override string GetDate()
         {
             return DATE;
+        }
+
+        public override void OnCreate(ScmVerDao verDao)
+        {
+        }
+
+        public override void OnUpgrade(ScmVerDao verDao)
+        {
         }
     }
 }
