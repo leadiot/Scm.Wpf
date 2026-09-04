@@ -49,7 +49,7 @@ namespace Com.Scm.Dto.Auth
 
         public override string GetAccessToken()
         {
-            return AccessToken;
+            return "Operator " + AccessToken;
         }
     }
 }

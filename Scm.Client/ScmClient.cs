@@ -632,7 +632,7 @@ namespace Com.Scm
         /// <returns></returns>
         public async Task<List<MenuDto>> LoadMenuAsync(ScmClientTypeEnum type, string lang = null)
         {
-            var url = GetApiUrl("/operator/authoritymenu");
+            var url = GetApiUrl("/menu/authoritymenu");
 
             var body = new Dictionary<string, string>();
             body["client"] = "20";
