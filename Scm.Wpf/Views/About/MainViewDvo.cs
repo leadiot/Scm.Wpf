@@ -94,7 +94,7 @@ namespace Com.Scm.Views.About
                 }
 
                 AppProject = _AppInfo.project ?? "https://gitee.com/leadiot/nas.net";
-                AppWebsite = _AppInfo.website ?? "http://www.c-scm.net";
+                AppWebsite = _AppInfo.homepage ?? "http://www.c-scm.net";
                 AppEmail = _AppInfo.email ?? "361341288@qq.com";
                 AppQchat = _AppInfo.qchat ?? "415872667";
                 AppHelp = "http://www.c-scm.net/nas/help.html";
