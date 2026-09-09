@@ -169,6 +169,7 @@ scm.wpf/
 
 ***
 
+
 ## 🔧 环境要求
 
 | 工具            | 版本要求   | 下载地址                                 |
@@ -176,6 +177,11 @@ scm.wpf/
 | .NET SDK      | ≥ 10.0 | <https://dotnet.microsoft.com>       |
 | Visual Studio | ≥ 2026 | <https://visualstudio.microsoft.com> |
 | Windows       | ≥ 10   | —                                    |
+
+***
+
+### 项目依赖
+	签出本项目时，请同时签出[Libs](https://gitee.com/leadiot/libs)
 
 ***
 
