@@ -180,7 +180,8 @@ scm.wpf/
 
 ***
 
-### 项目依赖
+## 项目依赖
+
 	签出本项目时，请同时签出[Libs](https://gitee.com/leadiot/libs)
 
 ***
