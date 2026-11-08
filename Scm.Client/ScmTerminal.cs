@@ -202,7 +202,7 @@ namespace Com.Scm
         private string GetBasicToken()
         {
             var time = TimeUtils.GetUnixTime();
-            var data = _Info.terminal_id + ":" + _Info.user_id + ":" + time;
+            var data = _Info.terminal_id + ":" + _Info.terminal_codes + ":" + _Info.user_id + ":" + _Info.user_codes + ":" + time;
 
             var key = data + ":" + _Info.access_token;
             var hash = TextUtils.Md5(key);
