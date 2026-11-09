@@ -3,6 +3,7 @@ using Com.Scm.Dao.Samples;
 using Com.Scm.Dvo;
 using Com.Scm.Models;
 using SqlSugar;
+using System.Windows;
 
 namespace Com.Scm.Views.Samples.Native
 {
@@ -13,6 +14,8 @@ namespace Com.Scm.Views.Samples.Native
         public void Init(ScmWindow window)
         {
             _Window = window;
+
+            OptionVisibility = Visibility.Visible;
 
             Columns = new List<ScmColumnInfo>
             {

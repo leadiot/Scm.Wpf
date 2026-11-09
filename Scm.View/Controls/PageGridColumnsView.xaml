@@ -4,15 +4,45 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="Red">
-        <DataGrid>
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="属性" Width="auto"/>
-                <DataGridTextColumn Header="值" Width="*"/>
-                <DataGridTextColumn Header="展示" Width="auto"/>
-                <DataGridTextColumn Header="导出" Width="auto"/>
-            </DataGrid.Columns>
-        </DataGrid>
-    </Grid>
+             d:DesignHeight="450" d:DesignWidth="260">
+    <Border Background="{StaticResource ScmPanelBackground}" Padding="12">
+        <DockPanel>
+            <TextBlock DockPanel.Dock="Top" Text="列设置" Style="{StaticResource TextBlockSubTitleBold}" Margin="0 0 0 4"/>
+            <TextBlock DockPanel.Dock="Top" Text="勾选控制显示，箭头调整顺序" FontSize="12" Margin="0 0 0 8"/>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding Options}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="0 2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <CheckBox Grid.Column="0"
+                                          Content="{Binding Label}"
+                                          IsChecked="{Binding Visible, Mode=TwoWay}"
+                                          VerticalAlignment="Center"
+                                          Click="BtVisible_Click"/>
+                                <Button Grid.Column="1"
+                                        Content="↑"
+                                        Width="24" Height="24" Padding="0"
+                                        Margin="4 0 0 0"
+                                        ToolTip="上移"
+                                        IsEnabled="{Binding CanMoveUp}"
+                                        Click="BtUp_Click"/>
+                                <Button Grid.Column="2"
+                                        Content="↓"
+                                        Width="24" Height="24" Padding="0"
+                                        Margin="4 0 0 0"
+                                        ToolTip="下移"
+                                        IsEnabled="{Binding CanMoveDown}"
+                                        Click="BtDown_Click"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </DockPanel>
+    </Border>
 </UserControl>

@@ -203,7 +203,7 @@ protected override async Task<ScmPageResult<UserItemDvo>> LoadPageAsync()
 | `MaxWidth` | `string` | — | 预留字段，当前未生效 |
 | `Align` | `ScmColumnAlign` | `None` | 文本对齐：`Left` / `Center` / `Right` / `Stretch` |
 | `Format` | `ScmColumnFormat` | `None` | 模板列格式：`Icon` / `Number` / `DateTime` |
-| `Hidden` | `bool` | `false` | 是否隐藏该列 |
+| `Hidden` | `bool` | `false` | 是否隐藏该列，可通过表尾「选项」面板切换 |
 | `Export` | `bool` | `true` | 是否参与导出 |
 | `ReadOnly` | `bool` | `true` | 文本列是否只读 |
 | `Sortable` | `bool` | `false` | 是否允许用户排序 |
@@ -253,6 +253,19 @@ Columns = new List<ScmColumnInfo>
     new ScmColumnInfo { Type = ScmColumnType.Template, Label = "图标",     Value = "IconKind",  Width = "60",  Format = ScmColumnFormat.Icon },
 };
 ```
+
+### 5.5 运行时调整列的显示与顺序
+
+表尾「选项」按钮会打开列设置面板（需 `OptionVisibility = Visible`）：
+
+- 勾选 / 取消复选框：立即显示或隐藏该列，等价于修改 `ScmColumnInfo.Hidden`；
+- 点击 ↑ / ↓：调整列的显示顺序，同时调整 `Columns` 集合的顺序；
+- 已处理首项不可上移、末项不可下移。
+
+调整结果只作用于当前 ViewModel 实例（不落盘），并遵循以下约定：
+
+- 顺序同步到 `Columns`，因此下次导出时列顺序与界面一致；
+- 隐藏列仍会参与导出，是否导出只由 `Export` 字段决定。
 
 ## 6. 交互事件
 
@@ -418,7 +431,7 @@ await GridExporter.ExportAsync(items, columns); // 弹保存对话框
 | 查询 | `SearchAsync(0)` |
 | 刷新 | `SearchAsync(0)` |
 | 导出 | 见第 10 节 |
-| 选项 | 弹出列显隐面板（`PageGridColumnsView`，当前为占位实现） |
+| 选项 | 打开列设置面板：勾选控制显示、↑ / ↓ 调整顺序（见 5.5） |
 | 打印 | 暂无逻辑 |
 | 列表 / 单页 | 暂无逻辑 |
 | 高级 | 仅设置 `SearchContent` 后显示 |

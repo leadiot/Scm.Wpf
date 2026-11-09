@@ -27,6 +27,22 @@ namespace Com.Scm.Controls.Attach
             obj.SetValue(ColumnsSourceProperty, value);
         }
 
+        /// <summary>
+        /// 列对应的元数据
+        /// </summary>
+        public static readonly DependencyProperty ColumnInfoProperty = DependencyProperty.RegisterAttached(
+            "ColumnInfo", typeof(ScmColumnInfo), typeof(DataGridColumnsBehavior), new PropertyMetadata(null));
+
+        public static ScmColumnInfo GetColumnInfo(DependencyObject obj)
+        {
+            return (ScmColumnInfo)obj.GetValue(ColumnInfoProperty);
+        }
+
+        public static void SetColumnInfo(DependencyObject obj, ScmColumnInfo value)
+        {
+            obj.SetValue(ColumnInfoProperty, value);
+        }
+
         private static void OnColumnsSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is DataGrid grid)
@@ -53,6 +69,7 @@ namespace Com.Scm.Controls.Attach
                 var column = CreateColumn(grid, info);
                 if (column != null)
                 {
+                    SetColumnInfo(column, info);
                     grid.Columns.Add(column);
                 }
             }

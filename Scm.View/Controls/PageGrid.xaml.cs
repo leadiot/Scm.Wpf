@@ -90,15 +90,23 @@ namespace Com.Scm.Controls
         }
 
         /// <summary>
-        /// 选项事件
+        /// 选项事件：调整列的显示与顺序
         /// </summary>
         private void BtOption_Click(object sender, RoutedEventArgs e)
         {
+            var columns = GridData == null ? null : GridData.Columns;
+            if (columns == null || columns.Count == 0)
+            {
+                Growl.Warning("当前列表没有可配置的列");
+                return;
+            }
+
             var view = new PageGridColumnsView();
+            view.Init(DgGrid, columns);
 
             var window = new PopupWindow();
             window.PopupElement = view;
-            window.Width = 240;
+            window.Width = 260;
             window.Height = 480;
             window.Show(BtOption, false);
         }
