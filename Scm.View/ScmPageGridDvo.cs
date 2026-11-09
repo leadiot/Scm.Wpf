@@ -1,10 +1,31 @@
-﻿using Com.Scm.Models;
+using Com.Scm.Models;
+using HandyControl.Controls;
 using System.Collections.ObjectModel;
 using System.Windows;
 
 namespace Com.Scm.Dvo
 {
-    public class ScmPageGridDvo : ScmDvo
+    /// <summary>
+    /// 分页查询结果
+    /// </summary>
+    /// <typeparam name="T">明细类型</typeparam>
+    public class ScmPageResult<T>
+    {
+        /// <summary>
+        /// 当前页数据
+        /// </summary>
+        public List<T> Items { get; set; }
+
+        /// <summary>
+        /// 数据总行数
+        /// </summary>
+        public int Total { get; set; }
+    }
+
+    /// <summary>
+    /// 分页列表视图模型基类。分页导航由基类统一实现，子类仅需实现数据加载。
+    /// </summary>
+    public abstract class ScmPageGridDvo : ScmDvo
     {
         /// <summary>
         /// 表头组件是否可见
@@ -13,22 +34,10 @@ namespace Com.Scm.Dvo
         public Visibility HeadVisibility { get { return headVisibility; } set { SetProperty(ref headVisibility, value); } }
 
         /// <summary>
-        /// 客制组件是否可见
-        /// </summary>
-        private Visibility customVisibility = Visibility.Collapsed;
-        public Visibility CustomVisibility { get { return customVisibility; } set { SetProperty(ref customVisibility, value); } }
-
-        /// <summary>
         /// 搜索组件是否可见
         /// </summary>
         private Visibility searchVisibility;
         public Visibility SearchVisibility { get { return searchVisibility; } set { SetProperty(ref searchVisibility, value); } }
-
-        /// <summary>
-        /// 高级组件是否可见
-        /// </summary>
-        private Visibility moreVisibility = Visibility.Collapsed;
-        public Visibility MoreVisibility { get { return moreVisibility; } set { SetProperty(ref moreVisibility, value); } }
 
         /// <summary>
         /// 表尾组件是否可见
@@ -49,7 +58,7 @@ namespace Com.Scm.Dvo
         public Visibility OptionVisibility { get { return optionVisibility; } set { SetProperty(ref optionVisibility, value); } }
 
         /// <summary>
-        /// 当前页数量
+        /// 每页数量
         /// </summary>
         private int pageItems = 20;
         public int PageItems { get { return pageItems; } set { SetProperty(ref pageItems, value); } }
@@ -63,87 +72,138 @@ namespace Com.Scm.Dvo
         /// <summary>
         /// 总行数
         /// </summary>
-        protected int itemCount;
+        private int itemCount;
         public int ItemCount { get { return itemCount; } set { SetProperty(ref itemCount, value); } }
 
         /// <summary>
         /// 总页数
         /// </summary>
-        protected int pageCount;
+        private int pageCount;
         public int PageCount { get { return pageCount; } set { SetProperty(ref pageCount, value); } }
 
-        private int view;
-        public int View { get { return view; } set { SetProperty(ref view, value); } }
-
         /// <summary>
-        /// 查询条件
+        /// 查询关键字
         /// </summary>
         private string key;
         public string Key { get { return key; } set { SetProperty(ref key, value); } }
 
         /// <summary>
-        /// 展示列表
+        /// 展示列配置
         /// </summary>
-        /// <returns></returns>
-        public List<ScmColumnInfo> Columns { get; protected set; } = new List<ScmColumnInfo>();
+        private List<ScmColumnInfo> columns;
+        public List<ScmColumnInfo> Columns { get { return columns; } protected set { SetProperty(ref columns, value); } }
 
         /// <summary>
-        /// 数据列表
-        /// </summary>
-        public ObservableCollection<ScmSearchResultItemDvo> Items { get; protected set; } = new ObservableCollection<ScmSearchResultItemDvo>();
-
-        /// <summary>
-        /// 查询
+        /// 查询。pageIndex 大于 0 时跳转到指定页，否则刷新当前页。
         /// </summary>
         /// <param name="pageIndex"></param>
-        public virtual Task SearchAsync(int pageIndex = 0)
+        public Task SearchAsync(int pageIndex = 0)
         {
-            return Task.CompletedTask;
-        }
-
-        public virtual Task SearchAsync(int pageIndex, int pageCount)
-        {
-            return Task.CompletedTask;
+            if (pageIndex > 0)
+            {
+                PageIndex = pageIndex;
+            }
+            return ReloadAsync();
         }
 
         /// <summary>
         /// 首页
         /// </summary>
-        public virtual Task FirstPageAsync()
+        public Task FirstPageAsync()
         {
-            return Task.CompletedTask;
+            return SearchAsync(1);
         }
 
         /// <summary>
         /// 前一页
         /// </summary>
-        public virtual Task PrevPageAsync()
+        public Task PrevPageAsync()
         {
-            return Task.CompletedTask;
+            return SearchAsync(PageIndex > 1 ? PageIndex - 1 : 1);
         }
 
         /// <summary>
         /// 后一页
         /// </summary>
-        public virtual Task NextPageAsync()
+        public Task NextPageAsync()
         {
-            return Task.CompletedTask;
+            if (PageCount < 1)
+            {
+                return Task.CompletedTask;
+            }
+            return SearchAsync(PageIndex < PageCount ? PageIndex + 1 : PageCount);
         }
 
         /// <summary>
         /// 尾页
         /// </summary>
-        public virtual Task EndPageAsync()
+        public Task EndPageAsync()
         {
-            return Task.CompletedTask;
+            return SearchAsync(PageCount > 1 ? PageCount : 1);
         }
 
         /// <summary>
-        /// 刷新
+        /// 刷新当前页
         /// </summary>
-        public virtual Task ReloadAsync()
+        public async Task ReloadAsync()
         {
-            return Task.CompletedTask;
+            try
+            {
+                var total = await LoadDataAsync();
+                ItemCount = total;
+                PageCount = PageItems > 0 ? (int)Math.Ceiling((double)total / PageItems) : 0;
+            }
+            catch (Exception ex)
+            {
+                OnError(ex);
+            }
         }
+
+        /// <summary>
+        /// 加载数据，返回数据总行数
+        /// </summary>
+        protected abstract Task<int> LoadDataAsync();
+
+        /// <summary>
+        /// 数据加载异常处理
+        /// </summary>
+        /// <param name="ex"></param>
+        protected virtual void OnError(Exception ex)
+        {
+            Growl.Error(ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// 分页列表视图模型基类（泛型）
+    /// </summary>
+    /// <typeparam name="T">明细类型</typeparam>
+    public abstract class ScmPageGridDvo<T> : ScmPageGridDvo where T : ScmSearchResultItemDvo
+    {
+        /// <summary>
+        /// 当前页数据列表
+        /// </summary>
+        public ObservableCollection<T> Items { get; } = new ObservableCollection<T>();
+
+        protected sealed override async Task<int> LoadDataAsync()
+        {
+            var result = await LoadPageAsync();
+
+            Items.Clear();
+            if (result?.Items != null)
+            {
+                foreach (var item in result.Items)
+                {
+                    Items.Add(item);
+                }
+            }
+
+            return result?.Total ?? 0;
+        }
+
+        /// <summary>
+        /// 加载当前页数据。分页参数使用 PageIndex / PageItems / Key。
+        /// </summary>
+        protected abstract Task<ScmPageResult<T>> LoadPageAsync();
     }
 }

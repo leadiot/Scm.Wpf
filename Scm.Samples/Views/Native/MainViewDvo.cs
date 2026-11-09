@@ -3,14 +3,12 @@ using Com.Scm.Dao.Samples;
 using Com.Scm.Dvo;
 using Com.Scm.Models;
 using SqlSugar;
-using System.Threading.Tasks;
 
 namespace Com.Scm.Views.Samples.Native
 {
-    public class MainViewDvo : ScmPageGridDvo
+    public class MainViewDvo : ScmPageGridDvo<SearchResultItemDvo>
     {
         private ScmWindow _Window;
-        private List<SearchResultItemDvo> Items;
 
         public void Init(ScmWindow window)
         {
@@ -25,66 +23,21 @@ namespace Com.Scm.Views.Samples.Native
             };
         }
 
-        public override Task SearchAsync(int pageIndex = 0)
+        protected override async Task<ScmPageResult<SearchResultItemDvo>> LoadPageAsync()
         {
-            return Task.CompletedTask;
+            var client = SqlHelper.GetSqlClient();
+
+            var total = new RefAsync<int>();
+            var list = await client.Queryable<ScmDemoNativeDao>()
+                .Select<SearchResultItemDvo>()
+                .ToPageListAsync(PageIndex, PageItems, total);
+
+            return new ScmPageResult<SearchResultItemDvo> { Items = list, Total = total.Value };
         }
 
-        public override Task FirstPageAsync()
+        protected override void OnError(Exception ex)
         {
-            PageIndex = 1;
-
-            return ReloadAsync();
-        }
-
-        public override Task PrevPageAsync()
-        {
-            PageIndex -= 1;
-            if (PageIndex < 1)
-            {
-                PageIndex = 1;
-            }
-
-            return ReloadAsync();
-        }
-
-        public override Task NextPageAsync()
-        {
-            PageIndex += 1;
-            if (PageIndex > PageCount)
-            {
-                PageIndex = PageCount;
-            }
-
-            return ReloadAsync();
-        }
-
-        public override Task EndPageAsync()
-        {
-            PageIndex = PageCount;
-
-            return ReloadAsync();
-        }
-
-        public override async Task ReloadAsync()
-        {
-            try
-            {
-                var client = SqlHelper.GetSqlClient();
-
-                var body = ToDictionary();
-                var result = await client.Queryable<ScmDemoNativeDao>()
-                    //.Where(a => a != null)
-                    .Select<SearchResultItemDvo>()
-                    .ToPageListAsync(0, 10, new RefAsync<int>(itemCount));
-
-                Items.Clear();
-                Items.AddRange(result);
-            }
-            catch (Exception exp)
-            {
-                _Window.ShowException(exp);
-            }
+            _Window?.ShowException(ex);
         }
     }
 }

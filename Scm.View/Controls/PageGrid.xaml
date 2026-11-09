@@ -5,6 +5,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:hc="https://handyorg.github.io/handycontrol"
+    xmlns:local="clr-namespace:Com.Scm.Controls"
+    xmlns:Attach="clr-namespace:Com.Scm.Controls.Attach"
     mc:Ignorable="d" 
     d:DesignHeight="450" d:DesignWidth="800">
     <Border BorderThickness="0" BorderBrush="{StaticResource ScmBorderBrush}">
@@ -23,12 +25,12 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <StackPanel
+                    <ContentControl
                         x:Name="GdCustom"
                         Grid.Column="0"
-                        Visibility="{Binding CustomVisibility}"
-                        Orientation="Horizontal">
-                    </StackPanel>
+                        Visibility="Collapsed"
+                        Content="{Binding CustomContent, RelativeSource={RelativeSource AncestorType={x:Type local:PageGrid}}}">
+                    </ContentControl>
                     <StackPanel
                         x:Name="GdSearch"
                         Grid.Column="1"
@@ -49,7 +51,7 @@
                             <TextBox Grid.Column="0" Text="{Binding Key}" hc:InfoElement.ShowClearButton="True"></TextBox>
                             <Button Grid.Column="1" Style="{StaticResource ButtonPrimary}" Click="BtSearch_Click">查询</Button>
                         </hc:ElementGroup>
-                        <Button Margin="6 0 0 0" Visibility="{Binding MoreVisibility}" Click="ShowSearch_Click">高级</Button>
+                        <Button x:Name="BtAdvanced" Margin="6 0 0 0" Visibility="Collapsed" Click="ShowSearch_Click">高级</Button>
                     </StackPanel>
                 </Grid>
             </Border>
@@ -67,6 +69,7 @@
                             x:Name="DgGrid"
                             Background="{StaticResource ScmPanelBackground}"
                             ItemsSource="{Binding Items}"
+                            Attach:DataGridColumnsBehavior.ColumnsSource="{Binding Columns}"
                             Style="{StaticResource DataGrid.Small}"
                             hc:DataGridAttach.ShowRowNumber="True"
                             hc:DataGridAttach.ShowSelectAllButton="False" 
@@ -93,7 +96,7 @@
                                     <RadioButton Content="列表" ToolTip="列表" IsChecked="True"/>
                                     <RadioButton Content="单页" ToolTip="单页"/>
                                 </hc:ButtonGroup>
-                                <Button Content="刷新" ToolTip="刷新"/>
+                                <Button Content="刷新" ToolTip="刷新" Click="BtSearch_Click"/>
                                 <Button Content="打印" ToolTip="打印"/>
                                 <Button Content="导出" ToolTip="导出" Click="BtExport_Click"/>
                                 <Button x:Name="BtOption" Margin="6 0 0 0" Content="选项" ToolTip="选项" Click="BtOption_Click"/>
@@ -125,7 +128,7 @@
                         </StackPanel>
                         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Left">
                             <Button x:Name="BtAccept" Click="BtAccept_Click" Style="{StaticResource ButtonPrimary}" Content="确认" Margin="0 0 12 0"></Button>
-                            <Button x:Name="BtSearch" Click="BtSearch_Click" Style="{StaticResource ButtonPrimary}" Content="查询" Margin="0 0 12 0"></Button>
+                            <Button x:Name="BtDrawerSearch" Click="BtSearch_Click" Style="{StaticResource ButtonPrimary}" Content="查询" Margin="0 0 12 0"></Button>
                             <Button x:Name="BtCancel" Click="BtCancel_Click" Style="{StaticResource ButtonDefault}" Content="取消"></Button>
                         </StackPanel>
                         <Border BorderBrush="{StaticResource ScmBorderBrush}" BorderThickness="0 1" Margin="0 6">

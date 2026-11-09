@@ -1,15 +1,14 @@
-﻿using System.Windows.Controls;
+using System.Windows.Controls;
 
 namespace Com.Scm.Views.Samples.Remote
 {
     /// <summary>
-    /// UcSamplesView.xaml 的交互逻辑
+    /// MainView.xaml 的交互逻辑
     /// </summary>
-    public partial class MainView : UserControl, ScmView, ScmPageView
+    public partial class MainView : UserControl, ScmView
     {
         private ScmWindow _Owner;
         private SearchParamsDvo _Dvo;
-        private ScmSearchPageResponse<SearchResultDataDvo> _Response;
 
         public MainView()
         {
@@ -21,8 +20,9 @@ namespace Com.Scm.Views.Samples.Remote
             _Owner = owner;
 
             _Dvo = new SearchParamsDvo();
+            _Dvo.Init();
 
-            PgData.Init(this, _Dvo);
+            PgData.DataContext = _Dvo;
 
             _Dvo.FirstPageAsync();
         }
@@ -31,28 +31,5 @@ namespace Com.Scm.Views.Samples.Remote
         {
             return this;
         }
-
-        #region 接口实现
-
-        public UserControl GetCustomView()
-        {
-            return null;
-        }
-
-        public UserControl GetSearchView()
-        {
-            return null;
-        }
-
-        public UserControl GetInfoView()
-        {
-            return null;
-        }
-
-        public UserControl GetEditView()
-        {
-            return null;
-        }
-        #endregion
     }
 }

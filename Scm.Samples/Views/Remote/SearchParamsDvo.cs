@@ -1,11 +1,10 @@
 using Com.Scm.Dvo;
 using Com.Scm.Enums;
 using Com.Scm.Models;
-using System.Threading.Tasks;
 
 namespace Com.Scm.Views.Samples.Remote
 {
-    public class SearchParamsDvo : ScmPageGridDvo
+    public class SearchParamsDvo : ScmPageGridDvo<SearchResultDataDvo>
     {
         private ScmRowStatusEnum status;
         public ScmRowStatusEnum Status { get { return status; } set { SetProperty(ref status, value); } }
@@ -24,58 +23,17 @@ namespace Com.Scm.Views.Samples.Remote
             };
         }
 
-        public override Task SearchAsync(int pageIndex = 0)
+        protected override Task<ScmPageResult<SearchResultDataDvo>> LoadPageAsync()
         {
-            return Task.CompletedTask;
-        }
-
-        public override Task FirstPageAsync()
-        {
-            PageIndex += 1;
-
-            return ReloadAsync();
-        }
-
-        public override Task PrevPageAsync()
-        {
-            PageIndex -= 1;
-            if (PageIndex < 1)
-            {
-                PageIndex = 1;
-            }
-
-            return ReloadAsync();
-        }
-
-        public override Task NextPageAsync()
-        {
-            PageIndex += 1;
-            if (PageIndex > PageCount)
-            {
-                PageIndex = PageCount;
-            }
-
-            return ReloadAsync();
-        }
-
-        public override Task EndPageAsync()
-        {
-            PageIndex = PageCount;
-
-            return ReloadAsync();
-        }
-
-        public override async Task ReloadAsync()
-        {
-            var body = ToDictionary();
-            //_Response = await _Owner.GetObjectAsync<ScmSearchPageResponse<SearchResultDataDvo>>("/urposition/pages", body);
-            //if (!_Response.Success)
+            //var body = ToDictionary();
+            //var response = await _Owner.GetObjectAsync<ScmSearchPageResponse<SearchResultDataDvo>>("/urposition/pages", body);
+            //if (!response.Success)
             //{
-            //    return;
+            //    return new ScmPageResult<SearchResultDataDvo>();
             //}
+            //return new ScmPageResult<SearchResultDataDvo> { Items = response.Data, Total = response.Total };
 
-            //PgData.ShowData(_Response);
-            await Task.CompletedTask;
+            return Task.FromResult(new ScmPageResult<SearchResultDataDvo> { Items = new List<SearchResultDataDvo>(), Total = 0 });
         }
     }
 }

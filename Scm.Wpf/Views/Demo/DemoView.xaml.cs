@@ -25,6 +25,8 @@ namespace Com.Scm.Views.Demo
             _Dvo.Init();
 
             this.DataContext = _Dvo;
+
+            _Dvo.FirstPageAsync();
         }
 
         public UserControl GetView()
@@ -54,7 +56,7 @@ namespace Com.Scm.Views.Demo
 
         private void Pagination_PageUpdated(object sender, HandyControl.Data.FunctionEventArgs<int> e)
         {
-            _Dvo.PageUpdated(PgPpp.PageIndex);
+            _Dvo.SearchAsync(PgPpp.PageIndex);
         }
     }
 }

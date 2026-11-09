@@ -1,9 +1,8 @@
-﻿using Com.Scm.Dvo;
-using System.Windows.Input;
+using Com.Scm.Dvo;
 
 namespace Com.Scm.Views.Demo
 {
-    public class DemoViewDvo : ScmPageGridDvo
+    public class DemoViewDvo : ScmPageGridDvo<DemoDataModel>
     {
         /// <summary>
         ///     所有数据
@@ -13,11 +12,6 @@ namespace Com.Scm.Views.Demo
         private string text;
         public string Text { get { return text; } set { SetProperty(ref text, value); } }
 
-        /// <summary>
-        /// 页码改变命令
-        /// </summary>
-        public ICommand PageUpdatedCmd { get; set; }
-
         public void Init()
         {
             for (var i = 0; i < 125; i++)
@@ -26,20 +20,13 @@ namespace Com.Scm.Views.Demo
                 _totalDataList.Add(item);
             }
 
-            //PageUpdatedCmd = new ScmCommand(PageUpdated);
+            PageItems = 10;
         }
 
-        /// <summary>
-        /// 页码改变
-        /// </summary>
-        public void PageUpdated(int index)
+        protected override Task<ScmPageResult<DemoDataModel>> LoadPageAsync()
         {
-            var list = _totalDataList.Skip((index - 1) * 10).Take(10).ToList();
-            Items.Clear();
-            foreach (var item in list)
-            {
-                Items.Add(item);
-            }
+            var list = _totalDataList.Skip((PageIndex - 1) * PageItems).Take(PageItems).ToList();
+            return Task.FromResult(new ScmPageResult<DemoDataModel> { Items = list, Total = _totalDataList.Count });
         }
     }
 
