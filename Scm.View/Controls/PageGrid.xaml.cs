@@ -5,6 +5,8 @@ using HandyControl.Controls;
 using System.Collections;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace Com.Scm.Controls
 {
@@ -193,6 +195,91 @@ namespace Com.Scm.Controls
         }
         #endregion
 
+        #region 双击与右键菜单
+        /// <summary>
+        /// 单元格双击路由事件
+        /// </summary>
+        public static readonly RoutedEvent CellDoubleClickEvent = EventManager.RegisterRoutedEvent(
+            "CellDoubleClick", RoutingStrategy.Bubble, typeof(EventHandler<PageGridCellEventArgs>), typeof(PageGrid));
+
+        /// <summary>
+        /// 双击单元格时触发（触发前会自动选中该行）
+        /// </summary>
+        public event EventHandler<PageGridCellEventArgs> CellDoubleClick
+        {
+            add { AddHandler(CellDoubleClickEvent, value); }
+            remove { RemoveHandler(CellDoubleClickEvent, value); }
+        }
+
+        /// <summary>
+        /// 行右键菜单。菜单打开前其 DataContext 会被设置为当前行数据。
+        /// </summary>
+        public static readonly DependencyProperty RowContextMenuProperty = DependencyProperty.Register(
+            "RowContextMenu", typeof(ContextMenu), typeof(PageGrid), new PropertyMetadata(null, OnRowContextMenuChanged));
+
+        public ContextMenu RowContextMenu
+        {
+            get { return (ContextMenu)GetValue(RowContextMenuProperty); }
+            set { SetValue(RowContextMenuProperty, value); }
+        }
+
+        private static void OnRowContextMenuChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var grid = (PageGrid)d;
+            grid.DgGrid.ContextMenu = e.NewValue as ContextMenu;
+        }
+
+        /// <summary>
+        /// 双击单元格
+        /// </summary>
+        private void DgGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var row = FindParent<DataGridRow>(e.OriginalSource as DependencyObject);
+            if (row == null)
+            {
+                return;
+            }
+
+            var cell = FindParent<DataGridCell>(e.OriginalSource as DependencyObject);
+
+            DgGrid.SelectedItem = row.Item;
+
+            RaiseEvent(new PageGridCellEventArgs(CellDoubleClickEvent, this, cell, row));
+        }
+
+        /// <summary>
+        /// 右键菜单打开前绑定当前行数据，空白处不弹出
+        /// </summary>
+        private void DgGrid_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            var row = FindParent<DataGridRow>(Mouse.DirectlyOver as DependencyObject);
+            if (row == null)
+            {
+                e.Handled = true;
+                return;
+            }
+
+            DgGrid.SelectedItem = row.Item;
+
+            if (RowContextMenu != null)
+            {
+                RowContextMenu.DataContext = row.Item;
+            }
+        }
+
+        /// <summary>
+        /// 查找指定类型的父级元素
+        /// </summary>
+        private static T FindParent<T>(DependencyObject dependency) where T : DependencyObject
+        {
+            while (dependency != null && !(dependency is T))
+            {
+                dependency = VisualTreeHelper.GetParent(dependency);
+            }
+            return dependency as T;
+        }
+        #endregion
+
         #region 选中项
         public object SelectedItem { get { return DgGrid.SelectedItem; } set { DgGrid.SelectedItem = value; } }
 
@@ -207,4 +294,32 @@ namespace Com.Scm.Controls
     }
 
     public delegate bool SaveDelegate();
+
+    /// <summary>
+    /// 单元格事件参数
+    /// </summary>
+    public class PageGridCellEventArgs : RoutedEventArgs
+    {
+        /// <summary>
+        /// 单元格。双击行号时为 null
+        /// </summary>
+        public DataGridCell Cell { get; private set; }
+
+        /// <summary>
+        /// 行
+        /// </summary>
+        public DataGridRow Row { get; private set; }
+
+        /// <summary>
+        /// 行数据
+        /// </summary>
+        public object Item { get { return Row == null ? null : Row.Item; } }
+
+        public PageGridCellEventArgs(RoutedEvent routedEvent, object source, DataGridCell cell, DataGridRow row)
+            : base(routedEvent, source)
+        {
+            Cell = cell;
+            Row = row;
+        }
+    }
 }

@@ -18,8 +18,8 @@ namespace Com.Scm.Views.Samples.Native
             {
                 new ScmColumnInfo { Type=ScmColumnType.Text, Label = "ID", Value = "Id",Hidden=true },
                 new ScmColumnInfo { Type=ScmColumnType.CheckBox, Label = "", Value = "IsChecked", Width="70" },
-                new ScmColumnInfo { Type=ScmColumnType.Text, Label = "系统编码", Value = "Codec" },
-                new ScmColumnInfo { Type=ScmColumnType.Text, Label = "系统名称", Value = "Namec", Width="*", MinWidth="100" }
+                new ScmColumnInfo { Type=ScmColumnType.Text, Label = "系统编码", Value = "codec" },
+                new ScmColumnInfo { Type=ScmColumnType.Text, Label = "系统名称", Value = "namec", Width="*", MinWidth="100" }
             };
         }
 

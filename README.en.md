@@ -43,10 +43,10 @@ Products built on this framework include: OMS (Order Management), WMS (Warehouse
 - **Data Validation** — Property-level validation via `INotifyDataErrorInfo`
 
 ### UI Components
-- **PageGrid** — Feature-rich paged data grid
+- **PageGrid** — Feature-rich paged data grid ([usage guide](docs/PageGrid.md))
   - Customizable columns, search panel, advanced query
-  - Data export: CSV / JSON / SQL / TXT / XLS
-  - Inline editing, paginated navigation, multi-select operations
+  - Data export: XLSX / XLS / CSV / JSON / SQL
+  - Inline editing, paginated navigation, multi-select operations, double-click and context menu
 - **NavigationDrawer** — Side navigation drawer with cascading menu tree
 - **Toast Notifications** — Success, error, warning status prompts
 - **Icon System** — Material Design icon pack integration
@@ -226,7 +226,7 @@ Or open `Scm.Wpf.sln` in Visual Studio, set `Scm.Wpf` as the startup project, an
 | `ScmTerminal` | Terminal client, device binding authentication for unattended scenarios |
 | `ScmDvo` | Data value object base class, implements `INotifyPropertyChanged` + `INotifyDataErrorInfo` |
 | `ScmDao` | DAO base class, encapsulates SqlSugar CRUD operations and ID generation |
-| `PageGrid` | Paged data grid control, supports search, edit, export, pagination |
+| `PageGrid` | Paged data grid control, supports search, edit, export, pagination ([usage guide](docs/PageGrid.md)) |
 | `AAction` | Abstract action base class, menu-driven view switching and business dispatch |
 
 ### Example: Custom DVO

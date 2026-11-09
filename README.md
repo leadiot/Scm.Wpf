@@ -46,10 +46,10 @@
 
 ### UI 组件
 
-- **PageGrid** — 强大的分页数据网格组件
+- **PageGrid** — 强大的分页数据网格组件（[使用说明](docs/PageGrid.md)）
   - 自定义列配置、搜索面板、高级查询
-  - 数据导出：CSV / JSON / SQL / TXT / XLS
-  - 内联编辑、分页导航、多选操作
+  - 数据导出：XLSX / XLS / CSV / JSON / SQL
+  - 内联编辑、分页导航、多选操作、双击与右键菜单
 - **NavigationDrawer** — 侧边导航抽屉，支持菜单树级联
 - **Toast 通知** — 成功、错误、警告等状态提示
 - **图标系统** — 集成 Material Design 图标库
@@ -237,7 +237,7 @@ dotnet run
 | `ScmTerminal` | 终端客户端，设备绑定认证，用于无人值守终端场景                                      |
 | `ScmDvo`      | 数据值对象基类，实现 `INotifyPropertyChanged` + `INotifyDataErrorInfo` |
 | `ScmDao`      | DAO 基类，封装 SqlSugar CRUD 操作与 ID 生成                            |
-| `PageGrid`    | 分页数据网格控件，支持搜索、编辑、导出、分页                                       |
+| `PageGrid`    | 分页数据网格控件，支持搜索、编辑、导出、分页（详见 [使用说明](docs/PageGrid.md)）              |
 | `AAction`     | 动作抽象基类，菜单驱动的视图切换与业务分发                                        |
 
 ### 示例：自定义 DVO
