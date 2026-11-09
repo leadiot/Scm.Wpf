@@ -93,9 +93,7 @@
                                 Name="GdPage"
                                 Grid.Column="0"
                                 Visibility="{Binding PageVisibility}"
-                                Orientation="Horizontal"
-                                HorizontalAlignment="Right"
-                                Margin="6 0">
+                                Orientation="Horizontal">
                                 <hc:Pagination
                                     Name="HpPage"
                                     Margin="6 0"
@@ -109,13 +107,13 @@
                                 Grid.Column="1"
                                 Visibility="{Binding OptionVisibility}"
                                 Orientation="Horizontal">
-                                <hc:ButtonGroup Margin="6 0" Visibility="Collapsed">
+                                <hc:ButtonGroup Margin="6 0 0 0" Visibility="Collapsed">
                                     <RadioButton Content="列表" ToolTip="列表" IsChecked="True"/>
                                     <RadioButton Content="单页" ToolTip="单页"/>
                                 </hc:ButtonGroup>
-                                <Button Content="刷新" Margin="6 0" ToolTip="刷新" Click="BtSearch_Click"/>
-                                <Button Content="打印" Margin="6 0" ToolTip="打印当前页" Click="BtPrint_Click"/>
-                                <Button Content="导出" Margin="6 0" ToolTip="导出当前页" Click="BtExport_Click"/>
+                                <Button Content="刷新" Margin="6 0 0 0" ToolTip="刷新" Click="BtSearch_Click"/>
+                                <Button Content="打印" Margin="6 0 0 0" ToolTip="打印当前页" Click="BtPrint_Click"/>
+                                <Button Content="导出" Margin="6 0 0 0" ToolTip="导出当前页" Click="BtExport_Click"/>
                                 <Button x:Name="BtOption" Margin="6 0" Content="选项" ToolTip="调整展示内容" Click="BtOption_Click"/>
                             </StackPanel>
                         </Grid>
