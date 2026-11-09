@@ -424,26 +424,48 @@ await GridExporter.ExportSql(items, columns, "d:/data.sql");
 await GridExporter.ExportAsync(items, columns); // 弹保存对话框
 ```
 
-## 11. 内置按钮
+## 11. 打印
+
+点击表尾「打印」按钮，先打开打印预览窗口（A4 纸张、自动分页），确认无误后再点预览窗口中的「打印」选择打印机输出（需 `OptionVisibility = Visible`）。
+
+预览窗口基于 `FlowDocumentReader`（页面模式），支持翻页、缩放。
+
+规则：
+
+- 打印当前页数据（`DataGrid.ItemsSource`）；
+- 隐藏列（`Hidden = true`）不打印，列顺序与界面、`Columns` 一致；
+- 标题取所在窗口的 `Window.Title`，并附打印时间；
+- 布尔值打印为 `√`，日期格式为 `yyyy-MM-dd HH:mm:ss`；
+- 固定列宽总和超过纸张宽度时自动改为按比例分配；
+- 预览按 A4 排版，实际打印时按所选打印机的可打印区域重新排版，避免内容被裁切。
+
+也可以直接调用打印服务：
+
+```csharp
+GridPrinter.Preview(items, columns, "用户列表");  // 预览后再打印
+GridPrinter.Print(items, columns, "用户列表");    // 跳过预览直接打印
+```
+
+## 12. 内置按钮
 
 | 按钮 | 行为 |
 | --- | --- |
 | 查询 | `SearchAsync(0)` |
 | 刷新 | `SearchAsync(0)` |
 | 导出 | 见第 10 节 |
+| 打印 | 打印当前页数据，见第 11 节 |
 | 选项 | 打开列设置面板：勾选控制显示、↑ / ↓ 调整顺序（见 5.5） |
-| 打印 | 暂无逻辑 |
 | 列表 / 单页 | 暂无逻辑 |
 | 高级 | 仅设置 `SearchContent` 后显示 |
 
-## 12. 完整示例
+## 13. 完整示例
 
 | 场景 | 文件 |
 | --- | --- |
 | 本地 SQLite 分页查询 | [MainView.xaml](../Scm.Samples/Views/Native/MainView.xaml)、[MainViewDvo.cs](../Scm.Samples/Views/Native/MainViewDvo.cs) |
 | 远程 API 分页查询 | [SearchParamsDvo.cs](../Scm.Samples/Views/Remote/SearchParamsDvo.cs) |
 
-## 13. 常见问题
+## 14. 常见问题
 
 1. **表格空白、无数据**
    - 确认 `PgGrid.DataContext` 是 `ScmPageGridDvo` 派生实例；

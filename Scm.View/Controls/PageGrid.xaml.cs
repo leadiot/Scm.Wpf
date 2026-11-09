@@ -5,8 +5,10 @@ using HandyControl.Controls;
 using System.Collections;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Effects;
 
 namespace Com.Scm.Controls
 {
@@ -90,6 +92,18 @@ namespace Com.Scm.Controls
         }
 
         /// <summary>
+        /// 数据打印事件
+        /// </summary>
+        private void BtPrint_Click(object sender, RoutedEventArgs e)
+        {
+            var columns = DataGridColumnsBehavior.GetColumnsSource(DgGrid);
+            var window = System.Windows.Window.GetWindow(this);
+            var title = window == null ? null : window.Title;
+
+            GridPrinter.Preview(DgGrid.ItemsSource, columns, title);
+        }
+
+        /// <summary>
         /// 选项事件：调整列的显示与顺序
         /// </summary>
         private void BtOption_Click(object sender, RoutedEventArgs e)
@@ -101,14 +115,56 @@ namespace Com.Scm.Controls
                 return;
             }
 
+            var width = 260;
             var view = new PageGridColumnsView();
             view.Init(DgGrid, columns);
+            view.Width = width;
+            view.MaxHeight = 480;
 
-            var window = new PopupWindow();
-            window.PopupElement = view;
-            window.Width = 260;
-            window.Height = 480;
-            window.Show(BtOption, false);
+            var border = new Border
+            {
+                Background = GetBrush("ScmPanelBackground", Brushes.White),
+                BorderBrush = GetBrush("ScmBorderBrush", Brushes.Gray),
+                BorderThickness = new Thickness(1),
+                Margin = new Thickness(8),
+                CornerRadius = new CornerRadius(12),
+                Effect = new DropShadowEffect
+                {
+                    BlurRadius = 16,
+                    ShadowDepth = 2,
+                    Direction = 270,
+                    Opacity = 0.25,
+                    Color = Colors.Black
+                },
+                Child = view
+            };
+
+            if (_OptionPopup != null)
+            {
+                _OptionPopup.IsOpen = false;
+            }
+
+            _OptionPopup = new Popup
+            {
+                PlacementTarget = BtOption,
+                Placement = PlacementMode.Top,
+                HorizontalOffset = BtOption.ActualWidth - width,
+                StaysOpen = false,
+                AllowsTransparency = true,
+                PopupAnimation = PopupAnimation.Fade,
+                Child = border
+            };
+            _OptionPopup.IsOpen = true;
+        }
+
+        private Popup _OptionPopup;
+
+        /// <summary>
+        /// 获取主题画刷，取不到时使用默认值
+        /// </summary>
+        private Brush GetBrush(string key, Brush fallback)
+        {
+            return TryFindResource(key) as Brush ?? fallback;
         }
 
         /// <summary>

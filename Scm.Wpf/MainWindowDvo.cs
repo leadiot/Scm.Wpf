@@ -47,8 +47,8 @@ namespace Com.Scm.Dvo
 
             if (menuList.isEmpty())
             {
-                InitNasMenu(menuList);
-                //InitTestMenu(menuList);
+                //InitNasMenu(menuList);
+                InitTestMenu(menuList);
             }
 
             foreach (var itemDto in menuList)
